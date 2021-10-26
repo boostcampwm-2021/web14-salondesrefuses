@@ -1,0 +1,16 @@
+# <tag>: <subject> - #<issue>
+##### Subject 50 characters ################# -> |
+
+# Body Message
+# - 설명
+######## Body 72 characters ####################################### -> |
+
+# --- TAG NAME ---
+#   feat    : 새로운 기능 추가
+#   fix     : 버그 수정, 코드 스타일 수정 코드 포맷 변경, 세미 콜론 누락 등
+#   refactor: 코드 리펙토링 로직 수정 X
+#   design  : css, html, 레이아웃 수정
+#   docs    : 문서 추가 및 수정
+#   test    : 모든 테스트 작업
+#   chore   : 잡다한 일들
+# ------------------
