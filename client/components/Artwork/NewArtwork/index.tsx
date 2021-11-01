@@ -3,14 +3,14 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Button } from '@styles/common';
 import ArtworkModal from '../ArtworkModal';
 import { Container, Title, Form, Input } from './style';
+import usePreviewImage from '@hooks/usePreviewImage';
 
 interface NewArtworkProp {
     image: File;
 }
 
 const NewArtwork = ({ image }: NewArtworkProp) => {
-    const backgroundImageRef = useRef<HTMLImageElement | null>(null);
-    const imageRef = useRef<HTMLImageElement | null>(null);
+    const { backgroundImageRef, imageRef } = usePreviewImage(image);
     const [modalPositionBottom, setModalPositionBottom] = useState('-53vh');
     const [modalInputData, setModalInputData] = useState<{
         [key: string]: number | string;
@@ -18,18 +18,19 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
 
     const onClickHiddenModal = () => {
         console.log('hihi');
-        setModalPositionBottom((pos) => '-50vh');
+        setModalPositionBottom('-50vh');
+    };
+
+    const onWheelModal = (e: WheelEvent) => {
+        if (e.deltaY > 30) {
+            setModalPositionBottom('20vh');
+            // document.removeEventListener('wheel', onWheelModal);
+        }
     };
 
     useEffect(() => {
-        const fileReader = new FileReader();
-        fileReader.onload = (e) => {
-            backgroundImageRef.current!.src = e.target!.result as string;
-            imageRef.current!.src = e.target!.result as string;
-        };
-        fileReader.readAsDataURL(image);
-
         document.body.style.overflow = 'hidden';
+        document.addEventListener('wheel', onWheelModal);
         return () => {
             document.body.style.overflow = 'visible';
         };
@@ -59,6 +60,7 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
                     setData={setModalInputData}
                     position={modalPositionBottom}
                     onClick={onClickHiddenModal}
+                    setPosition={setModalPositionBottom}
                 />
             </Container>
             <img ref={backgroundImageRef} src="" alt="background" />

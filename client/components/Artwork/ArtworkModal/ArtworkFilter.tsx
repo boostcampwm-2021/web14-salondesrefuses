@@ -65,6 +65,7 @@ const Container = styled.div`
         width: 32px;
         height: 32px;
         border: none;
+        box-shadow: none;
     }
 `;
 

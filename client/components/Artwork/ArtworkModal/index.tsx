@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from '@emotion/styled';
 import ArtworkFilter from './ArtworkFilter';
 
@@ -6,17 +6,24 @@ interface ArtworkModalProps {
     setData: React.Dispatch<{ [key: string]: string | number }>;
     position: string;
     onClick: () => void;
+    setPosition: React.Dispatch<string>;
 }
 
-const ArtworkModal = ({ setData, position }: ArtworkModalProps) => {
+const ArtworkModal = ({
+    setData,
+    position,
+    setPosition,
+}: ArtworkModalProps) => {
     const [checked, setChecked] = useState('artwork');
+    const modalRef = useRef<HTMLDivElement | null>(null);
 
     const onClickConfirm = () => {
         setData({});
+        setPosition('-53vh');
     };
 
     return (
-        <Modal bottom={position}>
+        <Modal bottom={position} ref={modalRef}>
             <ArtworkFilter checked={checked} setChecked={setChecked} />
             <ConfirmButton onClick={onClickConfirm}>confirm</ConfirmButton>
         </Modal>
@@ -33,6 +40,8 @@ const Modal = styled.div<{ bottom: string }>`
     padding: 50px;
     bottom: ${(props) => props.bottom};
     z-index: 500;
+
+    transition: bottom 0.2s ease;
 `;
 
 const ConfirmButton = styled.button`
