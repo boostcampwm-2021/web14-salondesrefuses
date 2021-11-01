@@ -1,8 +1,10 @@
+import DeviceSwitch from '@components/common/DeviceSwitch';
+import Mobile from '@components/Home/Mobile';
+import Pc from '@components/Home/Pc';
 import type { NextPage } from 'next';
-import Header from '@components/Header';
 
-const Home: NextPage = () => {
-    return <div></div>;
+const Home: NextPage = (props) => {
+    return <DeviceSwitch Pc={Pc} Mobile={Mobile} props={props} />;
 };
 
 export default Home;
