@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import ArtworkFilter from './ArtworkFilter';
 
 interface ArtworkModalProps {
-    setData: React.Dispatch<{ [key: string]: string | number }>;
+    setData: React.Dispatch<{ [key: string]: string }>;
     position: string;
     setPosition: React.Dispatch<string>;
 }

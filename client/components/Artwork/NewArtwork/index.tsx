@@ -4,45 +4,26 @@ import { Button } from '@styles/common';
 import ArtworkModal from '../ArtworkModal';
 import { Container, Title, Form, Input } from './style';
 import usePreviewImage from '@hooks/usePreviewImage';
+import useInputArtwork from '@hooks/useInputArtwork';
+import useControlModalPosition from '@hooks/useControlModalPosition';
 
 interface NewArtworkProp {
     image: File;
 }
 
 const NewArtwork = ({ image }: NewArtworkProp) => {
+    const { onClickDone, titleInputRef, typeInputRef, setModalInputData } =
+        useInputArtwork(image);
     const { backgroundImageRef, imageRef } = usePreviewImage(image);
-    const [modalPositionBottom, setModalPositionBottom] = useState('-53vh');
-    const [modalInputData, setModalInputData] = useState<{
-        [key: string]: number | string;
-    }>({});
-
-    const onClickHiddenModal = () => {
-        console.log('hihi');
-        setModalPositionBottom('-50vh');
-    };
-
-    const onWheelModal = (e: WheelEvent) => {
-        if (e.deltaY > 30) {
-            setModalPositionBottom('20vh');
-            // document.removeEventListener('wheel', onWheelModal);
-        }
-    };
-
-    useEffect(() => {
-        document.body.style.overflow = 'hidden';
-        document.addEventListener('wheel', onWheelModal);
-        return () => {
-            document.body.style.overflow = 'visible';
-            document.removeEventListener('wheel', onWheelModal);
-        };
-    }, []);
+    const { modalPositionBottom, setModalPositionBottom } =
+        useControlModalPosition();
 
     return (
         <>
             <Container>
                 <Title>
                     <h1>New Artwork</h1>
-                    <Button>Done</Button>
+                    <Button onClick={onClickDone}>Done</Button>
                 </Title>
                 <div>
                     <img ref={imageRef} src="" alt="preview" />
@@ -50,11 +31,19 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
                 <Form>
                     <Input>
                         <span>Title</span>
-                        <input type="text" placeholder="Title of artwork..." />
+                        <input
+                            type="text"
+                            placeholder="Title of artwork..."
+                            ref={titleInputRef}
+                        />
                     </Input>
                     <Input>
                         <span>Type</span>
-                        <input type="text" placeholder="Photography ..." />
+                        <input
+                            type="text"
+                            placeholder="Photography ..."
+                            ref={typeInputRef}
+                        />
                     </Input>
                 </Form>
                 <ArtworkModal

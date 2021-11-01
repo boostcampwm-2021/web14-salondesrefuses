@@ -53,7 +53,7 @@ export const Input = styled.div`
 
     & > input {
         background: rgba(255, 255, 255, 0.5);
-        color: #757575;
+        color: black;
         height: 48px;
         border: none;
         border-radius: 10px;
