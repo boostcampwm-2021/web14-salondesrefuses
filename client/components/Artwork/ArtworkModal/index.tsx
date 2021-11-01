@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import styled from '@emotion/styled';
 import ArtworkFilter from './ArtworkFilter';
+import { Modal, Form, LightForm, ConfirmButton } from './style';
 
 interface ArtworkModalProps {
     setData: React.Dispatch<{ [key: string]: string }>;
@@ -16,8 +16,16 @@ const ArtworkModal = ({
     const [checked, setChecked] = useState('artwork');
     const modalRef = useRef<HTMLDivElement | null>(null);
 
+    const descriptionInputRef = useRef<HTMLTextAreaElement | null>(null);
+    const yearInputRef = useRef<HTMLInputElement | null>(null);
+    const bidEndInputRef = useRef<HTMLInputElement | null>(null);
+
     const onClickConfirm = () => {
-        setData({});
+        setData({
+            description: descriptionInputRef.current!.value,
+            year: yearInputRef.current!.value,
+            bidEnd: bidEndInputRef.current!.value,
+        });
         setPosition('-53vh');
     };
 
@@ -26,17 +34,17 @@ const ArtworkModal = ({
             <ArtworkFilter checked={checked} setChecked={setChecked} />
             <Form>
                 <span>Description</span>
-                <textarea cols={10} />
+                <textarea cols={10} ref={descriptionInputRef} />
             </Form>
             {checked === 'auction' && (
                 <>
                     <LightForm>
                         <span>Year</span>
-                        <input type="text" />
+                        <input type="text" ref={yearInputRef} />
                     </LightForm>
                     <LightForm>
                         <span>Bid End</span>
-                        <input type="text" />
+                        <input type="text" ref={bidEndInputRef} />
                     </LightForm>
                 </>
             )}
@@ -44,80 +52,5 @@ const ArtworkModal = ({
         </Modal>
     );
 };
-
-const Modal = styled.div<{ bottom: string }>`
-    position: absolute;
-    width: 70%;
-    height: 550px;
-    background-color: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(100px);
-    border-radius: 30px;
-    padding: 50px;
-    bottom: ${(props) => props.bottom};
-    z-index: 500;
-
-    transition: bottom 0.2s ease;
-`;
-
-const ConfirmButton = styled.button`
-    width: 130px;
-    height: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    background: none;
-    border-radius: 10px;
-    color: white;
-    font-weight: 200;
-    font-size: 20px;
-    position: absolute;
-    bottom: 50px;
-    right: 50px;
-`;
-
-const Form = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 30px;
-
-    & textarea {
-        height: 150px;
-        border-radius: 15px;
-        background: rgba(0, 0, 0, 0.24);
-        border: none;
-        color: white;
-        padding: 20px;
-        resize: none;
-
-        &:focus {
-            outline: none;
-        }
-    }
-
-    & span {
-        font-size: 24px;
-        font-weight: 200;
-        color: white;
-    }
-`;
-
-const LightForm = styled(Form)`
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-
-    & input {
-        border-radius: 8px;
-        height: 30px;
-        width: 80%;
-        background: rgba(0, 0, 0, 0.24);
-        border: none;
-        color: white;
-        padding-left: 20px;
-
-        &: focus {
-            outline: none;
-        }
-    }
-`;
 
 export default ArtworkModal;
