@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Exhibition } from '../exhibition/exhibition.entity';
 
 @Entity()
@@ -8,4 +8,7 @@ export class Category {
 
     @Column()
     name: string;
+
+    @ManyToOne(type => Exhibition, exhibition => exhibition.categories)
+    exhibition: Exhibition;
 }
