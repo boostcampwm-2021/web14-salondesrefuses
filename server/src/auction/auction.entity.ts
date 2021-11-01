@@ -15,7 +15,7 @@ export class Auction {
     endAt: Date;
 
     @ManyToOne(type => User, user => user.id)
-    owner: User;
+    seller: User;
 
     @OneToOne(type => Artwork, artwork => artwork.id)
     artwork: Artwork;
