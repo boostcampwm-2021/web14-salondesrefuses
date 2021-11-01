@@ -1,7 +1,9 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Auction } from '../auction/auction.entity';
 import { ArtworkStatus } from './artwork.status.enum';
+import { InterestArtwork } from "../interestArtwork/interestArtwork.entity";
+import { ArtworkInBid } from "../artworkInBid/artworkInBid.entity";
 
 @Entity()
 export class Artwork {
@@ -45,32 +47,10 @@ export class Artwork {
     @ManyToOne(type => User, user => user.biddedArtworks)
     owner: User;
 
-    @ManyToMany(type => User, user => user.interestArtworks)
-    @JoinTable({
-        name: 'interest_artwork',
-        joinColumn: {
-            name: 'artwork_id',
-            referencedColumnName: 'id'
-        },
-        inverseJoinColumn: {
-            name: 'user_id',
-            referencedColumnName: 'id'
-        }
-    })
-    interestedUsers: User[];
+    @OneToMany(type => InterestArtwork, interestArtwork => interestArtwork.artwork)
+    interestedUsers: InterestArtwork[];
 
-    @ManyToMany(type => User, user => user.artworksInBid)
-    @JoinTable({
-        name: 'artwork_in_bid',
-        joinColumn: {
-            name: 'artwork_id',
-            referencedColumnName: 'id'
-        },
-        inverseJoinColumn: {
-            name: 'user_id',
-            referencedColumnName: 'id'
-        }
-    })
+    @OneToMany(type => ArtworkInBid, artworkInBid => artworkInBid.artwork)
     usersInBid: User[];
 
     @OneToOne(type => Auction, auction => auction.artwork)
