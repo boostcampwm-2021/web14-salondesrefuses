@@ -1,14 +1,24 @@
-import { Controller, Get } from "@nestjs/common";
-import { ArtworkService } from "../service/artwork.service";
-import { Artwork } from "../artwork.entity";
+import {
+    Body,
+    Controller,
+    HttpCode,
+    Post,
+    UploadedFile,
+    UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ArtworkService } from '../service/artwork.service';
 
-@Controller('/artworks')
+@Controller('artworks')
 export class ArtworkController {
-    constructor(private artworkService: ArtworkService) {}
+    constructor(private readonly artworkService: ArtworkService) {}
 
-    @Get('/random')
-    getRandomAuctionArtworks(): Promise<Artwork[]> {
-        return this.artworkService.getRandomAuctionArtworks();
+    @Post()
+    @HttpCode(201)
+    @UseInterceptors(FileInterceptor('image'))
+    async postArtWork(@UploadedFile() file, @Body() body) {
+        this.artworkService.createArtWork(file, body);
+
+        return 'success';
     }
-
 }

@@ -1,17 +1,23 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { ArtworkRepository } from "../artwork.repository";
-import { Artwork } from "../artwork.entity";
+import { Injectable } from '@nestjs/common';
+import { ImageService } from 'src/image/service/image.service';
 
 @Injectable()
 export class ArtworkService {
-    constructor(
-        @InjectRepository(ArtworkRepository)
-        private artworkRepository: ArtworkRepository
-    ) {}
+    constructor(private readonly imageService: ImageService) {}
 
-    getRandomAuctionArtworks(): Promise<Artwork[]> {
-        return this.artworkRepository.getRandomAuctionArtworks();
+    async createArtWork(image, body) {
+        try {
+            const croppedImageBuffer = await this.imageService.cropImage(image);
+            const [originalImage, croppedImage] = await Promise.all([
+                this.imageService.fileUpload(image),
+                this.imageService.fileUpload({
+                    ...image,
+                    buffer: croppedImageBuffer,
+                }),
+            ]);
+            // 아트워크 저장
+        } catch (error) {
+            console.log(error);
+        }
     }
-
 }
