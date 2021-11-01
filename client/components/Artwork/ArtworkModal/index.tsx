@@ -5,7 +5,6 @@ import ArtworkFilter from './ArtworkFilter';
 interface ArtworkModalProps {
     setData: React.Dispatch<{ [key: string]: string | number }>;
     position: string;
-    onClick: () => void;
     setPosition: React.Dispatch<string>;
 }
 

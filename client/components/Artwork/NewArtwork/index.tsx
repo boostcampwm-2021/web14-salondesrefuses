@@ -33,6 +33,7 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
         document.addEventListener('wheel', onWheelModal);
         return () => {
             document.body.style.overflow = 'visible';
+            document.removeEventListener('wheel', onWheelModal);
         };
     }, []);
 
@@ -59,7 +60,6 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
                 <ArtworkModal
                     setData={setModalInputData}
                     position={modalPositionBottom}
-                    onClick={onClickHiddenModal}
                     setPosition={setModalPositionBottom}
                 />
             </Container>
