@@ -17,10 +17,6 @@ const useInputArtwork = (image: File) => {
         formData.append('bidEnd', modalInputData['bidEnd']);
         formData.append('image', image);
 
-        for (const v of formData.entries()) {
-            console.log(v[0], v[1]);
-        }
-
         // TODO - post FormData to server //
     };
 
