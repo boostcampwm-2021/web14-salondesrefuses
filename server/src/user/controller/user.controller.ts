@@ -6,8 +6,8 @@ export class UserController {
     constructor(private userService: UserService) {}
 
     @Get('/:userId/artworks')
-    getAllArtworks(@Param('userId', ParseIntPipe) userId: number) {
-        return this.userService.getAllArtWorks(userId);
+    getAllUsersArtworks(@Param('userId', ParseIntPipe) userId: number) {
+        return this.userService.getAllUsersArtworks(userId);
     }
 
 }

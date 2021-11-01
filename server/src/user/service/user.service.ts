@@ -13,8 +13,8 @@ export class UserService {
         private artworkRepository: ArtworkRepository
     ) {}
 
-    getAllArtWorks(userId: number): Promise<Artwork[]> {
-        return this.artworkRepository.getAllArtWorks(userId);
+    getAllUsersArtworks(userId: number): Promise<Artwork[]> {
+        return this.artworkRepository.getAllUsersArtworks(userId);
     }
 
 }

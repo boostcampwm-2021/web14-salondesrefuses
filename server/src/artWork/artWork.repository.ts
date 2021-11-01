@@ -13,4 +13,10 @@ export class ArtworkRepository extends Repository<Artwork> {
             .getMany();
     }
 
+    async getAllUsersArtworks(userId: number): Promise<Artwork[]> {
+        return await this.find({
+            where: { artist: userId }
+        });
+    }
+
 }
