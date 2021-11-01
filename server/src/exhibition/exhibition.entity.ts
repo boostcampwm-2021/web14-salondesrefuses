@@ -26,7 +26,7 @@ export class Exhibition {
     thumbnailImage: string;
 
     @ManyToOne(type => User, user => user.exhibitionList)
-    user: User;
+    artist: User;
 
     @OneToMany(type => Category, category => category.exhibition)
     categories: Category[];
