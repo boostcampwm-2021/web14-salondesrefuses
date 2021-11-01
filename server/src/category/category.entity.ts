@@ -8,7 +8,4 @@ export class Category {
 
     @Column()
     name: string;
-
-    @ManyToOne(type => Exhibition, exhibition => exhibition.categories)
-    exhibition: Exhibition;
 }
