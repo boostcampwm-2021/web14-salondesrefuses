@@ -46,6 +46,6 @@ export class User {
     @OneToMany(type => Exhibition, exhibition => exhibition.user)
     exhibitionList: Exhibition[];
 
-    @OneToMany(type => Auction, auction => auction.owner)
+    @OneToMany(type => Auction, auction => auction.seller)
     auctionList: Auction[];
 }
