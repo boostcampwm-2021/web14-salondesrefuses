@@ -5,6 +5,7 @@ const theme = {
         placeholder: '#757575',
         gray1: '#C2C2C2',
         main: '#DC6B6B',
+        modal: '#9D9D9D',
     },
 };
 

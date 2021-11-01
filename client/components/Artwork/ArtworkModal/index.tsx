@@ -1,7 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
+import styled from '@emotion/styled';
+import ArtworkFilter from './ArtworkFilter';
 
-const ArtworkModal = () => {
-    return <div></div>;
+interface ArtworkModalProps {
+    setData: React.Dispatch<{ [key: string]: string | number }>;
+    position: string;
+    onClick: () => void;
+}
+
+const ArtworkModal = ({ setData, position }: ArtworkModalProps) => {
+    const [checked, setChecked] = useState('artwork');
+
+    const onClickConfirm = () => {
+        setData({});
+    };
+
+    return (
+        <Modal bottom={position}>
+            <ArtworkFilter checked={checked} setChecked={setChecked} />
+            <ConfirmButton onClick={onClickConfirm}>confirm</ConfirmButton>
+        </Modal>
+    );
 };
+
+const Modal = styled.div<{ bottom: string }>`
+    position: absolute;
+    width: 70%;
+    height: 550px;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(100px);
+    border-radius: 30px;
+    padding: 50px;
+    bottom: ${(props) => props.bottom};
+    z-index: 500;
+`;
+
+const ConfirmButton = styled.button`
+    width: 130px;
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: 200;
+    font-size: 20px;
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+`;
 
 export default ArtworkModal;
