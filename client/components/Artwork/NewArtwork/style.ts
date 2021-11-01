@@ -60,5 +60,10 @@ export const Input = styled.div`
         padding: 0px 15px;
         font-size: 18px;
         font-weight: 200;
+
+        &:focus {
+            outline: none;
+            box-shadow: 3px 5px 3px rgba(0, 0, 0, 0.1);
+        }
     }
 `;
