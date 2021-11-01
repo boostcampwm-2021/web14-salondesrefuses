@@ -1,8 +1,8 @@
-import { Injectable, Req, Res } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import * as sharp from 'sharp';
 import { Logger } from '@nestjs/common';
-import { ObjectStorageData } from 'src/artwork/dto/imageDTOs';
+import { ObjectStorageData } from '../dto/ImageDTOs';
 require('dotenv').config();
 
 @Injectable()
