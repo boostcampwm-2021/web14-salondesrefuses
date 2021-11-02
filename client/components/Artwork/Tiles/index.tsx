@@ -1,10 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
+import { getAllArtworks } from 'utils/networking';
 import ImageTile from './ImageTile';
 
 const Tiles = () => {
-    useEffect(() => {}, []);
+    const [artworks, setArtwors] = useState([]);
+
+    useEffect(() => {
+        // getAllArtworks(1).then((result) => console.log(result));
+    }, []);
 
     return (
         <Container>

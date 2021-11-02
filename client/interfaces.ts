@@ -1,1 +1,1 @@
-export interface Test {}
+export interface Artworks {}
