@@ -28,8 +28,8 @@ const Container = styled.div`
     border-top: 2px solid black;
     background-color: white;
     position: relative;
-    bottom: 0px;
-
+    bottom: -400px;
+    font-size: ${(props) => props.theme.font.textEnBase};
     & > div {
         width: 50%;
         height: 70%;
