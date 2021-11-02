@@ -9,6 +9,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateArtworkDTO } from '../dto/artworkDTOs';
 import { ArtworkService } from '../service/artwork.service';
+import { Artwork } from '../artwork.entity';
 
 @Controller('artworks')
 export class ArtworkController {
@@ -17,9 +18,11 @@ export class ArtworkController {
     @Post()
     @HttpCode(201)
     @UseInterceptors(FileInterceptor('image'))
-    async postArtWork(@UploadedFile() file, @Body() body: CreateArtworkDTO) {
-        this.artworkService.createArtWork(file, body);
-
-        return 'success';
+    postArtWork(
+        @UploadedFile() file: Express.Multer.File,
+        @Body() body: CreateArtworkDTO
+    ): Promise<Artwork> {
+        return this.artworkService.createArtWork(file, body);
     }
+
 }
