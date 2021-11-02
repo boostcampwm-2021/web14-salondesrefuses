@@ -2,21 +2,26 @@ import React from 'react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 
-import logo from '@assets/images/tmpLogo.png';
+import logo from '@assets/images/logo.png';
+import AboutUs from './AboutUs';
 
 const Footer = () => {
     return (
         <Container>
             <div>
-                <Image src={logo} width="100" height="60"></Image>
+                <div>
+                    <Image src={logo}></Image>
+                </div>
+                <p>© salon des refuses, 2021</p>
             </div>
+            <AboutUs />
         </Container>
     );
 };
 
 const Container = styled.div`
     display: flex;
-    padding: 5% 0;
+    padding: 0 5%;
     align-items: center;
     height: 300px;
     width: 100vw;
@@ -24,6 +29,21 @@ const Container = styled.div`
     background-color: white;
     position: relative;
     bottom: 0px;
+
+    & > div {
+        width: 50%;
+        height: 70%;
+    }
+
+    & > div:nth-of-type(1) {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        & img {
+            width: 100px;
+        }
+    }
 `;
 
 export default Footer;
