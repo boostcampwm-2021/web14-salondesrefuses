@@ -40,10 +40,10 @@ export class Artwork {
     @Column()
     nftToken: string;
 
-    @Column()
+    @Column({ type: 'text' })
     originalImage: string;
 
-    @Column()
+    @Column({ type: 'text' })
     croppedImage: string;
 
     @Column({ nullable: true })

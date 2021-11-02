@@ -5,15 +5,18 @@ import { ArtworkRepository } from '../artwork.repository';
 import { CreateArtworkDTO } from '../dto/artworkDTOs';
 import { create, IPFSHTTPClient } from 'ipfs-http-client';
 import { Artwork } from '../artwork.entity';
+import { AuctionRepository } from 'src/auction/auction.repository';
 
 @Injectable()
 export class ArtworkService {
-    ipfs: IPFSHTTPClient;
+    private ipfs: IPFSHTTPClient;
 
     constructor(
         private readonly imageService: ImageService,
         @InjectRepository(ArtworkRepository)
         private readonly artworkRepository: ArtworkRepository,
+        @InjectRepository(AuctionRepository)
+        private readonly auctionRepository: AuctionRepository,
     ) {
         this.ipfs = create({ url: process.env.IPFS_URL });
     }
@@ -23,25 +26,34 @@ export class ArtworkService {
         return cid.toString();
     }
 
-    async createArtWork(image: Express.Multer.File, body: CreateArtworkDTO): Promise<Artwork> {
+    async createArtWork(
+        image: Express.Multer.File,
+        createArtworkDTO: CreateArtworkDTO,
+    ): Promise<Artwork> {
         try {
             const croppedImageBuffer = await this.imageService.cropImage(image);
-            const [originalImage, croppedImage] = await Promise.all([
+            const [originalImage, croppedImage, cid] = await Promise.all([
                 this.imageService.fileUpload(image),
                 this.imageService.fileUpload({
                     ...image,
                     buffer: croppedImageBuffer,
                 }),
+                this.createNFTToken(image),
             ]);
 
-            const newArtwork = CreateArtworkDTO.convertArtworkEntity(
-                body,
-                originalImage,
-                croppedImage,
-                'NFT_TOKEN',
-            );
+            const [newArtwork, newAuction] = await Promise.all([
+                this.artworkRepository.createArtwork(
+                    createArtworkDTO,
+                    originalImage,
+                    croppedImage,
+                    cid,
+                ),
+                this.auctionRepository.createAuction(createArtworkDTO),
+            ]);
 
-            return await this.artworkRepository.save(newArtwork);
+            newArtwork.auction = newAuction;
+
+            return this.artworkRepository.save(newArtwork);
         } catch (error) {
             console.log(error);
         }
