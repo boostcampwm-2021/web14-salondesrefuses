@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import { ThemeProvider } from '@emotion/react';
 import DeviceSwitch from '@components/common/DeviceSwitch';
-import Mobile from '@components/Home/Moblile';
+import Mobile from '@components/Home/Mobile';
 import Pc from '@components/Home/Pc';
 import theme from '@styles/theme';
 
