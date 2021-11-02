@@ -9,7 +9,7 @@ import NewArtwork from '@components/Artwork/NewArtwork';
 const NewArtworkPage = () => {
     const [newImage, setNewImage] = useState<File | null>(null);
     return (
-        <Container>
+        <>
             <Head>
                 <title>벽전 - 새 작품 등록</title>
                 <meta name="description" content="새 작품 등록 페이지입니다." />
@@ -21,10 +21,8 @@ const NewArtworkPage = () => {
                     <Uploader setNewImage={setNewImage} />
                 )}
             </Layout>
-        </Container>
+        </>
     );
 };
-
-const Container = styled.div``;
 
 export default NewArtworkPage;

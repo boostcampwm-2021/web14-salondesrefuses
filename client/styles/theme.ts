@@ -4,7 +4,7 @@ const theme = {
         blackLight: '#292841',
         placeholder: '#757575',
         gray1: '#C2C2C2',
-        primary: '#DC6B6B',
+        primary: '#6D8299',
     },
     font: {
         textEnXl: `28px "Montserrat"`,

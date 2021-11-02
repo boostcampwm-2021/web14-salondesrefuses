@@ -28,14 +28,14 @@ body {
 }
 @font-face {
     font-family: 'Noto Sans KR';
-    src: url('/fonts/Montserrat/NotoSansKR-Regular.otf');
+    src: url('/fonts/NotoSansKR/NotoSansKR-Regular.otf');
     font-style: normal;
     font-weight: 400;
     font-display: swap;
 }
 @font-face {
     font-family: 'Noto Sans KR';
-    src: url('/fonts/Montserrat/NotoSansKR-Bold.otf');
+    src: url('/fonts/NotoSansKR/NotoSansKR-Bold.otf');
     font-style: bold;
     font-weight: 700;
     font-display: swap;
