@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
 import { Artwork } from '../artwork/artwork.entity';
 import { User } from '../user/user.entity';
 import { AuctionHistory } from '../auctionHistory/auctionHistory.entity';
@@ -14,10 +14,12 @@ export class Auction {
     @Column({ type: 'datetime' })
     endAt: Date;
 
-    @ManyToOne(type => User, user => user.id)
+    @ManyToOne(type => User, user => user.auctionList)
     seller: User;
 
-    @OneToOne(type => Artwork, artwork => artwork.id)
+    @OneToOne(type => Artwork)
+    @JoinColumn()
+  
     artwork: Artwork;
 
     @OneToMany(type => AuctionHistory, auctionHistory => auctionHistory.auction)
