@@ -41,15 +41,14 @@ export class ArtworkService {
                 this.createNFTToken(image),
             ]);
 
-            const [newArtwork, newAuction] = await Promise.all([
-                this.artworkRepository.createArtwork(
-                    createArtworkDTO,
-                    originalImage,
-                    croppedImage,
-                    cid,
-                ),
-                this.auctionRepository.createAuction(createArtworkDTO),
-            ]);
+            const newArtwork = this.artworkRepository.createArtwork(
+                createArtworkDTO,
+                originalImage,
+                croppedImage,
+                cid,
+            );
+            const newAuction =
+                this.auctionRepository.createAuction(createArtworkDTO);
 
             newArtwork.auction = newAuction;
 
