@@ -22,8 +22,7 @@
 > 우리 프로젝트는 그 이름을 본따 길에서 전시를 하듯 온라인으로 원하는 전시를 구성하도록 돕는 서비스이다. 이에 더해 미술 양식을 따지지 않고 그림 거래부터 NFT 거래까지 도와주는 환경을 만드려 한다.
 
 ## 기술 스택
-![기술스택](https://user-images.githubusercontent.com/53335940/139810431-1a7f89b1-787c-48b4-a7a9-b1f33c9c288f.png)
-
+![기술스택](https://user-images.githubusercontent.com/53335940/139812138-13cbf166-9aa5-4e77-baae-afc40a65ebd5.png)
 
 
 ## 프로젝트 다짐
