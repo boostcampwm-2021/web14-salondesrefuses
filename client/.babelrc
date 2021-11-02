@@ -21,7 +21,8 @@
                     "@const": "./constants",
                     "@hooks": "./hooks",
                     "@public": "./public",
-                    "@styles": "./styles"
+                    "@styles": "./styles",
+                    "@assets": "./assets"
                 },
                 "extensions": [".ts", ".tsx"]
             }
