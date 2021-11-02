@@ -26,6 +26,8 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/swagger": "^5.1.4",
     "@nestjs/typeorm": "^8.0.2",
+    "@types/sharp": "^0.29.2",
+    "aws-sdk": "^2.1018.0",
     "dotenv": "^10.0.0",
     "mysql2": "^2.3.2",
     "reflect-metadata": "^0.1.13",
@@ -33,7 +35,8 @@
     "rxjs": "^7.2.0",
     "swagger-ui-express": "^4.1.6",
     "typeorm": "^0.2.38",
-    "typeorm-naming-strategies": "^2.0.0"
+    "typeorm-naming-strategies": "^2.0.0",
+    "sharp": "^0.29.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
