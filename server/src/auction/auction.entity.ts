@@ -1,4 +1,12 @@
-import {Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Artwork } from '../artwork/artwork.entity';
 import { User } from '../user/user.entity';
 import { AuctionHistory } from '../auctionHistory/auctionHistory.entity';
@@ -8,10 +16,13 @@ export class Auction {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: 'datetime' })
+    @Column({
+        type: 'timestamptz',
+        default: () => 'CURRENT_TIMESTAMP',
+    })
     startAt: Date;
 
-    @Column({ type: 'datetime' })
+    @Column({ type: 'timestamptz' })
     endAt: Date;
 
     @ManyToOne(type => User, user => user.auctionList)
@@ -19,7 +30,6 @@ export class Auction {
 
     @OneToOne(type => Artwork)
     @JoinColumn()
-  
     artwork: Artwork;
 
     @OneToMany(type => AuctionHistory, auctionHistory => auctionHistory.auction)
