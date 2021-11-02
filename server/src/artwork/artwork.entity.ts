@@ -49,22 +49,22 @@ export class Artwork {
     @Column({ nullable: true })
     exhibitionId: number;
 
-    @ManyToOne((type) => User, (user) => user.artworks)
+    @ManyToOne(type => User, user => user.artworks)
     artist: User;
 
-    @ManyToOne((type) => User, (user) => user.biddedArtworks)
+    @ManyToOne(type => User, user => user.biddedArtworks)
     owner: User;
 
     @OneToMany(
-        (type) => InterestArtwork,
-        (interestArtwork) => interestArtwork.artwork,
+        type => InterestArtwork,
+        interestArtwork => interestArtwork.artwork,
     )
     interestedUsers: InterestArtwork[];
 
-    @OneToMany((type) => ArtworkInBid, (artworkInBid) => artworkInBid.artwork)
+    @OneToMany(type => ArtworkInBid, artworkInBid => artworkInBid.artwork)
     usersInBid: User[];
 
-    @OneToOne((type) => Auction, (auction) => auction.artwork, {
+    @OneToOne(type => Auction, auction => auction.artwork, {
         cascade: true,
     })
     @JoinColumn()
