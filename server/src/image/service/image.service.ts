@@ -3,7 +3,6 @@ import * as AWS from 'aws-sdk';
 import * as sharp from 'sharp';
 import { Logger } from '@nestjs/common';
 import { ObjectStorageData } from '../dto/ImageDTOs';
-require('dotenv').config();
 
 @Injectable()
 export class ImageService {
@@ -27,7 +26,7 @@ export class ImageService {
     async fileUpload(image): Promise<ObjectStorageData> {
         const params = {
             Bucket: process.env.AWS_S3_BUCKET_NAME,
-            Key: `${Date.now()}-${image.originalname}`,
+            Key: `objects/${Date.now()}-${image.originalname}`,
             Body: image.buffer,
         };
         return new Promise((resolve, reject) => {
@@ -50,4 +49,5 @@ export class ImageService {
             .resize({ width: newWidth, height: height })
             .toBuffer();
     }
+
 }

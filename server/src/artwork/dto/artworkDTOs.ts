@@ -17,8 +17,7 @@ export class CreateArtworkDTO {
         { Location: croppedImagePath }: ObjectStorageData,
         nftToken: string,
     ): Artwork {
-        const { title, type, description, isRegisterAuction, endAt } =
-            createArtWorkDTO;
+        const { title, type, description, isRegisterAuction, endAt } = createArtWorkDTO;
         const artwork = new Artwork();
 
         artwork.title = title;

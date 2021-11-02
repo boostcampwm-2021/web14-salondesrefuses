@@ -17,18 +17,18 @@ export class Auction {
     id: number;
 
     @Column({
-        type: 'timestamptz',
+        type: 'timestamp',
         default: () => 'CURRENT_TIMESTAMP',
     })
     startAt: Date;
 
-    @Column({ type: 'timestamptz' })
+    @Column({ type: 'timestamp' })
     endAt: Date;
 
     @ManyToOne(type => User, user => user.auctionList)
     seller: User;
 
-    @OneToOne(type => Artwork)
+    @OneToOne(type => Artwork, artwork => artwork.auction)
     @JoinColumn()
     artwork: Artwork;
 

@@ -67,6 +67,5 @@ export class Artwork {
     @OneToOne(type => Auction, auction => auction.artwork, {
         cascade: true,
     })
-    @JoinColumn()
     auction: Auction;
 }
