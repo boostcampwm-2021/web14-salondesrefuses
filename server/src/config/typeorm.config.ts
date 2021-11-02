@@ -1,6 +1,5 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-require('dotenv').config();
 
 export const typeORMConfig: TypeOrmModuleOptions = {
     type: 'mysql',
