@@ -19,6 +19,7 @@ export class Auction {
 
     @OneToOne(type => Artwork)
     @JoinColumn()
+  
     artwork: Artwork;
 
     @OneToMany(type => AuctionHistory, auctionHistory => auctionHistory.auction)

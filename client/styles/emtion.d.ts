@@ -8,6 +8,7 @@ declare module '@emotion/react' {
             gray1: string;
             primary: string;
         };
+      
         font: {
             textEnXl: string;
             textEnLg: string;
