@@ -19,13 +19,13 @@ export default class MyDocument extends Document {
                     />
                     <link
                         rel="preload"
-                        href="/fonts/Montserrat/NotoSansKR-Regular.otf"
+                        href="/fonts/NotoSansKR/NotoSansKR-Regular.otf"
                         as="font"
                         crossOrigin=""
                     />
                     <link
                         rel="preload"
-                        href="/fonts/Montserrat/NotoSansKR-Bold.otf"
+                        href="/fonts/NotoSansKR/NotoSansKR-Bold.otf"
                         as="font"
                         crossOrigin=""
                     />
