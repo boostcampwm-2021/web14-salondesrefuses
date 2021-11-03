@@ -23,7 +23,6 @@
         "ua-parser-js": "^1.0.2"
     },
     "devDependencies": {
-        "@types/qs": "^6.9.7",
         "@types/react": "17.0.33",
         "@types/ua-parser-js": "^0.7.36",
         "babel-plugin-module-resolver": "^4.1.0",
