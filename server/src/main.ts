@@ -14,10 +14,12 @@ async function bootstrap() {
         swaggerUIConfig.openAPIObject,
         swaggerUIConfig.options,
     );
-    SwaggerModule.setup('api', app, document);
+    SwaggerModule.setup('swagger', app, document);
 
     app.setGlobalPrefix('/api');
 
+    process.env.NODE_ENV === 'development' &&
+        app.enableCors({ origin: process.env.FRONT_HOST, credentials: true });
     await app.listen(PORT);
 }
 
