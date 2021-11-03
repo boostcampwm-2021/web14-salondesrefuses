@@ -17,8 +17,6 @@ const pathToObj = {
 type mainPathInterface = '' | 'artwork' | 'exhibition' | 'auction' | 'mypage';
 const Header = () => {
     const mainPath = useRouter().pathname.split('/')[1] as mainPathInterface;
-    console.log(pathToObj[mainPath]);
-
     return (
         <HeaderContainer>
             <LeftContainer>
