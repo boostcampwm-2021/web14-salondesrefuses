@@ -7,14 +7,14 @@ import { swaggerUIConfig } from './config/swagger.config';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
-    const PORT = process.env.PORT || 3000;
+    const PORT = process.env.PORT || 3001;
     const document = SwaggerModule.createDocument(
         app,
         swaggerUIConfig.openAPIObject,
         swaggerUIConfig.options,
     );
 
-    app.enableCors({ origin: '*', credentials: true });
+    app.enableCors({ origin: 'http://localhost:3000', credentials: true });
     app.setGlobalPrefix('/api');
     SwaggerModule.setup('api', app, document);
 
