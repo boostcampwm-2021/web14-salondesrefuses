@@ -2,8 +2,10 @@ import React from 'react';
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import sideImage from '@assets/images/login-side-test.png';
+import logo from '@assets/images/logo.png';
 import Login from '@components/Login';
 
 const LoginPage = () => {
@@ -14,6 +16,11 @@ const LoginPage = () => {
                 <meta name="description" content="벽전 로그인 페이지" />
             </Head>
             <Body>
+                <Logo>
+                    <Link href="/">
+                        <Image src={logo} />
+                    </Link>
+                </Logo>
                 <Image src={sideImage} alt="side image" />
                 <Login></Login>
             </Body>
@@ -30,7 +37,20 @@ const Container = styled.div`
     background-color: ${(props) => props.theme.color.background};
 `;
 
+const Logo = styled.div`
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 500;
+
+    & img {
+        height: 40px;
+        border-radius: 0;
+    }
+`;
+
 const Body = styled.div`
+    position: relative;
     height: 80vh;
     width: 70vw;
     max-width: 1000px;
