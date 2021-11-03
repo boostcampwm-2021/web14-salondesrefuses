@@ -3,15 +3,19 @@ import { UserModule } from '../user/user.module';
 import { AuthController } from './controller/auth.controller';
 import { AuthService } from './service/auth.service';
 import { JwtModule } from '@nestjs/jwt';
+import { CustomAuthGuard } from './guard/CustomAuthGuard';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserRepository } from '../user/user.repository';
 
 @Module({
     imports: [
         UserModule,
+        TypeOrmModule.forFeature([ UserRepository ]),
         JwtModule.register({
             secret: process.env.JWT_SECRET_KEY,
         }),
     ],
     controllers: [ AuthController ],
-    providers: [ AuthService ],
+    providers: [ AuthService, CustomAuthGuard ],
 })
 export class AuthModule {}
