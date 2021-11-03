@@ -12,6 +12,29 @@ export class AuthService {
         private readonly jwtService: JwtService
     ) {}
 
+    async signInWithGoogle(code: string): Promise<{accessToken: string, refreshToken: string}> {
+        const { data } = await axios({
+            method: 'POST',
+            url: process.env.GOOGLE_ACCESS_TOKEN_URL,
+            params: {
+                grant_type: 'authorization_code',//특정 스트링
+                client_id:process.env.GOOGLE_CLIENT_ID,
+                client_secret:process.env.GOOGLE_CLIENT_SECRET,
+                redirectUri:'http://localhost:3000/login/callback',
+                code:code,
+            }
+        });
+        const { access_token } = data;
+
+        const userInfo = await axios.get(process.env.GOOGLE_USER_URL, {
+            headers: { Authorization: `Bearer ${access_token}`}
+        });
+        const { email } = userInfo.data;
+
+        const user = await this.userService.checkRegisteredUser(email, 'google');
+        return this.generateToken(user);
+    }
+
     async signInWithKakao(code: string): Promise<{accessToken: string, refreshToken: string}> {
         const { data } = await axios({
             method: 'POST',
