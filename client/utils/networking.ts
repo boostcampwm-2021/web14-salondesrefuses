@@ -6,15 +6,8 @@ export const getAllArtworks = (userId: number) => {
     return axios.get(`${API_BASE_URL}/users/${userId}/artworks`);
 };
 
-export const signInWithGoogle = (code: string) => {
-    return axios.post(`${API_BASE_URL}/auth/google`, JSON.stringify({ code }), {
-        headers: { 'Content-Type': 'Application/JSON' },
-        withCredentials: true
-    });
-};
-
-export const signInWithKakao = (code: string) => {
-    return axios.post(`${API_BASE_URL}/auth/kakao`, JSON.stringify({ code }), {
+export const signIn = (code: string, strategy: string) => {
+    return axios.post(`http://localhost:3001/api/auth/signIn`, JSON.stringify({ code, strategy }), {
         headers: { 'Content-Type': 'Application/JSON' },
         withCredentials: true
     });

@@ -2,25 +2,23 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { ClipLoader } from 'react-spinners';
-import { signInWithGoogle, signInWithKakao } from '../../utils/networking';
+import { signIn } from '../../utils/networking';
 
 const LoginCallbackPage = () => {
     const router = useRouter();
 
     useEffect(() => {
-        let signIn = null;
+        let user = null;
         const code: string | null = new URL(window.location.href)
             .searchParams
             .get('code');
 
         (async () => {
-            if(window.location.href.includes('google')) {
-                signIn = await signInWithGoogle(code!);
-            } else {
-                signIn = await signInWithKakao(code!);
-            }
+            window.location.href.includes('google') ?
+                user = await signIn(code!, 'google')
+                : user = await signIn(code!, 'kakao');
 
-            signIn ? router.push('/') : router.push('/login');
+            user ? router.push('/') : router.push('/login');
         })();
 
     }, []);
