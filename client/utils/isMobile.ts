@@ -1,6 +1,6 @@
 import { UAParser } from 'ua-parser-js';
 
-enum MoibleDeviceType {
+enum MoilbeDeviceType {
     Mobile = 'mobile',
     Tablet = 'tablet',
 }
@@ -8,6 +8,6 @@ enum MoibleDeviceType {
 const parser = new UAParser();
 
 export const isMobile = () =>
-    Object.values(MoibleDeviceType).includes(
-        parser.getDevice().type as MoibleDeviceType,
+    Object.values(MoilbeDeviceType).includes(
+        parser.getDevice().type as MoilbeDeviceType,
     );
