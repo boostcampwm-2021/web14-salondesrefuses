@@ -39,7 +39,7 @@ const Container = styled.div`
     width: 80%;
     height: 100%;
     display: flex;
-    flex-direction: columns;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 `;
@@ -49,6 +49,7 @@ const FileInput = styled.div`
     justify-content: center;
     align-items: center;
     width: 100%;
+    max-width: 1000px;
     height: 100px;
     border: 1px dashed black;
     margin-bottom: 20px;
