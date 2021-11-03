@@ -11,5 +11,6 @@ import { ArtworkRepository } from '../artwork/artwork.repository';
     ],
     controllers: [ UserController ],
     providers: [ UserService ],
+    exports: [ UserService ],
 })
 export class UserModule {}
