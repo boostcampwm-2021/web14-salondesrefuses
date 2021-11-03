@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -7,8 +7,35 @@ import Link from 'next/link';
 import sideImage from '@assets/images/login-side-test.png';
 import logo from '@assets/images/logo.png';
 import Login from '@components/Login';
+import LoginResultModal from '@components/Login/LoginResultModal';
+
+type ModalState =
+    | { view: false; message: '' }
+    | { view: true; message: '로그인에 성공했습니다.' }
+    | { view: true; message: '로그인에 실패했습니다.' };
+
+const modalReducer = (
+    state: ModalState,
+    action: { type: string },
+): ModalState => {
+    switch (action.type) {
+        case 'SUCCESS':
+            return { view: true, message: '로그인에 성공했습니다.' };
+        case 'FAIL':
+            return { view: true, message: '로그인에 실패했습니다.' };
+        default:
+            return { view: false, message: '' };
+    }
+};
 
 const LoginPage = () => {
+    const [modal, dispatch] = useReducer(modalReducer, {
+        view: false,
+        message: '',
+    });
+
+    const kakaoResponseFailed = (err: Error) => {};
+
     return (
         <Container>
             <Head>
@@ -22,8 +49,14 @@ const LoginPage = () => {
                     </Link>
                 </Logo>
                 <Image src={sideImage} alt="side image" />
-                <Login></Login>
+                <Login />
             </Body>
+            {modal.view && (
+                <LoginResultModal
+                    message={'로그인에 성공했습니다.'}
+                    close={dispatch}
+                />
+            )}
         </Container>
     );
 };
