@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { UserService } from '../../user/service/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../../user/user.entity';
-import * as qs from 'qs';
 import axios from 'axios';
 
 @Injectable()
