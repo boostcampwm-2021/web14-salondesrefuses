@@ -21,15 +21,15 @@ export class CustomAuthGuard extends AuthGuard('jwt') {
 
         const { accessToken, refreshToken } = request.cookies;
 
-        const verifyAccessToken = await this.verifyToken(accessToken);
-        if(verifyAccessToken) return true;
+        const verifiedAccessToken = await this.verifyToken(accessToken);
+        if(verifiedAccessToken) return true;
 
-        const verifyRefreshToken = await this.verifyToken(refreshToken);
-        if(!verifyRefreshToken) {
+        const verifiedRefreshToken = await this.verifyToken(refreshToken);
+        if(!verifiedRefreshToken) {
             throw new UnauthorizedException('Refresh token is not valid');
         }
 
-        const { userId } = verifyRefreshToken;
+        const { userId } = verifiedRefreshToken;
         const newAccessToken = this.jwtService.sign({ userId }, { expiresIn: 60 * 60 });
         response.cookie('accessToken', newAccessToken, { maxAge: 1000 * 60 * 60 });
 
