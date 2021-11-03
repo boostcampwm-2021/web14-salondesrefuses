@@ -19,23 +19,22 @@ export default class MyDocument extends Document {
                     />
                     <link
                         rel="preload"
-                        href="/fonts/Montserrat/NotoSansKR-Regular.otf"
+                        href="/fonts/NotoSansKR/NotoSansKR-Regular.otf"
                         as="font"
                         crossOrigin=""
                     />
                     <link
                         rel="preload"
-                        href="/fonts/Montserrat/NotoSansKR-Bold.otf"
+                        href="/fonts/NotoSansKR/NotoSansKR-Bold.otf"
                         as="font"
                         crossOrigin=""
                     />
-                    <title>벽전 - Salon des Refusés</title>
                     <meta charSet="utf-8"></meta>
-                    <body>
-                        <Main />
-                        <NextScript />
-                    </body>
                 </Head>
+                <body>
+                    <Main />
+                    <NextScript />
+                </body>
             </Html>
         );
     }

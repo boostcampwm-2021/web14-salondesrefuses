@@ -5,6 +5,8 @@ const theme = {
         placeholder: '#757575',
         gray1: '#C2C2C2',
         primary: '#6D8299',
+        background: '#F9F9F7',
+        white: '#ffffff',
     },
     font: {
         textEnXl: `28px "Montserrat"`,

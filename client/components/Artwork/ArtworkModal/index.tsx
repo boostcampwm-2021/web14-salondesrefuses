@@ -23,8 +23,8 @@ const ArtworkModal = ({
     const onClickConfirm = () => {
         setData({
             description: descriptionInputRef.current!.value,
-            year: yearInputRef.current!.value,
-            bidEnd: bidEndInputRef.current!.value,
+            year: yearInputRef.current?.value || '',
+            bidEnd: bidEndInputRef.current?.value || '',
         });
         setPosition('-53vh');
     };
