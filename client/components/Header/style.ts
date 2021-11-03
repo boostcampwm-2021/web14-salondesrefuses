@@ -2,12 +2,17 @@ import styled from '@emotion/styled';
 import { SpaceBetween, Center } from '@styles/common';
 
 export const HeaderContainer = styled.header`
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 90px;
     padding: 0 100px;
     ${SpaceBetween}
     border-bottom: 1px solid ${(props) => props.theme.color.gray1};
     font: ${(props) => props.theme.font.textEnMd};
+    background: rgba(255, 255, 255, 0.70);
+    backdrop-filter: blur(4px);
 `;
 
 export const LeftContainer = styled.div`
@@ -24,6 +29,7 @@ export const LeftContainer = styled.div`
     }
 `;
 export const RightContainer = styled.div`
+    z-index: 20;
     flex-grow: 1;
     ${Center}
 `;
@@ -57,4 +63,3 @@ export const SearchBarContainer = styled.div`
         font: ${(props) => props.theme.font.textEnSm};
     }
 `;
-
