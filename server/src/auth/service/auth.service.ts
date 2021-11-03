@@ -17,7 +17,7 @@ export class AuthService {
             method: 'POST',
             url: process.env.GOOGLE_ACCESS_TOKEN_URL,
             params: {
-                grant_type: 'authorization_code',//특정 스트링
+                grant_type: 'authorization_code',
                 client_id:process.env.GOOGLE_CLIENT_ID,
                 client_secret:process.env.GOOGLE_CLIENT_SECRET,
                 redirectUri:'http://localhost:3000/login/callback',
