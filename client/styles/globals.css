@@ -59,6 +59,9 @@ a {
     color: inherit;
     text-decoration: none;
 }
+p {
+    margin: 0;
+}
 
 a:active,
 a:hover {
