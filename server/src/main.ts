@@ -18,6 +18,8 @@ async function bootstrap() {
 
     app.setGlobalPrefix('/api');
 
+    process.env.NODE_ENV === 'development' &&
+        app.enableCors({ origin: process.env.FRONT_HOST, credentials: true });
     await app.listen(PORT);
 }
 
