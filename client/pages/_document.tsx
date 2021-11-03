@@ -29,13 +29,12 @@ export default class MyDocument extends Document {
                         as="font"
                         crossOrigin=""
                     />
-                    <title>벽전 - Salon des Refusés</title>
                     <meta charSet="utf-8"></meta>
-                    <body>
-                        <Main />
-                        <NextScript />
-                    </body>
                 </Head>
+                <body>
+                    <Main />
+                    <NextScript />
+                </body>
             </Html>
         );
     }
