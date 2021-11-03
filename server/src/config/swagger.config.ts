@@ -14,6 +14,7 @@ export const swaggerUIConfig: SwaggerUIConfig = {
         .setTitle('벽전 Swagger')
         .setDescription('벽전 API 명세서')
         .setVersion('1.0')
+        .setBasePath('/api')
         .build(),
 
     options: {
