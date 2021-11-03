@@ -6,12 +6,12 @@ export const HeaderContainer = styled.header`
     top: 0;
     left: 0;
     width: 100%;
-    height: 90px;
+    height: 70px;
     padding: 0 100px;
     ${SpaceBetween}
     border-bottom: 1px solid ${(props) => props.theme.color.gray1};
-    font: ${(props) => props.theme.font.textEnMd};
-    background: rgba(255, 255, 255, 0.70);
+    font: ${(props) => props.theme.font.textEnBase};
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(4px);
 `;
 
@@ -19,7 +19,7 @@ export const LeftContainer = styled.div`
     ${Center}
     flex-grow: 1;
     img {
-        height: 38px;
+        height: 30px;
         width: auto;
         cursor: pointer;
     }
@@ -39,14 +39,14 @@ export const ImageContainer = styled.div`
 `;
 
 export const Hr = styled.div`
-    height: 50px;
+    height: 40px;
     width: 1px;
     border-right: 1px solid ${(props) => props.theme.color.blackLight};
 `;
 export const NavButton = styled.div`
     margin: 0 20px;
     img {
-        width: 50px;
+        width: 40px;
         height: auto;
     }
     cursor: pointer;
