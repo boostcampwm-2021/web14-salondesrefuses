@@ -18,10 +18,12 @@
         "react-dom": "17.0.2",
         "react-google-login": "^5.2.2",
         "react-kakao-login": "^2.1.0",
+        "react-spinners": "^0.11.0",
         "recoil": "^0.4.1",
         "ua-parser-js": "^1.0.2"
     },
     "devDependencies": {
+        "@types/qs": "^6.9.7",
         "@types/react": "17.0.33",
         "@types/ua-parser-js": "^0.7.36",
         "babel-plugin-module-resolver": "^4.1.0",
