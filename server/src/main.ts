@@ -14,7 +14,7 @@ async function bootstrap() {
         swaggerUIConfig.openAPIObject,
         swaggerUIConfig.options,
     );
-    SwaggerModule.setup('api', app, document);
+    SwaggerModule.setup('swagger', app, document);
 
     app.setGlobalPrefix('/api');
 
