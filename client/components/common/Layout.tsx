@@ -22,9 +22,11 @@ const Layout = ({ children, vertical }: LayoutProps) => {
 
 const Body = styled.div<{ vertical?: boolean }>`
     ${Center}
+    flex-direction: column;
     padding-top: 100px;
     ${(props) =>
         props.vertical ? 'flex-direction: column;' : 'flex-direction: row;'}
+    min-height: calc(100vh - 300px);
 `;
 
 export default Layout;
