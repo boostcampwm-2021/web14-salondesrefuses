@@ -24,12 +24,13 @@ const Container = styled.div`
     padding: 0 5%;
     align-items: center;
     height: 300px;
-    width: 100vw;
+    width: 100%;
     border-top: 2px solid black;
     background-color: white;
     position: relative;
     bottom: 0;
     font: ${(props) => props.theme.font.textEnBase};
+
     & > div {
         width: 50%;
         height: 70%;
