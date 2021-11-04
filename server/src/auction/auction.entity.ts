@@ -22,7 +22,10 @@ export class Auction {
     })
     startAt: Date;
 
-    @Column({ type: 'timestamp' })
+    @Column({
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP',
+    })
     endAt: Date;
 
     @ManyToOne(type => User, user => user.auctionList)
