@@ -68,6 +68,10 @@ const Img = styled.img<{ expand: boolean }>`
 const Expanded = styled.div`
     width: 90%;
     margin: 10px 0;
+
+    & > span {
+        font: ${(props) => props.theme.font.textSm};
+    }
 `;
 
 export default AboutArtist;

@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import AboutArtist from './AboutArtist';
 import BidTable from '../BidTable';
 import Trend from '../Trend';
+import ArtworkDetail from './ArtworkDetail';
 
 const ItemDetail = () => {
     return (
@@ -16,12 +17,14 @@ const ItemDetail = () => {
             <AboutArtist />
             <BidTable />
             <Trend />
+            <ArtworkDetail />
         </Container>
     );
 };
 
 const Container = styled.section`
     width: 100%;
+    overflow: scroll;
     & > div {
         display: flex;
         width: 80%;

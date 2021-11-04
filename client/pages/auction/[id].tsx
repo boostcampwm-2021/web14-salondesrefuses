@@ -75,6 +75,10 @@ const Grid = styled.div`
     grid-template-columns: 1fr 1fr;
     gap: 40px;
 
+    & > section {
+        height: 80%;
+    }
+
     & section {
         width: 90%;
     }
