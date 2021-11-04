@@ -2,11 +2,9 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 
 import { Artwork } from 'interfaces';
 import Layout from '@components/common/Layout';
-import testImage from '@assets/images/test-artwork.png';
 import ItemDetail from '@components/Auction/ItemDetail';
 
 const DUMMY_DATA: Artwork = {
@@ -42,7 +40,7 @@ const AuctionDetailPage = ({ artwork = DUMMY_DATA }: { artwork: Artwork }) => {
                         <section>
                             <img src={DUMMY_DATA.imagePath} />
                         </section>
-                        <ItemDetail></ItemDetail>
+                        <ItemDetail />
                     </Grid>
                 </Container>
             </Layout>
@@ -74,12 +72,11 @@ const Grid = styled.div`
     z-index: 300;
     display: grid;
     align-items: center;
-    // justify-items: center;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
 
     & section {
-        width: 50%;
+        width: 90%;
     }
 
     & > section:nth-of-type(1) {
