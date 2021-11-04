@@ -7,6 +7,7 @@ const theme = {
         primary: '#6D8299',
         background: '#F9F9F7',
         white: '#ffffff',
+        title: '#646464',
     },
     font: {
         textEnXl: `28px "Montserrat"`,

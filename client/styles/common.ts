@@ -12,12 +12,12 @@ export const SpaceBetween = `
 `;
 export const SpaceAround = `
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
 `;
 export const SpaceEvenly = `
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
 `;
 export const Button = styled.button`
