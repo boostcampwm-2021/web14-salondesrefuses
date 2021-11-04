@@ -9,20 +9,19 @@ const LoginCallbackPage = () => {
 
     useEffect(() => {
         let user = null;
-        const code: string | null = new URL(window.location.href)
-            .searchParams
-            .get('code');
+        const code: string | null = new URL(
+            window.location.href,
+        ).searchParams.get('code');
 
         (async () => {
-            if(!code) return;
+            if (!code) return;
 
-            router.asPath.includes('google') ?
-                user = await signIn(code, 'google')
-                : user = await signIn(code, 'kakao');
+            router.asPath.includes('google')
+                ? (user = await signIn(code, 'google'))
+                : (user = await signIn(code, 'kakao'));
 
-            user ? router.push('/') : router.push('/login');
+            user.data ? router.push('/') : router.push('/login');
         })();
-
     }, []);
 
     return (

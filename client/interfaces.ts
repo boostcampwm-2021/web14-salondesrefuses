@@ -1,1 +1,4 @@
-export interface Artworks {}
+export interface Artwork {
+    id: number;
+    imagePath: string;
+}
