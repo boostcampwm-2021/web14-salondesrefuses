@@ -14,9 +14,11 @@ const LoginCallbackPage = () => {
             .get('code');
 
         (async () => {
-            window.location.href.includes('google') ?
-                user = await signIn(code!, 'google')
-                : user = await signIn(code!, 'kakao');
+            if(!code) return;
+
+            router.asPath.includes('google') ?
+                user = await signIn(code, 'google')
+                : user = await signIn(code, 'kakao');
 
             user ? router.push('/') : router.push('/login');
         })();
