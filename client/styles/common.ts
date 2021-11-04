@@ -29,4 +29,8 @@ export const Button = styled.button`
     font-size: 20px;
     font-weight: 200;
     color: white;
+
+    &:hover {
+        border-bottom: 2px solid ${(props) => props.theme.color.primary};
+    }
 `;
