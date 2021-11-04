@@ -41,7 +41,7 @@ export class AuthService {
             params: {
                 grant_type: 'authorization_code',
                 client_id: process.env.KAKAO_CLIENT_ID,
-                client_secret: process.env.KAKAO_SECRET,
+                client_secret: process.env.KAKAO_CLIENT_SECRET,
                 code,
             }
         })
