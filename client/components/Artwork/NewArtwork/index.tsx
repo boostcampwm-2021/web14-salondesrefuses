@@ -12,8 +12,14 @@ interface NewArtworkProp {
 }
 
 const NewArtwork = ({ image }: NewArtworkProp) => {
-    const { onClickDone, titleInputRef, typeInputRef, setModalInputData } =
-        useInputArtwork(image);
+    const {
+        onClickDone,
+        onChangeTitleInput,
+        onChangeTypeInput,
+        titleInput,
+        typeInput,
+        setModalInputData,
+    } = useInputArtwork(image);
     const { backgroundImageRef, imageRef } = usePreviewImage(image);
     const { modalPositionBottom, setModalPositionBottom } =
         useControlModalPosition();
@@ -34,7 +40,8 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
                         <input
                             type="text"
                             placeholder="Title of artwork..."
-                            ref={titleInputRef}
+                            value={titleInput}
+                            onChange={onChangeTitleInput}
                         />
                     </Input>
                     <Input>
@@ -42,7 +49,8 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
                         <input
                             type="text"
                             placeholder="Photography ..."
-                            ref={typeInputRef}
+                            value={typeInput}
+                            onChange={onChangeTypeInput}
                         />
                     </Input>
                 </Form>

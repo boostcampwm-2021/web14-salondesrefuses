@@ -2,10 +2,10 @@ import React, { Suspense } from 'react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 
-const ImageTile = ({ image }: { image: StaticImageData }) => {
+const ImageTile = ({ src }: { src: string }) => {
     return (
         <Container>
-            <Image src={image} />
+            <Image src={src} />
         </Container>
     );
 };

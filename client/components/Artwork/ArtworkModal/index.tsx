@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import ArtworkFilter from './ArtworkFilter';
 import { Modal, Form, LightForm, ConfirmButton } from './style';
 
+const date = new Date();
+
 interface ArtworkModalProps {
     setData: React.Dispatch<{ [key: string]: string }>;
     position: string;
@@ -16,15 +18,27 @@ const ArtworkModal = ({
     const [checked, setChecked] = useState('artwork');
     const modalRef = useRef<HTMLDivElement | null>(null);
 
-    const descriptionInputRef = useRef<HTMLTextAreaElement | null>(null);
-    const yearInputRef = useRef<HTMLInputElement | null>(null);
-    const bidEndInputRef = useRef<HTMLInputElement | null>(null);
+    const [descriptionInput, setDescriptionInput] = useState('');
+    const [yearInput, setYearInput] = useState(date.getFullYear().toString());
+    const [bidEndInput, setBidEndIput] = useState('');
+
+    const onChangeDescription = (e: React.FormEvent) => {
+        setDescriptionInput((e.target as HTMLTextAreaElement).value);
+    };
+
+    const onChangeYear = (e: React.FormEvent) => {
+        setYearInput((e.target as HTMLInputElement).value);
+    };
+
+    const onChangeBidEnd = (e: React.FormEvent) => {
+        setBidEndIput((e.target as HTMLInputElement).value);
+    };
 
     const onClickConfirm = () => {
         setData({
-            description: descriptionInputRef.current!.value,
-            year: yearInputRef.current?.value || '',
-            bidEnd: bidEndInputRef.current?.value || '',
+            description: descriptionInput,
+            year: yearInput,
+            bidEnd: bidEndInput,
         });
         setPosition('-53vh');
     };
@@ -34,17 +48,29 @@ const ArtworkModal = ({
             <ArtworkFilter checked={checked} setChecked={setChecked} />
             <Form>
                 <span>Description</span>
-                <textarea cols={10} ref={descriptionInputRef} />
+                <textarea
+                    cols={10}
+                    value={descriptionInput}
+                    onChange={onChangeDescription}
+                />
             </Form>
             {checked === 'auction' && (
                 <>
                     <LightForm>
                         <span>Year</span>
-                        <input type="text" ref={yearInputRef} />
+                        <input
+                            type="text"
+                            value={yearInput}
+                            onChange={onChangeYear}
+                        />
                     </LightForm>
                     <LightForm>
                         <span>Bid End</span>
-                        <input type="text" ref={bidEndInputRef} />
+                        <input
+                            type="text"
+                            value={bidEndInput}
+                            onChange={onChangeBidEnd}
+                        />
                     </LightForm>
                 </>
             )}

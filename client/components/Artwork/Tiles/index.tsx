@@ -3,17 +3,22 @@ import styled from '@emotion/styled';
 
 import { getAllArtworks } from 'utils/networking';
 import ImageTile from './ImageTile';
+import { Artwork } from 'interfaces';
 
 const Tiles = () => {
-    const [artworks, setArtwors] = useState([]);
+    const [artworks, setArtworks] = useState<Artwork[]>([]);
 
     useEffect(() => {
-        // getAllArtworks(1).then((result) => console.log(result));
+        getAllArtworks(1).then((result) => setArtworks(result.data));
     }, []);
 
     return (
         <Container>
-            <Grid></Grid>
+            <Grid>
+                {artworks.map((item, idx: number) => (
+                    <ImageTile key={idx} src={item.imagePath} />
+                ))}
+            </Grid>
         </Container>
     );
 };
