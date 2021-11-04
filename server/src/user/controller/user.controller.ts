@@ -8,10 +8,10 @@ import {
 import { UserService } from '../service/user.service';
 import { Artwork } from '../../artwork/artwork.entity';
 import { CustomAuthGuard } from '../../auth/guard/CustomAuthGuard';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
     getAllUsersArtworksApiOperation,
-    getAllUsersArtworksApiQuery,
+    getAllUsersArtworksApiParam,
 } from '../swagger';
 
 @UseGuards(CustomAuthGuard)
@@ -22,7 +22,7 @@ export class UserController {
 
     @Get('/:userId/artworks')
     @ApiOperation(getAllUsersArtworksApiOperation)
-    @ApiQuery(getAllUsersArtworksApiQuery)
+    @ApiParam(getAllUsersArtworksApiParam)
     @ApiResponse({ type: Artwork })
     getAllUsersArtworks(
         @Param('userId', ParseIntPipe) userId: number,

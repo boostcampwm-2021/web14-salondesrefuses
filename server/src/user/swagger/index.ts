@@ -3,4 +3,8 @@ export const getAllUsersArtworksApiOperation = {
     description: '작품 데이터를 DB에 저장한다.',
 };
 
-export const getAllUsersArtworksApiQuery = { name: 'userId', type: Number };
+export const getAllUsersArtworksApiParam = {
+    name: 'userId',
+    type: Number,
+    require: true,
+};
