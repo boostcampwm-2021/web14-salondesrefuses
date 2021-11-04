@@ -12,7 +12,8 @@ export const HeaderContainer = styled.header`
     border-bottom: 1px solid ${(props) => props.theme.color.gray1};
     font: ${(props) => props.theme.font.textEnBase};
     background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(20px);
+    z-index: 900;
 `;
 
 export const LeftContainer = styled.div`
