@@ -70,6 +70,7 @@ const ArtworkModal = ({
                             type="text"
                             value={bidEndInput}
                             onChange={onChangeBidEnd}
+                            placeholder="yyyy-mm-dd"
                         />
                     </LightForm>
                 </>
