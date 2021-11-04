@@ -20,7 +20,7 @@ const LoginCallbackPage = () => {
                 user = await signIn(code, 'google')
                 : user = await signIn(code, 'kakao');
 
-            user ? router.push('/') : router.push('/login');
+            user.data ? router.push('/') : router.push('/login');
         })();
 
     }, []);
