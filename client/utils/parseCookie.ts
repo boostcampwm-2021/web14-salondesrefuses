@@ -6,7 +6,6 @@ const parseCookie = () => {
     });
 
     return (key: string): string | undefined => {
-        console.log(cookieObject);
         return cookieObject[key];
     };
 };

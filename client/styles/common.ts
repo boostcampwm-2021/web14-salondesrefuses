@@ -12,12 +12,12 @@ export const SpaceBetween = `
 `;
 export const SpaceAround = `
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
 `;
 export const SpaceEvenly = `
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
 `;
 export const Button = styled.button`
@@ -29,4 +29,8 @@ export const Button = styled.button`
     font-size: 20px;
     font-weight: 200;
     color: white;
+
+    &:hover {
+        border-bottom: 2px solid ${(props) => props.theme.color.primary};
+    }
 `;

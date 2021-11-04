@@ -39,9 +39,20 @@ export const BlurFull = styled.div`
     border-radius: 20px;
     padding: 20px;
     background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(30px);
-    backdrop-filter: blur(4px);
     color: ${(props) => props.theme.color.white};
+    animation: growblur 1s ease-out;
+    backdrop-filter: blur(20px);
+    box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.3);
+
+    @keyframes growblur {
+        0% {
+            backdrop-filter: blur(4px);
+        }
+        100% {
+            backdrop-filter: blur(20px);
+            box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.3);
+        }
+    }
 `;
 
 interface textAlign {

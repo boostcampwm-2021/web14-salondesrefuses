@@ -7,7 +7,7 @@ export const Modal = styled.div<{ bottom: string }>`
     background-color: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(100px);
     border-radius: 30px;
-    padding: 50px;
+    padding: 40px;
     bottom: ${(props) => props.bottom};
     z-index: 500;
 
@@ -59,7 +59,7 @@ export const LightForm = styled(Form)`
 
     & input {
         border-radius: 8px;
-        height: 30px;
+        height: 35px;
         width: 80%;
         background: rgba(0, 0, 0, 0.24);
         border: none;
