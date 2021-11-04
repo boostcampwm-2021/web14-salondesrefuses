@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, ParseIntPipe, Query } from '@nestjs/common';
 import { ExhibitionService } from '../service/exhibition.service';
 import { Exhibition } from '../exhibition.entity';
 import {
@@ -8,9 +8,8 @@ import {
     ApiTags,
 } from '@nestjs/swagger';
 
-@Controller('/exhibitions')
 @ApiTags('전시회 컨트롤러')
-
+@Controller('/exhibitions')
 export class ExhibitionController {
     constructor(private exhibitionService: ExhibitionService) {}
 
@@ -28,4 +27,21 @@ export class ExhibitionController {
     getRandomExhibitions(): Promise<Exhibition[]> {
         return this.exhibitionService.getRandomExhibitions();
     }
+
+    @Get('/newest')
+    getNewestExhibition(@Query('page', ParseIntPipe) page: number): Promise<Exhibition[]> {
+        return this.exhibitionService.getNewestExhibitions(page);
+    }
+
+    @Get('/deadline')
+    getExhibitionsSortedByDeadline(@Query('page', ParseIntPipe) page: number): Promise<Exhibition[]> {
+        return this.exhibitionService.getExhibitionsSortedByDeadline(page);
+    }
+
+    @Get('/popular')
+    getExhibitionsSortedByInterest(@Query('page', ParseIntPipe) page: number): Promise<Exhibition[]> {
+        return this.exhibitionService.getExhibitionsSortedByInterest(page);
+    }
+
+
 }

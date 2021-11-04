@@ -14,4 +14,16 @@ export class ExhibitionService {
         return this.exhibitionRepository.getRandomExhibitions();
     }
 
+    getNewestExhibitions(page: number): Promise<Exhibition[]> {
+        return this.exhibitionRepository.getNewestExhibitions(page);
+    }
+
+    getExhibitionsSortedByDeadline(page: number): Promise<Exhibition[]> {
+        return this.exhibitionRepository.getExhibitionsSortedByDeadline(page);
+    }
+
+    async getExhibitionsSortedByInterest(page: number): Promise<Exhibition[]> {
+        return this.exhibitionRepository.getExhibitionsSortedByInterest(page);
+    }
+
 }
