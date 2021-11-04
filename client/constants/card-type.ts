@@ -7,6 +7,7 @@ export interface ExhibitionCardProps {
     theme: string;
     artCount: number;
     isSale: boolean;
+    id: number;
 }
 export interface AuctionCardProps {
     title: string;
@@ -14,6 +15,7 @@ export interface AuctionCardProps {
     artist: string;
     imgSrc: string;
     price?: number;
+    id: number;
 }
 export const CardSize = {
     md: 300,

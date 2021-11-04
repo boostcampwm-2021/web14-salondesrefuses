@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Link from 'next/link';
+
 import {
     ExhibitionCardProps,
     AuctionCardProps,
@@ -79,24 +81,32 @@ const Card = ({ width, content }: Props) => {
     const [isHovered, setIsHovered] = useState(false);
 
     return (
-        <CardContainer
-            imgSrc={content.imgSrc}
-            width={CardSize[width]}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+        <Link
+            href={
+                isExhibition
+                    ? `/exhibition/${content.id}`
+                    : `/auction/${content.id}`
+            }
         >
-            {isExhibition ? (
-                <ExhibitionForm
-                    content={content as ExhibitionCardProps}
-                    isHovered={isHovered}
-                />
-            ) : (
-                <AuctionForm
-                    content={content as AuctionCardProps}
-                    isHovered={isHovered}
-                />
-            )}
-        </CardContainer>
+            <CardContainer
+                imgSrc={content.imgSrc}
+                width={CardSize[width]}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+            >
+                {isExhibition ? (
+                    <ExhibitionForm
+                        content={content as ExhibitionCardProps}
+                        isHovered={isHovered}
+                    />
+                ) : (
+                    <AuctionForm
+                        content={content as AuctionCardProps}
+                        isHovered={isHovered}
+                    />
+                )}
+            </CardContainer>
+        </Link>
     );
 };
 
