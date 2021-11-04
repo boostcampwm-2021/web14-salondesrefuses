@@ -22,7 +22,8 @@
                     "@hooks": "./hooks",
                     "@public": "./public",
                     "@styles": "./styles",
-                    "@assets": "./assets"
+                    "@assets": "./assets",
+                    "@utils": "./utils"
                 },
                 "extensions": [".ts", ".tsx"]
             }
