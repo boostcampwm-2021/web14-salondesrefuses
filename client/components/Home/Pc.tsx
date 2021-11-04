@@ -2,7 +2,9 @@ import React from 'react';
 import Head from 'next/head';
 import Layout from '@components/common/Layout';
 
-const Pc = () => {
+const Pc = ({ data }: any) => {
+    console.log(data);
+
     return (
         <>
             <Head>
