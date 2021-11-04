@@ -135,7 +135,7 @@ interface FilterProps {
 const TopContainer = styled.div`
     display: flex;
     width: 1180px;
-    margin-bottom: 45px;
+    margin: 45px 0;
 `;
 
 const FilterWrapper = styled.div`

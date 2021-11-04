@@ -40,7 +40,7 @@ const ArtworkModal = ({
             year: yearInput,
             bidEnd: bidEndInput,
         });
-        setPosition('-53vh');
+        setPosition('-59vh');
     };
 
     return (
@@ -71,6 +71,15 @@ const ArtworkModal = ({
                             value={bidEndInput}
                             onChange={onChangeBidEnd}
                             placeholder="yyyy-mm-dd"
+                        />
+                    </LightForm>
+                    <LightForm>
+                        <span>Start Price</span>
+                        <input
+                            type="text"
+                            value={bidEndInput}
+                            onChange={onChangeBidEnd}
+                            placeholder="xxx ETH"
                         />
                     </LightForm>
                 </>

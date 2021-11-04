@@ -3,13 +3,19 @@ import styled from '@emotion/styled';
 export const Modal = styled.div<{ bottom: string }>`
     position: absolute;
     width: 70%;
-    height: 550px;
+    max-width: 800px;
+    height: 600px;
     background-color: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(100px);
     border-radius: 30px;
     padding: 40px;
     bottom: ${(props) => props.bottom};
     z-index: 500;
+
+    & span {
+        font: ${(props) => props.theme.font.textEnBase};
+        font-weight: 200;
+    }
 
     transition: bottom 0.2s ease;
 `;
@@ -20,8 +26,7 @@ export const ConfirmButton = styled.button`
     background: none;
     border-radius: 10px;
     color: white;
-    font-weight: 200;
-    font-size: 20px;
+    font: ${(props) => props.theme.font.textEnBase};
     position: absolute;
     bottom: 50px;
     right: 50px;

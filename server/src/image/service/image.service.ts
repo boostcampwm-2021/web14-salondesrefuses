@@ -49,5 +49,4 @@ export class ImageService {
             .resize({ width: newWidth, height: height })
             .toBuffer();
     }
-
 }

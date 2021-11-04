@@ -3,30 +3,30 @@ import styled from '@emotion/styled';
 
 import Header from '@components/Header';
 import Footer from '@components/Footer';
-import { Center } from '@styles/common';
 
 interface LayoutProps {
     children: React.ReactNode;
-    vertical?: boolean;
+    horizontal?: boolean;
 }
 
-const Layout = ({ children, vertical }: LayoutProps) => {
+const Layout = ({ children, horizontal }: LayoutProps) => {
     return (
         <div>
             <Header />
-            <Body vertical={vertical}>{children}</Body>
+            <Body horizontal={horizontal}>{children}</Body>
             <Footer />
         </div>
     );
 };
 
-const Body = styled.div<{ vertical?: boolean }>`
-    ${Center}
-    flex-direction: column;
-    padding-top: 100px;
+const Body = styled.div<{ horizontal?: boolean }>`
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 70px;
     ${(props) =>
-        props.vertical ? 'flex-direction: column;' : 'flex-direction: row;'}
-    min-height: calc(100vh - 300px);
+        props.horizontal ? 'flex-direction: row;' : 'flex-direction: column;'}
+    min-height: calc(100vh - 270px);
 `;
 
 export default Layout;

@@ -14,7 +14,7 @@ const AuctionPage = ({ data }: any) => {
                 <title>벽전 - Salon des Refusés</title>
                 <meta name="description" content="경매중인 작품 리스트" />
             </Head>
-            <Layout vertical={true}>
+            <Layout horizontal={false}>
                 <AuctionCarousel />
                 <AuctionList />
             </Layout>

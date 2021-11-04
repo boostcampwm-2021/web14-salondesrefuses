@@ -3,7 +3,6 @@ import { SpaceBetween, Center } from '@styles/common';
 
 export const HeaderContainer = styled.header`
     position: fixed;
-    z-index: 100;
     top: 0;
     left: 0;
     width: 100%;
@@ -29,11 +28,13 @@ export const LeftContainer = styled.div`
         margin: 0 30px;
         color: ${(props) => props.theme.color.primary};
     }
+    justify-content: flex-start;
 `;
 export const RightContainer = styled.div`
     z-index: 20;
     flex-grow: 1;
     ${Center}
+    justify-content: flex-end;
 `;
 
 export const ImageContainer = styled.div`
