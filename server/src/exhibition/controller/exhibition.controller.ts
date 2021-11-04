@@ -13,8 +13,9 @@ import {
     getRandomExhibitionsAPiOperation,
 } from '../swagger';
 
-@ApiTags('전시회 컨트롤러')
+
 @Controller('/exhibitions')
+@ApiTags('전시회 컨트롤러')
 export class ExhibitionController {
     constructor(private exhibitionService: ExhibitionService) {}
 
