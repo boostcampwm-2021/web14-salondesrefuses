@@ -16,10 +16,16 @@ export class Exhibition {
     @Column()
     description: string;
 
-    @Column({ type: 'datetime' })
+    @Column({
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP'
+    })
     startAt: Date;
 
-    @Column({ type: 'datetime' })
+    @Column({
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP'
+    })
     endAt: Date;
 
     @Column()
