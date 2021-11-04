@@ -9,6 +9,13 @@ export const getAllArtworks = (userId: number) => {
     });
 };
 
+export const postArtwork = (data: FormData) => {
+    return axios.post(`${API_SERVER_URL}/artworks`, {
+        withCredentials: true,
+        data: data,
+    });
+};
+
 export const signIn = (code: string, strategy: string) => {
     return axios.post(
         `${API_SERVER_URL}/auth/signIn`,
