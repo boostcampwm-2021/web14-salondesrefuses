@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import Link from 'next/link';
 import { Button, Center } from '@styles/common';
 import { AuctionCardProps } from '@const/card-type';
 import Card from '@components/Card';
@@ -68,7 +69,9 @@ const AuctionList = () => {
         <Container>
             <Title>
                 <h1>지금 판매중인 작품</h1>
-                <BlackButton>Post Artwork</BlackButton>
+                <Link href="artwork/post">
+                    <BlackButton>Post Artwork</BlackButton>
+                </Link>
             </Title>
             <Grid>
                 {DUMMY_DATA.map((item) => {
@@ -91,6 +94,7 @@ const Title = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-bottom: 30px;
 
     & h1 {
         font: ${(props) => props.theme.font.textXl};
