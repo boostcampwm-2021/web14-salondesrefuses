@@ -20,9 +20,11 @@ const Layout = ({ children }: LayoutProps) => {
 
 const Body = styled.div`
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
     padding-top: 100px;
+    min-height: calc(100vh - 300px);
 `;
 
 export default Layout;
