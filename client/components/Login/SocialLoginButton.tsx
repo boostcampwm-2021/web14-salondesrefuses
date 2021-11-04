@@ -9,16 +9,18 @@ interface SocialLoginButtonProp {
 
 const SocialLoginButton = ({ type, icon }: SocialLoginButtonProp) => {
     return (
-        <Container type={type}>
-            <div>
-                <Image src={icon} alt={`${type} 로그인`} />
-            </div>
-            <Text>
-                <span style={{ color: type === 'Google' ? 'white' : 'black' }}>
-                    Sign in with {type}
-                </span>
-            </Text>
-        </Container>
+        <a href={type === 'Google' ? process.env.GOOGLE_AUTH_URL : process.env.KAKAO_AUTH_URL} target='_self'>
+            <Container type={type}>
+                <div>
+                    <Image src={icon} alt={`${type} 로그인`} />
+                </div>
+                <Text>
+                    <span style={{ color: type === 'Google' ? 'white' : 'black' }}>
+                        Sign in with {type}
+                    </span>
+                </Text>
+            </Container>
+        </a>
     );
 };
 

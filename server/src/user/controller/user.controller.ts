@@ -1,7 +1,9 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 import { Artwork } from '../../artwork/artwork.entity';
+import { CustomAuthGuard } from '../../auth/guard/CustomAuthGuard';
 
+@UseGuards(CustomAuthGuard)
 @Controller('/users')
 export class UserController {
     constructor(private userService: UserService) {}

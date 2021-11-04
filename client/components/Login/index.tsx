@@ -16,7 +16,6 @@ const index = () => {
                 <div>
                     <SocialLoginButton type="Google" icon={googleIcon} />
                     <SocialLoginButton type="Kakao" icon={kakaoIcon} />
-                    <span>sign up</span>
                 </div>
             </div>
         </Container>
