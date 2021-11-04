@@ -29,7 +29,7 @@ export class ExhibitionController {
     @Get('/newest')
     @ApiOperation(getNewestExhibitionApiOperation)
     @ApiResponse(getExhibitionApiResponse)
-    getNewestExhibition(@Query('page', ParseIntPipe) page: number): Promise<Exhibition[]> {
+    getNewestExhibitions(@Query('page', ParseIntPipe) page: number): Promise<Exhibition[]> {
         return this.exhibitionService.getNewestExhibitions(page);
     }
 
