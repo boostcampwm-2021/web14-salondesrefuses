@@ -3,7 +3,7 @@ import { ExhibitionService } from '../service/exhibition.service';
 import { Exhibition } from '../exhibition.entity';
 import {
     ApiOperation,
-    ApiProperty, ApiResponse,
+    ApiProperty, ApiQuery, ApiResponse,
     ApiTags,
 } from '@nestjs/swagger';
 import {
@@ -29,6 +29,7 @@ export class ExhibitionController {
     @Get('/newest')
     @ApiOperation(getNewestExhibitionApiOperation)
     @ApiResponse(getExhibitionApiResponse)
+    @ApiQuery({name: "page", type: Number })
     getNewestExhibitions(@Query('page', ParseIntPipe) page: number): Promise<Exhibition[]> {
         return this.exhibitionService.getNewestExhibitions(page);
     }
@@ -36,6 +37,7 @@ export class ExhibitionController {
     @Get('/deadline')
     @ApiOperation(getExhibitionsSortedByDeadlineApiOperation)
     @ApiResponse(getExhibitionApiResponse)
+    @ApiQuery({name: "page", type: Number })
     getExhibitionsSortedByDeadline(@Query('page', ParseIntPipe) page: number): Promise<Exhibition[]> {
         return this.exhibitionService.getExhibitionsSortedByDeadline(page);
     }
@@ -43,6 +45,7 @@ export class ExhibitionController {
     @Get('/popular')
     @ApiOperation(getExhibitionsSortedByInterestApiOperation)
     @ApiResponse(getExhibitionApiResponse)
+    @ApiQuery({name: "page", type: Number })
     getExhibitionsSortedByInterest(@Query('page', ParseIntPipe) page: number): Promise<Exhibition[]> {
         return this.exhibitionService.getExhibitionsSortedByInterest(page);
     }
