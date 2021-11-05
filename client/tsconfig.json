@@ -22,7 +22,8 @@
             "@public/*": ["./public/*"],
             "@styles/*": ["./styles/*"],
             "@assets/*": ["./assets/*"],
-            "@utils/*": ["./utils/*"]
+            "@utils/*": ["./utils/*"],
+            "@constants/*": ["./constants/*"]
         }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

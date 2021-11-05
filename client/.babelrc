@@ -23,7 +23,8 @@
                     "@public": "./public",
                     "@styles": "./styles",
                     "@assets": "./assets",
-                    "@utils": "./utils"
+                    "@utils": "./utils",
+                    "@constants": "./constants"
                 },
                 "extensions": [".ts", ".tsx"]
             }
