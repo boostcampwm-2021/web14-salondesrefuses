@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import { GetStaticProps } from 'next';
 
 import Mobile from '@components/Home/Mobile';
-import Pc from '@components/Home/Pc/Pc';
+import Pc from '@components/Home/Pc';
 import { isMobile } from 'utils/isMobile';
 import { getRandomAuctions, getRandomExhibitions } from 'utils/networking';
 import {
