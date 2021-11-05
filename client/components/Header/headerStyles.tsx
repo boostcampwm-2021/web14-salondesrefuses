@@ -13,7 +13,7 @@ export const defaultHeader = () => {
             <Link href="/auction">
                 <NavButton>Auctions</NavButton>
             </Link>
-            <Link href="/mypage">
+            <Link href="/login">
                 <NavButton>
                     {/* if isLogindata ? imagedata : profilePic.src */}
                     <img src={ProfilePic.src} alt="profile" />
@@ -35,12 +35,12 @@ export const withSearchBar = (isExhibition: boolean) => {
                 />
             </SearchBarContainer>
             <RightContainer>
-                <Link href={isExhibition ? '/exhibition' : '/auction'}>
+                <Link href={isExhibition ? '/auction' : '/exhibition'}>
                     <NavButton>
-                        {isExhibition ? 'Exhibitions' : 'Auctions'}
+                        {isExhibition ? 'Auctions' : 'Exhibitions'}
                     </NavButton>
                 </Link>
-                <Link href="/mypage">
+                <Link href="/login">
                     <NavButton>
                         {/* if isLogindata ? imagedata : profilePic.src */}
                         <img src={ProfilePic.src} alt="profile" />

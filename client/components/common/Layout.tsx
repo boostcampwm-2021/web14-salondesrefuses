@@ -6,23 +6,27 @@ import Footer from '@components/Footer';
 
 interface LayoutProps {
     children: React.ReactNode;
+    horizontal?: boolean;
 }
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children, horizontal }: LayoutProps) => {
     return (
         <div>
             <Header />
-            <Body>{children}</Body>
+            <Body horizontal={horizontal}>{children}</Body>
             <Footer />
         </div>
     );
 };
 
-const Body = styled.div`
+const Body = styled.div<{ horizontal?: boolean }>`
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    padding-top: 100px;
+    padding-top: 70px;
+    ${(props) =>
+        props.horizontal ? 'flex-direction: row;' : 'flex-direction: column;'}
+    min-height: calc(100vh - 270px);
 `;
 
 export default Layout;

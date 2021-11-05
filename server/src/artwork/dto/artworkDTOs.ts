@@ -4,5 +4,4 @@ export class CreateArtworkDTO {
     description: string;
     isRegisterAuction?: string;
     endAt?: Date;
-    startBid?: string;
 }

@@ -3,9 +3,10 @@ import styled from '@emotion/styled';
 export const Container = styled.div`
     z-index: 100;
     width: 80%;
+    height: calc(100vh - 70px);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     & + img {
         position: absolute;
@@ -17,11 +18,12 @@ export const Container = styled.div`
         transform: scale(1.5);
     }
 
-    & img {
+    & > div > img {
         max-height: 400px;
         border: 5px solid white;
         box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.4);
     }
+    margin: 45px;
 `;
 export const Title = styled.section`
     display: flex;
@@ -30,6 +32,7 @@ export const Title = styled.section`
     align-items: center;
     z-index: 200;
     margin-bottom: 50px;
+    font: ${(props) => props.theme.font.textEnMd};
 
     & > h1 {
         color: white;

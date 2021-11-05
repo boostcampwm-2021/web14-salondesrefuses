@@ -2,6 +2,9 @@
 
 <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/79743965-3f87-4889-a532-a403f356ee35/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211102%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211102T074107Z&X-Amz-Expires=86400&X-Amz-Signature=d0d20971879ca4ea4ed6de191aa5c713eb269bcd6f27b9b6620c311678650577&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22" width="600"/>
 
+### 배포 링크
+[벽전(Salon des Refusés)](http://salondesrefuses.kro.kr/)
+
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fboostcampwm-2021%2Fweb14-salondesrefuses&count_bg=%233DA4C8&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 
 ## 🏔족두리봉 멤버 소개

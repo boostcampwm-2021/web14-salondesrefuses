@@ -21,15 +21,16 @@ const Footer = () => {
 
 const Container = styled.div`
     display: flex;
-    padding: 0 5%;
+    padding: 0 10%;
     align-items: center;
-    height: 300px;
-    width: 100vw;
-    border-top: 2px solid black;
-    background-color: white;
+    height: 270px;
+    width: 100%;
+    border-top: 1px solid ${(props) => props.theme.color.gray1};
+    background-color: ${(props) => props.theme.color.background};
     position: relative;
-    bottom: -400px;
-    font-size: ${(props) => props.theme.font.textEnBase};
+    bottom: 0;
+    font: ${(props) => props.theme.font.textSm};
+
     & > div {
         width: 50%;
         height: 70%;

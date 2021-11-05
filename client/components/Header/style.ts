@@ -12,7 +12,8 @@ export const HeaderContainer = styled.header`
     border-bottom: 1px solid ${(props) => props.theme.color.gray1};
     font: ${(props) => props.theme.font.textEnBase};
     background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(20px);
+    z-index: 900;
 `;
 
 export const LeftContainer = styled.div`
@@ -27,11 +28,13 @@ export const LeftContainer = styled.div`
         margin: 0 30px;
         color: ${(props) => props.theme.color.primary};
     }
+    justify-content: flex-start;
 `;
 export const RightContainer = styled.div`
     z-index: 20;
     flex-grow: 1;
     ${Center}
+    justify-content: flex-end;
 `;
 
 export const ImageContainer = styled.div`
