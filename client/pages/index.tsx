@@ -11,13 +11,23 @@ import {
     randomExhibitionType,
 } from 'constants/fakeDatas';
 
-const Home: NextPage = (props) => {
-    return isMobile() ? <Mobile /> : <Pc props={props} />;
+interface Props {
+    ExhibitionsData: string[];
+    AuctionsData: string[];
+}
+
+const Home: NextPage<Props> = ({ ExhibitionsData, AuctionsData }: Props) => {
+    return isMobile() ? (
+        <Mobile />
+    ) : (
+        <Pc ExhibitionsData={ExhibitionsData} AuctionsData={AuctionsData} />
+    );
 };
+
 export const getStaticProps: GetStaticProps = async () => {
     const ExhibitionsData = (await getRandomExhibitions()).data.map(
         (exhibition: randomExhibitionType) => JSON.stringify(exhibition),
-    );
+    ) as string[];
 
     // const AuctionData = JSON.stringify((await getRandomAuctions()).data);
     const AuctionsData = fakeRandomAuctions.map((auction: randomAuctionType) =>
@@ -25,7 +35,7 @@ export const getStaticProps: GetStaticProps = async () => {
     );
 
     return {
-        props: { ExhibitionsData, AuctionsData },
+        props: { ExhibitionsData, AuctionsData } as Props,
     };
 };
 

@@ -1,6 +1,10 @@
 import React from 'react';
+import { randomAuctionType } from 'constants/fakeDatas';
 
-const MainAuctionList = () => {
+interface Props {
+    AuctionsData: randomAuctionType[];
+}
+const MainAuctionList = ({ AuctionsData }: Props) => {
     return <div></div>;
 };
 

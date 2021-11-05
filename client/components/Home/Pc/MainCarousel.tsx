@@ -1,6 +1,11 @@
 import React from 'react';
+import { randomExhibitionType } from 'constants/fakeDatas';
 
-const MainCarousel = () => {
+interface Props {
+    ExhibitionsData: randomExhibitionType[];
+}
+
+const MainCarousel = ({ ExhibitionsData }: Props) => {
     return <div></div>;
 };
 
