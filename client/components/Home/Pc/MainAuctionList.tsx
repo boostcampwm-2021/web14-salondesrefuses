@@ -1,8 +1,15 @@
 import React from 'react';
+import Link from 'next/link';
+
 import { randomAuctionType } from 'constants/fakeDatas';
-import { AuctionContainer, AuctionCardContainer } from './styles';
+import {
+    AuctionContainer,
+    AuctionCardContainer,
+    MoreButtonContainer,
+} from './styles';
 import Card from '@components/Card';
 import { AuctionCardProps } from '@const/card-type';
+import { BlackButton } from '@styles/common';
 
 interface Props {
     AuctionsData: randomAuctionType[];
@@ -18,9 +25,18 @@ const MainAuctionList = ({ AuctionsData }: Props) => {
                         artist: auction.artist.nickname,
                         price: Number(auction.price),
                     };
-                    return <Card width={'md'} content={cardAuction}></Card>;
+                    return (
+                        <Link href={`/auction/${auction.id}`}>
+                            <Card width={'md'} content={cardAuction}></Card>
+                        </Link>
+                    );
                 })}
             </AuctionCardContainer>
+            <Link href="/auction">
+                <MoreButtonContainer>
+                    <BlackButton>More</BlackButton>
+                </MoreButtonContainer>
+            </Link>
         </AuctionContainer>
     );
 };

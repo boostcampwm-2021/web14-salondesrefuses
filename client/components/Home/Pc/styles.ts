@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Slider from 'react-slick';
 import Image from 'next/image';
-import { Center, SpaceBetween } from '@styles/common';
+import { BlackButton, Center, SpaceBetween } from '@styles/common';
 ////////////////
 // Exhibition //
 ////////////////
@@ -128,5 +128,10 @@ export const AuctionContainer = styled.div`
 export const AuctionCardContainer = styled.div`
     width: 100%;
     margin-top: 50px;
-    ${SpaceBetween}
+    ${SpaceBetween};
+`;
+
+export const MoreButtonContainer = styled.div`
+    ${Center};
+    margin: 50px auto;
 `;
