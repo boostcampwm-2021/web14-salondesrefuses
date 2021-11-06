@@ -14,7 +14,7 @@ export const CarouselSlider = styled(Slider)`
     height: 100%;
 
     & > div {
-        height: 100%;
+        height: 100%;더했습
         width: 100%;
     }
     .slick-slice div {
@@ -42,8 +42,18 @@ export const CarouselContent = styled.div<carouselContentInterface>`
     }
 `;
 
-export const StyledImage = styled(Image)`
-    height auto;
-    min-height: 500px;
-    width:auto;
+export const StyledImage = styled.img`
+    max-width: 400px;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+`;
+
+export const Title = styled.p`
+    position: absolute;
+    font: ${(props) => props.theme.font.textEnTitle};
+    z-index: 20;
+    width: 100%;
+    text-align: left;
+    margin: 30px 0 0 230px;
 `;
