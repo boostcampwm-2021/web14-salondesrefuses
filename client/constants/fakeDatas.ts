@@ -1,8 +1,8 @@
 import Fake1 from '@assets/images/fake1.png';
 import Fake2 from '@assets/images/fake2.jpeg';
-import Fake3 from '@assets/images/fake3.png';
+import Fake3 from '@assets/images/fake3.jpeg';
 import Fake4 from '@assets/images/fake4.png';
-import Fake5 from '@assets/images/fake5.png';
+import Fake5 from '@assets/images/fake5.jpeg';
 import { AUCTION_STATE } from './auction-state';
 
 export interface randomExhibitionType {

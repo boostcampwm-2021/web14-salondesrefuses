@@ -5,7 +5,7 @@ interface Props {
     AuctionsData: randomAuctionType[];
 }
 const MainAuctionList = ({ AuctionsData }: Props) => {
-    return <div></div>;
+    return <div>AuctionList</div>;
 };
 
 export default MainAuctionList;
