@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import Image from 'next/image';
-import Slider, { Settings } from 'react-slick';
+import Link from 'next/link';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -17,6 +16,7 @@ import {
     InfoDescription,
 } from './styles';
 import { setColorFromImage } from '@utils/setColorFromImage';
+import { BlackButton } from '@styles/common';
 
 interface Props {
     ExhibitionsData: randomExhibitionType[];
@@ -30,7 +30,7 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
     useEffect(() => {
         setColorList(
             ExhibitionsData.map((exhibition) =>
-                setColorFromImage(exhibition.thumbnail),
+                setColorFromImage(exhibition.imgSrc),
             ),
         );
         // el = document.getElementsByClassName('slick-track')[0];
@@ -48,7 +48,7 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
                     {ExhibitionsData.map((exhibition, i) => {
                         return (
                             <CarouselContent
-                                imgSrc={exhibition.thumbnail}
+                                imgSrc={exhibition.imgSrc}
                                 key={exhibition.id}
                             >
                                 <Title isBlack={colorList[i]}>
@@ -58,7 +58,7 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
                                     <ExhibitionContainer>
                                         <StyledImage>
                                             <img
-                                                src={exhibition.thumbnail}
+                                                src={exhibition.imgSrc}
                                                 alt="exhibition_id"
                                             />
                                         </StyledImage>
@@ -72,6 +72,13 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
                                             <InfoDescription>
                                                 {exhibition.description}
                                             </InfoDescription>
+                                            <Link
+                                                href={`/exhibition/${exhibition.id}`}
+                                            >
+                                                <BlackButton>
+                                                    전시 보러 가기
+                                                </BlackButton>
+                                            </Link>
                                         </InfoContainer>
                                     </ExhibitionContainer>
                                 </div>
