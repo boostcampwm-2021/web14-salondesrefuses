@@ -21,7 +21,6 @@ interface Props {
 const MainCarousel = ({ ExhibitionsData }: Props) => {
     let [colorList, setColorList] = useState(new Array(5).fill(false));
     const [titleColor, setTitleColor] = useState('#fff');
-    console.log(colorList);
     useEffect(() => {
         setColorList(
             ExhibitionsData.map((exhibition) =>
