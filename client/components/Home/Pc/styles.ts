@@ -1,7 +1,10 @@
 import styled from '@emotion/styled';
 import Slider from 'react-slick';
 import Image from 'next/image';
-import { Center } from '@styles/common';
+import { Center, SpaceBetween } from '@styles/common';
+////////////////
+// Exhibition //
+////////////////
 
 export const SlideWrapper = styled.section`
     position: relative;
@@ -69,7 +72,7 @@ export const Title = styled.p<TitleProps>`
     position: absolute;
 
     font: ${(props) => props.theme.font.textEnTitle};
-    z-index: 9999;
+    z-index: 30;
     text-align: left;
     margin: 30px 0 0 140px;
     color: ${(props) =>
@@ -86,6 +89,10 @@ export const InfoContainer = styled.div`
     width: 50%;
     flex-grow: 1;
     margin-left: 30px;
+
+    & > button {
+        margin-top: 30px;
+    }
 `;
 
 export const InfoTitle = styled.p`
@@ -94,4 +101,32 @@ export const InfoTitle = styled.p`
 export const InfoDescription = styled.p`
     font: ${(props) => props.theme.font.textEnBase};
     margin-top: 10px;
+`;
+/////////////
+// Auction //
+/////////////
+
+export const AuctionContainer = styled.div`
+    width: 100%;
+    margin-top: 100px;
+    padding: 30px 150px;
+    & > p {
+        margin: 0 auto;
+        font: ${(props) => props.theme.font.textEnTitle};
+        z-index: 30;
+        text-align: center;
+        color: ${(props) => props.theme.color.black};
+        &:after {
+            content: '';
+            margin: 0 auto;
+            display: block;
+            width: 5%;
+            border-bottom: 3px solid ${(props) => props.theme.color.primary};
+        }
+    }
+`;
+export const AuctionCardContainer = styled.div`
+    width: 100%;
+    margin-top: 50px;
+    ${SpaceBetween}
 `;
