@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import Slider from 'react-slick';
 import Image from 'next/image';
+import { Center } from '@styles/common';
 
 export const SlideWrapper = styled.section`
     position: relative;
@@ -39,21 +40,58 @@ export const CarouselContent = styled.div<carouselContentInterface>`
             #ffffff 100%
         );
         backdrop-filter: blur(15px);
+        padding: 80px 130px;
     }
 `;
 
-export const StyledImage = styled.img`
-    max-width: 400px;
-    max-height: 300px;
-    width: auto;
-    height: auto;
+export const ExhibitionContainer = styled.div`
+    ${Center}
+    margin: 50px;
 `;
 
-export const Title = styled.p`
+export const StyledImage = styled.div`
+    flex-grow: 1;
+    width: 50%;
+    ${Center}
+    & img {
+        max-width: 400px;
+        max-height: 300px;
+        width: auto;
+        height: auto;
+    }
+`;
+
+interface TitleProps {
+    isBlack: boolean;
+}
+
+export const Title = styled.p<TitleProps>`
     position: absolute;
+
     font: ${(props) => props.theme.font.textEnTitle};
-    z-index: 20;
-    width: 100%;
+    z-index: 9999;
     text-align: left;
-    margin: 30px 0 0 230px;
+    margin: 30px 0 0 140px;
+    color: ${(props) =>
+        props.isBlack ? props.theme.color.black : props.theme.color.white};
+    &:after {
+        content: '';
+        display: block;
+        width: 40%;
+        border-bottom: 4px solid ${(props) => props.theme.color.primary};
+    }
+`;
+
+export const InfoContainer = styled.div`
+    width: 50%;
+    flex-grow: 1;
+    margin-left: 30px;
+`;
+
+export const InfoTitle = styled.p`
+    font: ${(props) => props.theme.font.textEnLg};
+`;
+export const InfoDescription = styled.p`
+    font: ${(props) => props.theme.font.textEnBase};
+    margin-top: 10px;
 `;
