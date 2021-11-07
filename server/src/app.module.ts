@@ -5,6 +5,7 @@ import { ExhibitionModule } from './exhibition/exhibition.module';
 import { ArtworkModule } from './artwork/artwork.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { AuctionModule } from './auction/auction.module';
 
 @Module({
     imports: [
@@ -13,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
         ArtworkModule,
         UserModule,
         AuthModule,
+        AuctionModule,
     ],
 })
 export class AppModule {}

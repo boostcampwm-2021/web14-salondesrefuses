@@ -11,4 +11,12 @@ export class AuctionRepository extends Repository<Auction> {
             });
         }
     }
+
+    getAuctionsWithPageable(page: number): Promise<Auction[]> {
+        return this.createQueryBuilder('auction')
+            .innerJoinAndSelect('auction.artwork', 'artwork')
+            .offset(page * 15)
+            .limit(15)
+            .getMany();
+    }
 }
