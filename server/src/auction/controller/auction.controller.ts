@@ -30,11 +30,10 @@ export default class AuctionController {
 
     @Get(':id')
     @ApiOperation(getAuctionDetailApiOperation)
-    @ApiBody({ type: Number })
+    @ApiResponse({ type: AuctionDetailDTO })
     getAuctionDetail(
-        @Param('id', ParseIntPipe) auctionId: Number,
+        @Param('id', ParseIntPipe) auctionId: number,
     ): Promise<AuctionDetailDTO> {
-        // @ TODO API 개발
-        return;
+        return this.auctionService.getAuctionDetail(auctionId);
     }
 }
