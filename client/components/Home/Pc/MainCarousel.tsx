@@ -24,17 +24,19 @@ interface Props {
 
 const MainCarousel = ({ ExhibitionsData }: Props) => {
     let [colorList, setColorList] = useState(new Array(5).fill(false));
-    let titleColor = false;
-    // let el: Element | null = null;
 
     useEffect(() => {
-        setColorList(
-            ExhibitionsData.map((exhibition) =>
-                setColorFromImage(exhibition.imgSrc),
-            ),
-        );
+        ExhibitionsData.map((exhibition, i) => {
+            setColorFromImage(exhibition.imgSrc).then((value) =>
+                setColorList((colorList) => [
+                    (colorList[i] = value),
+                    ...colorList,
+                ]),
+            );
+        });
         // el = document.getElementsByClassName('slick-track')[0];
     }, []);
+
     // useEffect(() => {
     //     console.log(el);
     //     console.log(window.getComputedStyle(el as Element).transition);

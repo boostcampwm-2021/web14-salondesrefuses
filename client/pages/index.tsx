@@ -27,8 +27,7 @@ const Home: NextPage<Props> = ({ ExhibitionsData, AuctionsData }: Props) => {
 export const getStaticProps: GetStaticProps = async () => {
     const ExhibitionsData = (await getRandomExhibitions()).data.map(
         (exhibition: randomExhibitionType) => JSON.stringify(exhibition),
-    ) as string[];
-
+    );
     // const AuctionData = JSON.stringify((await getRandomAuctions()).data);
     const AuctionsData = fakeRandomAuctions.map((auction: randomAuctionType) =>
         JSON.stringify(auction),
