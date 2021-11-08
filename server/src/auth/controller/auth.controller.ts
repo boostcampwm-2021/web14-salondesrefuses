@@ -20,13 +20,14 @@ export class AuthController {
         try {
             let user = null;
             strategy === 'google'
-                ? (user = await this.authService.signInWithGoogle(code))
-                : (user = await this.authService.signInWithKakao(code));
+                ? user = await this.authService.signInWithGoogle(code)
+                : user = await this.authService.signInWithKakao(code);
 
             const { accessToken, refreshToken } = user;
+            const oneHour = 1000 * 60 * 60, oneWeek = 1000 * 60 * 60 * 24 * 7;
 
-            res.cookie('accessToken', accessToken);
-            res.cookie('refreshToken', refreshToken);
+            res.cookie('accessToken', accessToken, { maxAge: oneHour });
+            res.cookie('refreshToken', refreshToken, { maxAge: oneWeek });
             res.json(true);
         } catch (err) {
             res.json(false);
