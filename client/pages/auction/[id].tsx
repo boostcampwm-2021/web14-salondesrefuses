@@ -6,6 +6,7 @@ import Head from 'next/head';
 import { Artwork } from 'interfaces';
 import Layout from '@components/common/Layout';
 import ItemDetail from '@components/Auction/ItemDetail';
+import { GlobalStore } from '../../store/GlobalStore';
 
 const DUMMY_DATA: Artwork = {
     id: 1,
@@ -23,27 +24,29 @@ const AuctionDetailPage = ({ artwork = DUMMY_DATA }: { artwork: Artwork }) => {
 
     return (
         <>
-            <Head>
-                <title>
-                    Auction - {'Sky Study 3'} ({'Lisa Beck'}, {'2018'})
-                </title>
-                <meta name="경매" content="경매경매" />
-            </Head>
-            <Layout>
-                <Container>
-                    <Background
-                        src={
-                            'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg'
-                        }
-                    />
-                    <Grid>
-                        <section>
-                            <img src={DUMMY_DATA.imagePath} />
-                        </section>
-                        <ItemDetail />
-                    </Grid>
-                </Container>
-            </Layout>
+            <GlobalStore>
+                <Head>
+                    <title>
+                        Auction - {'Sky Study 3'} ({'Lisa Beck'}, {'2018'})
+                    </title>
+                    <meta name="경매" content="경매경매" />
+                </Head>
+                <Layout>
+                    <Container>
+                        <Background
+                            src={
+                                'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg'
+                            }
+                        />
+                        <Grid>
+                            <section>
+                                <img src={DUMMY_DATA.imagePath} />
+                            </section>
+                            <ItemDetail />
+                        </Grid>
+                    </Container>
+                </Layout>
+            </GlobalStore>
         </>
     );
 };

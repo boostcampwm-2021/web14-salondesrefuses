@@ -6,6 +6,7 @@ import { ArtworkModule } from './artwork/artwork.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AuctionModule } from './auction/auction.module';
+import { SseModule } from './utils/sse/sse.module';
 
 @Module({
     imports: [
@@ -15,6 +16,7 @@ import { AuctionModule } from './auction/auction.module';
         UserModule,
         AuthModule,
         AuctionModule,
+        SseModule
     ],
 })
 export class AppModule {}

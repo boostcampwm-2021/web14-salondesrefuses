@@ -1,12 +1,28 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 
 import AboutArtist from './AboutArtist';
 import BidTable from '../BidTable';
 import Trend from '../Trend';
 import ArtworkDetail from './ArtworkDetail';
+import { GlobalContext } from '../../../store/GlobalStore';
 
 const ItemDetail = () => {
+    const globalContext = useContext(GlobalContext);
+    const { auctionSocket } = globalContext!;
+
+    const router = useRouter();
+    const auctionId = router.asPath.split('/')[2];
+
+    useEffect(() => {
+        auctionSocket.emit('enter', auctionId);
+
+        return (() => {
+            auctionSocket.emit('leave', auctionId);
+        });
+    }, []);
+
     return (
         <Container>
             <Summary>
@@ -15,7 +31,7 @@ const ItemDetail = () => {
                 <span>태그, 태그, 태그, ...</span>
             </Summary>
             <AboutArtist />
-            <BidTable />
+            <BidTable auctionId={auctionId}/>
             <Trend />
             <ArtworkDetail />
         </Container>
