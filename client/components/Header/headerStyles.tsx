@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { NavButton, RightContainer, SearchBarContainer } from './style';
 import ProfilePic from '@assets/images/profile.png';
-import { useState } from 'react';
+import parseCookie from '@utils/parseCookie';
 
 export const defaultHeader = () => {
+    const [session, setSession] = useState(false);
+    useEffect(() => {
+        const isLoggedIn = parseCookie()('accessToken') ? true : false;
+        setSession(isLoggedIn);
+    }, []);
+
     return (
         <RightContainer>
             <Link href="/exhibition">
@@ -15,8 +21,11 @@ export const defaultHeader = () => {
             </Link>
             <Link href="/login">
                 <NavButton>
-                    {/* if isLogindata ? imagedata : profilePic.src */}
-                    <img src={ProfilePic.src} alt="profile" />
+                    {session ? (
+                        <img src={ProfilePic.src} alt="profile" />
+                    ) : (
+                        'LogIn'
+                    )}
                 </NavButton>
             </Link>
         </RightContainer>
