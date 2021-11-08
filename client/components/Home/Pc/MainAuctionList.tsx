@@ -19,14 +19,14 @@ const MainAuctionList = ({ AuctionsData }: Props) => {
         <AuctionContainer>
             <p>Auction.</p>
             <AuctionCardContainer>
-                {AuctionsData.map((auction) => {
+                {AuctionsData.map((auction, idx) => {
                     let cardAuction: AuctionCardProps = {
                         ...auction,
                         artist: auction.artist.nickname,
                         price: Number(auction.price),
                     };
                     return (
-                        <Link href={`/auction/${auction.id}`}>
+                        <Link href={`/auction/${auction.id}`} key={auction.id}>
                             <Card width={'md'} content={cardAuction}></Card>
                         </Link>
                     );
