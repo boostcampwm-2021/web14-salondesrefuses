@@ -18,11 +18,11 @@ export class UserService {
         return this.artworkRepository.getAllUsersArtworks(userId);
     }
 
-    async checkRegisteredUser(userId: string, loginStrategy: string): Promise<User> {
+    async checkRegisteredUser(userId: string, avatar: string, loginStrategy: string): Promise<User> {
         let user = await this.userRepository.findOne({ userId, loginStrategy });
 
         if(!user) {
-            user = await this.userRepository.createUser(userId, loginStrategy);
+            user = await this.userRepository.createUser(userId, avatar, loginStrategy);
         }
 
         return user;
