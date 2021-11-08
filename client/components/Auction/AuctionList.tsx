@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 
@@ -68,6 +68,12 @@ const DUMMY_DATA: Array<AuctionCardProps> = [
 
 const AuctionList = () => {
     const [onSelect, setOnSelect] = useState('Popular');
+    const [auctionItems, setAuctionItems] = useState<AuctionCardProps[]>([]);
+    const [page, setPage] = useState(1);
+
+    useEffect(() => {
+        // TODO : 경매 아이템 리스트 가져오는 api 추가
+    }, [onSelect, page]);
 
     const onClickFilter = ({ currentTarget }: React.MouseEvent) => {
         setOnSelect(currentTarget.textContent || 'Newest');
