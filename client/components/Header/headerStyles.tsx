@@ -33,7 +33,14 @@ export const defaultHeader = () => {
 };
 
 export const withSearchBar = (isExhibition: boolean) => {
+    const [session, setSession] = useState(false);
     const [search, setSearch] = useState('');
+
+    useEffect(() => {
+        const isLoggedIn = parseCookie()('accessToken') ? true : false;
+        setSession(isLoggedIn);
+    }, []);
+
     return (
         <>
             <SearchBarContainer>
@@ -51,8 +58,11 @@ export const withSearchBar = (isExhibition: boolean) => {
                 </Link>
                 <Link href="/login">
                     <NavButton>
-                        {/* if isLogindata ? imagedata : profilePic.src */}
-                        <img src={ProfilePic.src} alt="profile" />
+                        {session ? (
+                            <img src={ProfilePic.src} alt="profile" />
+                        ) : (
+                            'LogIn'
+                        )}
                     </NavButton>
                 </Link>
             </RightContainer>
