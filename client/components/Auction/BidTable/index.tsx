@@ -1,19 +1,44 @@
+import React, { useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import React from 'react';
 
-const BidTable = () => {
+import { GlobalContext } from '../../../store/GlobalStore';
+import getRemainingTime from '../../../utils/getRemainingTime';
+
+const BidTable = (props: { auctionId: string }) => {
+    const globalContext = useContext(GlobalContext);
+    const { auctionId } = props;
+    const { auctionSocket, eventSource } = globalContext!;
+
+    const [price, setPrice] = useState(0);
+    const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
+
+    const bidArtwork = () => {
+        auctionSocket.emit('bid', {
+            price,
+            userId: 'userId',
+            auctionId
+        });
+        setPrice(prev => Number((prev + 0.01).toFixed(2)));
+    };
+
+    useEffect(() => {
+        eventSource.onmessage = ({ data }) => {
+            setAuctionDeadline(getRemainingTime(Number(data), 1636581243367));
+        };
+    }, [])
+
     return (
         <Container>
             <Timer>
                 <span>경매 마감 기한</span>
-                <b>00:00:00</b>
+                <b>{auctionDeadline}</b>
             </Timer>
             <Bid>
                 <div>
                     <span>현재가격</span>
-                    <b>4.23 ETH</b>
+                    <b>{price} ETH</b>
                 </div>
-                <Button>입찰 4.24 ETH</Button>
+                <Button onClick={bidArtwork}>입찰 {price} ETH</Button>
             </Bid>
         </Container>
     );
@@ -30,7 +55,7 @@ const Container = styled.div`
 
 const Timer = styled.div`
     display: flex;
-    gap: 40px;
+    gap: 10px;
     width: 90%;
 
     & > b {
