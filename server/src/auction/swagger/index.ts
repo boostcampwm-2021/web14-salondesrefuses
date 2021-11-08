@@ -1,7 +1,12 @@
 import { ApiOperationOptions } from '@nestjs/swagger';
 
-export const getAuctionsWithInfinityScrollApiOperation: ApiOperationOptions = {
-    summary: '옥션 15개 조회 API - 인피니티 스크롤',
+export const getAuctionsSortedByNewsestApiOperation: ApiOperationOptions = {
+    summary: '옥션 15개 최신순 조회 API - 인피니티 스크롤',
+    description: '현재 경매중인 작품 15개씩 조회하는 API page는 0부터 시작',
+};
+
+export const getAuctionsSortedByPopularApiOperation: ApiOperationOptions = {
+    summary: '옥션 15개 좋아요순 조회 API - 인피니티 스크롤',
     description: '현재 경매중인 작품 15개씩 조회하는 API page는 0부터 시작',
 };
 

@@ -1,16 +1,11 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
-import {
-    ApiBody,
-    ApiOperation,
-    ApiQuery,
-    ApiResponse,
-    ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuctionDetailDTO, AuctionListItemDTO } from '../dto/auctionDTOs';
 import AuctionService from '../service/auction.service';
 import {
-    getAuctionsWithInfinityScrollApiOperation,
     getAuctionDetailApiOperation,
+    getAuctionsSortedByPopularApiOperation,
+    getAuctionsSortedByNewsestApiOperation,
 } from '../swagger';
 
 @Controller('acutions')
@@ -18,22 +13,26 @@ import {
 export default class AuctionController {
     constructor(private readonly auctionService: AuctionService) {}
 
-    @Get()
-    @ApiOperation(getAuctionsWithInfinityScrollApiOperation)
+    @Get('/newest')
+    @ApiOperation(getAuctionsSortedByNewsestApiOperation)
     @ApiQuery({ name: 'page', type: Number })
     @ApiResponse({ type: AuctionListItemDTO })
-    getAuctionsWithInfinityScroll(
-        @Query('page', ParseIntPipe) page: number,
-    ): Promise<AuctionListItemDTO[]> {
-        return this.auctionService.getAuctionsWithPageable(page);
+    getAuctionsOrderByNewsest(@Query('page', ParseIntPipe) page: number): Promise<AuctionListItemDTO[]> {
+        return this.auctionService.getAuctionsSortedByNewest(page);
+    }
+
+    @Get('/popular')
+    @ApiOperation(getAuctionsSortedByPopularApiOperation)
+    @ApiQuery({ name: 'page', type: Number })
+    @ApiResponse({ type: AuctionListItemDTO })
+    getAuctionsOrderByPopular(@Query('page', ParseIntPipe) page: number): Promise<AuctionListItemDTO[]> {
+        return this.auctionService.getAuctionsSortedByPopular(page);
     }
 
     @Get(':id')
     @ApiOperation(getAuctionDetailApiOperation)
     @ApiResponse({ type: AuctionDetailDTO })
-    getAuctionDetail(
-        @Param('id', ParseIntPipe) auctionId: number,
-    ): Promise<AuctionDetailDTO> {
+    getAuctionDetail(@Param('id', ParseIntPipe) auctionId: number): Promise<AuctionDetailDTO> {
         return this.auctionService.getAuctionDetail(auctionId);
     }
 }

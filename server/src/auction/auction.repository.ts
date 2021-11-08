@@ -1,4 +1,6 @@
+import { Artwork } from 'src/artwork/artwork.entity';
 import { CreateArtworkDTO } from 'src/artwork/dto/artworkDTOs';
+import { InterestArtwork } from 'src/interestArtwork/interestArtwork.entity';
 import { EntityRepository, Repository } from 'typeorm';
 import { Auction } from './auction.entity';
 
@@ -12,17 +14,36 @@ export class AuctionRepository extends Repository<Auction> {
         }
     }
 
-    findAllByAuctionWithArtworkAndPageable(page: number): Promise<Auction[]> {
+    findAllByAuctionOrderByNewest(page: number): Promise<Auction[]> {
         return this.createQueryBuilder('auction')
             .innerJoinAndSelect('auction.artwork', 'artwork')
+            .orderBy('auction.id', 'DESC')
             .offset(page * 15)
             .limit(15)
             .getMany();
     }
 
-    findByAuctionWithAuctionHistoryAndArtwork(
-        auctionId: number,
-    ): Promise<Auction> {
+    findAllByAuctionOrderByPopular(page: number): Promise<Auction[]> {
+        return this.createQueryBuilder('auction')
+            .innerJoinAndSelect('auction.artwork', 'artwork')
+            .innerJoin(
+                subQuery =>
+                    subQuery
+                        .select('a.id, count(i.artwork_id) as count')
+                        .from(Artwork, 'a')
+                        .leftJoin(InterestArtwork, 'i', 'a.id = i.artwork_id')
+                        .groupBy('a.id'),
+                'interest',
+                'artwork.id = interest.id',
+            )
+            .orderBy('interest.count', 'DESC')
+            .addOrderBy('auction.id', 'DESC')
+            .offset(page * 15)
+            .limit(15)
+            .getMany();
+    }
+
+    findByAuctionWithAuctionHistoryAndArtwork(auctionId: number): Promise<Auction> {
         return this.createQueryBuilder('auction')
             .where(`auction.id = ${auctionId}`)
             .leftJoinAndSelect('auction.auctionHistories', 'history')
