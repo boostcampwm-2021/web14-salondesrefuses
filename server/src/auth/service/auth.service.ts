@@ -62,8 +62,9 @@ export class AuthService {
             userId: user.userId,
             loginStrategy
         };
-        const accessToken = this.jwtService.sign(payload, { expiresIn: 60 * 60 });
-        const refreshToken = this.jwtService.sign(payload, { expiresIn: 60 * 60 * 24 * 7 });
+        const oneHour = 60 * 60, oneWeek = 60 * 60 * 24 * 7;
+        const accessToken = this.jwtService.sign(payload, { expiresIn: oneHour });
+        const refreshToken = this.jwtService.sign(payload, { expiresIn: oneWeek });
 
         await this.userService.updateUserToken(user.id, refreshToken);
         return { accessToken, refreshToken };
