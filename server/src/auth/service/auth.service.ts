@@ -29,9 +29,9 @@ export class AuthService {
         const userInfo = await axios.get(process.env.GOOGLE_USER_URL, {
             headers: { Authorization: `Bearer ${access_token}`}
         });
-        const { email, picture } = userInfo.data;
+        const { email, name, picture } = userInfo.data;
 
-        const user = await this.userService.checkRegisteredUser(email, picture, 'google');
+        const user = await this.userService.checkRegisteredUser(email, name, picture, 'google');
         return this.generateToken(user, 'google');
     }
 
@@ -53,7 +53,7 @@ export class AuthService {
         });
         const { email, profile } = userInfo.data.kakao_account;
 
-        const user = await this.userService.checkRegisteredUser(email, profile.profile_image_url, 'kakao');
+        const user = await this.userService.checkRegisteredUser(email, profile.nickname, profile.profile_image_url, 'kakao');
         return this.generateToken(user, 'kakao');
     }
 

@@ -14,7 +14,7 @@ export class User {
     userId: string;
 
     @Column({ nullable: true })
-    nickname: string;
+    name: string;
 
     @Column({ nullable: true })
     snsId: string;
