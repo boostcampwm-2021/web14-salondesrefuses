@@ -6,12 +6,20 @@ import {
     getAuctionDetailApiOperation,
     getAuctionsSortedByPopularApiOperation,
     getAuctionsSortedByNewsestApiOperation,
+    getRandomAuctionsApiOperation,
 } from '../swagger';
 
 @Controller('acutions')
 @ApiTags('옥션 컨트롤러')
 export default class AuctionController {
     constructor(private readonly auctionService: AuctionService) {}
+
+    @Get('/random')
+    @ApiOperation(getRandomAuctionsApiOperation)
+    @ApiResponse({ type: AuctionListItemDTO })
+    getRandomAuctions(): Promise<AuctionListItemDTO[]> {
+        return this.auctionService.getRandomAuctions();
+    }
 
     @Get('/newest')
     @ApiOperation(getAuctionsSortedByNewsestApiOperation)

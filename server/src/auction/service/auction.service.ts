@@ -6,6 +6,11 @@ import { AuctionDetailDTO, AuctionListItemDTO } from '../dto/auctionDTOs';
 export default class AuctionService {
     constructor(private readonly auctionRepository: AuctionRepository) {}
 
+    async getRandomAuctions(): Promise<AuctionListItemDTO[]> {
+        const auctions = await this.auctionRepository.getRandomAuctions();
+        return auctions.map(auction => AuctionListItemDTO.from(auction));
+    }
+
     async getAuctionsSortedByNewest(page: number): Promise<AuctionListItemDTO[]> {
         const auctions = await this.auctionRepository.findAllByAuctionOrderByNewest(page);
 

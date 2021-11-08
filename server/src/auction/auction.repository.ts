@@ -14,6 +14,14 @@ export class AuctionRepository extends Repository<Auction> {
         }
     }
 
+    getRandomAuctions(): Promise<Auction[]> {
+        return this.createQueryBuilder('auction')
+            .innerJoinAndSelect('auction.artwork', 'artwork')
+            .orderBy('RAND()')
+            .limit(3)
+            .getMany();
+    }
+
     findAllByAuctionOrderByNewest(page: number): Promise<Auction[]> {
         return this.createQueryBuilder('auction')
             .innerJoinAndSelect('auction.artwork', 'artwork')
