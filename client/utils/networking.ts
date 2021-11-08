@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Artwork, PostArtworkResponse } from 'interfaces';
-import { ExhibitionCardProps } from '@const/card-type';
+import { AuctionCardProps, ExhibitionCardProps } from '@const/card-type';
 
 const API_SERVER_URL = process.env.API_SERVER_URL;
 
@@ -43,5 +43,11 @@ export const getExhibitions = (filter: string, page: number) => {
 export const getRandomAuctions = () => {
     return axios.get<ExhibitionCardProps[]>(
         `${API_SERVER_URL}/art-works/random?status=onSale`,
+    );
+};
+
+export const getAuctions = (filter: string, page: number) => {
+    return axios.get<AuctionCardProps[]>(
+        `${API_SERVER_URL}/auctions/${filter}?page=${page}`,
     );
 };

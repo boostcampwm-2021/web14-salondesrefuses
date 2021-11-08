@@ -6,6 +6,7 @@ import { Button, Center } from '@styles/common';
 import { AuctionCardProps } from '@const/card-type';
 import Card from '@components/Card';
 import { Filter } from 'pages/exhibition/style';
+import { getAuctions } from '@utils/networking';
 
 const DUMMY_DATA: Array<AuctionCardProps> = [
     {
@@ -72,7 +73,9 @@ const AuctionList = () => {
     const [page, setPage] = useState(1);
 
     useEffect(() => {
-        // TODO : 경매 아이템 리스트 가져오는 api 추가
+        getAuctions(onSelect.toLowerCase(), page).then((res) =>
+            setAuctionItems(res.data),
+        );
     }, [onSelect, page]);
 
     const onClickFilter = ({ currentTarget }: React.MouseEvent) => {
@@ -112,7 +115,7 @@ const AuctionList = () => {
             </Title>
             <h1>지금 판매중인 작품</h1>
             <Grid>
-                {DUMMY_DATA.map((item) => {
+                {auctionItems.map((item) => {
                     return <Card width="lg" content={item} />;
                 })}
             </Grid>
