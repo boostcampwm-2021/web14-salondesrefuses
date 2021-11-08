@@ -14,22 +14,22 @@ import { BlackButton } from '@styles/common';
 interface Props {
     AuctionsData: randomAuctionType[];
 }
+
+const AuctionCardGenerator = ({ auction }: { auction: randomAuctionType }) => {
+    let cardAuction: AuctionCardProps = {
+        ...auction,
+        artist: auction.artist.nickname,
+        price: Number(auction.price),
+    };
+    return <Card width={'md'} content={cardAuction} key={auction.id}></Card>;
+};
 const MainAuctionList = ({ AuctionsData }: Props) => {
     return (
         <AuctionContainer>
             <p>Auction.</p>
             <AuctionCardContainer>
                 {AuctionsData.map((auction) => {
-                    let cardAuction: AuctionCardProps = {
-                        ...auction,
-                        artist: auction.artist.nickname,
-                        price: Number(auction.price),
-                    };
-                    return (
-                        <Link href={`/auction/${auction.id}`}>
-                            <Card width={'md'} content={cardAuction}></Card>
-                        </Link>
-                    );
+                    <AuctionCardGenerator auction={auction} />;
                 })}
             </AuctionCardContainer>
             <Link href="/auction">
