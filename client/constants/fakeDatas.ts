@@ -32,8 +32,8 @@ export const fakeRandomExhibitions: randomExhibitionType[] = [
     },
     {
         id: 2,
-        title: "Antonio Conte's perfect game",
-        artist: { id: 2233, name: 'Conte', nickname: 'ConteIsBack' },
+        title: 'Come back Nuno',
+        artist: { id: 2233, name: 'Nuno', nickname: 'ConteSucks' },
         description:
             "In 2001, Campbell joined Tottenham's North London rivals Arsenal on a free transfer, and as a result has remained a deeply unpopular figure amongst Spurs supporters.",
         startedAt: new Date(),
