@@ -1,10 +1,42 @@
 import type { NextPage } from 'next';
-import DeviceSwitch from '@components/common/DeviceSwitch';
+import { GetStaticProps } from 'next';
+
 import Mobile from '@components/Home/Mobile';
 import Pc from '@components/Home/Pc';
+import { isMobile } from 'utils/isMobile';
+import { getRandomAuctions, getRandomExhibitions } from 'utils/networking';
+import {
+    fakeRandomAuctions,
+    randomAuctionType,
+    randomExhibitionType,
+} from 'constants/fakeDatas';
 
-const Home: NextPage = (props) => {
-    return <DeviceSwitch Pc={Pc} Mobile={Mobile} props={props} />;
+interface Props {
+    ExhibitionsData: string[];
+    AuctionsData: string[];
+}
+
+const Home: NextPage<Props> = ({ ExhibitionsData, AuctionsData }: Props) => {
+    return isMobile() ? (
+        <Mobile />
+    ) : (
+        <Pc ExhibitionsData={ExhibitionsData} AuctionsData={AuctionsData} />
+    );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+    const ExhibitionsData = (await getRandomExhibitions()).data.map(
+        (exhibition: randomExhibitionType) => JSON.stringify(exhibition),
+    ) as string[];
+
+    // const AuctionData = JSON.stringify((await getRandomAuctions()).data);
+    const AuctionsData = fakeRandomAuctions.map((auction: randomAuctionType) =>
+        JSON.stringify(auction),
+    );
+
+    return {
+        props: { ExhibitionsData, AuctionsData } as Props,
+    };
 };
 
 export default Home;

@@ -31,3 +31,10 @@ export const signIn = (code: string, strategy: string) => {
         },
     );
 };
+export const getRandomExhibitions = () => {
+    return axios.get(`${API_SERVER_URL}/exhibitions/random`);
+};
+
+export const getRandomAuctions = () => {
+    return axios.get(`${API_SERVER_URL}/art-works/random?status=onSale`);
+};
