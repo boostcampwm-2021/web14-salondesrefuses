@@ -2,7 +2,7 @@ import { Body, Controller, ParseIntPipe, Post, Res } from '@nestjs/common';
 import { AuthService } from '../service/auth.service';
 import { Response } from 'express';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { signInApiBody, signInApiOperation } from '../swagger';
+import { signInApiBody, signInApiOperation, signOutApiBody, signOutApiOperation } from '../swagger';
 
 @Controller('/auth')
 @ApiTags('인증 컨트롤러')
@@ -35,6 +35,8 @@ export class AuthController {
     }
 
     @Post('/signOut')
+    @ApiOperation(signOutApiOperation)
+    @ApiBody(signOutApiBody)
     async signOut(
         @Body('userId', ParseIntPipe) userId: number,
         @Res() res: Response
