@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserService } from '../../user/service/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../../user/user.entity';
+import { UpdateResult } from 'typeorm';
 import axios from 'axios';
 
 @Injectable()
@@ -28,10 +29,10 @@ export class AuthService {
         const userInfo = await axios.get(process.env.GOOGLE_USER_URL, {
             headers: { Authorization: `Bearer ${access_token}`}
         });
-        const { email } = userInfo.data;
+        const { email, name, picture } = userInfo.data;
 
-        const user = await this.userService.checkRegisteredUser(email, 'google');
-        return this.generateToken(user);
+        const user = await this.userService.checkRegisteredUser(email, name, picture, 'google');
+        return this.generateToken(user, 'google');
     }
 
     async signInWithKakao(code: string): Promise<{accessToken: string, refreshToken: string}> {
@@ -50,21 +51,27 @@ export class AuthService {
         const userInfo = await axios.get(process.env.KAKAO_USER_URL, {
             headers: { Authorization: `Bearer ${access_token}`}
         });
-        const { kakao_account }: {[key: string]: any} = userInfo.data;
+        const { email, profile } = userInfo.data.kakao_account;
 
-        const user = await this.userService.checkRegisteredUser(kakao_account.email, 'kakao');
-        return this.generateToken(user);
+        const user = await this.userService.checkRegisteredUser(email, profile.nickname, profile.profile_image_url, 'kakao');
+        return this.generateToken(user, 'kakao');
     }
 
-    generateToken(user: User): {accessToken: string, refreshToken: string} {
+    async generateToken(user: User, loginStrategy: string): Promise<{accessToken: string, refreshToken: string}> {
         const payload = {
-            userId: user.userId
+            userId: user.userId,
+            loginStrategy
         };
-        const accessToken = this.jwtService.sign(payload, { expiresIn: 60 * 60 });
-        const refreshToken = this.jwtService.sign(payload, { expiresIn: 60 * 60 * 24 * 7 });
+        const oneHour = 60 * 60, oneWeek = 60 * 60 * 24 * 7;
+        const accessToken = this.jwtService.sign(payload, { expiresIn: oneHour });
+        const refreshToken = this.jwtService.sign(payload, { expiresIn: oneWeek });
 
-        this.userService.updateUserToken(user.id, refreshToken);
+        await this.userService.updateUserToken(user.id, refreshToken);
         return { accessToken, refreshToken };
+    }
+
+    signOut(userId: number): Promise<UpdateResult> {
+        return this.userService.updateUserToken(userId, null);
     }
 
 }
