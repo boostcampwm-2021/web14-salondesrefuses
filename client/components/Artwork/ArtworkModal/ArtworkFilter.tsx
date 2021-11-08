@@ -8,34 +8,19 @@ const ArtworkFilter = ({
     checked: string;
     setChecked: React.Dispatch<string>;
 }) => {
-    const onClickArtwork = () => {
-        setChecked('artwork');
-    };
-    const onClickAuction = () => {
-        setChecked('auction');
-    };
+    const getColor = (checked: string) =>
+        checked === 'artwork'
+            ? '/icons/check_green.png'
+            : '/icons/check_grey.png';
+
     return (
         <Container>
-            <div onClick={onClickArtwork}>
-                <img
-                    src={
-                        checked === 'artwork'
-                            ? '/icons/check_green.png'
-                            : '/icons/check_grey.png'
-                    }
-                    alt="only art work"
-                />
+            <div onClick={() => setChecked('artwork')}>
+                <img src={getColor(checked)} alt="only art work" />
                 <span>Only Artwork</span>
             </div>
-            <div onClick={onClickAuction}>
-                <img
-                    src={
-                        checked === 'auction'
-                            ? '/icons/check_green.png'
-                            : '/icons/check_grey.png'
-                    }
-                    alt="also on auction"
-                />
+            <div onClick={() => setChecked('auction')}>
+                <img src={getColor(checked)} alt="also on auction" />
                 <span>Also On Auction</span>
             </div>
         </Container>
