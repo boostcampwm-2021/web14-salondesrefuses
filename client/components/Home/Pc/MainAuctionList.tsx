@@ -26,7 +26,7 @@ const MainAuctionList = ({ AuctionsData }: Props) => {
                         price: Number(auction.price),
                     };
                     return (
-                        <Link href={`/auction/${auction.id}`} key={idx}>
+                        <Link href={`/auction/${auction.id}`} key={auction.id}>
                             <Card width={'md'} content={cardAuction}></Card>
                         </Link>
                     );
