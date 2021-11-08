@@ -75,6 +75,7 @@ const Logo = styled.div`
     top: 20px;
     left: 20px;
     z-index: 500;
+    cursor: pointer;
 
     & img {
         height: 40px;
