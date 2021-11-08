@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
+
 import { Button, Center } from '@styles/common';
 import { AuctionCardProps } from '@const/card-type';
 import Card from '@components/Card';
+import { Filter } from 'pages/exhibition/style';
 
 const DUMMY_DATA: Array<AuctionCardProps> = [
     {
@@ -65,6 +67,18 @@ const DUMMY_DATA: Array<AuctionCardProps> = [
 ];
 
 const AuctionList = () => {
+    const [onSelect, setOnSelect] = useState('Popular');
+    const [auctionItems, setAuctionItems] = useState<AuctionCardProps[]>([]);
+    const [page, setPage] = useState(1);
+
+    useEffect(() => {
+        // TODO : 경매 아이템 리스트 가져오는 api 추가
+    }, [onSelect, page]);
+
+    const onClickFilter = ({ currentTarget }: React.MouseEvent) => {
+        setOnSelect(currentTarget.textContent || 'Newest');
+    };
+
     return (
         <Container>
             <Title>
@@ -73,6 +87,24 @@ const AuctionList = () => {
                     <BlackButton>Post Artwork</BlackButton>
                 </Link>
             </Title>
+            <FilterWrapper>
+                <div>
+                    <Filter
+                        onClick={onClickFilter}
+                        select={onSelect === 'Popular'}
+                    >
+                        Popular
+                    </Filter>
+                </div>
+                <div>
+                    <Filter
+                        onClick={onClickFilter}
+                        select={onSelect === 'Newest'}
+                    >
+                        Newest
+                    </Filter>
+                </div>
+            </FilterWrapper>
             <Grid>
                 {DUMMY_DATA.map((item) => {
                     return <Card width="lg" content={item} />;
@@ -94,7 +126,7 @@ const Title = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 
     & h1 {
         font: ${(props) => props.theme.font.textXl};
@@ -111,6 +143,31 @@ const Grid = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 50px;
+    margin-bottom: 45px;
+`;
+
+const FilterWrapper = styled.div`
+    margin-bottom: 50px;
+    align-self: flex-start;
+    display: flex;
+    justify-content: space-between;
+
+    & div {
+        border-left: 1px solid ${(props) => props.theme.color.placeholder};
+    }
+
+    & > div:first-of-type {
+        border: none;
+        & button {
+            margin-left: 0;
+            margin-right: 30px;
+        }
+    }
+
+    & button {
+        margin: 0 30px 0 30px;
+        box-sizing: content-box;
+    }
 `;
 
 export default AuctionList;
