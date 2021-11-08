@@ -28,6 +28,12 @@ export class AuctionDetailDTO {
     @ApiProperty()
     auctionHistories: AuctionHistory[];
 
+    @ApiProperty()
+    startAt: Date;
+
+    @ApiProperty()
+    endAt: Date;
+
     static from(auction: Auction): AuctionDetailDTO {
         const dto = new AuctionDetailDTO();
         dto.id = auction.id;
