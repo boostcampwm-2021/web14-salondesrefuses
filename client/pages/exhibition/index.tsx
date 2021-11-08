@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import type { NextPage } from 'next';
-import styled from '@emotion/styled';
-import { Button, SpaceBetween } from '@styles/common';
 import Layout from '@components/common/Layout';
 import { ExhibitionCardProps } from '@const/card-type';
 import Card from '@components/Card';
 import Link from 'next/link';
+import {
+    TopContainer,
+    FilterWrapper,
+    Filter,
+    Buttons,
+    BlackButton,
+    ExhibitionList,
+} from './style';
 
 const dummyExihibition: ExhibitionCardProps[] = [
     {
@@ -134,69 +140,8 @@ const ExhibitionPage: NextPage = () => {
     );
 };
 
-interface FilterProps {
+export interface FilterProps {
     select: boolean;
 }
-
-const TopContainer = styled.div`
-    display: flex;
-    width: 1180px;
-    margin: 45px 0;
-`;
-
-const FilterWrapper = styled.div`
-    ${SpaceBetween}
-
-    & > div {
-        border-left: 1px solid #a6a6a6;
-    }
-
-    & > div:first-of-type {
-        border-left: none;
-    }
-`;
-
-const Filter = styled.button<FilterProps>`
-    height: 30px;
-    margin: 0px 30px;
-    border: none;
-    background: none;
-
-    font: ${(props) => props.theme.font.textEnMd};
-    border-bottom: ${(props) =>
-        props.select ? `1px solid ${props.theme.color.primary}` : ''};
-    color: ${(props) =>
-        props.select
-            ? props.theme.color.primary
-            : props.theme.color.placeholder};
-    &:hover {
-        color: ${(props) => props.theme.color.primary};
-    }
-`;
-
-const Buttons = styled.div`
-    margin-left: auto;
-`;
-
-const BlackButton = styled(Button)`
-    color: black;
-    border-bottom: 1px solid black;
-    font: ${(props) => props.theme.font.textEnLg};
-
-    &:first-of-type {
-        margin-right: 25px;
-    }
-`;
-
-const ExhibitionList = styled.div`
-    ${SpaceBetween}
-    flex-wrap: wrap;
-
-    width: 1180px;
-
-    & > div {
-        margin-bottom: 45px;
-    }
-`;
 
 export default ExhibitionPage;
