@@ -4,6 +4,7 @@ import { UserRepository } from '../user.repository';
 import { ArtworkRepository } from '../../artwork/artwork.repository';
 import { Artwork } from '../../artwork/artwork.entity';
 import { User } from '../user.entity';
+import { UpdateResult } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -28,8 +29,8 @@ export class UserService {
         return user;
     }
 
-    async updateUserToken(id: number, refreshToken: string): Promise<void> {
-        await this.userRepository.update(id, { refreshToken });
+    updateUserToken(id: number, refreshToken: string): Promise<UpdateResult> {
+        return this.userRepository.update(id, { refreshToken });
     }
 
 }

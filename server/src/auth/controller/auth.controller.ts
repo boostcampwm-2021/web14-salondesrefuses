@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, ParseIntPipe, Post, Res } from '@nestjs/common';
 import { AuthService } from '../service/auth.service';
 import { Response } from 'express';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -18,7 +18,7 @@ export class AuthController {
         @Res() res: Response,
     ): Promise<void> {
         try {
-            let user = null;
+            let user;
             strategy === 'google'
                 ? user = await this.authService.signInWithGoogle(code)
                 : user = await this.authService.signInWithKakao(code);
@@ -33,4 +33,17 @@ export class AuthController {
             res.json(false);
         }
     }
+
+    @Post('/signOut')
+    async signOut(
+        @Body('userId', ParseIntPipe) userId: number,
+        @Res() res: Response
+    ): Promise<void> {
+        await this.authService.signOut(userId);
+
+        res.clearCookie('accessToken');
+        res.clearCookie('refreshToken');
+        res.end();
+    }
+
 }

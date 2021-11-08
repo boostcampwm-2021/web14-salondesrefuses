@@ -38,8 +38,8 @@ export class CustomAuthGuard extends AuthGuard('jwt') {
 
     async verifyToken(token: string): Promise<User> {
         try {
-            const { userId } = this.jwtService.verify(token);
-            return await this.userRepository.findOne({ userId });
+            const { userId, loginStrategy } = this.jwtService.verify(token);
+            return await this.userRepository.findOne({ userId, loginStrategy });
         } catch(err) {
             return null;
         }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserService } from '../../user/service/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../../user/user.entity';
+import { UpdateResult } from 'typeorm';
 import axios from 'axios';
 
 @Injectable()
@@ -31,7 +32,7 @@ export class AuthService {
         const { email, picture } = userInfo.data;
 
         const user = await this.userService.checkRegisteredUser(email, picture, 'google');
-        return this.generateToken(user);
+        return this.generateToken(user, 'google');
     }
 
     async signInWithKakao(code: string): Promise<{accessToken: string, refreshToken: string}> {
@@ -53,18 +54,23 @@ export class AuthService {
         const { email, profile } = userInfo.data.kakao_account;
 
         const user = await this.userService.checkRegisteredUser(email, profile.profile_image_url, 'kakao');
-        return this.generateToken(user);
+        return this.generateToken(user, 'kakao');
     }
 
-    generateToken(user: User): {accessToken: string, refreshToken: string} {
+    async generateToken(user: User, loginStrategy: string): Promise<{accessToken: string, refreshToken: string}> {
         const payload = {
-            userId: user.userId
+            userId: user.userId,
+            loginStrategy
         };
         const accessToken = this.jwtService.sign(payload, { expiresIn: 60 * 60 });
         const refreshToken = this.jwtService.sign(payload, { expiresIn: 60 * 60 * 24 * 7 });
 
-        this.userService.updateUserToken(user.id, refreshToken);
+        await this.userService.updateUserToken(user.id, refreshToken);
         return { accessToken, refreshToken };
+    }
+
+    signOut(userId: number): Promise<UpdateResult> {
+        return this.userService.updateUserToken(userId, null);
     }
 
 }
