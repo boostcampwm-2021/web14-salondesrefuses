@@ -4,31 +4,35 @@ import { AuctionHistory } from 'src/auctionHistory/auctionHistory.entity';
 import { Auction } from '../auction.entity';
 
 export class AuctionListItemDTO {
-    constructor(auction: Auction) {
-        this.id = auction.id;
-        this.artwork = auction.artwork;
-    }
-
     @ApiProperty()
     id: number;
 
     @ApiProperty()
     artwork: Artwork;
+
+    static from(auction: Auction): AuctionListItemDTO {
+        const dto = new AuctionListItemDTO();
+        dto.id = auction.id;
+        dto.artwork = auction.artwork;
+        return dto;
+    }
 }
 
 export class AuctionDetailDTO {
-    constructor(auction: Auction) {
-        this.id = auction.id;
-        this.artowrk = auction.artwork;
-        this.auctionHistories = auction.auctionHistories;
-    }
-
     @ApiProperty()
     id: number;
 
     @ApiProperty()
-    artowrk: Artwork;
+    artwork: Artwork;
 
     @ApiProperty()
     auctionHistories: AuctionHistory[];
+
+    static from(auction: Auction): AuctionDetailDTO {
+        const dto = new AuctionDetailDTO();
+        dto.id = auction.id;
+        dto.artwork = auction.artwork;
+        dto.auctionHistories = auction.auctionHistories;
+        return dto;
+    }
 }

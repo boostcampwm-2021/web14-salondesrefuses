@@ -12,7 +12,7 @@ export default class AuctionService {
                 page,
             );
 
-        return auctions.map(auction => new AuctionListItemDTO(auction));
+        return auctions.map(auction => AuctionListItemDTO.from(auction));
     }
 
     async getAuctionDetail(auctionId: number): Promise<AuctionDetailDTO> {
@@ -21,6 +21,6 @@ export default class AuctionService {
                 auctionId,
             );
 
-        return new AuctionDetailDTO(auction);
+        return AuctionDetailDTO.from(auction);
     }
 }
