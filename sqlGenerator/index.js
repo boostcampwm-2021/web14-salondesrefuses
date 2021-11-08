@@ -4,7 +4,7 @@ const { randomInt } = require("crypto");
 
 const MAX = 99999;
 
-const schemaName = "salon";
+const schemaName = process.argv[2];
 const strategy = ["google", "kakao"];
 
 const types = ["사진", "그림", "디지털 아트"];
