@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { NextPage } from 'next';
+
 import Layout from '@components/common/Layout';
 import { ExhibitionCardProps } from '@const/card-type';
 import Card from '@components/Card';
@@ -12,7 +13,7 @@ import {
     BlackButton,
     ExhibitionList,
 } from './style';
-
+import { getExhibitions } from '@utils/networking';
 const dummyExihibition: ExhibitionCardProps[] = [
     {
         id: 1,
@@ -84,6 +85,14 @@ const dummyExihibition: ExhibitionCardProps[] = [
 
 const ExhibitionPage: NextPage = () => {
     const [onSelect, setOnSelect] = useState<string>('Newest');
+    const [exhibitions, setExhibitions] = useState<ExhibitionCardProps[]>([]);
+    const [page, setPage] = useState(1);
+
+    useEffect(() => {
+        getExhibitions(onSelect.toLowerCase(), page).then((res) =>
+            setExhibitions([...exhibitions, ...res.data]),
+        );
+    }, [onSelect, page]);
 
     const onSelectFilter = ({ currentTarget }: React.MouseEvent) => {
         setOnSelect(currentTarget.textContent || 'Newest');
