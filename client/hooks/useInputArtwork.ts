@@ -38,8 +38,12 @@ const useInputArtwork = (image: File) => {
         setTypeInput((e.target as HTMLInputElement).value);
     };
 
+    const handleModalInput = (data: { [key: string]: string }) => {
+        setModalInputData(data);
+    };
+
     return {
-        setModalInputData,
+        handleModalInput,
         onChangeTitleInput,
         onChangeTypeInput,
         titleInput,
