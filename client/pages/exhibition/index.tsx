@@ -87,24 +87,30 @@ const ExhibitionPage: NextPage = () => {
         <Layout>
             <TopContainer>
                 <FilterWrapper>
-                    <Filter
-                        select={onSelect === 'Newest'}
-                        onClick={onSelectFilter}
-                    >
-                        Newest
-                    </Filter>
-                    <Filter
-                        select={onSelect === 'Popular'}
-                        onClick={onSelectFilter}
-                    >
-                        Popular
-                    </Filter>
-                    <Filter
-                        select={onSelect === 'Deadline'}
-                        onClick={onSelectFilter}
-                    >
-                        Deadline
-                    </Filter>
+                    <div>
+                        <Filter
+                            select={onSelect === 'Newest'}
+                            onClick={onSelectFilter}
+                        >
+                            Newest
+                        </Filter>
+                    </div>
+                    <div>
+                        <Filter
+                            select={onSelect === 'Popular'}
+                            onClick={onSelectFilter}
+                        >
+                            Popular
+                        </Filter>
+                    </div>
+                    <div>
+                        <Filter
+                            select={onSelect === 'Deadline'}
+                            onClick={onSelectFilter}
+                        >
+                            Deadline
+                        </Filter>
+                    </div>
                 </FilterWrapper>
 
                 <Buttons>
@@ -140,22 +146,31 @@ const TopContainer = styled.div`
 
 const FilterWrapper = styled.div`
     ${SpaceBetween}
+
+    & > div {
+        border-left: 1px solid #a6a6a6;
+    }
+
+    & > div:first-of-type {
+        border-left: none;
+    }
 `;
 
 const Filter = styled.button<FilterProps>`
     height: 30px;
-    padding: 0px 30px;
+    margin: 0px 30px;
     border: none;
-    border-left: 1px solid #a6a6a6;
-
-    font: ${(props) =>
-        props.select ? props.theme.font.textEnLg : props.theme.font.textEnMd};
-    color: ${(props) => (props.select ? props.theme.color.primary : '#757575')};
-
     background: none;
 
-    &:first-of-type {
-        border-left: none;
+    font: ${(props) => props.theme.font.textEnMd};
+    border-bottom: ${(props) =>
+        props.select ? `1px solid ${props.theme.color.primary}` : ''};
+    color: ${(props) =>
+        props.select
+            ? props.theme.color.primary
+            : props.theme.color.placeholder};
+    &:hover {
+        color: ${(props) => props.theme.color.primary};
     }
 `;
 
