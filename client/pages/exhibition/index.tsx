@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import type { NextPage } from 'next';
+import Link from 'next/link';
 
 import Layout from '@components/common/Layout';
-import { ExhibitionCardProps } from '@const/card-type';
 import Card from '@components/Card';
-import Link from 'next/link';
 import {
     TopContainer,
     FilterWrapper,
@@ -13,75 +12,76 @@ import {
     BlackButton,
     ExhibitionList,
 } from './style';
+import { ExhibitionCardProps } from '@const/card-type';
 import { getExhibitions } from '@utils/networking';
-const dummyExihibition: ExhibitionCardProps[] = [
-    {
-        id: 1,
-        title: '제목',
-        description: '설명',
-        artist: '작가',
-        imgSrc: 'https://lh3.googleusercontent.com/BS-RVzJM5otwbPEtfNwM2uQY0n8hc37CNGiSLVGHKrlZzZej3flmJ1GlzYD7gWzGXYzuvtU053yfPYPyEcAFzsB5OdRBw0Ruyy0u=w600',
-        category: '사진',
-        theme: '부스트캠프',
-        artCount: 3,
-        isSale: true,
-    },
-    {
-        id: 2,
-        title: '제목',
-        description: '설명',
-        artist: '작가',
-        imgSrc: 'https://lh3.googleusercontent.com/d2Df1yJtBUGvtcU85joQlgmAYkfNgOzY5rx6FbplJ91xvLbBiPmIt5qRlQBtSHkh2lKfAQuUVE4k2m34sywuwT-DZXKPRYoZfdiFlA=w600',
-        category: '사진',
-        theme: '부스트캠프',
-        artCount: 3,
-        isSale: true,
-    },
-    {
-        id: 3,
-        title: '제목',
-        description: '설명',
-        artist: '작가',
-        imgSrc: 'https://lh3.googleusercontent.com/O7OdPM5UVc97cWRDvGIHg8hTqireb0YTA7ocwpz8fvWb4xgrFFt5x391saO27hzp0PwLRcTseEPLSgolpYQNgRWm8egseUI_33fZOg=w600',
-        category: '사진',
-        theme: '부스트캠프',
-        artCount: 3,
-        isSale: true,
-    },
-    {
-        id: 4,
-        title: '제목',
-        description: '설명',
-        artist: '작가',
-        imgSrc: 'https://lh3.googleusercontent.com/BS-RVzJM5otwbPEtfNwM2uQY0n8hc37CNGiSLVGHKrlZzZej3flmJ1GlzYD7gWzGXYzuvtU053yfPYPyEcAFzsB5OdRBw0Ruyy0u=w600',
-        category: '사진',
-        theme: '부스트캠프',
-        artCount: 3,
-        isSale: true,
-    },
-    {
-        id: 5,
-        title: '제목',
-        description: '설명',
-        artist: '작가',
-        imgSrc: 'https://lh3.googleusercontent.com/d2Df1yJtBUGvtcU85joQlgmAYkfNgOzY5rx6FbplJ91xvLbBiPmIt5qRlQBtSHkh2lKfAQuUVE4k2m34sywuwT-DZXKPRYoZfdiFlA=w600',
-        category: '사진',
-        theme: '부스트캠프',
-        artCount: 3,
-        isSale: true,
-    },
-    {
-        id: 6,
-        title: '제목',
-        description: '설명',
-        artist: '작가',
-        imgSrc: 'https://lh3.googleusercontent.com/O7OdPM5UVc97cWRDvGIHg8hTqireb0YTA7ocwpz8fvWb4xgrFFt5x391saO27hzp0PwLRcTseEPLSgolpYQNgRWm8egseUI_33fZOg=w600',
-        category: '사진',
-        theme: '부스트캠프',
-        artCount: 3,
-        isSale: true,
-    },
-];
+// const dummyExihibition: ExhibitionCardProps[] = [
+//     {
+//         id: 1,
+//         title: '제목',
+//         description: '설명',
+//         artist: '작가',
+//         imgSrc: 'https://lh3.googleusercontent.com/BS-RVzJM5otwbPEtfNwM2uQY0n8hc37CNGiSLVGHKrlZzZej3flmJ1GlzYD7gWzGXYzuvtU053yfPYPyEcAFzsB5OdRBw0Ruyy0u=w600',
+//         category: '사진',
+//         theme: '부스트캠프',
+//         artCount: 3,
+//         isSale: true,
+//     },
+//     {
+//         id: 2,
+//         title: '제목',
+//         description: '설명',
+//         artist: '작가',
+//         imgSrc: 'https://lh3.googleusercontent.com/d2Df1yJtBUGvtcU85joQlgmAYkfNgOzY5rx6FbplJ91xvLbBiPmIt5qRlQBtSHkh2lKfAQuUVE4k2m34sywuwT-DZXKPRYoZfdiFlA=w600',
+//         category: '사진',
+//         theme: '부스트캠프',
+//         artCount: 3,
+//         isSale: true,
+//     },
+//     {
+//         id: 3,
+//         title: '제목',
+//         description: '설명',
+//         artist: '작가',
+//         imgSrc: 'https://lh3.googleusercontent.com/O7OdPM5UVc97cWRDvGIHg8hTqireb0YTA7ocwpz8fvWb4xgrFFt5x391saO27hzp0PwLRcTseEPLSgolpYQNgRWm8egseUI_33fZOg=w600',
+//         category: '사진',
+//         theme: '부스트캠프',
+//         artCount: 3,
+//         isSale: true,
+//     },
+//     {
+//         id: 4,
+//         title: '제목',
+//         description: '설명',
+//         artist: '작가',
+//         imgSrc: 'https://lh3.googleusercontent.com/BS-RVzJM5otwbPEtfNwM2uQY0n8hc37CNGiSLVGHKrlZzZej3flmJ1GlzYD7gWzGXYzuvtU053yfPYPyEcAFzsB5OdRBw0Ruyy0u=w600',
+//         category: '사진',
+//         theme: '부스트캠프',
+//         artCount: 3,
+//         isSale: true,
+//     },
+//     {
+//         id: 5,
+//         title: '제목',
+//         description: '설명',
+//         artist: '작가',
+//         imgSrc: 'https://lh3.googleusercontent.com/d2Df1yJtBUGvtcU85joQlgmAYkfNgOzY5rx6FbplJ91xvLbBiPmIt5qRlQBtSHkh2lKfAQuUVE4k2m34sywuwT-DZXKPRYoZfdiFlA=w600',
+//         category: '사진',
+//         theme: '부스트캠프',
+//         artCount: 3,
+//         isSale: true,
+//     },
+//     {
+//         id: 6,
+//         title: '제목',
+//         description: '설명',
+//         artist: '작가',
+//         imgSrc: 'https://lh3.googleusercontent.com/O7OdPM5UVc97cWRDvGIHg8hTqireb0YTA7ocwpz8fvWb4xgrFFt5x391saO27hzp0PwLRcTseEPLSgolpYQNgRWm8egseUI_33fZOg=w600',
+//         category: '사진',
+//         theme: '부스트캠프',
+//         artCount: 3,
+//         isSale: true,
+//     },
+// ];
 
 const ExhibitionPage: NextPage = () => {
     const [onSelect, setOnSelect] = useState<string>('Newest');
@@ -94,7 +94,7 @@ const ExhibitionPage: NextPage = () => {
         );
     }, [onSelect, page]);
 
-    const onSelectFilter = ({ currentTarget }: React.MouseEvent) => {
+    const onClickFilter = ({ currentTarget }: React.MouseEvent) => {
         setOnSelect(currentTarget.textContent || 'Newest');
     };
 
@@ -105,7 +105,7 @@ const ExhibitionPage: NextPage = () => {
                     <div>
                         <Filter
                             select={onSelect === 'Newest'}
-                            onClick={onSelectFilter}
+                            onClick={onClickFilter}
                         >
                             Newest
                         </Filter>
@@ -113,7 +113,7 @@ const ExhibitionPage: NextPage = () => {
                     <div>
                         <Filter
                             select={onSelect === 'Popular'}
-                            onClick={onSelectFilter}
+                            onClick={onClickFilter}
                         >
                             Popular
                         </Filter>
@@ -121,7 +121,7 @@ const ExhibitionPage: NextPage = () => {
                     <div>
                         <Filter
                             select={onSelect === 'Deadline'}
-                            onClick={onSelectFilter}
+                            onClick={onClickFilter}
                         >
                             Deadline
                         </Filter>
@@ -137,7 +137,7 @@ const ExhibitionPage: NextPage = () => {
             </TopContainer>
 
             <ExhibitionList>
-                {dummyExihibition.map((exihibition) => (
+                {exhibitions.map((exihibition) => (
                     <Card
                         key={exihibition.id}
                         width="lg"
