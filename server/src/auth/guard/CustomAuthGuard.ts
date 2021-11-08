@@ -10,7 +10,7 @@ export class CustomAuthGuard extends AuthGuard('jwt') {
     constructor(
         private jwtService: JwtService,
         @InjectRepository(UserRepository)
-        private readonly userRepository: UserRepository
+        private readonly userRepository: UserRepository,
     ) {
         super();
     }
@@ -22,16 +22,22 @@ export class CustomAuthGuard extends AuthGuard('jwt') {
         const { accessToken, refreshToken } = request.cookies;
 
         const verifiedAccessToken = await this.verifyToken(accessToken);
-        if(verifiedAccessToken) return true;
+        if (verifiedAccessToken) {
+            request.user = verifiedAccessToken;
+            return true;
+        }
 
         const verifiedRefreshToken = await this.verifyToken(refreshToken);
-        if(!verifiedRefreshToken) {
+        if (!verifiedRefreshToken) {
             throw new UnauthorizedException('Refresh token is not valid');
         }
 
+        request.user = verifiedRefreshToken;
         const { userId } = verifiedRefreshToken;
         const newAccessToken = this.jwtService.sign({ userId }, { expiresIn: 60 * 60 });
-        response.cookie('accessToken', newAccessToken, { maxAge: 1000 * 60 * 60 });
+        response.cookie('accessToken', newAccessToken, {
+            maxAge: 1000 * 60 * 60,
+        });
 
         return true;
     }
@@ -40,9 +46,8 @@ export class CustomAuthGuard extends AuthGuard('jwt') {
         try {
             const { userId, loginStrategy } = this.jwtService.verify(token);
             return await this.userRepository.findOne({ userId, loginStrategy });
-        } catch(err) {
+        } catch (err) {
             return null;
         }
     }
-
 }
