@@ -4,6 +4,7 @@ import { UserRepository } from '../user.repository';
 import { ArtworkRepository } from '../../artwork/artwork.repository';
 import { Artwork } from '../../artwork/artwork.entity';
 import { User } from '../user.entity';
+import { UpdateResult } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -18,18 +19,18 @@ export class UserService {
         return this.artworkRepository.getAllUsersArtworks(userId);
     }
 
-    async checkRegisteredUser(userId: string, loginStrategy: string): Promise<User> {
+    async checkRegisteredUser(userId: string, name:string, avatar: string, loginStrategy: string): Promise<User> {
         let user = await this.userRepository.findOne({ userId, loginStrategy });
 
         if(!user) {
-            user = await this.userRepository.createUser(userId, loginStrategy);
+            user = await this.userRepository.createUser(userId, name, avatar, loginStrategy);
         }
 
         return user;
     }
 
-    async updateUserToken(id: number, refreshToken: string): Promise<void> {
-        await this.userRepository.update(id, { refreshToken });
+    updateUserToken(id: number, refreshToken: string): Promise<UpdateResult> {
+        return this.userRepository.update(id, { refreshToken });
     }
 
 }

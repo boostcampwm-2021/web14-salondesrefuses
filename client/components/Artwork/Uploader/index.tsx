@@ -54,6 +54,7 @@ const FileInput = styled.div`
     height: 100px;
     border: 1px dashed black;
     margin-bottom: 20px;
+    cursor: pointer;
 
     & > input {
         position: absolute;

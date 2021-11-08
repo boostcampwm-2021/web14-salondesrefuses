@@ -47,10 +47,11 @@ export const BlurFull = styled.div`
     @keyframes growblur {
         0% {
             backdrop-filter: blur(4px);
+            background: rgba(0, 0, 0, 0);
         }
         100% {
             backdrop-filter: blur(20px);
-            box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.4);
         }
     }
 `;

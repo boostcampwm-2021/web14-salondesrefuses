@@ -52,8 +52,7 @@ export const Form = styled.div`
     }
 
     & span {
-        font-size: 24px;
-        font-weight: 200;
+        font: ${(props) => props.theme.font.textEnMd};
         color: white;
     }
 `;
@@ -61,6 +60,7 @@ export const LightForm = styled(Form)`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    position: relative;
 
     & input {
         border-radius: 8px;
@@ -73,6 +73,38 @@ export const LightForm = styled(Form)`
 
         &: focus {
             outline: none;
+        }
+    }
+
+    & p {
+        position: absolute;
+        right: 10px;
+        font: ${(props) => props.theme.font.textEnSm};
+        font-size: 14px;
+        color: red;
+    }
+
+    & > div {
+        width: 80%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+        font: ${(props) => props.theme.font.textEnMd};
+
+        & input {
+            width: 90%;
+        }
+
+        & div {
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+
+            & > p {
+                right: 12%;
+            }
         }
     }
 `;

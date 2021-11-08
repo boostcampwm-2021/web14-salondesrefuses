@@ -23,6 +23,7 @@ const AuctionCardGenerator = ({ auction }: { auction: randomAuctionType }) => {
     };
     return <Card width={'md'} content={cardAuction} key={auction.id}></Card>;
 };
+
 const MainAuctionList = ({ AuctionsData }: Props) => {
     return (
         <AuctionContainer>
