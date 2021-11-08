@@ -13,7 +13,10 @@ const useInputArtwork = (image: File) => {
 
     const onClickDone = async () => {
         const formData = new FormData();
-        formData.append('title', titleInput);
+        formData.append(
+            'title',
+            titleInput.length === 0 ? 'Untitled' : titleInput,
+        );
         formData.append('type', typeInput);
         formData.append('description', modalInputData['description']);
         formData.append('year', modalInputData['year']);
