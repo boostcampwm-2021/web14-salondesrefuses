@@ -33,7 +33,13 @@ const ExhibitionPage: NextPage = () => {
         getExhibitions(onSelect.toLowerCase(), page).then((res) =>
             setExhibitions([...exhibitions, ...res.data]),
         );
-    }, [onSelect, page]);
+    }, [page]);
+
+    useEffect(() => {
+        getExhibitions(onSelect.toLowerCase(), page).then((res) =>
+            setExhibitions(res.data),
+        );
+    }, [onSelect]);
 
     const onClickFilter = ({ currentTarget }: React.MouseEvent) => {
         setOnSelect(currentTarget.textContent || 'Newest');

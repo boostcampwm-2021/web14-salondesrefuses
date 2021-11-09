@@ -23,9 +23,15 @@ const AuctionList = () => {
 
     useEffect(() => {
         getAuctions(onSelect.toLowerCase(), page).then((res) =>
+            setAuctionItems([...auctionItems, ...res.data]),
+        );
+    }, [page]);
+
+    useEffect(() => {
+        getAuctions(onSelect.toLowerCase(), page).then((res) =>
             setAuctionItems(res.data),
         );
-    }, [onSelect, page]);
+    }, [onSelect]);
 
     const onClickFilter = ({ currentTarget }: React.MouseEvent) => {
         setOnSelect(currentTarget.textContent || 'Newest');
