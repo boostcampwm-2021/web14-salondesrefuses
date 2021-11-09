@@ -3,14 +3,14 @@ import {
     Controller,
     HttpCode,
     Post,
+    Req,
     UploadedFile,
     UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateArtworkDTO } from '../dto/artworkDTOs';
+import { CreateArtworkDTO, NewArtworkDTO } from '../dto/artworkDTOs';
 import { ArtworkService } from '../service/artwork.service';
-import { Artwork } from '../artwork.entity';
 import { CustomAuthGuard } from '../../auth/guard/CustomAuthGuard';
 import {
     ApiBody,
@@ -20,6 +20,7 @@ import {
     ApiTags,
 } from '@nestjs/swagger';
 import { createArtWorkApiOperation, createArtworkApiBody } from '../swagger';
+import { User } from 'src/user/user.entity';
 
 @Controller('artworks')
 @ApiTags('작품 컨트롤러')
@@ -33,11 +34,12 @@ export class ArtworkController {
     @ApiConsumes('multipart/form-data')
     @ApiOperation(createArtWorkApiOperation)
     @ApiBody(createArtworkApiBody)
-    @ApiResponse({ type: Artwork })
+    @ApiResponse({ type: NewArtworkDTO })
     postArtWork(
         @UploadedFile() file: Express.Multer.File,
         @Body() body: CreateArtworkDTO,
-    ): Promise<Artwork> {
-        return this.artworkService.createArtWork(file, body);
+        @Req() req: Express.Request & { user: User },
+    ): Promise<NewArtworkDTO> {
+        return this.artworkService.createArtWork(file, body, req.user);
     }
 }
