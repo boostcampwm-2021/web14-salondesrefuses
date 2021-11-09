@@ -12,6 +12,10 @@ const useControlModalPosition = () => {
         if (e.deltaY > 30) setModalPositionBottom('10vh');
     };
 
+    const handleModalPosition = (bottom: string) => {
+        setModalPositionBottom(bottom);
+    };
+
     useEffect(() => {
         document.body.style.overflow = 'hidden';
         document.addEventListener('wheel', onWheelModal);
@@ -21,7 +25,7 @@ const useControlModalPosition = () => {
         };
     }, []);
 
-    return { modalPositionBottom, setModalPositionBottom };
+    return { modalPositionBottom, handleModalPosition };
 };
 
 export default useControlModalPosition;
