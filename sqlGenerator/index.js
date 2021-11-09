@@ -32,7 +32,7 @@ function user(number) {
   let result = ["\n-- user sql"];
   for (let i = 0; i < number; i++) {
     result.push(`INSERT INTO \`${schemaName}\`.\`user\` 
-        (\`id\`, \`user_id\`, \`nickname\`, \`sns_id\`, \`description\`, \`avatar\`, \`refresh_token\`, \`login_strategy\`) 
+        (\`id\`, \`user_id\`, \`name\`, \`sns_id\`, \`description\`, \`avatar\`, \`refresh_token\`, \`login_strategy\`) 
         VALUES ('${
           i + 1
         }', '${faker.internet.email()}', '${faker.internet.userName()}', '${faker.lorem.sentence()}', '${faker.lorem.sentence()}', '${faker.internet.avatar()}', '${faker.lorem.sentence()}', '${
@@ -96,10 +96,10 @@ function acution(number) {
     isAuctionSelect.delete(artworkIndex - 1);
 
     result.push(`INSERT INTO \`${schemaName}\`.\`auction\`  
-        (\`id\`, \`start_at\`, \`seller_id\`, \`artwork_id\`) 
+        (\`id\`, \`start_at\`, \`end_at\` \`seller_id\`, \`artwork_id\`) 
         VALUES ('${i + 1}', CURRENT_DATE, CURRENT_DATE + ${
       randomInt(10) + 1
-    }, '${userIndex}');
+    }, '${userIndex}', '${artworkIndex}');
         `);
     result.push(
       `UPDATE \`${schemaName}\`.\`artwork\` SET \`status\` = 'InBid' WHERE (\`id\` = '${artworkIndex}');`
