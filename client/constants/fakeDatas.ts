@@ -16,7 +16,7 @@ export interface randomExhibitionType {
     description: string;
     startedAt: Date;
     endAt: Date;
-    imgSrc: string;
+    thumbnailImage: string;
 }
 
 export const fakeRandomExhibitions: randomExhibitionType[] = [
@@ -28,7 +28,7 @@ export const fakeRandomExhibitions: randomExhibitionType[] = [
             '족두리봉이 왜 족두리봉이냐하면, 처음엔 관악산의 정기였어요. 그런데 관악산이 너무 재미가 없잖아요 그래서 더 찾아봤지요. 족두리봉! 바로 눈에 들어왔어요. 북한산의 족두리봉..... 세상은 그 이름을 기억해야 할 것입니다...',
         startedAt: new Date(),
         endAt: new Date(),
-        imgSrc: Fake1.src,
+        thumbnailImage: Fake1.src,
     },
     {
         id: 2,
@@ -38,7 +38,7 @@ export const fakeRandomExhibitions: randomExhibitionType[] = [
             "In 2001, Campbell joined Tottenham's North London rivals Arsenal on a free transfer, and as a result has remained a deeply unpopular figure amongst Spurs supporters.",
         startedAt: new Date(),
         endAt: new Date(),
-        imgSrc: Fake2.src,
+        thumbnailImage: Fake2.src,
     },
     {
         id: 3,
@@ -48,7 +48,7 @@ export const fakeRandomExhibitions: randomExhibitionType[] = [
             "In 2001, Campbell joined Tottenham's North London rivals Arsenal on a free transfer, and as a result has remained a deeply unpopular figure amongst Spurs supporters.",
         startedAt: new Date(),
         endAt: new Date(),
-        imgSrc: Fake3.src,
+        thumbnailImage: Fake3.src,
     },
     {
         id: 4,
@@ -58,7 +58,7 @@ export const fakeRandomExhibitions: randomExhibitionType[] = [
             "In 2001, Campbell joined Tottenham's North London rivals Arsenal on a free transfer, and as a result has remained a deeply unpopular figure amongst Spurs supporters.",
         startedAt: new Date(),
         endAt: new Date(),
-        imgSrc: Fake4.src,
+        thumbnailImage: Fake4.src,
     },
     {
         id: 5,
@@ -68,7 +68,7 @@ export const fakeRandomExhibitions: randomExhibitionType[] = [
             "In 2001, Campbell joined Tottenham's North London rivals Arsenal on a free transfer, and as a result has remained a deeply unpopular figure amongst Spurs supporters.",
         startedAt: new Date(),
         endAt: new Date(),
-        imgSrc: Fake5.src,
+        thumbnailImage: Fake5.src,
     },
 ];
 

@@ -79,6 +79,7 @@ const AuctionForm = ({ content, isHovered }: AuctionFormProps) => {
 const Card = ({ width, content }: Props) => {
     const isExhibition = content.hasOwnProperty('isSale');
     const [isHovered, setIsHovered] = useState(false);
+    console.log(content);
 
     return (
         <Link
@@ -89,7 +90,7 @@ const Card = ({ width, content }: Props) => {
             }
         >
             <CardContainer
-                imgSrc={content.imgSrc}
+                imgSrc={content.thumbnailImage}
                 width={CardSize[width]}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}

@@ -29,7 +29,7 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
 
     useEffect(() => {
         ExhibitionsData.map((exhibition, i) => {
-            setColorFromImage(exhibition.imgSrc).then((value) =>
+            setColorFromImage(exhibition.thumbnailImage).then((value) =>
                 setColorList((colorList) => {
                     let tmp = [...colorList];
                     tmp[i] = value;
@@ -52,7 +52,7 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
                     {ExhibitionsData.map((exhibition, i) => {
                         return (
                             <CarouselContent
-                                imgSrc={exhibition.imgSrc}
+                                imgSrc={exhibition.thumbnailImage}
                                 key={exhibition.id}
                             >
                                 <Title isBlack={colorList[i]}>
@@ -62,7 +62,7 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
                                     <ExhibitionContainer>
                                         <StyledImage>
                                             <img
-                                                src={exhibition.imgSrc}
+                                                src={exhibition.thumbnailImage}
                                                 alt="exhibition_id"
                                             />
                                         </StyledImage>

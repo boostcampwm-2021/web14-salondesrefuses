@@ -11,6 +11,7 @@ const getAvgColor = (imgSrc: string) => {
     const context = canvas.getContext('2d');
     const img = new Image();
     img.src = imgSrc;
+    img.setAttribute('crossOrigin', '');
     const blockSize = 5;
     const rgb: rgbType = { r: 0, g: 0, b: 0 };
     let i = 0;

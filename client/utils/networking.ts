@@ -37,7 +37,6 @@ export const getRandomExhibitions = () => {
 };
 
 export const getExhibitions = (filter: string, page: number) => {
-    console.log(`${API_SERVER_URL}/exhibitions/${filter}?page=${page}`);
     return axios.get(`${API_SERVER_URL}/exhibitions/${filter}?page=${page}`);
 };
 

@@ -69,12 +69,8 @@ const ExhibitionPage: NextPage = () => {
             </TopContainer>
 
             <ExhibitionList>
-                {exhibitions.map((exihibition) => (
-                    <Card
-                        key={exihibition.id}
-                        width="lg"
-                        content={exihibition}
-                    />
+                {exhibitions.map((exihibition, idx) => (
+                    <Card key={idx} width="lg" content={exihibition} />
                 ))}
             </ExhibitionList>
         </Layout>
