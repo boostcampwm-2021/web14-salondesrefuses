@@ -18,6 +18,8 @@ export class CustomAuthGuard extends AuthGuard('jwt') {
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = context.switchToHttp().getRequest();
         const response = context.switchToHttp().getResponse();
+        const jwtOneHour = 60 * 60,
+            cookieOneHour = 1000 * 60 * 60;
 
         const { accessToken, refreshToken } = request.cookies;
 
@@ -33,10 +35,10 @@ export class CustomAuthGuard extends AuthGuard('jwt') {
         }
 
         request.user = verifiedRefreshToken;
-        const { userId } = verifiedRefreshToken;
-        const newAccessToken = this.jwtService.sign({ userId }, { expiresIn: 60 * 60 });
+        const { userId, loginStrategy } = verifiedRefreshToken;
+        const newAccessToken = this.jwtService.sign({ userId, loginStrategy }, { expiresIn: jwtOneHour });
         response.cookie('accessToken', newAccessToken, {
-            maxAge: 1000 * 60 * 60,
+            maxAge: cookieOneHour,
         });
 
         return true;
