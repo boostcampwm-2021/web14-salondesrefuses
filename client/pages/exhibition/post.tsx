@@ -1,7 +1,8 @@
+import Editor from '@components/Exhibition/Editor';
 import React from 'react';
 
 const ExhibitionPostPage = () => {
-    return <div></div>;
+    return <Editor></Editor>;
 };
 
 export default ExhibitionPostPage;

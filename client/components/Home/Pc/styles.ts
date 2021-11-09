@@ -18,7 +18,7 @@ export const CarouselSlider = styled(Slider)`
     height: 100%;
 
     & > div {
-        height: 100%;더했습
+        height: 100%;
         width: 100%;
     }
     .slick-slice div {
