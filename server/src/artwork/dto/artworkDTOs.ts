@@ -32,9 +32,11 @@ export class NewArtworkDTO {
 }
 
 export class InterestRequestDTO {
+    @IsNotEmpty()
     @ApiProperty()
     artworkId: string;
 
+    @IsNotEmpty()
     @ApiProperty()
     isInterest: string;
 }

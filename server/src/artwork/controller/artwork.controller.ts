@@ -47,6 +47,7 @@ export class ArtworkController {
 
     @Post('/interest')
     @UseGuards(CustomAuthGuard)
+    @UsePipes(ValidationPipe)
     @ApiOperation(interestApiOperation)
     @ApiBody({ type: InterestArtwork })
     @ApiResponse({ type: Boolean })
