@@ -8,65 +8,6 @@ import Card from '@components/Card';
 import { Filter } from '@components/Exhibition/style';
 import { getAuctions } from '@utils/networking';
 
-const DUMMY_DATA: Array<AuctionCardProps> = [
-    {
-        title: 'test',
-        description: 'this is description',
-        artist: 'imnotmoon',
-        imgSrc: 'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg',
-        price: 1.23,
-        id: 2,
-    },
-    {
-        title: 'test',
-        description: 'this is description',
-        artist: 'imnotmoon',
-        imgSrc: 'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg',
-        price: 1.23,
-        id: 3,
-    },
-    {
-        title: 'test',
-        description: 'this is description',
-        artist: 'imnotmoon',
-        imgSrc: 'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg',
-        price: 1.23,
-        id: 4,
-    },
-    {
-        title: 'test',
-        description: 'this is description',
-        artist: 'imnotmoon',
-        imgSrc: 'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg',
-        price: 1.23,
-        id: 5,
-    },
-    {
-        title: 'test',
-        description: 'this is description',
-        artist: 'imnotmoon',
-        imgSrc: 'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg',
-        price: 1.23,
-        id: 1,
-    },
-    {
-        title: 'test',
-        description: 'this is description',
-        artist: 'imnotmoon',
-        imgSrc: 'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg',
-        price: 1.23,
-        id: 2,
-    },
-    {
-        title: 'test',
-        description: 'this is description',
-        artist: 'imnotmoon',
-        imgSrc: 'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg',
-        price: 1.23,
-        id: 2,
-    },
-];
-
 const AuctionList = () => {
     const [onSelect, setOnSelect] = useState('Popular');
     const [auctionItems, setAuctionItems] = useState<AuctionCardProps[]>([]);
@@ -116,7 +57,7 @@ const AuctionList = () => {
             <h1>지금 판매중인 작품</h1>
             <Grid>
                 {auctionItems.map((item) => {
-                    return <Card width="lg" content={item} />;
+                    return <Card width="lg" content={item} key={item.id} />;
                 })}
             </Grid>
         </Container>

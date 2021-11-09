@@ -16,6 +16,9 @@ export interface AuctionCardProps {
     imgSrc: string;
     price?: number;
     id: number;
+    exhibitionId?: null | number;
+    status: string;
+    type: string;
 }
 export const CardSize = {
     md: 300,
