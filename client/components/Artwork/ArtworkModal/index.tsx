@@ -32,7 +32,7 @@ const ArtworkModal = ({
             bidEnd,
             checked,
         });
-        handleModalPosition('-59vh');
+        handleModalPosition('-560px');
     };
 
     return (

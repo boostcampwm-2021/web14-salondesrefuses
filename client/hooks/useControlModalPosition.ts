@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 const useControlModalPosition = () => {
-    const [modalPositionBottom, setModalPositionBottom] = useState('-59vh');
+    const [modalPositionBottom, setModalPositionBottom] = useState('-560px');
 
     // 왜인지 모르겠는데 안먹음...
     const onClickHiddenModal = () => {
