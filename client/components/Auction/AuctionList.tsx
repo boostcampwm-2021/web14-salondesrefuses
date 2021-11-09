@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button, Center } from '@styles/common';
 import { AuctionCardProps } from '@const/card-type';
 import Card from '@components/Card';
-import { Filter } from 'pages/exhibition/style';
+import { Filter } from '@components/Exhibition/style';
 import { getAuctions } from '@utils/networking';
 
 const DUMMY_DATA: Array<AuctionCardProps> = [

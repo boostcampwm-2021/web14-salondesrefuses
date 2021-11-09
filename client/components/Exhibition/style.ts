@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Button, SpaceBetween } from '@styles/common';
-import { FilterProps } from './index';
+import { FilterProps } from '../../pages/exhibition/index';
 
 export const TopContainer = styled.div`
     display: flex;

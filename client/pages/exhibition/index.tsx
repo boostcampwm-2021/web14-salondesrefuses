@@ -11,7 +11,7 @@ import {
     Buttons,
     BlackButton,
     ExhibitionList,
-} from './style';
+} from '../../components/Exhibition/style';
 import { ExhibitionCardProps } from '@const/card-type';
 import { getExhibitions } from '@utils/networking';
 // const dummyExihibition: ExhibitionCardProps[] = [
