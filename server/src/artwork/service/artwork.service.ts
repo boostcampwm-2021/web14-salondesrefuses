@@ -43,14 +43,8 @@ export class ArtworkService {
                 this.createNFTToken(image),
             ]);
 
-            const newArtwork = this.artworkRepository.createArtwork(
-                createArtworkDTO,
-                originalImage,
-                croppedImage,
-                cid,
-            );
-            const newAuction =
-                this.auctionRepository.createAuction(createArtworkDTO);
+            const newArtwork = this.artworkRepository.createArtwork(createArtworkDTO, originalImage, croppedImage, cid);
+            const newAuction = this.auctionRepository.createAuction(createArtworkDTO);
 
             if (newAuction) {
                 newArtwork.status = ArtworkStatus.InBid;
@@ -60,7 +54,7 @@ export class ArtworkService {
             newArtwork.owner = user;
             newArtwork.artist = user;
 
-            this.artworkRepository.save(newArtwork);
+            await this.artworkRepository.save(newArtwork);
 
             return NewArtworkDTO.from(newArtwork);
         } catch (error) {
