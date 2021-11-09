@@ -52,7 +52,7 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
                     {ExhibitionsData.map((exhibition, i) => {
                         return (
                             <CarouselContent
-                                imgSrc={exhibition.thumbnailImage}
+                                thumbnailImage={exhibition.thumbnailImage}
                                 key={exhibition.id}
                             >
                                 <Title isBlack={colorList[i]}>
