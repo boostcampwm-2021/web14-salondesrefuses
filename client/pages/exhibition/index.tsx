@@ -14,11 +14,20 @@ import {
 } from '../../components/Exhibition/style';
 import { ExhibitionCardProps } from '@const/card-type';
 import { getExhibitions } from '@utils/networking';
+import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
+import RequireLoginModal from '@components/common/RequireLoginModal';
 
 const ExhibitionPage: NextPage = () => {
     const [onSelect, setOnSelect] = useState<string>('Newest');
     const [exhibitions, setExhibitions] = useState<ExhibitionCardProps[]>([]);
     const [page, setPage] = useState(0);
+
+    const {
+        accessToken,
+        requireLoginModal,
+        onClickPostArtworkWithoutLogin,
+        closeModal,
+    } = useHandleRequireLoginModal();
 
     useEffect(() => {
         getExhibitions(onSelect.toLowerCase(), page).then((res) =>
@@ -62,9 +71,15 @@ const ExhibitionPage: NextPage = () => {
 
                 <Buttons>
                     <BlackButton>Hold Exhibition</BlackButton>
-                    <Link href="/artwork/post">
-                        <BlackButton>Post Artwork</BlackButton>
-                    </Link>
+                    {accessToken ? (
+                        <Link href="/artwork/post">
+                            <BlackButton>Post Artwork</BlackButton>
+                        </Link>
+                    ) : (
+                        <BlackButton onClick={onClickPostArtworkWithoutLogin}>
+                            Post Artwork
+                        </BlackButton>
+                    )}
                 </Buttons>
             </TopContainer>
 
@@ -73,6 +88,7 @@ const ExhibitionPage: NextPage = () => {
                     <Card key={idx} width="lg" content={exihibition} />
                 ))}
             </ExhibitionList>
+            {requireLoginModal && <RequireLoginModal close={closeModal} />}
         </Layout>
     );
 };

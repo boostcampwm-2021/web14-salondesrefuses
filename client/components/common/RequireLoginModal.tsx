@@ -37,8 +37,8 @@ const Container = styled.div`
 const Modal = styled.div`
     width: 400px;
     height: 250px;
-    background-color: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
     box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.1);
     ${SpaceAround};
     flex-direction: column;
