@@ -25,7 +25,7 @@ export default class AuctionController {
     @ApiOperation(getAuctionsSortedByNewsestApiOperation)
     @ApiQuery({ name: 'page', type: Number })
     @ApiResponse({ type: AuctionListItemDTO })
-    getAuctionsOrderByNewsest(@Query('page', ParseIntPipe) page: number): Promise<AuctionListItemDTO[]> {
+    getAuctionsOrderByNewest(@Query('page', ParseIntPipe) page: number): Promise<AuctionListItemDTO[]> {
         return this.auctionService.getAuctionsSortedByNewest(page);
     }
 

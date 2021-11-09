@@ -1,8 +1,9 @@
-import { Body, Controller, ParseIntPipe, Post, Res } from '@nestjs/common';
+import { Body, Controller, ParseIntPipe, Post, Res, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AuthService } from '../service/auth.service';
 import { Response } from 'express';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { signInApiBody, signInApiOperation, signOutApiBody, signOutApiOperation } from '../swagger';
+import { signInApiOperation, signOutApiBody, signOutApiOperation } from '../swagger';
+import { AuthCredentialDto } from '../dto/auth.credential.dto';
 
 @Controller('/auth')
 @ApiTags('인증 컨트롤러')
@@ -10,13 +11,14 @@ export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Post('/signIn')
+    @UsePipes(ValidationPipe)
     @ApiOperation(signInApiOperation)
-    @ApiBody(signInApiBody)
+    @ApiBody({ type: AuthCredentialDto })
     async signIn(
-        @Body('code') code: string,
-        @Body('strategy') strategy: string,
+        @Body() authCredentialDto: AuthCredentialDto,
         @Res() res: Response,
     ): Promise<void> {
+        const { code, strategy } = authCredentialDto;
         try {
             let user;
             strategy === 'google'

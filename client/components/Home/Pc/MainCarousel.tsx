@@ -71,7 +71,7 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
                                                 {exhibition.title}
                                             </InfoTitle>
                                             <InfoDescription>
-                                                {exhibition.artist.nickname}
+                                                {exhibition.artist.name}
                                             </InfoDescription>
                                             <InfoDescription>
                                                 {exhibition.description}

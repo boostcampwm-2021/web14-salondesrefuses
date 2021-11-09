@@ -31,6 +31,9 @@ export class Exhibition {
     @Column()
     thumbnailImage: string;
 
+    @Column()
+    contents: string;
+
     @ManyToOne(type => User, user => user.exhibitionList)
     artist: User;
 
