@@ -28,7 +28,7 @@ const LoginCallbackPage = () => {
         <Container>
             <LoadingSpinner>
                 <Notice>Loading...</Notice>
-                <ClipLoader size="100" color="#000"></ClipLoader>
+                <ClipLoader size="100px" color="#000"></ClipLoader>
             </LoadingSpinner>
         </Container>
     );
