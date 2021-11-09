@@ -7,7 +7,8 @@ import { InterestArtwork } from '../interestArtwork/interestArtwork.entity';
 export class ExhibitionRepository extends Repository<Exhibition> {
 
     async getRandomExhibitions(): Promise<Exhibition[]> {
-        return await this.createQueryBuilder()
+        return await this.createQueryBuilder('exhibition')
+            .innerJoinAndSelect('exhibition.artist', 'artist')
             .orderBy('RAND()')
             .limit(5)
             .getMany();

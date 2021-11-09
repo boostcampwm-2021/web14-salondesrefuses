@@ -44,7 +44,7 @@ export class ArtworkService {
             ]);
 
             const newArtwork = this.artworkRepository.createArtwork(createArtworkDTO, originalImage, croppedImage, cid);
-            const newAuction = this.auctionRepository.createAuction(createArtworkDTO);
+            const newAuction = this.auctionRepository.createAuction(createArtworkDTO, user);
 
             if (newAuction) {
                 newArtwork.status = ArtworkStatus.InBid;

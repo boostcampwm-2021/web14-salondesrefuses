@@ -30,6 +30,7 @@ const ArtworkModal = ({
             description,
             year,
             bidEnd,
+            checked,
         });
         handleModalPosition('-59vh');
     };

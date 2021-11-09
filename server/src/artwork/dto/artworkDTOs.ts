@@ -1,11 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Artwork } from '../artwork.entity';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateArtworkDTO {
     title: string;
+
+    @IsNotEmpty()
     type: string;
+
     description: string;
-    isRegisterAuction?: string;
+
+    @IsNotEmpty()
+    isRegisterAuction: string;
+
     endAt?: Date;
 }
 

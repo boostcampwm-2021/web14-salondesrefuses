@@ -3,12 +3,14 @@ import { CreateArtworkDTO } from 'src/artwork/dto/artworkDTOs';
 import { InterestArtwork } from 'src/interestArtwork/interestArtwork.entity';
 import { EntityRepository, Repository } from 'typeorm';
 import { Auction } from './auction.entity';
+import { User } from '../user/user.entity';
 
 @EntityRepository(Auction)
 export class AuctionRepository extends Repository<Auction> {
-    createAuction(createArtWorkDTO: CreateArtworkDTO): Auction {
+    createAuction(createArtWorkDTO: CreateArtworkDTO, user: User): Auction {
         if (createArtWorkDTO.isRegisterAuction === 'true') {
             return this.create({
+                seller: user,
                 endAt: createArtWorkDTO.endAt,
             });
         }

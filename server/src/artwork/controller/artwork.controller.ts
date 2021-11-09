@@ -6,7 +6,7 @@ import {
     Req,
     UploadedFile,
     UseGuards,
-    UseInterceptors,
+    UseInterceptors, UsePipes, ValidationPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateArtworkDTO, NewArtworkDTO } from '../dto/artworkDTOs';
@@ -30,6 +30,7 @@ export class ArtworkController {
     @Post()
     @HttpCode(201)
     @UseGuards(CustomAuthGuard)
+    @UsePipes(ValidationPipe)
     @UseInterceptors(FileInterceptor('image'))
     @ApiConsumes('multipart/form-data')
     @ApiOperation(createArtWorkApiOperation)
