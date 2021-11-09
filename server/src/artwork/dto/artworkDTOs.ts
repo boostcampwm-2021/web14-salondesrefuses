@@ -30,3 +30,11 @@ export class NewArtworkDTO {
         return newArtworkDTO;
     }
 }
+
+export class InterestRequestDTO {
+    @ApiProperty()
+    artworkId: string;
+
+    @ApiProperty()
+    isInterest: string;
+}

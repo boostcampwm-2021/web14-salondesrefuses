@@ -6,26 +6,27 @@ import {
     Req,
     UploadedFile,
     UseGuards,
-    UseInterceptors, UsePipes, ValidationPipe,
+    UseInterceptors,
+    UsePipes,
+    ValidationPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateArtworkDTO, NewArtworkDTO } from '../dto/artworkDTOs';
+import { CreateArtworkDTO, NewArtworkDTO, InterestRequestDTO } from '../dto/artworkDTOs';
 import { ArtworkService } from '../service/artwork.service';
 import { CustomAuthGuard } from '../../auth/guard/CustomAuthGuard';
-import {
-    ApiBody,
-    ApiConsumes,
-    ApiOperation,
-    ApiResponse,
-    ApiTags,
-} from '@nestjs/swagger';
-import { createArtWorkApiOperation, createArtworkApiBody } from '../swagger';
 import { User } from 'src/user/user.entity';
+import { ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { createArtWorkApiOperation, createArtworkApiBody, interestApiOperation } from '../swagger';
+import { InterestArtwork } from 'src/interestArtwork/interestArtwork.entity';
+import { InterestArtworkService } from 'src/interestArtwork/interestArtwork.service';
 
 @Controller('artworks')
 @ApiTags('작품 컨트롤러')
 export class ArtworkController {
-    constructor(private readonly artworkService: ArtworkService) {}
+    constructor(
+        private readonly artworkService: ArtworkService,
+        private readonly interestArtworkService: InterestArtworkService,
+    ) {}
 
     @Post()
     @HttpCode(201)
@@ -42,5 +43,17 @@ export class ArtworkController {
         @Req() req: Express.Request & { user: User },
     ): Promise<NewArtworkDTO> {
         return this.artworkService.createArtWork(file, body, req.user);
+    }
+
+    @Post('/interest')
+    @UseGuards(CustomAuthGuard)
+    @ApiOperation(interestApiOperation)
+    @ApiBody({ type: InterestArtwork })
+    @ApiResponse({ type: Boolean })
+    interest(
+        @Body() interestRequestDTO: InterestRequestDTO,
+        @Req() req: Express.Request & { user: User }
+    ): Promise<boolean> {
+        return this.interestArtworkService.insertInterestArtwork(req.user, interestRequestDTO);
     }
 }
