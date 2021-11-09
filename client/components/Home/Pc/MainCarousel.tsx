@@ -39,10 +39,6 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
         });
     }, []);
 
-    useEffect(() => {
-        console.log(colorList);
-    }, [colorList]);
-
     // useEffect(() => {
     //     console.log(el);
     //     console.log(window.getComputedStyle(el as Element).transition);
