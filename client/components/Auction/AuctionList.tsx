@@ -6,6 +6,7 @@ import { Button, Center } from '@styles/common';
 import { AuctionCardProps } from '@const/card-type';
 import Card from '@components/Card';
 import { Filter } from 'pages/exhibition/style';
+import { getAuctions } from '@utils/networking';
 
 const DUMMY_DATA: Array<AuctionCardProps> = [
     {
@@ -72,21 +73,17 @@ const AuctionList = () => {
     const [page, setPage] = useState(1);
 
     useEffect(() => {
-        // TODO : 경매 아이템 리스트 가져오는 api 추가
+        getAuctions(onSelect.toLowerCase(), page).then((res) =>
+            setAuctionItems(res.data),
+        );
     }, [onSelect, page]);
 
     const onClickFilter = ({ currentTarget }: React.MouseEvent) => {
         setOnSelect(currentTarget.textContent || 'Newest');
     };
 
-    return (
-        <Container>
-            <Title>
-                <h1>지금 판매중인 작품</h1>
-                <Link href="artwork/post">
-                    <BlackButton>Post Artwork</BlackButton>
-                </Link>
-            </Title>
+    const buildFilterWrapper = () => {
+        return (
             <FilterWrapper>
                 <div>
                     <Filter
@@ -105,8 +102,20 @@ const AuctionList = () => {
                     </Filter>
                 </div>
             </FilterWrapper>
+        );
+    };
+
+    return (
+        <Container>
+            <Title>
+                {buildFilterWrapper()}
+                <Link href="artwork/post">
+                    <BlackButton>Post Artwork</BlackButton>
+                </Link>
+            </Title>
+            <h1>지금 판매중인 작품</h1>
             <Grid>
-                {DUMMY_DATA.map((item) => {
+                {auctionItems.map((item) => {
                     return <Card width="lg" content={item} />;
                 })}
             </Grid>
@@ -119,6 +128,14 @@ const Container = styled.div`
     flex-direction: column;
     width: 80%;
     margin-top: 50px;
+
+    & h1 {
+        font: ${(props) => props.theme.font.textXl};
+        color: ${(props) => props.theme.color.title};
+        margin: 0;
+        align-self: flex-start;
+        margin-bottom: 50px;
+    }
 `;
 
 const Title = styled.div`
@@ -126,12 +143,7 @@ const Title = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-bottom: 10px;
-
-    & h1 {
-        font: ${(props) => props.theme.font.textXl};
-        color: ${(props) => props.theme.color.title};
-    }
+    margin-bottom: 50px;
 `;
 
 const BlackButton = styled(Button)`
@@ -147,10 +159,9 @@ const Grid = styled.div`
 `;
 
 const FilterWrapper = styled.div`
-    margin-bottom: 50px;
-    align-self: flex-start;
     display: flex;
     justify-content: space-between;
+    align-self: flex-start;
 
     & div {
         border-left: 1px solid ${(props) => props.theme.color.placeholder};

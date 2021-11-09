@@ -9,7 +9,7 @@ import {
     getRandomAuctionsApiOperation,
 } from '../swagger';
 
-@Controller('acutions')
+@Controller('auctions')
 @ApiTags('옥션 컨트롤러')
 export default class AuctionController {
     constructor(private readonly auctionService: AuctionService) {}

@@ -5,15 +5,15 @@ import { Modal, Form, LightForm, ConfirmButton } from './style';
 const date = new Date();
 
 interface ArtworkModalProps {
-    setData: React.Dispatch<{ [key: string]: string }>;
+    handleModalInput: React.Dispatch<{ [key: string]: string }>;
     position: string;
-    setPosition: React.Dispatch<string>;
+    handleModalPosition: React.Dispatch<string>;
 }
 
 const ArtworkModal = ({
-    setData,
+    handleModalInput,
     position,
-    setPosition,
+    handleModalPosition,
 }: ArtworkModalProps) => {
     const modalRef = useRef<HTMLDivElement | null>(null);
     const [checked, setChecked] = useState('artwork');
@@ -26,12 +26,12 @@ const ArtworkModal = ({
     };
 
     const onClickConfirm = () => {
-        setData({
+        handleModalInput({
             description,
             year,
-            bidEnd: bidEnd ?? '',
+            bidEnd,
         });
-        setPosition('-59vh');
+        handleModalPosition('-59vh');
     };
 
     return (

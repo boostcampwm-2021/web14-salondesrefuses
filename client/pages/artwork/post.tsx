@@ -7,6 +7,10 @@ import NewArtwork from '@components/Artwork/NewArtwork';
 
 const NewArtworkPage = () => {
     const [newImage, setNewImage] = useState<File | null>(null);
+
+    const handleNewImage = (image: File) => {
+        setNewImage(image);
+    };
     return (
         <>
             <Head>
@@ -17,7 +21,7 @@ const NewArtworkPage = () => {
                 {newImage ? (
                     <NewArtwork image={newImage} />
                 ) : (
-                    <Uploader setNewImage={setNewImage} />
+                    <Uploader handleNewImage={handleNewImage} />
                 )}
             </Layout>
         </>
