@@ -19,6 +19,7 @@ export class AuctionRepository extends Repository<Auction> {
     getRandomAuctions(): Promise<Auction[]> {
         return this.createQueryBuilder('auction')
             .innerJoinAndSelect('auction.artwork', 'artwork')
+            .innerJoinAndSelect('auction.seller', 'seller')
             .orderBy('RAND()')
             .limit(3)
             .getMany();
@@ -27,6 +28,7 @@ export class AuctionRepository extends Repository<Auction> {
     findAllByAuctionOrderByNewest(page: number): Promise<Auction[]> {
         return this.createQueryBuilder('auction')
             .innerJoinAndSelect('auction.artwork', 'artwork')
+            .innerJoinAndSelect('auction.seller', 'seller')
             .orderBy('auction.id', 'DESC')
             .offset(page * 15)
             .limit(15)
@@ -36,6 +38,7 @@ export class AuctionRepository extends Repository<Auction> {
     findAllByAuctionOrderByPopular(page: number): Promise<Auction[]> {
         return this.createQueryBuilder('auction')
             .innerJoinAndSelect('auction.artwork', 'artwork')
+            .innerJoinAndSelect('auction.seller', 'seller')
             .innerJoin(
                 subQuery =>
                     subQuery
@@ -58,6 +61,7 @@ export class AuctionRepository extends Repository<Auction> {
             .where(`auction.id = ${auctionId}`)
             .leftJoinAndSelect('auction.auctionHistories', 'history')
             .innerJoinAndSelect('auction.artwork', 'artwork')
+            .innerJoinAndSelect('auction.seller', 'seller')
             .getOne();
     }
 }
