@@ -45,18 +45,21 @@ export const getPositions = (element: HTMLDivElement | null) => {
 export const getLineStyle = (
     p1: number[],
     p2: number[],
-    originPoint: number[],
+    originStartPoint: number[],
+    originEndPoint: number[],
 ) => {
-    console.log(p1, p2, originPoint);
+    console.log(p1, p2, originEndPoint);
     const distX = p2[0] - p1[0];
     const distY = p2[1] - p1[1];
+    const width = originEndPoint[0] - originStartPoint[0];
+    const height = originEndPoint[1] - originStartPoint[1];
     const degree = distX ? 90 : 0;
     let trans1, trans2;
     if (degree) {
-        trans1 = 50;
-        trans2 = p1[1] > originPoint[1] ? 50 : -50;
+        trans1 = width / 2;
+        trans2 = p1[1] > originStartPoint[1] ? height / 2 : (height / 2) * -1;
     } else {
-        trans1 = p1[0] > originPoint[0] ? 100 : 0;
+        trans1 = p1[0] > originStartPoint[0] ? width : 0;
         trans2 = 0;
     }
     return {
