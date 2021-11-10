@@ -21,7 +21,11 @@ const useInputArtwork = (image: File) => {
         formData.append('description', modalInputData['description']);
         formData.append('year', modalInputData['year']);
         formData.append('endAt', modalInputData['bidEnd']);
-        formData.append('isRegisterAuction', (modalInputData['checked'] === 'auction').toString());
+        formData.append('price', modalInputData['price']);
+        formData.append(
+            'isRegisterAuction',
+            (modalInputData['checked'] === 'auction').toString(),
+        );
         formData.append('image', image);
 
         const result = await postArtwork(formData);
