@@ -9,17 +9,20 @@ import { Filter } from '@components/Exhibition/style';
 import { getAuctions } from '@utils/networking';
 import RequireLoginModal from '@components/common/RequireLoginModal';
 import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
+import parseCookie from '@utils/parseCookie';
+
+let accessToken: string | undefined;
 
 const AuctionList = () => {
     const [onSelect, setOnSelect] = useState('Popular');
     const [auctionItems, setAuctionItems] = useState<AuctionCardProps[]>([]);
     const [page, setPage] = useState(0);
-    const {
-        accessToken,
-        requireLoginModal,
-        onClickPostArtworkWithoutLogin,
-        closeModal,
-    } = useHandleRequireLoginModal();
+    const { requireLoginModal, onClickPostArtworkWithoutLogin, closeModal } =
+        useHandleRequireLoginModal();
+
+    useEffect(() => {
+        accessToken = parseCookie()('accessToken');
+    }, []);
 
     useEffect(() => {
         getAuctions(onSelect.toLowerCase(), page).then((res) =>

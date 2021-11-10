@@ -1,5 +1,5 @@
 export enum AUCTION_STATE {
-    'NotSale',
-    'OnSale',
-    'SoldOut',
+    'NoBid',
+    'InBid',
+    'BidCompleted',
 }
