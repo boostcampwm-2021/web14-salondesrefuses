@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { EditorElementStyle, EditorElementType } from '.';
-import { onDraggable, getPositions, getLineStyle } from './utils';
+import { onDraggable, getPositions, getLineStyle, getDotStyle } from './utils';
 
 interface Prop {
     style: EditorElementStyle;
@@ -44,23 +44,46 @@ const EditorElement = ({
     const getBorderController = () => {
         return (
             <>
-                {getSpots()}
                 {getLines()}
+                {getSpots()}
             </>
         );
     };
 
     const getSpots = () => {
-        return <div></div>;
+        return (
+            <>
+                <div className="dot LW" style={getDotStyle(LT, LT)}></div>
+                <div className="dot N" style={getDotStyle(LT, LT, RT)}></div>
+                <div className="dot NE" style={getDotStyle(LT, RT)}></div>
+                <div className="dot E" style={getDotStyle(LT, RT, RB)}></div>
+                <div className="dot SE" style={getDotStyle(LT, RB)}></div>
+                <div className="dot S" style={getDotStyle(LT, LB, RB)}></div>
+                <div className="dot SW" style={getDotStyle(LT, LB)}></div>
+                <div className="dot W" style={getDotStyle(LT, LB, LT)}></div>
+            </>
+        );
     };
 
     const getLines = () => {
         return (
             <>
-                <div className="lines" style={getLineStyle(LT, LB, LT)}></div>
-                <div className="lines" style={getLineStyle(LT, RT, LT)}></div>
-                <div className="lines" style={getLineStyle(LB, RB, LT)}></div>
-                <div className="lines" style={getLineStyle(RT, RB, LT)}></div>
+                <div
+                    className="lines"
+                    style={getLineStyle(LT, LB, LT, RB)}
+                ></div>
+                <div
+                    className="lines"
+                    style={getLineStyle(LT, RT, LT, RB)}
+                ></div>
+                <div
+                    className="lines"
+                    style={getLineStyle(LB, RB, LT, RB)}
+                ></div>
+                <div
+                    className="lines"
+                    style={getLineStyle(RT, RB, LT, RB)}
+                ></div>
             </>
         );
     };

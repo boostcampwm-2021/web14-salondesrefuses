@@ -45,7 +45,6 @@ const Editor = () => {
     };
 
     const renderElements = () => {
-        console.log('renderelements');
         return elements.map((element, idx) => (
             <EditorElement
                 key={idx}

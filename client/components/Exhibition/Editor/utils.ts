@@ -48,7 +48,6 @@ export const getLineStyle = (
     originStartPoint: number[],
     originEndPoint: number[],
 ) => {
-    console.log(p1, p2, originEndPoint);
     const distX = p2[0] - p1[0];
     const distY = p2[1] - p1[1];
     const width = originEndPoint[0] - originStartPoint[0];
@@ -69,5 +68,25 @@ export const getLineStyle = (
         width: '1px',
         content: '',
         backgroundColor: '#3A8FD6',
+    };
+};
+
+export const getDotStyle = (
+    originPoint: number[],
+    p1: number[],
+    p2?: number[],
+) => {
+    const [X, Y] = p2 ? [~~((p1[0] + p2[0]) / 2), ~~((p1[1] + p2[1]) / 2)] : p1;
+    const [Left, Top] = [X - originPoint[0] - 5, Y - originPoint[1] - 5];
+    return {
+        position: 'absolute' as 'absolute',
+        top: Top,
+        left: Left,
+        backgroundColor: '#3A8FD6',
+        borderRadius: '10px',
+        border: '2px solid #eee',
+        width: '10px',
+        height: '10px',
+        cursor: 'crosshair',
     };
 };
