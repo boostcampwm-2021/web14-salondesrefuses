@@ -45,6 +45,12 @@ export class UserService {
         file: Express.Multer.File,
         requestUserDTO: RequestUserDTO,
     ): Promise<UpdateResult> {
+        if(!file) {
+            return this.userRepository.update(
+                { id },
+                { ...requestUserDTO }
+            );
+        }
         const image = await this.imageService.fileUpload(file);
         const avatar = image.Location;
 
