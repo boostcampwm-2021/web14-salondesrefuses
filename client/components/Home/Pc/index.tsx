@@ -3,26 +3,15 @@ import Head from 'next/head';
 import Layout from '@components/common/Layout';
 import MainCarousel from './MainCarousel';
 import MainAuctionList from './MainAuctionList';
-import {
-    randomAuctionType,
-    randomExhibitionType,
-    fakeRandomExhibitions,
-} from 'constants/fakeDatas';
 import NftInfo from './NftInfo';
+import { AuctionCardProps, ExhibitionCardProps } from '@const/card-type';
 
 interface Props {
-    ExhibitionsData: string[];
-    AuctionsData: string[];
+    ExhibitionsData: ExhibitionCardProps[];
+    AuctionsData: AuctionCardProps[];
 }
 const Pc = (props: Props) => {
-    let ExhibitionsData = props.ExhibitionsData.map((exhibition: string) =>
-        JSON.parse(exhibition),
-    ) as randomExhibitionType[];
-    const AuctionsData = props.AuctionsData.map((auction: string) =>
-        JSON.parse(auction),
-    ) as randomAuctionType[];
-    //테스트용! 데이터셋이 준비될때까지 이거로
-    if (!ExhibitionsData.length) ExhibitionsData = fakeRandomExhibitions;
+    const { ExhibitionsData, AuctionsData } = props;
 
     return (
         <>

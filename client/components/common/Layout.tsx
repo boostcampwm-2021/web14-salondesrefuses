@@ -27,6 +27,7 @@ const Body = styled.div<{ horizontal?: boolean }>`
     ${(props) =>
         props.horizontal ? 'flex-direction: row;' : 'flex-direction: column;'}
     min-height: calc(100vh - 270px);
+    overflow-x: hidden;
 `;
 
 export default Layout;

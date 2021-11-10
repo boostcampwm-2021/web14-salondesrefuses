@@ -8,12 +8,36 @@ export class AuctionListItemDTO {
     id: number;
 
     @ApiProperty()
-    artwork: Artwork;
+    title: string;
+
+    @ApiProperty()
+    description: string;
+
+    @ApiProperty()
+    thumbnailImage: string;
+
+    @ApiProperty()
+    price: string;
+
+    @ApiProperty()
+    type: string;
+
+    @ApiProperty()
+    artist: string;
 
     static from(auction: Auction): AuctionListItemDTO {
         const dto = new AuctionListItemDTO();
+        const { title, description, croppedImage, price, type } = auction.artwork;
+        const { name } = auction.seller;
+
         dto.id = auction.id;
-        dto.artwork = auction.artwork;
+        dto.title = title;
+        dto.description = description;
+        dto.thumbnailImage = croppedImage;
+        dto.price = price;
+        dto.type = type;
+        dto.artist = name;
+
         return dto;
     }
 }

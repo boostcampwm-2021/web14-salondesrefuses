@@ -41,9 +41,7 @@ export const getExhibitions = (filter: string, page: number) => {
 };
 
 export const getRandomAuctions = () => {
-    return axios.get<ExhibitionCardProps[]>(
-        `${API_SERVER_URL}/art-works/random?status=onSale`,
-    );
+    return axios.get(`${API_SERVER_URL}/auctions/random?status=onSale`);
 };
 
 export const getAuctions = (filter: string, page: number) => {
