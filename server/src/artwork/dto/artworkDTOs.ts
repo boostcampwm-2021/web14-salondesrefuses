@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Artwork } from '../artwork.entity';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, Matches } from 'class-validator';
 
 export class CreateArtworkDTO {
     title: string;
@@ -29,4 +29,17 @@ export class NewArtworkDTO {
         newArtworkDTO.nftToken = artwork.nftToken;
         return newArtworkDTO;
     }
+}
+
+export class InterestRequestDTO {
+    @IsNotEmpty()
+    @ApiProperty()
+    artworkId: string;
+
+    @IsNotEmpty()
+    @Matches(/^true$|^false$/, {
+        message: 'Only true or false is allowed for isInterest field.'
+    })
+    @ApiProperty()
+    isInterest: "true" | "false";
 }
