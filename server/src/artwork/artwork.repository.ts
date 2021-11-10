@@ -25,6 +25,10 @@ export class ArtworkRepository extends Repository<Artwork> {
         });
     }
 
+    async getArtwork(id: number): Promise<Artwork> {
+        return await this.findOne({ id });
+    }
+
     async getRandomAuctionArtworks(): Promise<Artwork[]> {
         return await this.createQueryBuilder('artwork')
             .where('artwork.status = :status', { status: ArtworkStatus.InBid })
