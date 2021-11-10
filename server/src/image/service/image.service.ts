@@ -24,6 +24,7 @@ export class ImageService {
     async fileUpload(image: Express.Multer.File): Promise<ObjectStorageData> {
         const params = {
             Bucket: process.env.AWS_S3_BUCKET_NAME,
+            ACL: 'public-read',
             Key: `objects/${Date.now()}-${image.originalname}`,
             Body: image.buffer,
         };

@@ -7,6 +7,7 @@ import { Artwork } from 'interfaces';
 import Layout from '@components/common/Layout';
 import ItemDetail from '@components/Auction/ItemDetail';
 import { GlobalStore } from '../../store/GlobalStore';
+import { getAuction } from '@utils/networking';
 
 const AuctionDetailPage = ({ artwork }: { artwork: Artwork }) => {
     useEffect(() => {
@@ -34,7 +35,7 @@ const AuctionDetailPage = ({ artwork }: { artwork: Artwork }) => {
                         />
                         <Grid>
                             <section>
-                                <img src="" />
+                                <img src={artwork.croppedImage} />
                             </section>
                             <ItemDetail />
                         </Grid>
@@ -48,8 +49,11 @@ const AuctionDetailPage = ({ artwork }: { artwork: Artwork }) => {
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const artworkId = (params as { id: string }).id;
 
+    const auction = await getAuction(Number(artworkId));
+    console.log(auction.data);
+
     return {
-        props: {},
+        props: { artwork: auction.data.artwork },
     };
 };
 

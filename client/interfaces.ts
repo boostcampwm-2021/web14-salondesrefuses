@@ -22,4 +22,5 @@ export interface Auction {
     endAt: string;
     id: number;
     startAt: Date;
+    artwork: Artwork;
 }
