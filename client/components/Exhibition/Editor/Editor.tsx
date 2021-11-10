@@ -127,5 +127,7 @@ const Button = styled.button`
 `;
 const EditArea = styled.div`
     position: relative;
+    overflow: hidden;
+    height: calc(100% - 50px);
 `;
 export default Editor;
