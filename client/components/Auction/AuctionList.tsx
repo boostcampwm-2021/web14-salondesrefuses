@@ -13,7 +13,7 @@ import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
 const AuctionList = () => {
     const [onSelect, setOnSelect] = useState('Popular');
     const [auctionItems, setAuctionItems] = useState<AuctionCardProps[]>([]);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const {
         accessToken,
         requireLoginModal,
