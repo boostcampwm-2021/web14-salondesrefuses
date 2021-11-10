@@ -11,7 +11,8 @@ enum EditorElementName {
 }
 export type EditorElementType = 'RECTANGULAR' | 'TEXT' | 'IMAGE';
 export type EditorElementStyle = {
-    translate: { x: number; y: number };
+    top: number;
+    left: number;
     backgroundColor: string;
     size: { width: number; height: number };
     zIndex: number;
@@ -24,6 +25,7 @@ export interface EditorElementProp {
 
 const Editor = () => {
     const [elements, setElements] = useState<EditorElementProp[]>([]);
+    const [currentElements, setCurrentElements] = useState<number[]>([]);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [color, setColor] = useState('#000');
     const elementRef = useRef<HTMLDivElement | HTMLInputElement | null>(null);
@@ -56,6 +58,10 @@ const Editor = () => {
         setElements([...elements, element]);
     };
 
+    const keyToCurrentElements = (keyArr: number[]) => {
+        setCurrentElements(keyArr);
+    };
+    
     const onClickZIndexButton = (direction: string) => {
         return () => {
             if (!elementRef.current) return;
@@ -66,17 +72,14 @@ const Editor = () => {
         };
     };
 
-    const onClickEditorElement = ({ target }: React.MouseEvent) => {
-        elementRef.current = null;
-        elementRef.current = target as HTMLDivElement;
-    };
-
     const renderElements = () => {
         return elements.map((element, idx) => (
             <EditorElement
-                onClick={onClickEditorElement}
                 key={idx}
+                idx={idx}
                 style={element.style}
+                currentElements={currentElements}
+                keyToCurrentElements={keyToCurrentElements}
                 type={element.type}
             ></EditorElement>
         ));
@@ -113,23 +116,19 @@ const initialRectStyle = {
         width: 100,
         height: 100,
     },
-    translate: {
-        x: 0,
-        y: 0,
-    },
+    top: 0,
+    left: 0,
     backgroundColor: 'black',
     zIndex: 100,
 };
 
 const initialTextStyle = {
     size: {
-        width: 200,
-        height: 50,
+        width: 100,
+        height: 100,
     },
-    translate: {
-        x: 0,
-        y: 0,
-    },
+    top: 0,
+    left: 0,
     backgroundColor: 'none',
     zIndex: 100,
 };
