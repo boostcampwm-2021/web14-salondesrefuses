@@ -8,3 +8,14 @@ export const getAllUsersArtworksApiParam = {
     type: Number,
     require: true,
 };
+
+export const getUserProfile = {
+    summary: '사용자 프로필 조회 API',
+    description: '사용자의 프로필을 조회한다.'
+}
+
+export const getUserProfileApiParam = {
+    name: 'userId',
+    type: String,
+    require: true,
+}

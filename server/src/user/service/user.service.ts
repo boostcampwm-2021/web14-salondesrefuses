@@ -15,10 +15,6 @@ export class UserService {
         private artworkRepository: ArtworkRepository
     ) {}
 
-    getAllUsersArtworks(userId: number): Promise<Artwork[]> {
-        return this.artworkRepository.getAllUsersArtworks(userId);
-    }
-
     async checkRegisteredUser(userId: string, name:string, avatar: string, loginStrategy: string): Promise<User> {
         let user = await this.userRepository.findOne({ userId, loginStrategy });
 
@@ -31,6 +27,14 @@ export class UserService {
 
     updateUserToken(id: number, refreshToken: string): Promise<UpdateResult> {
         return this.userRepository.update(id, { refreshToken });
+    }
+
+    getUserProfile(userId: string, loginStrategy: string): Promise<User> {
+        return this.userRepository.findOne({ userId, loginStrategy });
+    }
+
+    getAllUsersArtworks(userId: number): Promise<Artwork[]> {
+        return this.artworkRepository.getAllUsersArtworks(userId);
     }
 
 }
