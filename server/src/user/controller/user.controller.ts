@@ -22,6 +22,7 @@ import {
     userProfileApiParam,
     getInterestArtworksApiOperation,
     getBiddingArtworksApiOperation,
+    getBiddedArtworksApiOperation,
 } from '../swagger';
 
 @UseGuards(CustomAuthGuard)
@@ -89,6 +90,18 @@ export class UserController {
         @Query('strategy') loginStrategy: string
     ): Promise<Artwork[]> {
         return this.userService.getBiddingArtworks(userId, loginStrategy);
+    }
+
+    @Get('/:userId/artworks/bid')
+    @ApiOperation(getBiddedArtworksApiOperation)
+    @ApiParam(userProfileApiParam)
+    @ApiQuery({ name: 'strategy', type: String })
+    @ApiResponse({ type: Artwork })
+    getBiddedArtworks(
+        @Param('userId') userId: string,
+        @Query('strategy') loginStrategy: string
+    ): Promise<Artwork[]> {
+        return this.userService.getBiddedArtworks(userId, loginStrategy);
     }
 
 }

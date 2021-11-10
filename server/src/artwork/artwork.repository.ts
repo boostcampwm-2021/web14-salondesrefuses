@@ -66,4 +66,17 @@ export class ArtworkRepository extends Repository<Artwork> {
             .getMany();
     }
 
+    getBiddedArtworks(userId: string, loginStrategy: string): Promise<Artwork[]> {
+        return this.createQueryBuilder('artwork')
+            .innerJoin(subQuery => {
+                return subQuery
+                    .select('user.id as user_id')
+                    .from(User, 'user')
+                    .where('user.user_id = :userId', { userId })
+                    .andWhere('user.login_strategy = :loginStrategy', { loginStrategy })
+            }, 'bidded', 'bidded.user_id = artwork.owner_id')
+            .where('artwork.status = :status', { status: ArtworkStatus.BidCompleted })
+            .getMany();
+    }
+
 }
