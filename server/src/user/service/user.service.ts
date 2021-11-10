@@ -32,39 +32,44 @@ export class UserService {
         return this.userRepository.update(id, { refreshToken });
     }
 
-    getUserProfile(userId: string, loginStrategy: string): Promise<User> {
-        return this.userRepository.findOne({ userId, loginStrategy });
+    getUserProfile(user: User): Promise<User> {
+        const { id } = user;
+        return this.userRepository.findOne({ id });
     }
 
     async updateUserProfile(
-        userId: string,
-        loginStrategy: string,
+        user: User,
         file: Express.Multer.File,
         requestUserDTO: RequestUserDTO
     ): Promise<UpdateResult> {
+        const { id } = user;
         const image = await this.imageService.fileUpload(file);
         const avatar = image.Location;
 
         return this.userRepository.update(
-            { userId, loginStrategy },
+            { id },
             { ...requestUserDTO, avatar }
         );
     }
 
-    getAllUsersArtworks(userId: number): Promise<Artwork[]> {
-        return this.artworkRepository.getAllUsersArtworks(userId);
+    getAllUsersArtworks(user: User): Promise<Artwork[]> {
+        const { id } = user;
+        return this.artworkRepository.getAllUsersArtworks(id);
     }
 
-    getInterestArtworks(userId: string, loginStrategy: string): Promise<Artwork[]> {
-        return this.artworkRepository.getInterestArtworks(userId, loginStrategy);
+    getInterestArtworks(user: User): Promise<Artwork[]> {
+        const { id } = user;
+        return this.artworkRepository.getInterestArtworks(id);
     }
 
-    getBiddingArtworks(userId: string, loginStrategy: string): Promise<Artwork[]> {
-        return this.artworkRepository.getBiddingArtworks(userId, loginStrategy);
+    getBiddingArtworks(user: User): Promise<Artwork[]> {
+        const { id } = user;
+        return this.artworkRepository.getBiddingArtworks(id);
     }
 
-    getBiddedArtworks(userId: string, loginStrategy: string): Promise<Artwork[]> {
-        return this.artworkRepository.getBiddedArtworks(userId, loginStrategy);
+    getBiddedArtworks(user: User): Promise<Artwork[]> {
+        const { id } = user;
+        return this.artworkRepository.getBiddedArtworks(id);
     }
 
 }

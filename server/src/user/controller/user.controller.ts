@@ -1,9 +1,8 @@
 import {
     Body,
     Controller,
-    Get,
-    Param,
-    ParseIntPipe, Put, Query, UploadedFile,
+    Get, Put,
+    Req, UploadedFile,
     UseGuards, UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from '../service/user.service';
@@ -12,14 +11,12 @@ import { Artwork } from '../../artwork/artwork.entity';
 import { CustomAuthGuard } from '../../auth/guard/CustomAuthGuard';
 import { RequestUserDTO } from '../dto/userDTO';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 import {
     getAllUsersArtworksApiOperation,
-    getAllUsersArtworksApiParam,
     updateUserProfileApiOperation,
     getUserProfile,
-    userProfileApiParam,
     getInterestArtworksApiOperation,
     getBiddingArtworksApiOperation,
     getBiddedArtworksApiOperation,
@@ -31,77 +28,61 @@ import {
 export class UserController {
     constructor(private userService: UserService) {}
 
-    @Get('/:userId')
+    @Get('/')
     @ApiOperation(getUserProfile)
-    @ApiParam(userProfileApiParam)
-    @ApiQuery({ name: 'strategy', type: String })
     @ApiResponse({ type: User })
     getUserProfile(
-        @Param('userId') userId: string,
-        @Query('strategy') loginStrategy: string
+        @Req() req: Express.Request & { user: User }
     ): Promise<User> {
-        return this.userService.getUserProfile(userId, loginStrategy);
+        return this.userService.getUserProfile(req.user);
     }
 
-    @Put('/:userId')
+    @Put('/')
     @UseInterceptors(FileInterceptor('image'))
     @ApiOperation(updateUserProfileApiOperation)
-    @ApiParam(userProfileApiParam)
-    @ApiQuery({ name: 'strategy', type: String })
     @ApiResponse({ type: UpdateResult })
     updateUserProfile(
-        @Param('userId') userId: string,
-        @Query('strategy') loginStrategy: string,
+        @Req() req: Express.Request & { user: User },
         @UploadedFile() file: Express.Multer.File,
         @Body() requestUserDTO: RequestUserDTO
     ): Promise<UpdateResult> {
-        return this.userService.updateUserProfile(userId, loginStrategy, file, requestUserDTO);
+        return this.userService.updateUserProfile(req.user, file, requestUserDTO);
     }
 
-    @Get('/:userId/artworks')
+    @Get('/artworks')
     @ApiOperation(getAllUsersArtworksApiOperation)
-    @ApiParam(getAllUsersArtworksApiParam)
     @ApiResponse({ type: Artwork })
     getAllUsersArtworks(
-        @Param('userId', ParseIntPipe) userId: number,
+        @Req() req: Express.Request & { user: User }
     ): Promise<Artwork[]> {
-        return this.userService.getAllUsersArtworks(userId);
+        return this.userService.getAllUsersArtworks(req.user);
     }
 
-    @Get('/:userId/artworks/interest')
+    @Get('/artworks/interest')
     @ApiOperation(getInterestArtworksApiOperation)
-    @ApiParam(userProfileApiParam)
-    @ApiQuery({ name: 'strategy', type: String })
     @ApiResponse({ type: Artwork })
     getInterestArtworks(
-        @Param('userId') userId: string,
-        @Query('strategy') loginStrategy: string
+        @Req() req: Express.Request & { user: User }
     ): Promise<Artwork[]> {
-        return this.userService.getInterestArtworks(userId, loginStrategy);
+        return this.userService.getInterestArtworks(req.user);
     }
 
-    @Get('/:userId/artworks/transaction')
+    @Get('/artworks/transaction')
     @ApiOperation(getBiddingArtworksApiOperation)
-    @ApiParam(userProfileApiParam)
-    @ApiQuery({ name: 'strategy', type: String })
     @ApiResponse({ type: Artwork })
     getBiddingArtworks(
-        @Param('userId') userId: string,
-        @Query('strategy') loginStrategy: string
+        @Req() req: Express.Request & { user: User }
     ): Promise<Artwork[]> {
-        return this.userService.getBiddingArtworks(userId, loginStrategy);
+        return this.userService.getBiddingArtworks(req.user);
     }
 
-    @Get('/:userId/artworks/bid')
+    @Get('/artworks/bid')
     @ApiOperation(getBiddedArtworksApiOperation)
-    @ApiParam(userProfileApiParam)
-    @ApiQuery({ name: 'strategy', type: String })
     @ApiResponse({ type: Artwork })
     getBiddedArtworks(
-        @Param('userId') userId: string,
-        @Query('strategy') loginStrategy: string
+        @Req() req: Express.Request & { user: User }
     ): Promise<Artwork[]> {
-        return this.userService.getBiddedArtworks(userId, loginStrategy);
+        return this.userService.getBiddedArtworks(req.user);
     }
 
 }

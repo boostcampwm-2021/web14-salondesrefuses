@@ -40,42 +40,32 @@ export class ArtworkRepository extends Repository<Artwork> {
         });
     }
 
-    getInterestArtworks(userId: string, loginStrategy: string): Promise<Artwork[]> {
+    getInterestArtworks(userId: number): Promise<Artwork[]> {
         return this.createQueryBuilder('artwork')
             .innerJoin(subQuery => {
                 return subQuery
-                    .select('interest_artwork.artwork_id, user.user_id, user.login_strategy')
+                    .select('interest_artwork.artwork_id')
                     .from(InterestArtwork, 'interest_artwork')
-                    .innerJoin(User, 'user', 'interest_artwork.user_id = user.id')
+                    .where('interest_artwork.user_id = :userId', { userId })
             }, 'interest', 'interest.artwork_id = artwork.id')
-            .where('interest.user_id = :userId', { userId })
-            .andWhere('interest.login_strategy = :loginStrategy', { loginStrategy })
             .getMany();
     }
 
-    getBiddingArtworks(userId: string, loginStrategy: string): Promise<Artwork[]> {
+    getBiddingArtworks(userId: number): Promise<Artwork[]> {
         return this.createQueryBuilder('artwork')
             .innerJoin(subQuery => {
                 return subQuery
-                    .select('artwork_in_bid.artwork_id, user.user_id, user.login_strategy')
+                    .select('artwork_in_bid.artwork_id')
                     .from(ArtworkInBid, 'artwork_in_bid')
-                    .innerJoin(User, 'user', 'artwork_in_bid.user_id = user.id')
+                    .where('artwork_in_bid.user_id = :userId', { userId })
             }, 'bidding', 'bidding.artwork_id = artwork.id')
-            .where('bidding.user_id = :userId', { userId })
-            .andWhere('bidding.login_strategy = :loginStrategy', { loginStrategy })
             .getMany();
     }
 
-    getBiddedArtworks(userId: string, loginStrategy: string): Promise<Artwork[]> {
+    getBiddedArtworks(userId: number): Promise<Artwork[]> {
         return this.createQueryBuilder('artwork')
-            .innerJoin(subQuery => {
-                return subQuery
-                    .select('user.id as user_id')
-                    .from(User, 'user')
-                    .where('user.user_id = :userId', { userId })
-                    .andWhere('user.login_strategy = :loginStrategy', { loginStrategy })
-            }, 'bidded', 'bidded.user_id = artwork.owner_id')
             .where('artwork.status = :status', { status: ArtworkStatus.BidCompleted })
+            .andWhere('artwork.owner_id = :userId', { userId })
             .getMany();
     }
 
