@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, RefObject } from 'react';
 import { EditorElementStyle, EditorElementType } from '.';
 import { onDraggable, getPositions, getLineStyle, getDotStyle } from './utils';
 
@@ -25,12 +25,16 @@ const EditorElement = ({
     currentElements = [],
     keyToCurrentElements,
 }: Prop) => {
-    const elementRef = useRef<HTMLDivElement>(null);
+    const elementRef = useRef<HTMLElement | null>(null);
     const positionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const [currentStyle, setCurrentStyle] = useState(style);
     let isSelected = currentElements.includes(idx);
     const element = elementRef?.current;
     const [LT, LB, RT, RB] = getPositions(element);
+
+    useEffect(() => {
+        type === 'TEXT' && elementRef.current && elementRef.current.focus();
+    }, []);
 
     const calculateStyle = () => {
         return {
@@ -93,14 +97,26 @@ const EditorElement = ({
     }, [currentElements]);
 
     return (
-        <div
-            onClick={() => keyToCurrentElements([idx])}
-            style={calculateStyle()}
-            onMouseDown={(e) => isSelected && onDraggable(e, element)}
-            ref={elementRef}
-        >
-            {isSelected && getBorderController()}
-        </div>
+        <>
+            {type === 'RECTANGULAR' ? (
+                <div
+                    onClick={() => keyToCurrentElements([idx])}
+                    style={calculateStyle()}
+                    onMouseDown={(e) => moveElement(e)}
+                    ref={elementRef as RefObject<HTMLDivElement>}
+                >
+                {isSelected && getBorderController()}
+              </div>
+            ) : (
+                <input
+                    type="text"
+                    onClick={() => keyToCurrentElements([idx])}
+                    style={calculateStyle()}
+                    onMouseDown={(e) => moveElement(e)}
+                    ref={elementRef as RefObject<HTMLInputElement>}
+                ></input>
+            )}
+        </>
     );
 };
 

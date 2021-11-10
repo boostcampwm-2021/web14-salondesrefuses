@@ -7,6 +7,7 @@ import { create, IPFSHTTPClient } from 'ipfs-http-client';
 import { AuctionRepository } from 'src/auction/auction.repository';
 import { User } from 'src/user/user.entity';
 import { ArtworkStatus } from '../artwork.status.enum';
+import { Artwork } from '../artwork.entity';
 
 @Injectable()
 export class ArtworkService {
@@ -61,4 +62,9 @@ export class ArtworkService {
             console.log(error);
         }
     }
+
+    getArtwork(artworkId: number): Promise<Artwork> {
+        return this.artworkRepository.getArtwork(artworkId);
+    }
+
 }

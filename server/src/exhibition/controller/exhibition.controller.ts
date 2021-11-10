@@ -1,18 +1,17 @@
 import { Controller, Get, ParseIntPipe, Query } from '@nestjs/common';
 import { ExhibitionService } from '../service/exhibition.service';
-import { Exhibition } from '../exhibition.entity';
+import { ExhibitionDTO } from '../dto/exhibitionDTO';
 import {
     ApiOperation,
     ApiProperty, ApiQuery, ApiResponse,
     ApiTags,
 } from '@nestjs/swagger';
 import {
-    getExhibitionApiResponse, getExhibitionsSortedByDeadlineApiOperation, getExhibitionsSortedByInterestApiOperation,
+    getExhibitionsSortedByDeadlineApiOperation,
+    getExhibitionsSortedByInterestApiOperation,
     getNewestExhibitionApiOperation,
-    getRandomExhibitionApiResponse,
     getRandomExhibitionsAPiOperation,
 } from '../swagger';
-
 
 @Controller('/exhibitions')
 @ApiTags('전시회 컨트롤러')
@@ -21,33 +20,33 @@ export class ExhibitionController {
 
     @Get('/random')
     @ApiOperation(getRandomExhibitionsAPiOperation)
-    @ApiResponse(getRandomExhibitionApiResponse)
+    @ApiResponse({ type: ExhibitionDTO })
     @ApiProperty({})
-    getRandomExhibitions(): Promise<Exhibition[]> {
+    getRandomExhibitions(): Promise<ExhibitionDTO[]> {
         return this.exhibitionService.getRandomExhibitions();
     }
 
     @Get('/newest')
     @ApiOperation(getNewestExhibitionApiOperation)
-    @ApiResponse(getExhibitionApiResponse)
+    @ApiResponse({ type: ExhibitionDTO })
     @ApiQuery({name: "page", type: Number })
-    getNewestExhibitions(@Query('page', ParseIntPipe) page: number): Promise<Exhibition[]> {
+    getNewestExhibitions(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDTO[]> {
         return this.exhibitionService.getNewestExhibitions(page);
     }
 
     @Get('/deadline')
     @ApiOperation(getExhibitionsSortedByDeadlineApiOperation)
-    @ApiResponse(getExhibitionApiResponse)
+    @ApiResponse({ type: ExhibitionDTO })
     @ApiQuery({name: "page", type: Number })
-    getExhibitionsSortedByDeadline(@Query('page', ParseIntPipe) page: number): Promise<Exhibition[]> {
+    getExhibitionsSortedByDeadline(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDTO[]> {
         return this.exhibitionService.getExhibitionsSortedByDeadline(page);
     }
 
     @Get('/popular')
     @ApiOperation(getExhibitionsSortedByInterestApiOperation)
-    @ApiResponse(getExhibitionApiResponse)
+    @ApiResponse({ type: ExhibitionDTO })
     @ApiQuery({name: "page", type: Number })
-    getExhibitionsSortedByInterest(@Query('page', ParseIntPipe) page: number): Promise<Exhibition[]> {
+    getExhibitionsSortedByInterest(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDTO[]> {
         return this.exhibitionService.getExhibitionsSortedByInterest(page);
     }
 

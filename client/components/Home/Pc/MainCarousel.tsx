@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import { randomExhibitionType } from 'constants/fakeDatas';
 import {
     CarouselSlider,
     SlideWrapper,
@@ -17,9 +16,10 @@ import {
 } from './styles';
 import { setColorFromImage } from '@utils/setColorFromImage';
 import { BlackButton } from '@styles/common';
+import { ExhibitionCardProps } from '@const/card-type';
 
 interface Props {
-    ExhibitionsData: randomExhibitionType[];
+    ExhibitionsData: ExhibitionCardProps[];
 }
 
 const MainCarousel = ({ ExhibitionsData }: Props) => {
@@ -71,7 +71,7 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
                                                 {exhibition.title}
                                             </InfoTitle>
                                             <InfoDescription>
-                                                {exhibition.artist.name}
+                                                {exhibition.artist}
                                             </InfoDescription>
                                             <InfoDescription>
                                                 {exhibition.description}

@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+
+import ColorPicker from './ColorPicker';
 import EditorElement from './EditorElement';
 
 enum EditorElementName {
@@ -13,6 +15,7 @@ export type EditorElementStyle = {
     left: number;
     backgroundColor: string;
     size: { width: number; height: number };
+    zIndex: number;
 };
 
 export interface EditorElementProp {
@@ -23,25 +26,50 @@ export interface EditorElementProp {
 const Editor = () => {
     const [elements, setElements] = useState<EditorElementProp[]>([]);
     const [currentElements, setCurrentElements] = useState<number[]>([]);
+    const [showColorPicker, setShowColorPicker] = useState(false);
+    const [color, setColor] = useState('#000');
+    const elementRef = useRef<HTMLDivElement | HTMLInputElement | null>(null);
+
+    useEffect(() => {
+        if (!elementRef.current) return;
+        if (elementRef.current.tagName === 'DIV')
+            elementRef.current.style.backgroundColor = color;
+        if (elementRef.current.tagName === 'INPUT')
+            elementRef.current.style.color = color;
+    }, [color]);
 
     const createRectangular = () => {
         const element: EditorElementProp = {
             type: EditorElementName.rectangular,
-            style: {
-                size: {
-                    width: 100,
-                    height: 100,
-                },
-                top: 0,
-                left: 0,
-                backgroundColor: 'black',
-            },
+            style: initialRectStyle,
         };
         setElements([...elements, element]);
     };
 
-    const keyToCurrentElements = (keyyArr: number[]) => {
-        setCurrentElements(keyyArr);
+    const onClickColorButton = () => {
+        setShowColorPicker(!showColorPicker);
+    };
+
+    const createText = () => {
+        const element: EditorElementProp = {
+            type: EditorElementName.text,
+            style: initialTextStyle,
+        };
+        setElements([...elements, element]);
+    };
+
+    const keyToCurrentElements = (keyArr: number[]) => {
+        setCurrentElements(keyArr);
+    };
+    
+    const onClickZIndexButton = (direction: string) => {
+        return () => {
+            if (!elementRef.current) return;
+            const z = elementRef.current.style.zIndex;
+            if (direction === 'FORWARD')
+                elementRef.current.style.zIndex = `${+z + 100}`;
+            else elementRef.current.style.zIndex = `${+z - 100}`;
+        };
     };
 
     const renderElements = () => {
@@ -50,9 +78,9 @@ const Editor = () => {
                 key={idx}
                 idx={idx}
                 style={element.style}
-                type={EditorElementName.rectangular}
                 currentElements={currentElements}
                 keyToCurrentElements={keyToCurrentElements}
+                type={element.type}
             ></EditorElement>
         ));
     };
@@ -60,14 +88,49 @@ const Editor = () => {
     return (
         <EditorContainer>
             <ToolBar>
-                <Button onClick={createRectangular}>R</Button>
-                <Button>C</Button>
-                <Button>T</Button>
-                <Button>Ts</Button>
+                <Button onClick={createRectangular}>Rectangular</Button>
+                <Button onClick={onClickColorButton}>Color</Button>
+                <Button onClick={createText}>Text</Button>
+                <Button onClick={onClickZIndexButton('FORWARD')}>
+                    Forward
+                </Button>
+                <Button onClick={onClickZIndexButton('BACKWARD')}>
+                    Backward
+                </Button>
+                {showColorPicker && (
+                    <ColorPicker
+                        color={color}
+                        handleColor={(color) => {
+                            setColor(color);
+                        }}
+                    />
+                )}
             </ToolBar>
             <EditArea>{renderElements()}</EditArea>
         </EditorContainer>
     );
+};
+
+const initialRectStyle = {
+    size: {
+        width: 100,
+        height: 100,
+    },
+    top: 0,
+    left: 0,
+    backgroundColor: 'black',
+    zIndex: 100,
+};
+
+const initialTextStyle = {
+    size: {
+        width: 100,
+        height: 100,
+    },
+    top: 0,
+    left: 0,
+    backgroundColor: 'none',
+    zIndex: 100,
 };
 
 const EditorContainer = styled.div`
@@ -82,9 +145,11 @@ const ToolBar = styled.div`
     justify-content: flex-start;
     width: 100%;
     height: 50px;
+    border-bottom: 1px solid black;
+    position: relative;
 `;
 const Button = styled.button`
-    width: 40px;
+    width: 100px;
     height: 40px;
     border-radius: 8px;
     &:hover {

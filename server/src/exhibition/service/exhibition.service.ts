@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExhibitionRepository } from '../exhibition.repository';
-import { Exhibition } from "../exhibition.entity";
+import { ExhibitionDTO } from '../dto/exhibitionDTO';
 
 @Injectable()
 export class ExhibitionService {
@@ -10,20 +10,24 @@ export class ExhibitionService {
         private exhibitionRepository: ExhibitionRepository
     ) {}
 
-    getRandomExhibitions(): Promise<Exhibition[]> {
-        return this.exhibitionRepository.getRandomExhibitions();
+    async getRandomExhibitions(): Promise<ExhibitionDTO[]> {
+        const exhibitions = await this.exhibitionRepository.getRandomExhibitions();
+        return exhibitions.map(exhibition => ExhibitionDTO.from(exhibition));
     }
 
-    getNewestExhibitions(page: number): Promise<Exhibition[]> {
-        return this.exhibitionRepository.getNewestExhibitions(page);
+    async getNewestExhibitions(page: number): Promise<ExhibitionDTO[]> {
+        const exhibitions = await this.exhibitionRepository.getNewestExhibitions(page);
+        return exhibitions.map(exhibition => ExhibitionDTO.from(exhibition));
     }
 
-    getExhibitionsSortedByDeadline(page: number): Promise<Exhibition[]> {
-        return this.exhibitionRepository.getExhibitionsSortedByDeadline(page);
+    async getExhibitionsSortedByDeadline(page: number): Promise<ExhibitionDTO[]> {
+        const exhibitions = await this.exhibitionRepository.getExhibitionsSortedByDeadline(page);
+        return exhibitions.map(exhibition => ExhibitionDTO.from(exhibition));
     }
 
-    getExhibitionsSortedByInterest(page: number): Promise<Exhibition[]> {
-        return this.exhibitionRepository.getExhibitionsSortedByInterest(page);
+    async getExhibitionsSortedByInterest(page: number): Promise<ExhibitionDTO[]> {
+        const exhibitions = await this.exhibitionRepository.getExhibitionsSortedByInterest(page);
+        return exhibitions.map(exhibition => ExhibitionDTO.from(exhibition));
     }
 
 }
