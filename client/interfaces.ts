@@ -1,6 +1,13 @@
 export interface Artwork {
     id: number;
-    imagePath: string;
+    croppedImage: string;
+    originalImage: string;
+    exhibitionId: number;
+    nftToken: string;
+    price: string;
+    status: string;
+    title: string;
+    type: string;
 }
 
 export interface PostArtworkResponse {
