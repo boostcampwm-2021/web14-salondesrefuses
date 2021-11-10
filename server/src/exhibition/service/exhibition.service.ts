@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExhibitionRepository } from '../exhibition.repository';
-import { ExhibitionDTO } from '../dto/exhibitionDTO';
-import { HoldExhibitionDTO } from '../dto/exhibitionDTOs';
+import { ExhibitionDTO, HoldExhibitionDTO } from '../dto/exhibitionDTO';
 import { User } from 'src/user/user.entity';
 import { ImageService } from 'src/image/service/image.service';
 
@@ -12,7 +11,6 @@ export class ExhibitionService {
         @InjectRepository(ExhibitionRepository)
         private exhibitionRepository: ExhibitionRepository,
         private readonly imageService: ImageService,
-        private readonly categoryService: CategoryService,
     ) {}
 
     async getRandomExhibitions(): Promise<ExhibitionDTO[]> {
@@ -35,11 +33,22 @@ export class ExhibitionService {
         return exhibitions.map(exhibition => ExhibitionDTO.from(exhibition));
     }
 
-    async holdExhibition(image: Express.Multer.File, holdExhibitionDTO: HoldExhibitionDTO, user: User) {
-        const [thumbnailPath, categories] = await Promise.all([
-            this.imageService.fileUpload(image),
-            this.categorySerivce.getCategories(holdExhibitionDTO.categories),
-        ]);
-        this.exhibitionRepository.createExhibition(thumbnailPath.Location, holdExhibitionDTO, user, categories);
+    async holdExhibition(
+        image: Express.Multer.File,
+        holdExhibitionDTO: HoldExhibitionDTO,
+        user: User,
+    ): Promise<ExhibitionDTO> {
+        const croppedThumbnail = await this.imageService.cropImage(image);
+        const thumbnailPath = await this.imageService.fileUpload({ ...image, buffer: croppedThumbnail });
+
+        const newExhibition = this.exhibitionRepository.createExhibition(
+            thumbnailPath.Location,
+            holdExhibitionDTO,
+            user,
+        );
+
+        this.exhibitionRepository.save(newExhibition);
+
+        return ExhibitionDTO.from(newExhibition);
     }
 }

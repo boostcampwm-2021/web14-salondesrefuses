@@ -38,7 +38,7 @@ export class ImageService {
         });
     }
 
-    async cropImage(originalImage) {
+    async cropImage(originalImage: Express.Multer.File) {
         const sharpImage = sharp(originalImage.buffer);
         const { height } = await sharpImage.metadata();
 

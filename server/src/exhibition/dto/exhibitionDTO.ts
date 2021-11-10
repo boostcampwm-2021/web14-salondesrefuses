@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty } from 'class-validator';
 import { Exhibition } from '../exhibition.entity';
 
 export class ExhibitionDTO {
@@ -36,4 +37,26 @@ export class ExhibitionDTO {
 
         return dto;
     }
+}
+
+export class HoldExhibitionDTO {
+    @IsNotEmpty()
+    title: string;
+
+    collaborator: string;
+
+    @IsNotEmpty()
+    startAt: Date;
+
+    @IsNotEmpty()
+    endAt: Date;
+
+    description: string;
+
+    artworkIds: number[];
+
+    @IsNotEmpty()
+    contents: string;
+
+    categoryIds: number[];
 }

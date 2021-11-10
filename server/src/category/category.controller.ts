@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiOperation, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { ApiBody, ApiOperation, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CustomAuthGuard } from 'src/auth/guard/CustomAuthGuard';
 import { Category } from './category.entity';
 import { CategoryService } from './category.service';
+import { postCategoriesApiBody } from './swagger';
 
 @Controller('categories')
 @ApiTags('카테고리 컨트롤러')
@@ -16,8 +18,10 @@ export class CategoryContoller {
     }
 
     @Post()
+    @UseGuards(CustomAuthGuard)
     @ApiOperation({ summary: '카테고리 생성 API' })
     @ApiProperty({ type: Category })
+    @ApiBody(postCategoriesApiBody)
     postCategories(@Body('name') name: string): Promise<Category> {
         return this.categoryService.createCategory(name);
     }

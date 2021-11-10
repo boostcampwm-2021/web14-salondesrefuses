@@ -13,16 +13,16 @@ import {
     ValidationPipe,
 } from '@nestjs/common';
 import { ExhibitionService } from '../service/exhibition.service';
-import { ExhibitionDTO } from '../dto/exhibitionDTO';
-import { ApiConsumes, ApiOperation, ApiProperty, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ExhibitionDTO, HoldExhibitionDTO } from '../dto/exhibitionDTO';
+import { ApiBody, ApiConsumes, ApiOperation, ApiProperty, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
     getExhibitionsSortedByDeadlineApiOperation,
     getExhibitionsSortedByInterestApiOperation,
     getNewestExhibitionApiOperation,
     getRandomExhibitionsAPiOperation,
+    holdExhibitionApiBody,
 } from '../swagger';
 import { User } from 'src/user/user.entity';
-import { HoldExhibitionDTO } from '../dto/exhibitionDTOs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CustomAuthGuard } from 'src/auth/guard/CustomAuthGuard';
 
@@ -66,14 +66,15 @@ export class ExhibitionController {
     @Post('/post')
     @UseGuards(CustomAuthGuard)
     @UsePipes(ValidationPipe)
-    @UseInterceptors(FileInterceptor('thumnail'))
+    @UseInterceptors(FileInterceptor('thumbnail'))
     @ApiConsumes('multipart/form-data')
     @ApiOperation({ summary: '전시회 등록 api' })
+    @ApiBody(holdExhibitionApiBody)
     holdExhibition(
         @UploadedFile() image: Express.Multer.File,
         @Body() holdExhibitionDTO: HoldExhibitionDTO,
         @Req() { user }: Request & { user: User },
-    ) {
+    ): Promise<ExhibitionDTO> {
         return this.exhibitionService.holdExhibition(image, holdExhibitionDTO, user);
     }
 }

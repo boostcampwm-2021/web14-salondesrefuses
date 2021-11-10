@@ -3,8 +3,7 @@ import { User } from '../user/user.entity';
 import { Exhibition } from './exhibition.entity';
 import { Artwork } from '../artwork/artwork.entity';
 import { InterestArtwork } from '../interestArtwork/interestArtwork.entity';
-import { HoldExhibitionDTO } from './dto/exhibitionDTOs';
-import { Category } from 'src/category/category.entity';
+import { HoldExhibitionDTO } from './dto/exhibitionDTO';
 
 @EntityRepository(Exhibition)
 export class ExhibitionRepository extends Repository<Exhibition> {
@@ -60,12 +59,7 @@ export class ExhibitionRepository extends Repository<Exhibition> {
         return await this.find({ artist });
     }
 
-    createExhibition(
-        thumbnailPath: string,
-        holdExhibitionDTO: HoldExhibitionDTO,
-        user: User,
-        categories: Category[],
-    ): Exhibition {
+    createExhibition(thumbnailPath: string, holdExhibitionDTO: HoldExhibitionDTO, user: User): Exhibition {
         return this.create({
             title: holdExhibitionDTO.title,
             collaborator: holdExhibitionDTO.collaborator,
@@ -75,7 +69,7 @@ export class ExhibitionRepository extends Repository<Exhibition> {
             thumbnailImage: thumbnailPath,
             contents: holdExhibitionDTO.contents,
             artist: user,
-            categories: categories,
+            categories: JSON.stringify(holdExhibitionDTO.categoryIds),
         });
     }
 }
