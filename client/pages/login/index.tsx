@@ -45,7 +45,7 @@ const LoginPage = () => {
             <Body>
                 <Logo>
                     <Link href="/">
-                        <Image src={logo} />
+                        <img src={logo.src} alt="logo" />
                     </Link>
                 </Logo>
                 <Image src={sideImage} alt="side image" />

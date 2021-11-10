@@ -16,18 +16,21 @@ import { ExhibitionCardProps } from '@const/card-type';
 import { getExhibitions } from '@utils/networking';
 import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
 import RequireLoginModal from '@components/common/RequireLoginModal';
+import parseCookie from '@utils/parseCookie';
+
+let accessToken: string | undefined;
 
 const ExhibitionPage: NextPage = () => {
     const [onSelect, setOnSelect] = useState<string>('Newest');
     const [exhibitions, setExhibitions] = useState<ExhibitionCardProps[]>([]);
     const [page, setPage] = useState(0);
 
-    const {
-        accessToken,
-        requireLoginModal,
-        onClickPostArtworkWithoutLogin,
-        closeModal,
-    } = useHandleRequireLoginModal();
+    const { requireLoginModal, onClickPostArtworkWithoutLogin, closeModal } =
+        useHandleRequireLoginModal();
+
+    useEffect(() => {
+        accessToken = parseCookie()('accessToken');
+    }, []);
 
     useEffect(() => {
         getExhibitions(onSelect.toLowerCase(), page).then((res) =>
@@ -84,18 +87,21 @@ const ExhibitionPage: NextPage = () => {
                             <Link href="/artwork/post">
                                 <BlackButton>Post Artwork</BlackButton>
                             </Link>
-                         </>
+                        </>
                     ) : (
                         <>
-                            <BlackButton onClick={onClickPostArtworkWithoutLogin}>
+                            <BlackButton
+                                onClick={onClickPostArtworkWithoutLogin}
+                            >
                                 Hold Exhibition
                             </BlackButton>
-                            <BlackButton onClick={onClickPostArtworkWithoutLogin}>
+                            <BlackButton
+                                onClick={onClickPostArtworkWithoutLogin}
+                            >
                                 Post Artwork
                             </BlackButton>
                         </>
                     )}
-
                 </Buttons>
             </TopContainer>
 
