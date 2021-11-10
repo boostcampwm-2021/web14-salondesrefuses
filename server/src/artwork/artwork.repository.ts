@@ -20,6 +20,12 @@ export class ArtworkRepository extends Repository<Artwork> {
         });
     }
 
+    async findAllByExhibitionId(exhibitonId: number): Promise<Artwork[]> {
+        return await this.find({
+            where: { exhibitionId: exhibitonId },
+        });
+    }
+
     createArtwork(
         createArtWorkDTO: CreateArtworkDTO,
         { Location: originalImagePath }: ObjectStorageData,

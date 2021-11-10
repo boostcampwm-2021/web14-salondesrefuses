@@ -18,13 +18,13 @@ export class Exhibition {
 
     @Column({
         type: 'timestamp',
-        default: () => 'CURRENT_TIMESTAMP'
+        default: () => 'CURRENT_TIMESTAMP',
     })
     startAt: Date;
 
     @Column({
         type: 'timestamp',
-        default: () => 'CURRENT_TIMESTAMP'
+        default: () => 'CURRENT_TIMESTAMP',
     })
     endAt: Date;
 
@@ -33,6 +33,9 @@ export class Exhibition {
 
     @Column()
     contents: string;
+
+    @Column({ nullable: true })
+    theme: string;
 
     @ManyToOne(type => User, user => user.exhibitionList)
     artist: User;

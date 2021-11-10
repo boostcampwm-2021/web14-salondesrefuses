@@ -1,11 +1,10 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { Exhibition } from "./exhibition.entity";
+import { Exhibition } from './exhibition.entity';
 import { Artwork } from '../artwork/artwork.entity';
 import { InterestArtwork } from '../interestArtwork/interestArtwork.entity';
 
 @EntityRepository(Exhibition)
 export class ExhibitionRepository extends Repository<Exhibition> {
-
     async getRandomExhibitions(): Promise<Exhibition[]> {
         return await this.createQueryBuilder('exhibition')
             .innerJoinAndSelect('exhibition.artist', 'artist')
@@ -16,6 +15,7 @@ export class ExhibitionRepository extends Repository<Exhibition> {
 
     async getNewestExhibitions(page: number): Promise<Exhibition[]> {
         return await this.createQueryBuilder('exhibition')
+            .innerJoinAndSelect('exhibition.artist', 'artist')
             .where('exhibition.start_at <= now()')
             .orderBy(`now() - exhibition.start_at`, 'ASC')
             .offset(page * 15)
@@ -25,6 +25,7 @@ export class ExhibitionRepository extends Repository<Exhibition> {
 
     async getExhibitionsSortedByDeadline(page: number): Promise<Exhibition[]> {
         return await this.createQueryBuilder('exhibition')
+            .innerJoinAndSelect('exhibition.artist', 'artist')
             .orderBy('exhibition.end_at - now()', 'ASC')
             .offset(page * 15)
             .limit(15)
@@ -33,21 +34,22 @@ export class ExhibitionRepository extends Repository<Exhibition> {
 
     async getExhibitionsSortedByInterest(page: number): Promise<Exhibition[]> {
         return await this.createQueryBuilder('exhibition')
-            .innerJoin(subQuery => {
-                return subQuery
-                    .select('artwork.exhibition_id')
-                    .from(Artwork, 'artwork')
-                    .innerJoin(
-                        InterestArtwork,
-                        'interest_artwork',
-                        'artwork.id = interest_artwork.artwork_id'
-                    )
-            }, 'artwork', 'artwork.exhibition_id = exhibition.id')
-            .groupBy('exhibition.id')
-            .orderBy('count(exhibition.id)', 'DESC')
+            .innerJoinAndSelect('exhibition.artist', 'artist')
+            .innerJoin(
+                subQuery => {
+                    return subQuery
+                        .select('a.id, count(i.artwork_id) as count')
+                        .from(Artwork, 'a')
+                        .leftJoin(InterestArtwork, 'i', 'a.id = i.artwork_id')
+                        .groupBy('a.id');
+                },
+                'interest',
+                'exhibition.id = interest.id',
+            )
+            .orderBy('interest.count', 'DESC')
+            .addOrderBy('exhibition.id', 'DESC')
             .offset(page * 15)
             .limit(15)
             .getMany();
     }
-
 }
