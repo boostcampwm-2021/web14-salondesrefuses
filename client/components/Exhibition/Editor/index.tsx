@@ -1,165 +1,51 @@
+import React from 'react';
 import styled from '@emotion/styled';
-import React, { useState, useRef, useEffect } from 'react';
 
-import ColorPicker from './ColorPicker';
-import EditorElement from './EditorElement';
+import { Description } from '../style';
+import Editor from './Editor';
+import { NextButton as BackButton } from '../style';
 
-enum EditorElementName {
-    rectangular = 'RECTANGULAR',
-    text = 'TEXT',
-    image = 'IMAGE',
-}
-export type EditorElementType = 'RECTANGULAR' | 'TEXT' | 'IMAGE';
-export type EditorElementStyle = {
-    top: number;
-    left: number;
-    backgroundColor: string;
-    size: { width: number; height: number };
-    zIndex: number;
-};
-
-export interface EditorElementProp {
-    type: EditorElementType;
-    style: EditorElementStyle;
+interface EditorProp {
+    backbuttonHandler: () => void;
 }
 
-const Editor = () => {
-    const [elements, setElements] = useState<EditorElementProp[]>([]);
-    const [currentElements, setCurrentElements] = useState<
-        Array<HTMLElement | null>
-    >([]);
-    const [showColorPicker, setShowColorPicker] = useState(false);
-    const [color, setColor] = useState('#000');
-    const elementRef = useRef<HTMLDivElement | HTMLInputElement | null>(null);
-
-    useEffect(() => {
-        currentElements.forEach((elem) => {
-            if (!elem) return;
-            if (elem.tagName === 'DIV') elem.style.backgroundColor = color;
-            if (elem.tagName === 'INPUT') elem.style.color = color;
-        });
-    }, [color]);
-
-    const createRectangular = () => {
-        const element: EditorElementProp = {
-            type: EditorElementName.rectangular,
-            style: initialRectStyle,
-        };
-        setElements([...elements, element]);
-    };
-
-    const onClickColorButton = () => {
-        setShowColorPicker(!showColorPicker);
-    };
-
-    const createText = () => {
-        const element: EditorElementProp = {
-            type: EditorElementName.text,
-            style: initialTextStyle,
-        };
-        setElements([...elements, element]);
-    };
-
-    const keyToCurrentElements = (keyArr: Array<HTMLElement | null>) => {
-        setCurrentElements(keyArr);
-    };
-
-    const onClickZIndexButton = (direction: string) => {
-        return () => {
-            currentElements.forEach((elem) => {
-                if (!elem) return;
-                const z = elem.style.zIndex;
-                if (direction === 'FORWARD') elem.style.zIndex = `${+z + 100}`;
-                else elem.style.zIndex = `${+z - 100}`;
-            });
-        };
-    };
-
-    const renderElements = () => {
-        return elements.map((element, idx) => (
-            <EditorElement
-                key={idx}
-                idx={idx}
-                style={element.style}
-                currentElements={currentElements}
-                keyToCurrentElements={keyToCurrentElements}
-                type={element.type}
-            ></EditorElement>
-        ));
-    };
-
+const index = ({ backbuttonHandler }: EditorProp) => {
     return (
-        <EditorContainer>
-            <ToolBar>
-                <Button onClick={createRectangular}>Rectangular</Button>
-                <Button onClick={onClickColorButton}>Color</Button>
-                <Button onClick={createText}>Text</Button>
-                <Button onClick={onClickZIndexButton('FORWARD')}>
-                    Forward
-                </Button>
-                <Button onClick={onClickZIndexButton('BACKWARD')}>
-                    Backward
-                </Button>
-                {showColorPicker && (
-                    <ColorPicker
-                        color={color}
-                        handleColor={(color) => {
-                            setColor(color);
-                        }}
-                    />
-                )}
-            </ToolBar>
-            <EditArea>{renderElements()}</EditArea>
-        </EditorContainer>
+        <>
+            <Title>
+                <h1>Hold Exhibition</h1>
+                <Description>나만의 전시회를 만들어 보세요!</Description>
+            </Title>
+            <Container>
+                <Editor />
+                <BackButton onClick={backbuttonHandler}>Back</BackButton>
+            </Container>
+        </>
     );
 };
 
-const initialRectStyle = {
-    size: {
-        width: 100,
-        height: 100,
-    },
-    top: 0,
-    left: 0,
-    backgroundColor: 'black',
-    zIndex: 100,
-};
-
-const initialTextStyle = {
-    size: {
-        width: 100,
-        height: 100,
-    },
-    top: 0,
-    left: 0,
-    backgroundColor: 'none',
-    zIndex: 100,
-};
-
-const EditorContainer = styled.div`
-    width: 800px;
-    height: 100vh;
-    border: 1px solid ${(props) => props.theme.color.gray1};
-`;
-
-const ToolBar = styled.div`
+const Container = styled.div`
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    height: 50px;
-    border-bottom: 1px solid black;
     position: relative;
+
+    width: 920px;
+    margin: 50px 0;
 `;
-const Button = styled.button`
-    width: 100px;
-    height: 40px;
-    border-radius: 8px;
-    &:hover {
-        background-color: ${(props) => props.theme.color.gray1};
+
+const Title = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    width: 920px;
+    margin: 0 auto;
+    margin-top: 40px;
+
+    & > h1 {
+        font: ${(props) => props.theme.font.textEnLg};
+        color: ${(props) => props.theme.color.placeholder};
+        margin-bottom: 8px;
+        margin: 0;
     }
 `;
-const EditArea = styled.div`
-    position: relative;
-`;
-export default Editor;
+
+export default index;
