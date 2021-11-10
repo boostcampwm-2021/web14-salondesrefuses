@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-import { UserController } from './controller/user.controller';
-import { UserService } from './service/user.service';
+import { ImageModule } from '../image/image.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtModule } from '@nestjs/jwt';
 import { UserRepository } from './user.repository';
 import { ArtworkRepository } from '../artwork/artwork.repository';
-import { JwtModule } from '@nestjs/jwt';
-import { ImageModule } from '../image/image.module';
+import { ExhibitionRepository } from '../exhibition/exhibition.repository';
+import { UserController } from './controller/user.controller';
+import { UserService } from './service/user.service';
 
 @Module({
     imports: [
         ImageModule,
-        TypeOrmModule.forFeature([ UserRepository, ArtworkRepository ]),
+        TypeOrmModule.forFeature([ UserRepository, ArtworkRepository, ExhibitionRepository ]),
         JwtModule.register({
             secret: process.env.JWT_SECRET_KEY,
         }),

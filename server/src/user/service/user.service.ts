@@ -7,6 +7,8 @@ import { Artwork } from '../../artwork/artwork.entity';
 import { User } from '../user.entity';
 import { UpdateResult } from 'typeorm';
 import { RequestUserDTO } from '../dto/userDTO';
+import { ExhibitionRepository } from '../../exhibition/exhibition.repository';
+import { Exhibition } from '../../exhibition/exhibition.entity';
 
 @Injectable()
 export class UserService {
@@ -15,7 +17,9 @@ export class UserService {
         @InjectRepository(UserRepository)
         private userRepository: UserRepository,
         @InjectRepository(ArtworkRepository)
-        private artworkRepository: ArtworkRepository
+        private artworkRepository: ArtworkRepository,
+        @InjectRepository(ExhibitionRepository)
+        private exhibitionRepository: ExhibitionRepository
     ) {}
 
     async checkRegisteredUser(userId: string, name:string, avatar: string, loginStrategy: string): Promise<User> {
@@ -70,6 +74,10 @@ export class UserService {
     getBiddedArtworks(user: User): Promise<Artwork[]> {
         const { id } = user;
         return this.artworkRepository.getBiddedArtworks(id);
+    }
+
+    getUsersExhibitions(user: User): Promise<Exhibition[]> {
+        return this.exhibitionRepository.getUsersExhibitions(user);
     }
 
 }

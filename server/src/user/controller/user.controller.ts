@@ -8,6 +8,7 @@ import {
 import { UserService } from '../service/user.service';
 import { User } from '../user.entity';
 import { Artwork } from '../../artwork/artwork.entity';
+import { Exhibition } from '../../exhibition/exhibition.entity';
 import { CustomAuthGuard } from '../../auth/guard/CustomAuthGuard';
 import { RequestUserDTO } from '../dto/userDTO';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -20,6 +21,7 @@ import {
     getInterestArtworksApiOperation,
     getBiddingArtworksApiOperation,
     getBiddedArtworksApiOperation,
+    getUsersExhibitionsApiOperation,
 } from '../swagger';
 
 @UseGuards(CustomAuthGuard)
@@ -83,6 +85,15 @@ export class UserController {
         @Req() req: Express.Request & { user: User }
     ): Promise<Artwork[]> {
         return this.userService.getBiddedArtworks(req.user);
+    }
+
+    @Get('/exhibitions')
+    @ApiOperation(getUsersExhibitionsApiOperation)
+    @ApiResponse({ type: Exhibition })
+    getUsersExhibitions(
+        @Req() req: Express.Request & { user: User }
+    ): Promise<Exhibition[]> {
+        return this.userService.getUsersExhibitions(req.user);
     }
 
 }

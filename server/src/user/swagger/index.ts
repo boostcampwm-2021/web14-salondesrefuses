@@ -26,4 +26,9 @@ export const getBiddingArtworksApiOperation = {
 export const getBiddedArtworksApiOperation = {
     summary: '입찰한 작품 조회 API',
     description: '사용자가 입찰한 작품 목록을 조회한다.'
+};
+
+export const getUsersExhibitionsApiOperation = {
+    summary: '사용자 전시회 조회 API',
+    description: '사용자의 전시회 목록을 조회한다.'
 }

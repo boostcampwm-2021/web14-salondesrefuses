@@ -1,5 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Exhibition } from "./exhibition.entity";
+import { User } from '../user/user.entity'
 import { Artwork } from '../artwork/artwork.entity';
 import { InterestArtwork } from '../interestArtwork/interestArtwork.entity';
 
@@ -52,6 +53,10 @@ export class ExhibitionRepository extends Repository<Exhibition> {
             .offset(page * 15)
             .limit(15)
             .getMany();
+    }
+
+    async getUsersExhibitions(artist: User): Promise<Exhibition[]> {
+        return await this.find({ artist });
     }
 
 }
