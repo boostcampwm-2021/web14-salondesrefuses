@@ -30,6 +30,7 @@ const Container = styled.div`
 
     width: 920px;
     margin: 50px 0;
+    user-select: none;
 `;
 
 const Title = styled.div`
