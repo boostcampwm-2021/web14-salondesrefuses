@@ -126,8 +126,8 @@ export const AuctionContainer = styled.div`
     }
 `;
 export const AuctionCardContainer = styled.div`
-    width: 100%;
-    margin-top: 50px;
+    width: 1180px;
+    margin: 50px auto 0 auto;
     ${SpaceBetween};
 `;
 
