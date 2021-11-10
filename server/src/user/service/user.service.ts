@@ -2,13 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from '../user.repository';
 import { ArtworkRepository } from '../../artwork/artwork.repository';
+import { ImageService } from '../../image/service/image.service';
 import { Artwork } from '../../artwork/artwork.entity';
 import { User } from '../user.entity';
 import { UpdateResult } from 'typeorm';
+import { RequestUserDTO } from '../dto/userDTO';
 
 @Injectable()
 export class UserService {
     constructor(
+        private imageService: ImageService,
         @InjectRepository(UserRepository)
         private userRepository: UserRepository,
         @InjectRepository(ArtworkRepository)
@@ -31,6 +34,21 @@ export class UserService {
 
     getUserProfile(userId: string, loginStrategy: string): Promise<User> {
         return this.userRepository.findOne({ userId, loginStrategy });
+    }
+
+    async updateUserProfile(
+        userId: string,
+        loginStrategy: string,
+        file: Express.Multer.File,
+        requestUserDTO: RequestUserDTO
+    ): Promise<UpdateResult> {
+        const image = await this.imageService.fileUpload(file);
+        const avatar = image.Location;
+
+        return this.userRepository.update(
+            { userId, loginStrategy },
+            { ...requestUserDTO, avatar }
+        );
     }
 
     getAllUsersArtworks(userId: number): Promise<Artwork[]> {

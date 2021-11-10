@@ -12,10 +12,15 @@ export const getAllUsersArtworksApiParam = {
 export const getUserProfile = {
     summary: '사용자 프로필 조회 API',
     description: '사용자의 프로필을 조회한다.'
-}
+};
 
-export const getUserProfileApiParam = {
+export const userProfileApiParam = {
     name: 'userId',
     type: String,
     require: true,
-}
+};
+
+export const updateUserProfileApiOperation = {
+    summary: '사용자 프로필 수정 API',
+    description: '사용자 이름, SNS ID, 설명, 프로필 사진 등을 수정한다.'
+};
