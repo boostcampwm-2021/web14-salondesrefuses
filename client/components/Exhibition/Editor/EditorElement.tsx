@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, RefObject } from 'react';
 import { EditorElementStyle, EditorElementType } from '.';
 
 interface Prop {
@@ -20,11 +20,15 @@ const EditorElement = ({
     align,
     onClick,
 }: Prop) => {
-    const elementRef = useRef<HTMLDivElement>(null);
+    const elementRef = useRef<HTMLElement | null>(null);
     const positionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const [currentStyle, setCurrentStyle] = useState(style);
 
-    const moveElement = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    useEffect(() => {
+        type === 'TEXT' && elementRef.current && elementRef.current.focus();
+    }, []);
+
+    const moveElement = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
         const element = elementRef.current;
         const dom = element?.getBoundingClientRect();
         if (!dom || !element) return;
@@ -57,12 +61,24 @@ const EditorElement = ({
     };
 
     return (
-        <div
-            onClick={onClick}
-            style={calculateStyle()}
-            onMouseDown={(e) => moveElement(e)}
-            ref={elementRef}
-        ></div>
+        <>
+            {type === 'RECTANGULAR' ? (
+                <div
+                    onClick={onClick}
+                    style={calculateStyle()}
+                    onMouseDown={(e) => moveElement(e)}
+                    ref={elementRef as RefObject<HTMLDivElement>}
+                ></div>
+            ) : (
+                <input
+                    type="text"
+                    onClick={onClick}
+                    style={calculateStyle()}
+                    onMouseDown={(e) => moveElement(e)}
+                    ref={elementRef as RefObject<HTMLInputElement>}
+                ></input>
+            )}
+        </>
     );
 };
 

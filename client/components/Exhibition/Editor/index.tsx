@@ -25,11 +25,14 @@ const Editor = () => {
     const [elements, setElements] = useState<EditorElementProp[]>([]);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [color, setColor] = useState('#000');
-    const elementRef = useRef<HTMLDivElement | null>(null);
+    const elementRef = useRef<HTMLDivElement | HTMLInputElement | null>(null);
 
     useEffect(() => {
         if (!elementRef.current) return;
-        elementRef.current.style.backgroundColor = color;
+        if (elementRef.current.tagName === 'DIV')
+            elementRef.current.style.backgroundColor = color;
+        if (elementRef.current.tagName === 'INPUT')
+            elementRef.current.style.color = color;
     }, [color]);
 
     const createRectangular = () => {
@@ -44,6 +47,14 @@ const Editor = () => {
         setShowColorPicker(!showColorPicker);
     };
 
+    const createText = () => {
+        const element: EditorElementProp = {
+            type: EditorElementName.text,
+            style: initialTextStyle,
+        };
+        setElements([...elements, element]);
+    };
+
     const onClickEditorElement = ({ target }: React.MouseEvent) => {
         elementRef.current = null;
         elementRef.current = target as HTMLDivElement;
@@ -55,7 +66,7 @@ const Editor = () => {
                 onClick={onClickEditorElement}
                 key={idx}
                 style={element.style}
-                type={EditorElementName.rectangular}
+                type={element.type}
             ></EditorElement>
         ));
     };
@@ -65,7 +76,7 @@ const Editor = () => {
             <ToolBar>
                 <Button onClick={createRectangular}>Rectangular</Button>
                 <Button onClick={onClickColorButton}>Color</Button>
-                <Button>Text</Button>
+                <Button onClick={createText}>Text</Button>
                 <Button>TextStyle</Button>
                 {showColorPicker && (
                     <ColorPicker
@@ -91,6 +102,18 @@ const initialRectStyle = {
         y: 0,
     },
     backgroundColor: 'black',
+};
+
+const initialTextStyle = {
+    size: {
+        width: 200,
+        height: 50,
+    },
+    translate: {
+        x: 0,
+        y: 0,
+    },
+    backgroundColor: 'none',
 };
 
 const EditorContainer = styled.div`
