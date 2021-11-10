@@ -37,7 +37,7 @@ export default class AuctionController {
         return this.auctionService.getAuctionsSortedByPopular(page);
     }
 
-    @Get(':id')
+    @Get('/:id')
     @ApiOperation(getAuctionDetailApiOperation)
     @ApiResponse({ type: AuctionDetailDTO })
     getAuctionDetail(@Param('id', ParseIntPipe) auctionId: number): Promise<AuctionDetailDTO> {

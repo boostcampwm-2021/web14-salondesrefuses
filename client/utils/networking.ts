@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Artwork, PostArtworkResponse } from 'interfaces';
+import { Artwork, Auction, PostArtworkResponse } from 'interfaces';
 import { AuctionCardProps, ExhibitionCardProps } from '@const/card-type';
 
 const API_SERVER_URL = process.env.API_SERVER_URL;
@@ -48,4 +48,8 @@ export const getAuctions = (filter: string, page: number) => {
     return axios.get<AuctionCardProps[]>(
         `${API_SERVER_URL}/auctions/${filter}?page=${page}`,
     );
+};
+
+export const getAuction = (auctionId: number) => {
+    return axios.get<Auction>(`${API_SERVER_URL}/auctions/${auctionId}`);
 };
