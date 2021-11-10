@@ -54,10 +54,10 @@ export class UserController {
     @Get('/artworks')
     @ApiOperation(getAllUsersArtworksApiOperation)
     @ApiResponse({ type: Artwork })
-    getAllUsersArtworks(
+    getUsersArtworks(
         @Req() req: Express.Request & { user: User }
     ): Promise<Artwork[]> {
-        return this.userService.getAllUsersArtworks(req.user);
+        return this.userService.getUsersArtworks(req.user);
     }
 
     @Get('/artworks/interest')

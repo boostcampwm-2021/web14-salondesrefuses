@@ -56,9 +56,9 @@ export class UserService {
         );
     }
 
-    getAllUsersArtworks(user: User): Promise<Artwork[]> {
+    getUsersArtworks(user: User): Promise<Artwork[]> {
         const { id } = user;
-        return this.artworkRepository.getAllUsersArtworks(id);
+        return this.artworkRepository.getUsersArtworks(id);
     }
 
     getInterestArtworks(user: User): Promise<Artwork[]> {
