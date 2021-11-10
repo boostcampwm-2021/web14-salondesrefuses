@@ -45,12 +45,18 @@ export class AuthService {
         });
         const { access_token } = data;
 
-        try {
-            const userInfo = await axios.get(process.env.KAKAO_USER_URL, {
+        const userInfo = await axios.get(process.env.KAKAO_USER_URL, {
+            headers: { Authorization: `Bearer ${access_token}` },
+        });
+        const { email, profile } = userInfo.data.kakao_account;
+
+        if (!email || !profile) {
+            await axios.post(process.env.KAKAO_UNLINK_URL, {
                 headers: { Authorization: `Bearer ${access_token}` },
             });
-            const { email, profile } = userInfo.data.kakao_account;
 
+            throw new Error('failed kakao login'); // @TODO 에러처리
+        } else {
             const user = await this.userService.checkRegisteredUser(
                 email,
                 profile.nickname,
@@ -58,12 +64,6 @@ export class AuthService {
                 'kakao',
             );
             return this.generateToken(user, 'kakao');
-        } catch (errror) {
-            await axios.post(process.env.KAKAO_UNLINK_URL, {
-                headers: { Authorization: `Bearer ${access_token}` },
-            });
-
-            throw new Error('failed kakao login'); // @TODO 에러처리
         }
     }
 
