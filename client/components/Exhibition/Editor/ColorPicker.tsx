@@ -23,6 +23,7 @@ const Container = styled.div`
     position: absolute;
     top: 60px;
     left: 100px;
+    z-index: 900;
 `;
 
 export default ColorPicker;

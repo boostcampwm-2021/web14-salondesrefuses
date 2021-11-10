@@ -8,6 +8,7 @@ interface Prop {
     imgSrc?: string;
     text?: string;
     align?: string;
+    onClick: (e: React.MouseEvent) => void;
 }
 
 const EditorElement = ({
@@ -17,6 +18,7 @@ const EditorElement = ({
     imgSrc,
     text,
     align,
+    onClick,
 }: Prop) => {
     const elementRef = useRef<HTMLDivElement>(null);
     const positionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -56,6 +58,7 @@ const EditorElement = ({
 
     return (
         <div
+            onClick={onClick}
             style={calculateStyle()}
             onMouseDown={(e) => moveElement(e)}
             ref={elementRef}

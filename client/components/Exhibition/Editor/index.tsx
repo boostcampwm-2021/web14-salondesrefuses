@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import ColorPicker from './ColorPicker';
 import EditorElement from './EditorElement';
@@ -25,6 +25,12 @@ const Editor = () => {
     const [elements, setElements] = useState<EditorElementProp[]>([]);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [color, setColor] = useState('#000');
+    const elementRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (!elementRef.current) return;
+        elementRef.current.style.backgroundColor = color;
+    }, [color]);
 
     const createRectangular = () => {
         const element: EditorElementProp = {
@@ -38,9 +44,15 @@ const Editor = () => {
         setShowColorPicker(!showColorPicker);
     };
 
+    const onClickEditorElement = ({ target }: React.MouseEvent) => {
+        elementRef.current = null;
+        elementRef.current = target as HTMLDivElement;
+    };
+
     const renderElements = () => {
         return elements.map((element, idx) => (
             <EditorElement
+                onClick={onClickEditorElement}
                 key={idx}
                 style={element.style}
                 type={EditorElementName.rectangular}
