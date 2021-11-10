@@ -7,9 +7,9 @@ import {
     ApiTags,
 } from '@nestjs/swagger';
 import {
-    getExhibitionApiResponse, getExhibitionsSortedByDeadlineApiOperation, getExhibitionsSortedByInterestApiOperation,
+    getExhibitionsSortedByDeadlineApiOperation,
+    getExhibitionsSortedByInterestApiOperation,
     getNewestExhibitionApiOperation,
-    getRandomExhibitionApiResponse,
     getRandomExhibitionsAPiOperation,
 } from '../swagger';
 
@@ -20,7 +20,7 @@ export class ExhibitionController {
 
     @Get('/random')
     @ApiOperation(getRandomExhibitionsAPiOperation)
-    @ApiResponse(getRandomExhibitionApiResponse)
+    @ApiResponse({ type: ExhibitionDTO })
     @ApiProperty({})
     getRandomExhibitions(): Promise<ExhibitionDTO[]> {
         return this.exhibitionService.getRandomExhibitions();
@@ -28,7 +28,7 @@ export class ExhibitionController {
 
     @Get('/newest')
     @ApiOperation(getNewestExhibitionApiOperation)
-    @ApiResponse(getExhibitionApiResponse)
+    @ApiResponse({ type: ExhibitionDTO })
     @ApiQuery({name: "page", type: Number })
     getNewestExhibitions(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDTO[]> {
         return this.exhibitionService.getNewestExhibitions(page);
@@ -36,7 +36,7 @@ export class ExhibitionController {
 
     @Get('/deadline')
     @ApiOperation(getExhibitionsSortedByDeadlineApiOperation)
-    @ApiResponse(getExhibitionApiResponse)
+    @ApiResponse({ type: ExhibitionDTO })
     @ApiQuery({name: "page", type: Number })
     getExhibitionsSortedByDeadline(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDTO[]> {
         return this.exhibitionService.getExhibitionsSortedByDeadline(page);
@@ -44,7 +44,7 @@ export class ExhibitionController {
 
     @Get('/popular')
     @ApiOperation(getExhibitionsSortedByInterestApiOperation)
-    @ApiResponse(getExhibitionApiResponse)
+    @ApiResponse({ type: ExhibitionDTO })
     @ApiQuery({name: "page", type: Number })
     getExhibitionsSortedByInterest(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDTO[]> {
         return this.exhibitionService.getExhibitionsSortedByInterest(page);
