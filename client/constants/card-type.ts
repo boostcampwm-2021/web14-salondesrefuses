@@ -1,3 +1,5 @@
+import { AUCTION_STATE } from './auction-state';
+
 export interface ExhibitionCardProps {
     title: string;
     description?: string;
@@ -17,7 +19,7 @@ export interface AuctionCardProps {
     price?: number;
     id: number;
     exhibitionId?: null | number;
-    status: string;
+    status: AUCTION_STATE;
     type: string;
 }
 export const CardSize = {
