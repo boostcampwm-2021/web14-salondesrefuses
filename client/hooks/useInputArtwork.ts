@@ -31,7 +31,7 @@ const useInputArtwork = (image: File) => {
         const result = await postArtwork(formData);
         if (onResponseSuccess(result.status)) {
             alert('작품 등록에 성공했습니다.');
-            router.push('/');
+            router.push(`/artwork/result?id=${result.data.id}`);
         } else alert('작품 등록에 실패했습니다.');
     };
 

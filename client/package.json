@@ -24,7 +24,8 @@
         "recoil": "^0.4.1",
         "slick-carousel": "^1.8.1",
         "socket.io-client": "^4.3.2",
-        "ua-parser-js": "^1.0.2"
+        "ua-parser-js": "^1.0.2",
+        "web3": "^1.6.0"
     },
     "devDependencies": {
         "@types/react": "17.0.33",
