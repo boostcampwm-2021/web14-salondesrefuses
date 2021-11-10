@@ -30,6 +30,7 @@ const ArtworkModal = ({
             description,
             year,
             bidEnd,
+            price,
             checked,
         });
         handleModalPosition('-560px');
