@@ -15,7 +15,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 import {
-    getAllUsersArtworksApiOperation,
+    getUsersArtworksApiOperation,
     updateUserProfileApiOperation,
     getUserProfile,
     getInterestArtworksApiOperation,
@@ -52,7 +52,7 @@ export class UserController {
     }
 
     @Get('/artworks')
-    @ApiOperation(getAllUsersArtworksApiOperation)
+    @ApiOperation(getUsersArtworksApiOperation)
     @ApiResponse({ type: Artwork })
     getUsersArtworks(
         @Req() req: Express.Request & { user: User }
