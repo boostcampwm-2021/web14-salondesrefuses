@@ -52,7 +52,10 @@ export class AuthService {
 
         if (!email || !profile) {
             await axios.post(process.env.KAKAO_UNLINK_URL, {
-                headers: { Authorization: `Bearer ${access_token}` },
+                headers: {
+                    Authorization: `Bearer ${access_token}`,
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
             });
 
             throw new Error('failed kakao login'); // @TODO 에러처리
