@@ -19,13 +19,13 @@ export class UserService {
         @InjectRepository(ArtworkRepository)
         private artworkRepository: ArtworkRepository,
         @InjectRepository(ExhibitionRepository)
-        private exhibitionRepository: ExhibitionRepository
+        private exhibitionRepository: ExhibitionRepository,
     ) {}
 
-    async checkRegisteredUser(userId: string, name:string, avatar: string, loginStrategy: string): Promise<User> {
+    async checkRegisteredUser(userId: string, name: string, avatar: string, loginStrategy: string): Promise<User> {
         let user = await this.userRepository.findOne({ userId, loginStrategy });
 
-        if(!user) {
+        if (!user) {
             user = await this.userRepository.createUser(userId, name, avatar, loginStrategy);
         }
 
@@ -36,56 +36,44 @@ export class UserService {
         return this.userRepository.update(id, { refreshToken });
     }
 
-    getUserProfile(user: User): Promise<User> {
-        const { id } = user;
+    getUserProfile({ id }: User): Promise<User> {
         return this.userRepository.findOne({ id });
     }
 
     async updateUserProfile(
-        user: User,
+        { id }: User,
         file: Express.Multer.File,
-        requestUserDTO: RequestUserDTO
+        requestUserDTO: RequestUserDTO,
     ): Promise<UpdateResult> {
-        const { id } = user;
-
         if(!file) {
             return this.userRepository.update(
                 { id },
                 { ...requestUserDTO }
             );
         }
-
         const image = await this.imageService.fileUpload(file);
         const avatar = image.Location;
 
-        return this.userRepository.update(
-            { id },
-            { ...requestUserDTO, avatar }
-        );
+        return this.userRepository.update({ id }, { ...requestUserDTO, avatar });
     }
 
-    getUsersArtworks(user: User): Promise<Artwork[]> {
-        const { id } = user;
+    getUsersArtworks({ id }: User): Promise<Artwork[]> {
         return this.artworkRepository.getUsersArtworks(id);
     }
 
-    getInterestArtworks(user: User): Promise<Artwork[]> {
-        const { id } = user;
+    getInterestArtworks({ id }: User): Promise<Artwork[]> {
         return this.artworkRepository.getInterestArtworks(id);
     }
 
-    getBiddingArtworks(user: User): Promise<Artwork[]> {
-        const { id } = user;
+    getBiddingArtworks({ id }: User): Promise<Artwork[]> {
         return this.artworkRepository.getBiddingArtworks(id);
     }
 
-    getBiddedArtworks(user: User): Promise<Artwork[]> {
-        const { id } = user;
+    getBiddedArtworks({ id }: User): Promise<Artwork[]> {
         return this.artworkRepository.getBiddedArtworks(id);
     }
 
     getUsersExhibitions(user: User): Promise<Exhibition[]> {
         return this.exhibitionRepository.getUsersExhibitions(user);
     }
-
 }
