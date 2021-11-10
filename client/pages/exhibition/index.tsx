@@ -76,16 +76,26 @@ const ExhibitionPage: NextPage = () => {
                 </FilterWrapper>
 
                 <Buttons>
-                    <BlackButton>Hold Exhibition</BlackButton>
                     {accessToken ? (
-                        <Link href="/artwork/post">
-                            <BlackButton>Post Artwork</BlackButton>
-                        </Link>
+                        <>
+                            <Link href="/exhibition/post">
+                                <BlackButton>Hold Exhibition</BlackButton>
+                            </Link>
+                            <Link href="/artwork/post">
+                                <BlackButton>Post Artwork</BlackButton>
+                            </Link>
+                         </>
                     ) : (
-                        <BlackButton onClick={onClickPostArtworkWithoutLogin}>
-                            Post Artwork
-                        </BlackButton>
+                        <>
+                            <BlackButton onClick={onClickPostArtworkWithoutLogin}>
+                                Hold Exhibition
+                            </BlackButton>
+                            <BlackButton onClick={onClickPostArtworkWithoutLogin}>
+                                Post Artwork
+                            </BlackButton>
+                        </>
                     )}
+
                 </Buttons>
             </TopContainer>
 
