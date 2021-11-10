@@ -14,6 +14,7 @@ export type EditorElementStyle = {
     translate: { x: number; y: number };
     backgroundColor: string;
     size: { width: number; height: number };
+    zIndex: number;
 };
 
 export interface EditorElementProp {
@@ -55,6 +56,16 @@ const Editor = () => {
         setElements([...elements, element]);
     };
 
+    const onClickZIndexButton = (direction: string) => {
+        return () => {
+            if (!elementRef.current) return;
+            const z = elementRef.current.style.zIndex;
+            if (direction === 'FORWARD')
+                elementRef.current.style.zIndex = `${+z + 100}`;
+            else elementRef.current.style.zIndex = `${+z - 100}`;
+        };
+    };
+
     const onClickEditorElement = ({ target }: React.MouseEvent) => {
         elementRef.current = null;
         elementRef.current = target as HTMLDivElement;
@@ -77,7 +88,12 @@ const Editor = () => {
                 <Button onClick={createRectangular}>Rectangular</Button>
                 <Button onClick={onClickColorButton}>Color</Button>
                 <Button onClick={createText}>Text</Button>
-                <Button>TextStyle</Button>
+                <Button onClick={onClickZIndexButton('FORWARD')}>
+                    Forward
+                </Button>
+                <Button onClick={onClickZIndexButton('BACKWARD')}>
+                    Backward
+                </Button>
                 {showColorPicker && (
                     <ColorPicker
                         color={color}
@@ -102,6 +118,7 @@ const initialRectStyle = {
         y: 0,
     },
     backgroundColor: 'black',
+    zIndex: 100,
 };
 
 const initialTextStyle = {
@@ -114,6 +131,7 @@ const initialTextStyle = {
         y: 0,
     },
     backgroundColor: 'none',
+    zIndex: 100,
 };
 
 const EditorContainer = styled.div`
