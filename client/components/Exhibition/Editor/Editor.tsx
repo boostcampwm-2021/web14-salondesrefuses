@@ -7,25 +7,7 @@ import {
     initialRectStyle,
     initialTextStyle,
 } from '@const/editor-initial-state';
-
-enum EditorElementName {
-    rectangular = 'RECTANGULAR',
-    text = 'TEXT',
-    image = 'IMAGE',
-}
-export type EditorElementType = 'RECTANGULAR' | 'TEXT' | 'IMAGE';
-export type EditorElementStyle = {
-    top: number;
-    left: number;
-    backgroundColor: string;
-    size: { width: number; height: number };
-    zIndex: number;
-};
-
-export interface EditorElementProp {
-    type: EditorElementType;
-    style: EditorElementStyle;
-}
+import { EditorElementName, EditorElementProp } from './types';
 
 const Editor = () => {
     const [elements, setElements] = useState<EditorElementProp[]>([]);
@@ -34,7 +16,6 @@ const Editor = () => {
     >([]);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [color, setColor] = useState('#000');
-    const elementRef = useRef<HTMLDivElement | HTMLInputElement | null>(null);
 
     useEffect(() => {
         currentElements.forEach((elem) => {

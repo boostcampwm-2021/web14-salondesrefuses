@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, RefObject } from 'react';
-import { EditorElementStyle, EditorElementType } from './Editor';
+import { EditorElementStyle, EditorElementType } from './types';
 import { onDraggable, getPositions, getLineStyle, getDotStyle } from './utils';
 
 interface Prop {
