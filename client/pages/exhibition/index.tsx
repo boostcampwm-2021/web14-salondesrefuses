@@ -129,7 +129,9 @@ const ExhibitionPage: NextPage = () => {
                 </FilterWrapper>
 
                 <Buttons>
-                    <BlackButton>Hold Exhibition</BlackButton>
+                    <Link href="/exhibition/post">
+                        <BlackButton>Hold Exhibition</BlackButton>
+                    </Link>
                     <Link href="/artwork/post">
                         <BlackButton>Post Artwork</BlackButton>
                     </Link>
