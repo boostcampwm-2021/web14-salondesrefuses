@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
-import { addClass } from './utils';
+import React, { useState, useRef } from 'react';
 import EditorElement from './EditorElement';
 
 enum EditorElementName {
@@ -10,7 +9,8 @@ enum EditorElementName {
 }
 export type EditorElementType = 'RECTANGULAR' | 'TEXT' | 'IMAGE';
 export type EditorElementStyle = {
-    translate: { x: number; y: number };
+    top: number;
+    left: number;
     backgroundColor: string;
     size: { width: number; height: number };
 };
@@ -22,7 +22,7 @@ export interface EditorElementProp {
 
 const Editor = () => {
     const [elements, setElements] = useState<EditorElementProp[]>([]);
-    const addRectangular = () => {};
+    const [currentElements, setCurrentElements] = useState<number[]>([]);
 
     const createRectangular = () => {
         const element: EditorElementProp = {
@@ -32,22 +32,28 @@ const Editor = () => {
                     width: 100,
                     height: 100,
                 },
-                translate: {
-                    x: 0,
-                    y: 0,
-                },
+                top: 0,
+                left: 0,
                 backgroundColor: 'black',
             },
         };
         setElements([...elements, element]);
     };
 
+    const keyToCurrentElements = (keyyArr: number[]) => {
+        setCurrentElements(keyyArr);
+    };
+
     const renderElements = () => {
+        console.log('renderelements');
         return elements.map((element, idx) => (
             <EditorElement
                 key={idx}
+                idx={idx}
                 style={element.style}
                 type={EditorElementName.rectangular}
+                currentElements={currentElements}
+                keyToCurrentElements={keyToCurrentElements}
             ></EditorElement>
         ));
     };

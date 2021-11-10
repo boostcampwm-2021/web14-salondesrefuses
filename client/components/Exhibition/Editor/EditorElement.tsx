@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { EditorElementStyle, EditorElementType } from '.';
+import { onDraggable } from './utils';
 
 interface Prop {
     style: EditorElementStyle;
@@ -8,6 +9,9 @@ interface Prop {
     imgSrc?: string;
     text?: string;
     align?: string;
+    idx: number;
+    currentElements: number[];
+    keyToCurrentElements: (arr: number[]) => void;
 }
 
 const EditorElement = ({
@@ -17,34 +21,14 @@ const EditorElement = ({
     imgSrc,
     text,
     align,
+    idx,
+    currentElements = [],
+    keyToCurrentElements,
 }: Prop) => {
     const elementRef = useRef<HTMLDivElement>(null);
     const positionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const [currentStyle, setCurrentStyle] = useState(style);
-
-    const moveElement = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        const element = elementRef.current;
-        const dom = element?.getBoundingClientRect();
-        if (!dom || !element) return;
-
-        let shiftX = e.clientX - dom.left;
-        let shiftY = e.clientY - dom.top + element.offsetHeight / 2;
-
-        element.style.setProperty('position', 'absolute');
-
-        const onMouseMove = (e: any) => {
-            element.style.setProperty('left', `${e.pageX - shiftX}px`);
-            element.style.setProperty('top', `${e.pageY - shiftY}px`);
-        };
-
-        document.addEventListener('mousemove', onMouseMove);
-
-        const removeEvent = () => {
-            document.removeEventListener('mousemove', onMouseMove);
-            element.onmouseup = null;
-        };
-        document.body.onmouseup = removeEvent;
-    };
+    let isSelected = currentElements.includes(idx);
     const calculateStyle = () => {
         return {
             transform: `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`,
@@ -53,11 +37,15 @@ const EditorElement = ({
             backgroundColor: currentStyle.backgroundColor,
         };
     };
+    useEffect(() => {
+        isSelected = currentElements.includes(idx);
+    }, [currentElements]);
 
     return (
         <div
+            onClick={() => keyToCurrentElements([idx])}
             style={calculateStyle()}
-            onMouseDown={(e) => moveElement(e)}
+            onMouseDown={(e) => isSelected && onDraggable(e, elementRef)}
             ref={elementRef}
         ></div>
     );
