@@ -47,6 +47,14 @@ export class UserService {
         requestUserDTO: RequestUserDTO
     ): Promise<UpdateResult> {
         const { id } = user;
+
+        if(!file) {
+            return this.userRepository.update(
+                { id },
+                { ...requestUserDTO }
+            );
+        }
+
         const image = await this.imageService.fileUpload(file);
         const avatar = image.Location;
 
