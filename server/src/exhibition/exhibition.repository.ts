@@ -68,8 +68,9 @@ export class ExhibitionRepository extends Repository<Exhibition> {
             endAt: holdExhibitionDTO.endAt,
             thumbnailImage: thumbnailPath,
             contents: holdExhibitionDTO.contents,
+            theme: holdExhibitionDTO.theme,
             artist: user,
-            categories: JSON.stringify(holdExhibitionDTO.categoryIds),
+            categories: JSON.stringify(holdExhibitionDTO.categories),
         });
     }
 }

@@ -36,6 +36,9 @@ export class Exhibition {
     @ManyToOne(type => User, user => user.exhibitionList)
     artist: User;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true, default: `[]` })
     categories: string;
+
+    @Column({ nullable: true })
+    theme: string;
 }

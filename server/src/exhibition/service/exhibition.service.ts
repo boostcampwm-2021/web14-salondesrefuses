@@ -4,33 +4,56 @@ import { ExhibitionRepository } from '../exhibition.repository';
 import { ExhibitionDTO, HoldExhibitionDTO } from '../dto/exhibitionDTO';
 import { User } from 'src/user/user.entity';
 import { ImageService } from 'src/image/service/image.service';
+import { ArtworkRepository } from 'src/artwork/artwork.repository';
 
 @Injectable()
 export class ExhibitionService {
     constructor(
         @InjectRepository(ExhibitionRepository)
         private exhibitionRepository: ExhibitionRepository,
+        @InjectRepository(ArtworkRepository)
+        private artworkRepository: ArtworkRepository,
         private readonly imageService: ImageService,
     ) {}
 
     async getRandomExhibitions(): Promise<ExhibitionDTO[]> {
         const exhibitions = await this.exhibitionRepository.getRandomExhibitions();
-        return exhibitions.map(exhibition => ExhibitionDTO.from(exhibition));
+        return Promise.all(
+            exhibitions.map(async exhibition => {
+                const artworks = await this.artworkRepository.findAllByExhibitionId(exhibition.id);
+                return ExhibitionDTO.from(exhibition, artworks);
+            }),
+        );
     }
 
     async getNewestExhibitions(page: number): Promise<ExhibitionDTO[]> {
         const exhibitions = await this.exhibitionRepository.getNewestExhibitions(page);
-        return exhibitions.map(exhibition => ExhibitionDTO.from(exhibition));
+        return Promise.all(
+            exhibitions.map(async exhibition => {
+                const artworks = await this.artworkRepository.findAllByExhibitionId(exhibition.id);
+                return ExhibitionDTO.from(exhibition, artworks);
+            }),
+        );
     }
 
     async getExhibitionsSortedByDeadline(page: number): Promise<ExhibitionDTO[]> {
         const exhibitions = await this.exhibitionRepository.getExhibitionsSortedByDeadline(page);
-        return exhibitions.map(exhibition => ExhibitionDTO.from(exhibition));
+        return Promise.all(
+            exhibitions.map(async exhibition => {
+                const artworks = await this.artworkRepository.findAllByExhibitionId(exhibition.id);
+                return ExhibitionDTO.from(exhibition, artworks);
+            }),
+        );
     }
 
     async getExhibitionsSortedByInterest(page: number): Promise<ExhibitionDTO[]> {
         const exhibitions = await this.exhibitionRepository.getExhibitionsSortedByInterest(page);
-        return exhibitions.map(exhibition => ExhibitionDTO.from(exhibition));
+        return Promise.all(
+            exhibitions.map(async exhibition => {
+                const artworks = await this.artworkRepository.findAllByExhibitionId(exhibition.id);
+                return ExhibitionDTO.from(exhibition, artworks);
+            }),
+        );
     }
 
     async holdExhibition(
@@ -48,7 +71,6 @@ export class ExhibitionService {
         );
 
         this.exhibitionRepository.save(newExhibition);
-
-        return ExhibitionDTO.from(newExhibition);
+        return ExhibitionDTO.from(newExhibition, []);
     }
 }

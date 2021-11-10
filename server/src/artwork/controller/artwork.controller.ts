@@ -1,7 +1,10 @@
 import {
     Body,
-    Controller, Get,
-    HttpCode, Param, ParseIntPipe,
+    Controller,
+    Get,
+    HttpCode,
+    Param,
+    ParseIntPipe,
     Post,
     Req,
     UploadedFile,
@@ -43,7 +46,6 @@ export class ArtworkController {
     }
 
     @Post()
-    @HttpCode(201)
     @UseGuards(CustomAuthGuard)
     @UsePipes(ValidationPipe)
     @UseInterceptors(FileInterceptor('image'))
@@ -54,9 +56,9 @@ export class ArtworkController {
     postArtWork(
         @UploadedFile() file: Express.Multer.File,
         @Body() body: CreateArtworkDTO,
-        @Req() req: Express.Request & { user: User },
+        @Req() { user }: Express.Request & { user: User },
     ): Promise<NewArtworkDTO> {
-        return this.artworkService.createArtWork(file, body, req.user);
+        return this.artworkService.createArtWork(file, body, user);
     }
 
     @Post('/interest')
@@ -65,10 +67,10 @@ export class ArtworkController {
     @ApiOperation(interestApiOperation)
     @ApiBody({ type: InterestArtwork })
     @ApiResponse({ type: Boolean })
-    interest(
+    interestArtwork(
         @Body() interestRequestDTO: InterestRequestDTO,
-        @Req() req: Express.Request & { user: User }
+        @Req() { user }: Express.Request & { user: User },
     ): Promise<boolean> {
-        return this.interestArtworkService.insertInterestArtwork(req.user, interestRequestDTO);
+        return this.interestArtworkService.insertInterestArtwork(user, interestRequestDTO);
     }
 }

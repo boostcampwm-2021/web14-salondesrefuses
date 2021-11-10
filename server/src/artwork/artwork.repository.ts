@@ -8,7 +8,6 @@ import { ArtworkInBid } from '../artworkInBid/artworkInBid.entity';
 
 @EntityRepository(Artwork)
 export class ArtworkRepository extends Repository<Artwork> {
-
     createArtwork(
         createArtWorkDTO: CreateArtworkDTO,
         { Location: originalImagePath }: ObjectStorageData,
@@ -45,23 +44,31 @@ export class ArtworkRepository extends Repository<Artwork> {
 
     async getInterestArtworks(userId: number): Promise<Artwork[]> {
         return await this.createQueryBuilder('artwork')
-            .innerJoin(subQuery => {
-                return subQuery
-                    .select('interest_artwork.artwork_id')
-                    .from(InterestArtwork, 'interest_artwork')
-                    .where('interest_artwork.user_id = :userId', { userId })
-            }, 'interest', 'interest.artwork_id = artwork.id')
+            .innerJoin(
+                subQuery => {
+                    return subQuery
+                        .select('interest_artwork.artwork_id')
+                        .from(InterestArtwork, 'interest_artwork')
+                        .where('interest_artwork.user_id = :userId', { userId });
+                },
+                'interest',
+                'interest.artwork_id = artwork.id',
+            )
             .getMany();
     }
 
     async getBiddingArtworks(userId: number): Promise<Artwork[]> {
         return await this.createQueryBuilder('artwork')
-            .innerJoin(subQuery => {
-                return subQuery
-                    .select('artwork_in_bid.artwork_id')
-                    .from(ArtworkInBid, 'artwork_in_bid')
-                    .where('artwork_in_bid.user_id = :userId', { userId })
-            }, 'bidding', 'bidding.artwork_id = artwork.id')
+            .innerJoin(
+                subQuery => {
+                    return subQuery
+                        .select('artwork_in_bid.artwork_id')
+                        .from(ArtworkInBid, 'artwork_in_bid')
+                        .where('artwork_in_bid.user_id = :userId', { userId });
+                },
+                'bidding',
+                'bidding.artwork_id = artwork.id',
+            )
             .getMany();
     }
 
@@ -72,4 +79,9 @@ export class ArtworkRepository extends Repository<Artwork> {
             .getMany();
     }
 
+    async findAllByExhibitionId(exhibitonId: number): Promise<Artwork[]> {
+        return await this.find({
+            where: { exhibitionId: exhibitonId },
+        });
+    }
 }
