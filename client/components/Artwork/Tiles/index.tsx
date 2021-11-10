@@ -9,8 +9,7 @@ const Tiles = () => {
     const [artworks, setArtworks] = useState<Artwork[]>([]);
 
     useEffect(() => {
-        getAllArtworks(1).then((result) => {
-            console.log(result.data);
+        getAllArtworks().then((result) => {
             setArtworks(result.data);
         });
     }, []);

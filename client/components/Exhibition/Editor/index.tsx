@@ -25,17 +25,19 @@ export interface EditorElementProp {
 
 const Editor = () => {
     const [elements, setElements] = useState<EditorElementProp[]>([]);
-    const [currentElements, setCurrentElements] = useState<number[]>([]);
+    const [currentElements, setCurrentElements] = useState<
+        Array<HTMLElement | null>
+    >([]);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [color, setColor] = useState('#000');
     const elementRef = useRef<HTMLDivElement | HTMLInputElement | null>(null);
 
     useEffect(() => {
-        if (!elementRef.current) return;
-        if (elementRef.current.tagName === 'DIV')
-            elementRef.current.style.backgroundColor = color;
-        if (elementRef.current.tagName === 'INPUT')
-            elementRef.current.style.color = color;
+        currentElements.forEach((elem) => {
+            if (!elem) return;
+            if (elem.tagName === 'DIV') elem.style.backgroundColor = color;
+            if (elem.tagName === 'INPUT') elem.style.color = color;
+        });
     }, [color]);
 
     const createRectangular = () => {
@@ -58,17 +60,18 @@ const Editor = () => {
         setElements([...elements, element]);
     };
 
-    const keyToCurrentElements = (keyArr: number[]) => {
+    const keyToCurrentElements = (keyArr: Array<HTMLElement | null>) => {
         setCurrentElements(keyArr);
     };
-    
+
     const onClickZIndexButton = (direction: string) => {
         return () => {
-            if (!elementRef.current) return;
-            const z = elementRef.current.style.zIndex;
-            if (direction === 'FORWARD')
-                elementRef.current.style.zIndex = `${+z + 100}`;
-            else elementRef.current.style.zIndex = `${+z - 100}`;
+            currentElements.forEach((elem) => {
+                if (!elem) return;
+                const z = elem.style.zIndex;
+                if (direction === 'FORWARD') elem.style.zIndex = `${+z + 100}`;
+                else elem.style.zIndex = `${+z - 100}`;
+            });
         };
     };
 

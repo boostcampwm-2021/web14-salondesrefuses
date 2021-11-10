@@ -2,7 +2,7 @@ import EditorElement from './EditorElement';
 
 export const onDraggable = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    element: HTMLDivElement | null,
+    element: HTMLElement | null,
 ) => {
     const dom = element?.getBoundingClientRect();
     if (!dom || !element) return;
@@ -26,7 +26,7 @@ export const onDraggable = (
     document.body.onmouseup = removeEvent;
 };
 
-export const getPositions = (element: HTMLDivElement | null) => {
+export const getPositions = (element: HTMLElement | null) => {
     if (!element)
         return [
             [0, 0],

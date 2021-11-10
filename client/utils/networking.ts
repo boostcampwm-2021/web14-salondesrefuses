@@ -9,8 +9,8 @@ export const onResponseSuccess = (statusCode: number) => {
     return false;
 };
 
-export const getAllArtworks = (userId: number) => {
-    return axios.get<Artwork[]>(`${API_SERVER_URL}/users/${userId}/artworks`, {
+export const getAllArtworks = () => {
+    return axios.get<Artwork[]>(`${API_SERVER_URL}/users/artworks`, {
         withCredentials: true,
     });
 };

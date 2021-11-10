@@ -10,8 +10,8 @@ interface Prop {
     text?: string;
     align?: string;
     idx: number;
-    currentElements: number[];
-    keyToCurrentElements: (arr: number[]) => void;
+    currentElements: Array<HTMLElement | null>;
+    keyToCurrentElements: (arr: Array<HTMLElement | null>) => void;
 }
 
 const EditorElement = ({
@@ -28,7 +28,9 @@ const EditorElement = ({
     const elementRef = useRef<HTMLElement | null>(null);
     const positionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const [currentStyle, setCurrentStyle] = useState(style);
-    let isSelected = currentElements.includes(idx);
+    let isSelected = currentElements.some(
+        (element) => element === elementRef.current,
+    );
     const element = elementRef?.current;
     const [LT, LB, RT, RB] = getPositions(element);
 
@@ -93,26 +95,28 @@ const EditorElement = ({
     };
 
     useEffect(() => {
-        isSelected = currentElements.includes(idx);
+        isSelected = currentElements.some(
+            (element) => element === elementRef.current,
+        );
     }, [currentElements]);
 
     return (
         <>
             {type === 'RECTANGULAR' ? (
                 <div
-                    onClick={() => keyToCurrentElements([idx])}
+                    onClick={() => keyToCurrentElements([elementRef.current])}
                     style={calculateStyle()}
-                    onMouseDown={(e) => moveElement(e)}
+                    onMouseDown={(e) => onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
                 >
-                {isSelected && getBorderController()}
-              </div>
+                    {isSelected && getBorderController()}
+                </div>
             ) : (
                 <input
                     type="text"
-                    onClick={() => keyToCurrentElements([idx])}
+                    onClick={() => keyToCurrentElements([elementRef.current])}
                     style={calculateStyle()}
-                    onMouseDown={(e) => moveElement(e)}
+                    onMouseDown={(e) => onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLInputElement>}
                 ></input>
             )}
