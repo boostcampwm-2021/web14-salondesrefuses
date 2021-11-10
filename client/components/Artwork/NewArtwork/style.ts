@@ -20,6 +20,7 @@ export const Container = styled.div`
 
     & > div > img {
         max-height: 400px;
+        height: 35vh;
         border: 5px solid white;
         box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.4);
     }

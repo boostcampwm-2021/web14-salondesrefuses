@@ -40,8 +40,8 @@ const Container = styled.div`
     }
 
     & span {
+        ${(props) => props.theme.font.textEnBase};
         color: white;
-        font-size: 24px;
         font-weight: 200;
         margin-left: 10px;
     }

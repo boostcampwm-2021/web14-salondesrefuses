@@ -89,7 +89,7 @@ const Card = ({ width, content }: Props) => {
             }
         >
             <CardContainer
-                imgSrc={content.imgSrc}
+                thumbnailImage={content.thumbnailImage}
                 width={CardSize[width]}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}

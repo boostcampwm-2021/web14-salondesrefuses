@@ -57,3 +57,131 @@ export const ExhibitionList = styled.div`
         margin-bottom: 45px;
     }
 `;
+export const Input = styled.input`
+    width: 100%;
+    padding: 4px 12px;
+    border: none;
+    border-bottom: 1px solid #a6a6a6;
+
+    font: ${(props) => props.theme.font.textBase};
+    color: ${(props) => props.theme.color.blackLight};
+
+    &:focus {
+        border-bottom: 2px solid ${(props) => props.theme.color.primary};
+        color: ${(props) => props.theme.color.black};
+    }
+
+    &:focus-visible {
+        outline: none;
+    }
+
+    &::placeholder {
+        color: ${(props) => props.theme.color.placeholder};
+    }
+
+    &[type='date'] {
+        width: 150px;
+        padding-right: 4px;
+
+        &::-webkit-calendar-picker-indicator {
+            margin: 0;
+        }
+    }
+`;
+export const TextArea = styled.textarea`
+    width: 100%;
+    height: 150px;
+    padding: 4px 12px;
+    border: 1px solid #a6a6a6;
+
+    font: ${(props) => props.theme.font.textBase};
+    color: ${(props) => props.theme.color.blackLight};
+
+    resize: none;
+
+    &:focus {
+        border: 2px solid ${(props) => props.theme.color.primary};
+        color: ${(props) => props.theme.color.black};
+    }
+
+    &:focus-visible {
+        outline: none;
+    }
+
+    &::placeholder {
+        color: ${(props) => props.theme.color.placeholder};
+    }
+`;
+export const Label = styled.label`
+    font: ${(props) => props.theme.font.textBase};
+`;
+export const ContentHeader = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    width: 920px;
+    margin: 0 auto;
+    margin-top: 40px;
+`;
+
+export const Title = styled.p`
+    font: ${(props) => props.theme.font.textEnLg};
+    color: ${(props) => props.theme.color.placeholder};
+    margin-bottom: 8px;
+`;
+
+export const Description = styled.p`
+    font: ${(props) => props.theme.font.textEnSm};
+    color: ${(props) => props.theme.color.gray1};
+`;
+
+export const ContentBody = styled.div`
+    display: flex;
+    position: relative;
+
+    width: 920px;
+    margin: 50px auto;
+`;
+
+export const DataInput = styled.div`
+    width: calc(60% - 30px);
+    margin-right: 30px;
+
+    & > div {
+        margin-bottom: 20px;
+    }
+`;
+
+export const ThumbnailBox = styled.span`
+    width: 120px;
+    height: 120px;
+
+    border: 1px solid #a6a6a6;
+`;
+
+export const ArtworkSelectorWrapper = styled.div`
+    width: 40%;
+`;
+
+export const ArtworkSelectorHeader = styled.div`
+    ${SpaceBetween}
+    margin-bottom: 24px;
+`;
+
+export const ArtworkSelector = styled.div`
+    width: 100%;
+    height: calc(100% - 54px);
+    padding: 20px;
+
+    background: #ededed;
+`;
+
+export const NextButton = styled(BlackButton)`
+    position: absolute;
+    top: -90px;
+    right: 0;
+
+    margin-right: 0 !important;
+
+    font: ${(props) => props.theme.font.textBase};
+`;
