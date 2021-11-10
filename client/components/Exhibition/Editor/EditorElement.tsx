@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { EditorElementStyle, EditorElementType } from '.';
-import { onDraggable } from './utils';
+import { onDraggable, getPositions, getLineStyle } from './utils';
 
 interface Prop {
     style: EditorElementStyle;
@@ -29,6 +29,9 @@ const EditorElement = ({
     const positionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const [currentStyle, setCurrentStyle] = useState(style);
     let isSelected = currentElements.includes(idx);
+    const element = elementRef?.current;
+    const [LT, LB, RT, RB] = getPositions(element);
+
     const calculateStyle = () => {
         return {
             transform: `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`,
@@ -37,6 +40,31 @@ const EditorElement = ({
             backgroundColor: currentStyle.backgroundColor,
         };
     };
+
+    const getBorderController = () => {
+        return (
+            <>
+                {getSpots()}
+                {getLines()}
+            </>
+        );
+    };
+
+    const getSpots = () => {
+        return <div></div>;
+    };
+
+    const getLines = () => {
+        return (
+            <>
+                <div className="lines" style={getLineStyle(LT, LB, LT)}></div>
+                <div className="lines" style={getLineStyle(LT, RT, LT)}></div>
+                <div className="lines" style={getLineStyle(LB, RB, LT)}></div>
+                <div className="lines" style={getLineStyle(RT, RB, LT)}></div>
+            </>
+        );
+    };
+
     useEffect(() => {
         isSelected = currentElements.includes(idx);
     }, [currentElements]);
@@ -45,9 +73,11 @@ const EditorElement = ({
         <div
             onClick={() => keyToCurrentElements([idx])}
             style={calculateStyle()}
-            onMouseDown={(e) => isSelected && onDraggable(e, elementRef)}
+            onMouseDown={(e) => isSelected && onDraggable(e, element)}
             ref={elementRef}
-        ></div>
+        >
+            {isSelected && getBorderController()}
+        </div>
     );
 };
 
