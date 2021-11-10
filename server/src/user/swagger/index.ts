@@ -24,3 +24,10 @@ export const updateUserProfileApiOperation = {
     summary: '사용자 프로필 수정 API',
     description: '사용자 이름, SNS ID, 설명, 프로필 사진 등을 수정한다.'
 };
+
+export const getInterestArtworksApiOperation = {
+    summary: '사용자 관심 작품 조회 API',
+    description: '사용자의 관심 작품 목록을 조회한다.'
+};
+
+

@@ -20,6 +20,7 @@ import {
     updateUserProfileApiOperation,
     getUserProfile,
     userProfileApiParam,
+    getInterestArtworksApiOperation,
 } from '../swagger';
 
 @UseGuards(CustomAuthGuard)
@@ -63,6 +64,18 @@ export class UserController {
         @Param('userId', ParseIntPipe) userId: number,
     ): Promise<Artwork[]> {
         return this.userService.getAllUsersArtworks(userId);
+    }
+
+    @Get('/:userId/artworks/interest')
+    @ApiOperation(getInterestArtworksApiOperation)
+    @ApiParam(userProfileApiParam)
+    @ApiQuery({ name: 'strategy', type: String })
+    @ApiResponse({ type: Artwork })
+    getInterestArtworks(
+        @Param('userId') userId: string,
+        @Query('strategy') loginStrategy: string
+    ): Promise<Artwork[]> {
+        return this.userService.getInterestArtworks(userId, loginStrategy);
     }
 
 }
