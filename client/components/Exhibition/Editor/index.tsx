@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
-import { addClass } from './utils';
+
+import ColorPicker from './ColorPicker';
 import EditorElement from './EditorElement';
 
 enum EditorElementName {
@@ -22,24 +23,19 @@ export interface EditorElementProp {
 
 const Editor = () => {
     const [elements, setElements] = useState<EditorElementProp[]>([]);
-    const addRectangular = () => {};
+    const [showColorPicker, setShowColorPicker] = useState(false);
+    const [color, setColor] = useState('#000');
 
     const createRectangular = () => {
         const element: EditorElementProp = {
             type: EditorElementName.rectangular,
-            style: {
-                size: {
-                    width: 100,
-                    height: 100,
-                },
-                translate: {
-                    x: 0,
-                    y: 0,
-                },
-                backgroundColor: 'black',
-            },
+            style: initialRectStyle,
         };
         setElements([...elements, element]);
+    };
+
+    const onClickColorButton = () => {
+        setShowColorPicker(!showColorPicker);
     };
 
     const renderElements = () => {
@@ -55,14 +51,34 @@ const Editor = () => {
     return (
         <EditorContainer>
             <ToolBar>
-                <Button onClick={createRectangular}>R</Button>
-                <Button>C</Button>
-                <Button>T</Button>
-                <Button>Ts</Button>
+                <Button onClick={createRectangular}>Rectangular</Button>
+                <Button onClick={onClickColorButton}>Color</Button>
+                <Button>Text</Button>
+                <Button>TextStyle</Button>
+                {showColorPicker && (
+                    <ColorPicker
+                        color={color}
+                        handleColor={(color) => {
+                            setColor(color);
+                        }}
+                    />
+                )}
             </ToolBar>
             <EditArea>{renderElements()}</EditArea>
         </EditorContainer>
     );
+};
+
+const initialRectStyle = {
+    size: {
+        width: 100,
+        height: 100,
+    },
+    translate: {
+        x: 0,
+        y: 0,
+    },
+    backgroundColor: 'black',
 };
 
 const EditorContainer = styled.div`
@@ -77,9 +93,11 @@ const ToolBar = styled.div`
     justify-content: flex-start;
     width: 100%;
     height: 50px;
+    border-bottom: 1px solid black;
+    position: relative;
 `;
 const Button = styled.button`
-    width: 40px;
+    width: 100px;
     height: 40px;
     border-radius: 8px;
     &:hover {
