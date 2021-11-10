@@ -30,4 +30,7 @@ export const getInterestArtworksApiOperation = {
     description: '사용자의 관심 작품 목록을 조회한다.'
 };
 
-
+export const getBiddingArtworksApiOperation = {
+    summary: '거래중인 작품 조회 API',
+    description: '현재 거래중인 작품 목록을 조회한다.'
+};

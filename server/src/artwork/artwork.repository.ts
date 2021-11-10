@@ -5,6 +5,7 @@ import { ArtworkStatus } from './artwork.status.enum';
 import { CreateArtworkDTO } from './dto/artworkDTOs';
 import { User } from '../user/user.entity';
 import { InterestArtwork } from '../interestArtwork/interestArtwork.entity';
+import { ArtworkInBid } from '../artworkInBid/artworkInBid.entity';
 
 @EntityRepository(Artwork)
 export class ArtworkRepository extends Repository<Artwork> {
@@ -49,6 +50,19 @@ export class ArtworkRepository extends Repository<Artwork> {
             }, 'interest', 'interest.artwork_id = artwork.id')
             .where('interest.user_id = :userId', { userId })
             .andWhere('interest.login_strategy = :loginStrategy', { loginStrategy })
+            .getMany();
+    }
+
+    getBiddingArtworks(userId: string, loginStrategy: string): Promise<Artwork[]> {
+        return this.createQueryBuilder('artwork')
+            .innerJoin(subQuery => {
+                return subQuery
+                    .select('artwork_in_bid.artwork_id, user.user_id, user.login_strategy')
+                    .from(ArtworkInBid, 'artwork_in_bid')
+                    .innerJoin(User, 'user', 'artwork_in_bid.user_id = user.id')
+            }, 'bidding', 'bidding.artwork_id = artwork.id')
+            .where('bidding.user_id = :userId', { userId })
+            .andWhere('bidding.login_strategy = :loginStrategy', { loginStrategy })
             .getMany();
     }
 

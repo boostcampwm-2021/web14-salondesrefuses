@@ -59,4 +59,8 @@ export class UserService {
         return this.artworkRepository.getInterestArtworks(userId, loginStrategy);
     }
 
+    getBiddingArtworks(userId: string, loginStrategy: string): Promise<Artwork[]> {
+        return this.artworkRepository.getBiddingArtworks(userId, loginStrategy);
+    }
+
 }
