@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 interface CardContainerProps {
-    imgSrc: string;
+    thumbnailImage: string;
     width: number;
 }
 export const CardContainer = styled.div<CardContainerProps>`
     display: flex;
     width: ${(props) => props.width}px;
     height: ${(props) => (props.width * 3) / 2}px;
-    background-image: url(${(props) => props.imgSrc});
+    background-image: url(${(props) => props.thumbnailImage});
     border-radius: 20px;
     cursor: pointer;
 `;

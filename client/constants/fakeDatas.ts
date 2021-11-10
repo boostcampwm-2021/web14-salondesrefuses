@@ -16,7 +16,7 @@ export interface randomExhibitionType {
     description: string;
     startedAt: Date;
     endAt: Date;
-    imgSrc: string;
+    thumbnailImage: string;
 }
 
 export const fakeRandomExhibitions: randomExhibitionType[] = [
@@ -28,7 +28,7 @@ export const fakeRandomExhibitions: randomExhibitionType[] = [
             '족두리봉이 왜 족두리봉이냐하면, 처음엔 관악산의 정기였어요. 그런데 관악산이 너무 재미가 없잖아요 그래서 더 찾아봤지요. 족두리봉! 바로 눈에 들어왔어요. 북한산의 족두리봉..... 세상은 그 이름을 기억해야 할 것입니다...',
         startedAt: new Date(),
         endAt: new Date(),
-        imgSrc: Fake1.src,
+        thumbnailImage: Fake1.src,
     },
     {
         id: 2,
@@ -38,7 +38,7 @@ export const fakeRandomExhibitions: randomExhibitionType[] = [
             "In 2001, Campbell joined Tottenham's North London rivals Arsenal on a free transfer, and as a result has remained a deeply unpopular figure amongst Spurs supporters.",
         startedAt: new Date(),
         endAt: new Date(),
-        imgSrc: Fake2.src,
+        thumbnailImage: Fake2.src,
     },
     {
         id: 3,
@@ -48,7 +48,7 @@ export const fakeRandomExhibitions: randomExhibitionType[] = [
             "In 2001, Campbell joined Tottenham's North London rivals Arsenal on a free transfer, and as a result has remained a deeply unpopular figure amongst Spurs supporters.",
         startedAt: new Date(),
         endAt: new Date(),
-        imgSrc: Fake3.src,
+        thumbnailImage: Fake3.src,
     },
     {
         id: 4,
@@ -58,7 +58,7 @@ export const fakeRandomExhibitions: randomExhibitionType[] = [
             "In 2001, Campbell joined Tottenham's North London rivals Arsenal on a free transfer, and as a result has remained a deeply unpopular figure amongst Spurs supporters.",
         startedAt: new Date(),
         endAt: new Date(),
-        imgSrc: Fake4.src,
+        thumbnailImage: Fake4.src,
     },
     {
         id: 5,
@@ -68,7 +68,7 @@ export const fakeRandomExhibitions: randomExhibitionType[] = [
             "In 2001, Campbell joined Tottenham's North London rivals Arsenal on a free transfer, and as a result has remained a deeply unpopular figure amongst Spurs supporters.",
         startedAt: new Date(),
         endAt: new Date(),
-        imgSrc: Fake5.src,
+        thumbnailImage: Fake5.src,
     },
 ];
 
@@ -85,7 +85,7 @@ export interface randomAuctionType {
     description: string;
     status: AUCTION_STATE;
     nftToken?: string;
-    imgSrc: string;
+    thumbnailImage: string;
 }
 export const fakeRandomAuctions: randomAuctionType[] = [
     {
@@ -98,7 +98,7 @@ export const fakeRandomAuctions: randomAuctionType[] = [
             "In 2001, Campbell joined Tottenham's North London rivals Arsenal on a free transfer, and as a result has remained a deeply unpopular figure amongst Spurs supporters.",
         status: AUCTION_STATE.OnSale,
         nftToken: 'tokenfake123',
-        imgSrc: Fake3.src,
+        thumbnailImage: Fake3.src,
     },
     {
         id: 2,
@@ -110,7 +110,7 @@ export const fakeRandomAuctions: randomAuctionType[] = [
             "In 2001, Campbell joined Tottenham's North London rivals Arsenal on a free transfer, and as a result has remained a deeply unpopular figure amongst Spurs supporters.",
         status: AUCTION_STATE.OnSale,
         nftToken: 'tokenfake123',
-        imgSrc: Fake5.src,
+        thumbnailImage: Fake5.src,
     },
     {
         id: 3,
@@ -122,6 +122,6 @@ export const fakeRandomAuctions: randomAuctionType[] = [
             "In 2001, Campbell joined Tottenham's North London rivals Arsenal on a free transfer, and as a result has remained a deeply unpopular figure amongst Spurs supporters. 이력서에 대해 고민 많을거 같아요 ㅎㅎ 내용도 내용이지만 기업에서는 200개가 넘는 이력서를 봐야한다는 점도 고려해보면 좋을거 같아요. 내용을 잘 구성하는 만큼 내용이 상대방에게 잘 전달 되는 것도 중요할수 있어요! 어쨌든 금요일 저녁입니다. 주말 작업이 예정되어 있더라도 조금은 쉬어갈수 있길 바라겠습니다 이력서에 대해 고민 많을거 같아요 ㅎㅎ 내용도 내용이지만 기업에서는 200개가 넘는 이력서를 봐야한다는 점도 고려해보면 좋을거 같아요. 내용을 잘 구성하는 만큼 내용이 상대방에게 잘 전달 되는 것도 중요할수 있어요! 어쨌든 금요일 저녁입니다. 주말 작업이 예정되어 있더라도 조금은 쉬어갈수 있길 바라겠습니다",
         status: AUCTION_STATE.OnSale,
         nftToken: 'tokenfake123',
-        imgSrc: Fake2.src,
+        thumbnailImage: Fake2.src,
     },
 ];

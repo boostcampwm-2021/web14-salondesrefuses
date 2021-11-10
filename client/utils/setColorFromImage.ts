@@ -6,11 +6,12 @@ const isSelectBlack = (rgb: rgbType) => {
     let L = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
     return L > 128;
 };
-const getAvgColor = (imgSrc: string) => {
+const getAvgColor = (thumbnailImage: string) => {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     const img = new Image();
-    img.src = imgSrc;
+    img.src = thumbnailImage;
+    img.setAttribute('crossOrigin', '');
     const blockSize = 5;
     const rgb: rgbType = { r: 0, g: 0, b: 0 };
     let i = 0;
@@ -43,7 +44,7 @@ const getAvgColor = (imgSrc: string) => {
     });
 };
 
-export const setColorFromImage = async (imgSrc: string) => {
-    const color = (await getAvgColor(imgSrc)) as rgbType;
+export const setColorFromImage = async (thumbnailImage: string) => {
+    const color = (await getAvgColor(thumbnailImage)) as rgbType;
     return isSelectBlack(color ? color : { r: 0, g: 0, b: 0 });
 };

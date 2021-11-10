@@ -26,10 +26,10 @@ export const CarouselSlider = styled(Slider)`
     }
 `;
 interface carouselContentInterface {
-    imgSrc: string;
+    thumbnailImage: string;
 }
 export const CarouselContent = styled.div<carouselContentInterface>`
-    background-image: url(${(props) => props.imgSrc});
+    background-image: url(${(props) => props.thumbnailImage});
     width: 100%;
     height: 500px;
     background-size: cover;
