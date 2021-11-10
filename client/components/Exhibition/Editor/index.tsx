@@ -67,6 +67,7 @@ const Editor = () => {
 
 const EditorContainer = styled.div`
     width: 800px;
+    height: 100vh;
     border: 1px solid ${(props) => props.theme.color.gray1};
 `;
 

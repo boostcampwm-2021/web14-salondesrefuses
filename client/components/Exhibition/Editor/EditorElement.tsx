@@ -18,26 +18,34 @@ const EditorElement = ({
     text,
     align,
 }: Prop) => {
-    const elementRef = useRef<HTMLDivElement | null>(null);
+    const elementRef = useRef<HTMLDivElement>(null);
     const positionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const [currentStyle, setCurrentStyle] = useState(style);
 
-    const onDragEnd = (e: React.MouseEvent) => {
-        console.log('end');
-        calculateStyle();
-    };
+    const moveElement = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const element = elementRef.current;
+        const dom = element?.getBoundingClientRect();
+        if (!dom || !element) return;
 
-    const onDrag = (e: React.MouseEvent) => {
-        console.log(elementRef?.current?.style.transform);
-        positionRef.current = {
-            x: e.clientX,
-            y: e.clientY,
+        let shiftX = e.clientX - dom.left;
+        let shiftY = e.clientY - dom.top + element.offsetHeight / 2;
+
+        element.style.setProperty('position', 'absolute');
+
+        const onMouseMove = (e: any) => {
+            element.style.setProperty('left', `${e.pageX - shiftX}px`);
+            element.style.setProperty('top', `${e.pageY - shiftY}px`);
         };
-        elementRef?.current?.style.setProperty('opacity', '1');
-    };
 
+        document.addEventListener('mousemove', onMouseMove);
+
+        const removeEvent = () => {
+            document.removeEventListener('mousemove', onMouseMove);
+            element.onmouseup = null;
+        };
+        document.body.onmouseup = removeEvent;
+    };
     const calculateStyle = () => {
-        console.log(positionRef.current);
         return {
             transform: `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`,
             width: `${currentStyle.size.width}px`,
@@ -46,18 +54,11 @@ const EditorElement = ({
         };
     };
 
-    useEffect(() => {
-        console.log(elementRef.current);
-    }, [elementRef]);
-
     return (
         <div
             style={calculateStyle()}
-            onDragEnd={onDragEnd}
-            onDrag={onDrag}
-            onMouseOver={() => console.log(elementRef.current)}
+            onMouseDown={(e) => moveElement(e)}
             ref={elementRef}
-            draggable
         ></div>
     );
 };
