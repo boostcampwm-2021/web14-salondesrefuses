@@ -51,7 +51,7 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 30px 0;
+    padding: 20px 0;
 `;
 
 const Timer = styled.div`

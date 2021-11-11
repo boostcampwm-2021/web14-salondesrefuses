@@ -89,8 +89,7 @@ const Expanded = styled.div`
     }
 `;
 
-const Description = styled.div`
-    display: flex;
+export const Description = styled.div`
     max-width: 460px;
     font: ${(props) => props.theme.font.textSm};
 `;
