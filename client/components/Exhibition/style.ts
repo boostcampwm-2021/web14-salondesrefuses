@@ -115,41 +115,10 @@ export const TextArea = styled.textarea`
 export const Label = styled.label`
     font: ${(props) => props.theme.font.textBase};
 `;
-export const ContentHeader = styled.div`
-    display: flex;
-    flex-direction: column;
-
-    width: 920px;
-    margin: 0 auto;
-    margin-top: 40px;
-`;
-
-export const Title = styled.p`
-    font: ${(props) => props.theme.font.textEnLg};
-    color: ${(props) => props.theme.color.placeholder};
-    margin-bottom: 8px;
-`;
 
 export const Description = styled.p`
     font: ${(props) => props.theme.font.textEnSm};
     color: ${(props) => props.theme.color.gray1};
-`;
-
-export const ContentBody = styled.div`
-    display: flex;
-    position: relative;
-
-    width: 920px;
-    margin: 50px auto;
-`;
-
-export const DataInput = styled.div`
-    width: calc(60% - 30px);
-    margin-right: 30px;
-
-    & > div {
-        margin-bottom: 20px;
-    }
 `;
 
 export const ThumbnailBox = styled.span`
@@ -157,23 +126,6 @@ export const ThumbnailBox = styled.span`
     height: 120px;
 
     border: 1px solid #a6a6a6;
-`;
-
-export const ArtworkSelectorWrapper = styled.div`
-    width: 40%;
-`;
-
-export const ArtworkSelectorHeader = styled.div`
-    ${SpaceBetween}
-    margin-bottom: 24px;
-`;
-
-export const ArtworkSelector = styled.div`
-    width: 100%;
-    height: calc(100% - 54px);
-    padding: 20px;
-
-    background: #ededed;
 `;
 
 export const NextButton = styled(BlackButton)`
