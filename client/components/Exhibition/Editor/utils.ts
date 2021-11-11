@@ -70,14 +70,19 @@ export const getLineStyle = (
         backgroundColor: '#3A8FD6',
     };
 };
-
+const getMouseCursor = (name: directionNames) => {
+    return `${name.toLowerCase()}-resize`;
+};
+type directionNames = 'NW' | 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W';
 export const getDotStyle = (
+    name: directionNames,
     originPoint: number[],
     p1: number[],
     p2?: number[],
 ) => {
     const [X, Y] = p2 ? [~~((p1[0] + p2[0]) / 2), ~~((p1[1] + p2[1]) / 2)] : p1;
     const [Left, Top] = [X - originPoint[0] - 5, Y - originPoint[1] - 5];
+    console.log(getMouseCursor(name));
     return {
         position: 'absolute' as 'absolute',
         top: Top,
@@ -87,6 +92,6 @@ export const getDotStyle = (
         border: '2px solid #eee',
         width: '10px',
         height: '10px',
-        cursor: 'crosshair',
+        cursor: getMouseCursor(name),
     };
 };

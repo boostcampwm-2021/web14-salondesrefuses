@@ -51,22 +51,22 @@ const EditorElement = ({
         return (
             <>
                 {getLines()}
-                {getSpots()}
+                {getDots()}
             </>
         );
     };
 
-    const getSpots = () => {
+    const getDots = () => {
         return (
             <>
-                <div className="dot LW" style={getDotStyle(LT, LT)}></div>
-                <div className="dot N" style={getDotStyle(LT, LT, RT)}></div>
-                <div className="dot NE" style={getDotStyle(LT, RT)}></div>
-                <div className="dot E" style={getDotStyle(LT, RT, RB)}></div>
-                <div className="dot SE" style={getDotStyle(LT, RB)}></div>
-                <div className="dot S" style={getDotStyle(LT, LB, RB)}></div>
-                <div className="dot SW" style={getDotStyle(LT, LB)}></div>
-                <div className="dot W" style={getDotStyle(LT, LB, LT)}></div>
+                <div style={getDotStyle('NW', LT, LT)}></div>
+                <div style={getDotStyle('N', LT, LT, RT)}></div>
+                <div style={getDotStyle('NE', LT, RT)}></div>
+                <div style={getDotStyle('E', LT, RT, RB)}></div>
+                <div style={getDotStyle('SE', LT, RB)}></div>
+                <div style={getDotStyle('S', LT, LB, RB)}></div>
+                <div style={getDotStyle('SW', LT, LB)}></div>
+                <div style={getDotStyle('W', LT, LB, LT)}></div>
             </>
         );
     };
