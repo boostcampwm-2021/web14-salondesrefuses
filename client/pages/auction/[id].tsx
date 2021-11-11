@@ -3,15 +3,18 @@ import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
-import { Artwork } from 'interfaces';
+import { Auction } from 'interfaces';
 import Layout from '@components/common/Layout';
 import ItemDetail from '@components/Auction/ItemDetail';
-import { GlobalStore } from '../../store/GlobalStore';
+import { GlobalStore } from '@store/GlobalStore';
 import { getAuction } from '@utils/networking';
 
-const AuctionDetailPage = ({ artwork }: { artwork: Artwork }) => {
+const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
     const [zoom, setZoom] = useState(false);
     const magnifierRef = useRef<HTMLImageElement | null>(null);
+    const { artwork, artist } = auction;
+    const { title } = artwork;
+    const { name } = artist;
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -36,7 +39,7 @@ const AuctionDetailPage = ({ artwork }: { artwork: Artwork }) => {
             <GlobalStore>
                 <Head>
                     <title>
-                        Auction - {artwork.title} ({'2018'})
+                        Auction - {title} ({name}, {'2018'})
                     </title>
                     <meta name="경매" content="경매경매" />
                 </Head>
@@ -46,7 +49,7 @@ const AuctionDetailPage = ({ artwork }: { artwork: Artwork }) => {
                         <Grid>
                             <section>
                                 <Image
-                                    src={artwork.croppedImage}
+                                    src={artwork.originalImage}
                                     onClick={() => {
                                         setZoom(!zoom);
                                     }}
@@ -62,7 +65,7 @@ const AuctionDetailPage = ({ artwork }: { artwork: Artwork }) => {
                                     </Magnifier>
                                 )}
                             </section>
-                            <ItemDetail />
+                            <ItemDetail auction={auction}/>
                         </Grid>
                     </Container>
                 </Layout>
@@ -73,12 +76,12 @@ const AuctionDetailPage = ({ artwork }: { artwork: Artwork }) => {
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const artworkId = (params as { id: string }).id;
-
     const auction = await getAuction(Number(artworkId));
-    console.log(auction.data);
 
     return {
-        props: { artwork: auction.data.artwork },
+        props: {
+            auction: auction.data,
+        },
     };
 };
 

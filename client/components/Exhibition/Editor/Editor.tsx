@@ -4,10 +4,17 @@ import React, { useState, useRef, useEffect } from 'react';
 import ColorPicker from './ColorPicker';
 import EditorElement from './EditorElement';
 import {
+    initialImageStyle,
     initialRectStyle,
     initialTextStyle,
 } from '@const/editor-initial-state';
 import { EditorElementName, EditorElementProp } from './types';
+import rectButtonIcon from '@assets/images/editor-rectangular.png';
+import colorButtonIcon from '@assets/images/editor-color.png';
+import textButtonIcon from '@assets/images/editor-text.png';
+import forwardButtonIcon from '@assets/images/editor-forward.png';
+import backwardButtonIcon from '@assets/images/editor-backward.png';
+import { useEditorImageState } from '@store/editorImageState';
 
 const Editor = () => {
     const [elements, setElements] = useState<EditorElementProp[]>([]);
@@ -17,6 +24,9 @@ const Editor = () => {
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [color, setColor] = useState('#000');
 
+    const [editorImageState, setEditorImageState] = useEditorImageState();
+    console.log(editorImageState);
+
     useEffect(() => {
         currentElements.forEach((elem) => {
             if (!elem) return;
@@ -24,6 +34,18 @@ const Editor = () => {
             if (elem.tagName === 'INPUT') elem.style.color = color;
         });
     }, [color]);
+
+    useEffect(() => {
+        if (editorImageState.length === 0) return;
+        setElements([
+            ...elements,
+            {
+                type: 'IMAGE',
+                style: initialImageStyle,
+                image: editorImageState[editorImageState.length - 1],
+            },
+        ]);
+    }, [editorImageState]);
 
     const createRectangular = () => {
         const element: EditorElementProp = {
@@ -69,6 +91,7 @@ const Editor = () => {
                 currentElements={currentElements}
                 keyToCurrentElements={keyToCurrentElements}
                 type={element.type}
+                image={element.image}
             ></EditorElement>
         ));
     };
@@ -76,15 +99,17 @@ const Editor = () => {
     return (
         <EditorContainer>
             <ToolBar>
-                <Button onClick={createRectangular}>Rectangular</Button>
-                <Button onClick={onClickColorButton}>Color</Button>
-                <Button onClick={createText}>Text</Button>
-                <Button onClick={onClickZIndexButton('FORWARD')}>
-                    Forward
-                </Button>
-                <Button onClick={onClickZIndexButton('BACKWARD')}>
-                    Backward
-                </Button>
+                <Button onClick={createRectangular} bg={rectButtonIcon.src} />
+                <Button onClick={onClickColorButton} bg={colorButtonIcon.src} />
+                <Button onClick={createText} bg={textButtonIcon.src} />
+                <Button
+                    onClick={onClickZIndexButton('FORWARD')}
+                    bg={forwardButtonIcon.src}
+                />
+                <Button
+                    onClick={onClickZIndexButton('BACKWARD')}
+                    bg={backwardButtonIcon.src}
+                />
                 {showColorPicker && (
                     <ColorPicker
                         color={color}
@@ -116,9 +141,12 @@ const ToolBar = styled.div`
     position: relative;
     padding-left: 30px;
 `;
-const Button = styled.button`
+const Button = styled.button<{ bg: string }>`
+    width: 32px;
     height: 100%;
-    background: none;
+    background: url(${(props) => props.bg});
+    background-repeat: no-repeat;
+    background-position: center;
     border: none;
 
     &:hover {

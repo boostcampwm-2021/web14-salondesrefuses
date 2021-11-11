@@ -122,10 +122,20 @@ export const Description = styled.p`
 `;
 
 export const ThumbnailBox = styled.span`
-    width: 120px;
-    height: 120px;
+    position: relative;
+    width: 300px;
+    height: 450px;
 
+    overflow: hidden;
     border: 1px solid #a6a6a6;
+
+    & > img {
+        position: absolute;
+        left: 50%;
+        height: 450px;
+
+        transform: translateX(-50%);
+    }
 `;
 
 export const NextButton = styled(BlackButton)`
@@ -136,4 +146,21 @@ export const NextButton = styled(BlackButton)`
     margin-right: 0 !important;
 
     font: ${(props) => props.theme.font.textBase};
+`;
+
+export const Title = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    width: 1120px;
+    margin: 0 auto;
+    margin-top: 40px;
+    margin-bottom: 10px;
+
+    & > h1 {
+        font: ${(props) => props.theme.font.textEnLg};
+        color: ${(props) => props.theme.color.blackLight};
+        margin-bottom: 8px;
+        margin: 0;
+    }
 `;

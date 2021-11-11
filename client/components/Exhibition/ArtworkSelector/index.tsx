@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import Link from 'next/link';
 
 import { Label } from '@components/Exhibition/style';
 import { SpaceBetween } from '@styles/common';
@@ -11,7 +10,6 @@ const index = () => {
         <ArtworkSelectorWrapper>
             <ArtworkSelectorHeader>
                 <Label>작품 선택하기</Label>
-                <Link href="#">작품 추가하기</Link>
             </ArtworkSelectorHeader>
             <Selector />
         </ArtworkSelectorWrapper>
@@ -19,7 +17,8 @@ const index = () => {
 };
 
 export const ArtworkSelectorWrapper = styled.div`
-    width: 40%;
+    width: 470px;
+    margin-left: auto;
 `;
 
 export const ArtworkSelectorHeader = styled.div`
