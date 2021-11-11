@@ -1,7 +1,13 @@
 import { Artwork } from 'interfaces';
 import React, { useEffect, useState, useRef, RefObject } from 'react';
 import { EditorElementStyle, EditorElementType } from './types';
-import { onDraggable, getPositions, getLineStyle, getDotStyle } from './utils';
+import {
+    onDraggable,
+    getPositions,
+    getLineStyle,
+    getDotStyle,
+    onResize,
+} from './utils';
 
 interface Prop {
     style: EditorElementStyle;
@@ -45,16 +51,13 @@ const EditorElement = ({
             width: `${currentStyle.size.width}px`,
             height: `${currentStyle.size.height}px`,
             backgroundColor: currentStyle.backgroundColor,
+            position: 'absolute' as 'absolute',
+            border: isSelected ? '1px solid #3A8FD6' : '0px solid 3A8FD6',
         };
     };
 
     const getBorderController = () => {
-        return (
-            <>
-                {getLines()}
-                {getDots()}
-            </>
-        );
+        return <>{getDots()}</>;
     };
 
     const getDots = () => {
