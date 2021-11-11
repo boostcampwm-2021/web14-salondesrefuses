@@ -78,8 +78,9 @@ const Expanded = styled.div`
     margin-bottom: 10px;
 
     & span {
-        font: ${(props) => props.theme.font.textSm};
+        min-width: 55px;
         margin-right: 10px;
+        font: ${(props) => props.theme.font.textSm};
     }
     
     & > div {

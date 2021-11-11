@@ -79,6 +79,7 @@ const Bid = styled.div`
     & b,
     span {
         display: block;
+        min-width: 65px;
         font: ${(props) => props.theme.font.textMd};
         font-size: 15px;
         margin-top: 5px;

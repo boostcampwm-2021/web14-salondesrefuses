@@ -71,7 +71,8 @@ const Detail = styled.div`
         margin-bottom: 20px;
     }
     
-    & span {
+    & span {        
+        min-width: 55px;
         margin-right: 10px;
     }
 `;
