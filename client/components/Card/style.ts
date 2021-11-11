@@ -19,6 +19,7 @@ export const CardContainer = styled.div<CardContainerProps>`
     }
 `;
 export const BlurBottom = styled.div`
+    position: relative;
     display: flex;
     color: ${(props) => props.theme.color.white};
     height: 30%;
@@ -36,9 +37,6 @@ export const BlurBottom = styled.div`
     div {
         width: 100%;
     }
-    img {
-        margin-right: 10px;
-    }
 `;
 export const BlurFull = styled.div`
     height: 100%;
@@ -47,12 +45,12 @@ export const BlurFull = styled.div`
     padding: 20px;
     background: rgba(0, 0, 0, 0.4);
     color: ${(props) => props.theme.color.white};
-    animation: growblur 1s ease-out;
+    animation: growblur 0.7s ease-out;
     backdrop-filter: blur(20px);
 
     @keyframes growblur {
         0% {
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(6px);
             background: rgba(0, 0, 0, 0);
         }
         100% {
@@ -80,6 +78,10 @@ export const Price = styled.p`
     font: ${(props) => props.theme.font.textEnSm};
 `;
 export const PriceContainer = styled.div`
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+
     display: flex;
     align-items: center;
     justify-content: end;
