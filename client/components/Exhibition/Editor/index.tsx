@@ -43,7 +43,7 @@ const Title = styled.div`
 
     & > h1 {
         font: ${(props) => props.theme.font.textEnLg};
-        color: ${(props) => props.theme.color.placeholder};
+        color: ${(props) => props.theme.color.title};
         margin-bottom: 8px;
         margin: 0;
     }

@@ -19,7 +19,7 @@ export const defaultHeader = () => {
             <Link href="/auction">
                 <NavButton>Auctions</NavButton>
             </Link>
-            <Link href="/login">
+            <Link href={session ? '/mypage' : '/login'}>
                 <NavButton>
                     {session ? (
                         <img src={ProfilePic.src} alt="profile" />
@@ -56,7 +56,7 @@ export const withSearchBar = (isExhibition: boolean) => {
                         {isExhibition ? 'Auctions' : 'Exhibitions'}
                     </NavButton>
                 </Link>
-                <Link href="/login">
+                <Link href={session ? '/mypage' : '/login'}>
                     <NavButton>
                         {session ? (
                             <img src={ProfilePic.src} alt="profile" />
