@@ -1,7 +1,7 @@
 import { Artwork } from 'interfaces';
 import React, { useEffect, useState, useRef, RefObject } from 'react';
 import { EditorElementStyle, EditorElementType } from './types';
-import { onDraggable, getPositions, getLineStyle, getDotStyle } from './utils';
+import { onDraggable, getPositions, getDotStyle, onResize } from './utils';
 
 interface Prop {
     style: EditorElementStyle;
@@ -45,51 +45,49 @@ const EditorElement = ({
             width: `${currentStyle.size.width}px`,
             height: `${currentStyle.size.height}px`,
             backgroundColor: currentStyle.backgroundColor,
+            position: 'absolute' as 'absolute',
+            border: isSelected ? '1px solid #3A8FD6' : '0px solid 3A8FD6',
         };
     };
 
     const getBorderController = () => {
-        return (
-            <>
-                {getLines()}
-                {getDots()}
-            </>
-        );
+        return <>{getDots()}</>;
     };
 
     const getDots = () => {
         return (
             <>
-                <div style={getDotStyle('NW', LT, LT)}></div>
-                <div style={getDotStyle('N', LT, LT, RT)}></div>
-                <div style={getDotStyle('NE', LT, RT)}></div>
-                <div style={getDotStyle('E', LT, RT, RB)}></div>
-                <div style={getDotStyle('SE', LT, RB)}></div>
-                <div style={getDotStyle('S', LT, LB, RB)}></div>
-                <div style={getDotStyle('SW', LT, LB)}></div>
-                <div style={getDotStyle('W', LT, LB, LT)}></div>
-            </>
-        );
-    };
-
-    const getLines = () => {
-        return (
-            <>
                 <div
-                    className="lines"
-                    style={getLineStyle(LT, LB, LT, RB)}
+                    style={getDotStyle('NW', LT, LT)}
+                    onMouseDown={(e) => onResize('NW', element, e)}
                 ></div>
                 <div
-                    className="lines"
-                    style={getLineStyle(LT, RT, LT, RB)}
+                    style={getDotStyle('N', LT, LT, RT)}
+                    onMouseDown={(e) => onResize('N', element, e)}
                 ></div>
                 <div
-                    className="lines"
-                    style={getLineStyle(LB, RB, LT, RB)}
+                    style={getDotStyle('NE', LT, RT)}
+                    onMouseDown={(e) => onResize('NE', element, e)}
                 ></div>
                 <div
-                    className="lines"
-                    style={getLineStyle(RT, RB, LT, RB)}
+                    style={getDotStyle('E', LT, RT, RB)}
+                    onMouseDown={(e) => onResize('E', element, e)}
+                ></div>
+                <div
+                    style={getDotStyle('SE', LT, RB)}
+                    onMouseDown={(e) => onResize('SE', element, e)}
+                ></div>
+                <div
+                    style={getDotStyle('S', LT, LB, RB)}
+                    onMouseDown={(e) => onResize('S', element, e)}
+                ></div>
+                <div
+                    style={getDotStyle('SW', LT, LB)}
+                    onMouseDown={(e) => onResize('SW', element, e)}
+                ></div>
+                <div
+                    style={getDotStyle('W', LT, LB, LT)}
+                    onMouseDown={(e) => onResize('W', element, e)}
                 ></div>
             </>
         );

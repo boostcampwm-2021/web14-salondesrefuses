@@ -1,4 +1,5 @@
 import EditorElement from './EditorElement';
+import { dirctionToResize } from './resizeFunctions';
 
 export const onDraggable = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -7,22 +8,21 @@ export const onDraggable = (
     const dom = element?.getBoundingClientRect();
     if (!dom || !element) return;
 
-    let shiftX = e.clientX;
-    let shiftY = e.clientY;
-
-    element.style.setProperty('position', 'absolute');
-
     const onMouseMove = (ev: MouseEvent) => {
         const { left, top } = (
             e.target as HTMLElement
         ).parentElement?.getBoundingClientRect()!;
         element.style.setProperty(
             'left',
-            `${ev.pageX - left - (e.target as HTMLElement).offsetWidth / 2}px`,
+            `${
+                ev.clientX - left - (e.target as HTMLElement).offsetWidth / 2
+            }px`,
         );
         element.style.setProperty(
             'top',
-            `${ev.pageY - top - (e.target as HTMLElement).offsetHeight / 2}px`,
+            `${
+                ev.clientY - top - (e.target as HTMLElement).offsetHeight / 2
+            }px`,
         );
     };
 
@@ -51,38 +51,11 @@ export const getPositions = (element: HTMLElement | null) => {
         [right, bottom],
     ];
 };
-export const getLineStyle = (
-    p1: number[],
-    p2: number[],
-    originStartPoint: number[],
-    originEndPoint: number[],
-) => {
-    const distX = p2[0] - p1[0];
-    const distY = p2[1] - p1[1];
-    const width = originEndPoint[0] - originStartPoint[0];
-    const height = originEndPoint[1] - originStartPoint[1];
-    const degree = distX ? 90 : 0;
-    let trans1, trans2;
-    if (degree) {
-        trans1 = width / 2;
-        trans2 = p1[1] > originStartPoint[1] ? height / 2 : (height / 2) * -1;
-    } else {
-        trans1 = p1[0] > originStartPoint[0] ? width : 0;
-        trans2 = 0;
-    }
-    return {
-        position: 'absolute' as 'absolute',
-        transform: `translate(${trans1}px,${trans2}px) rotate(${degree}deg)`,
-        height: '100px',
-        width: '1px',
-        content: '',
-        backgroundColor: '#3A8FD6',
-    };
-};
+
 const getMouseCursor = (name: directionNames) => {
     return `${name.toLowerCase()}-resize`;
 };
-type directionNames = 'NW' | 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W';
+export type directionNames = 'NW' | 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W';
 export const getDotStyle = (
     name: directionNames,
     originPoint: number[],
@@ -91,7 +64,6 @@ export const getDotStyle = (
 ) => {
     const [X, Y] = p2 ? [~~((p1[0] + p2[0]) / 2), ~~((p1[1] + p2[1]) / 2)] : p1;
     const [Left, Top] = [X - originPoint[0] - 5, Y - originPoint[1] - 5];
-    console.log(getMouseCursor(name));
     return {
         position: 'absolute' as 'absolute',
         top: Top,
@@ -104,3 +76,52 @@ export const getDotStyle = (
         cursor: getMouseCursor(name),
     };
 };
+
+export const onResize = (
+    direction: directionNames,
+    element: HTMLElement | null,
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+) => {
+    e.stopPropagation();
+    const dom = element?.getBoundingClientRect();
+    if (!dom || !element) return;
+    let originPoint = [e.clientX, e.clientY];
+
+    const [currentHeight, currentWidth, top, left] = [
+        parseInt(element.style.height),
+        parseInt(element.style.width),
+        parseInt(element.style.top),
+        parseInt(element.style.left),
+    ];
+    const onResizePoint = (ev: MouseEvent) => {
+        dirctionToResize(
+            direction,
+            element,
+            ev,
+            currentHeight,
+            currentWidth,
+            top,
+            left,
+            originPoint,
+        );
+    };
+
+    document.addEventListener('mousemove', onResizePoint);
+    const removeEvent = () => {
+        document.removeEventListener('mousemove', onResizePoint);
+        element.onmouseup = null;
+    };
+    document.body.onmouseup = removeEvent;
+};
+
+// const setMouseEventListener = (
+//     eventType: keyof DocumentEventMap,
+//     cb: (this: Document, ev: MouseEvent) => any,
+// ) => {
+//     document.addEventListener(eventType, cb);
+//     const removeEvent = () => {
+//         document.removeEventListener(eventType, cb);
+//         element.onmouseup = null;
+//     };
+//     document.body.onmouseup = removeEvent;
+// };
