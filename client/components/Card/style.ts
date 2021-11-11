@@ -10,6 +10,13 @@ export const CardContainer = styled.div<CardContainerProps>`
     background-image: url(${(props) => props.thumbnailImage});
     border-radius: 20px;
     cursor: pointer;
+    box-shadow: 0px 3px 3px 1px rgba(0, 0, 0, 0.4);
+    transition: 0.5s ease-out;
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0px 4px 8px 4px rgba(0, 0, 0, 0.3);
+    }
 `;
 export const BlurBottom = styled.div`
     display: flex;
@@ -42,7 +49,6 @@ export const BlurFull = styled.div`
     color: ${(props) => props.theme.color.white};
     animation: growblur 1s ease-out;
     backdrop-filter: blur(20px);
-    box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.3);
 
     @keyframes growblur {
         0% {
