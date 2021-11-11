@@ -1,7 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
+import useEditorImageState from '@store/editorImageState';
+
 const Selector = () => {
+    const [images, setImages] = useEditorImageState();
+
     return <Container></Container>;
 };
 

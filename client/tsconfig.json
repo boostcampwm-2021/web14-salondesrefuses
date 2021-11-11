@@ -23,7 +23,8 @@
             "@styles/*": ["./styles/*"],
             "@assets/*": ["./assets/*"],
             "@utils/*": ["./utils/*"],
-            "@constants/*": ["./constants/*"]
+            "@constants/*": ["./constants/*"],
+            "@store/*": ["./store/*"]
         }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
