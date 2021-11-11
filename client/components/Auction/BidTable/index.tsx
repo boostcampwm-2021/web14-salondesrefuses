@@ -7,7 +7,7 @@ import { Auction } from 'interfaces';
 
 const BidTable = ({ auction }: { auction: Auction }) => {
     const globalContext = useContext(GlobalContext);
-    const { id, artwork } = auction;
+    const { id, artwork, endAt } = auction;
     const { auctionSocket, eventSource } = globalContext!;
 
     const [price, setPrice] = useState<number>(Number(artwork.price));
@@ -24,7 +24,7 @@ const BidTable = ({ auction }: { auction: Auction }) => {
 
     useEffect(() => {
         eventSource.onmessage = ({ data }) => {
-            setAuctionDeadline(getRemainingTime(Number(data), Date.now()));
+            setAuctionDeadline(getRemainingTime(Number(data), new Date(endAt).getTime()));
         };
     }, [])
 

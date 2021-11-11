@@ -1,6 +1,10 @@
 const getRemainingTime = (currentTime: number, deadline: number) => {
     const gap = (deadline - currentTime) / 1000;
 
+    if(gap <= 0) {
+        return '00:00:00';
+    }
+
     const days = Math.floor(gap / (60 * 60 * 24));
     const hours = Math.floor(gap % (60 * 60 * 24) / (60 * 60));
     const minutes = Math.floor(gap % (60 * 60) / 60);

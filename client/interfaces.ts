@@ -26,9 +26,9 @@ export interface Artist {
 }
 
 export interface Auction {
-    endAt: string;
     id: number;
     startAt: Date;
+    endAt: Date;
     artwork: Artwork;
     artist: Artist;
 }
