@@ -8,7 +8,7 @@ const AboutArtist = ({ artist }: { artist: Artist }) => {
     const [expand, setExpand] = useState(false);
     const { name, description } = artist;
 
-    const onClickExpandButon = () => {
+    const onClickExpandButton = () => {
         setExpand((expand) => !expand);
     };
 
@@ -16,7 +16,7 @@ const AboutArtist = ({ artist }: { artist: Artist }) => {
         <Container>
             <Title>
                 <h1>작가 설명</h1>
-                <button onClick={onClickExpandButon}>
+                <button onClick={onClickExpandButton}>
                     <Img
                         src="/icons/arrow-down.png"
                         alt="expand"
