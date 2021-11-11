@@ -36,7 +36,7 @@ const AuctionDetailPage = ({ artwork }: { artwork: Artwork }) => {
             <GlobalStore>
                 <Head>
                     <title>
-                        Auction - {'Sky Study 3'} ({'Lisa Beck'}, {'2018'})
+                        Auction - {artwork.title} ({'2018'})
                     </title>
                     <meta name="경매" content="경매경매" />
                 </Head>
