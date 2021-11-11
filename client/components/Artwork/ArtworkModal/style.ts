@@ -28,8 +28,16 @@ export const ConfirmButton = styled.button`
     color: white;
     font: ${(props) => props.theme.font.textEnBase};
     position: absolute;
-    bottom: 50px;
-    right: 50px;
+    bottom: 40px;
+    right: 40px;
+    transition: 0.3s;
+
+    &:hover {
+        transform: translateY(-2px);
+        background: ${(props) => props.theme.color.white};
+        color: ${(props) => props.theme.color.black};
+        box-shadow: 0 4px 8px 2px rgba(0, 0, 0, 0.2);
+    }
 `;
 export const Form = styled.div`
     display: flex;
@@ -52,7 +60,7 @@ export const Form = styled.div`
     }
 
     & span {
-        font: ${(props) => props.theme.font.textEnMd};
+        font: ${(props) => props.theme.font.textEnBase};
         color: white;
     }
 `;
@@ -70,8 +78,9 @@ export const LightForm = styled(Form)`
         border: none;
         color: white;
         padding-left: 20px;
+        font: ${(props) => props.theme.font.textEnBase};
 
-        &: focus {
+        &:focus {
             outline: none;
         }
     }

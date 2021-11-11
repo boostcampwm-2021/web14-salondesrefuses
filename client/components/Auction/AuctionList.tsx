@@ -78,7 +78,6 @@ const AuctionList = () => {
                         </BlackButton>
                     )}
                 </Title>
-                <h1>지금 판매중인 작품</h1>
                 <Grid>
                     {auctionItems.map((item) => {
                         return <Card width="lg" content={item} key={item.id} />;
@@ -94,10 +93,11 @@ const Container = styled.div`
     ${Center}
     flex-direction: column;
     width: 80%;
+    max-width: 1180px;
     margin-top: 50px;
 
     & h1 {
-        font: ${(props) => props.theme.font.textXl};
+        font: ${(props) => props.theme.font.textEnMd};
         color: ${(props) => props.theme.color.title};
         margin: 0;
         align-self: flex-start;
@@ -110,7 +110,7 @@ const Title = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-bottom: 50px;
+    margin-bottom: 45px;
 `;
 
 const BlackButton = styled(Button)`
@@ -136,10 +136,6 @@ const FilterWrapper = styled.div`
 
     & > div:first-of-type {
         border: none;
-        & button {
-            margin-left: 0;
-            margin-right: 30px;
-        }
     }
 
     & button {
