@@ -27,8 +27,8 @@ export class AuctionListItemDTO {
 
     static from(auction: Auction): AuctionListItemDTO {
         const dto = new AuctionListItemDTO();
-        const { title, description, croppedImage, price, type } = auction.artwork;
-        const { name } = auction.seller;
+        const { title, description, croppedImage, price, type, artist } = auction.artwork;
+        const { name } = artist;
 
         dto.id = auction.id;
         dto.title = title;
