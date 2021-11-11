@@ -5,7 +5,7 @@ export interface Artwork {
     exhibitionId: number;
     nftToken: string;
     description?: string;
-    price: string;
+    price: number;
     status: string;
     title: string;
     type: string;
@@ -18,9 +18,18 @@ export interface PostArtworkResponse {
     nftToken?: string;
 }
 
+export interface Artist {
+    id: number;
+    name: string;
+    snsId: string;
+    description: string;
+}
+
 export interface Auction {
-    endAt: string;
     id: number;
     startAt: Date;
+    endAt: Date;
     artwork: Artwork;
+    artist: Artist;
+    auctionHistories: string[],
 }

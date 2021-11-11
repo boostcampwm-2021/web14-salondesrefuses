@@ -6,6 +6,7 @@ import {
     WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { AuctionHistoryService } from '../auctionHistory/auctionHistory.service';
 
 @WebSocketGateway({
     namespace: '/auction',
@@ -15,6 +16,8 @@ export class AuctionGateway implements OnGatewayInit {
 
     @WebSocketServer()
     private server: Server;
+
+    constructor(private readonly auctionHistoryService: AuctionHistoryService) {}
 
     afterInit(server: Server): void {
         console.log('socket init');
@@ -41,13 +44,13 @@ export class AuctionGateway implements OnGatewayInit {
         @MessageBody() bidInfo: string,
         @ConnectedSocket() client: Socket
     ) {
-        const { price, userId, auctionId } = JSON.parse(JSON.stringify(bidInfo));
-        this.server.to(auctionId).emit('bid', {
+        const { id, bidderName, price, biddedAt } = JSON.parse(JSON.stringify(bidInfo));
+        this.server.to(id).emit('bid', {
+            bidderName,
             price,
-            userId,
-            date: '2021-11-08'
+            biddedAt,
         });
-        // TODO: insert Bid history with using AuctionHistoryService?
+        this.auctionHistoryService.saveAuctionHistory(id, bidderName, price, biddedAt);
     }
 
 }
