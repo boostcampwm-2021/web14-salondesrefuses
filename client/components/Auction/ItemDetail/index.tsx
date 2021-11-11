@@ -33,7 +33,7 @@ const ItemDetail = ({ auction }: { auction: Auction }) => {
             <AboutArtist artist={artist}/>
             <BidTable auction={auction}/>
             <Trend />
-            <ArtworkDetail />
+            <ArtworkDetail artwork={artwork}/>
         </Container>
     );
 };
@@ -42,6 +42,7 @@ const Container = styled.section`
     width: 100%;
     overflow: scroll;
     overflow-x: hidden;
+    padding: 10px 0;
     
     &::-webkit-scrollbar {
         width: 8px;
