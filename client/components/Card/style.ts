@@ -91,9 +91,6 @@ export const PriceContainer = styled.div`
     justify-content: end;
 
     & img {
-        position: absolute;
-        bottom: 20px;
-        right: 10px;
         opacity: 0.7;
     }
 `;
