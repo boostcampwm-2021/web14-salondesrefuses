@@ -33,9 +33,25 @@ const Container = styled.div`
     flex-direction: column;
     position: relative;
 
-    width: 1120px;
+    width: 1180px;
     margin: 50px 0;
     user-select: none;
+`;
+
+const Title = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    width: 1180px;
+    margin: 0 auto;
+    margin-top: 40px;
+
+    & > h1 {
+        font: ${(props) => props.theme.font.textEnLg};
+        color: ${(props) => props.theme.color.title};
+        margin-bottom: 8px;
+        margin: 0;
+    }
 `;
 
 export default index;

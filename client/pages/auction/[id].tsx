@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
@@ -10,6 +10,8 @@ import { GlobalStore } from '@store/GlobalStore';
 import { getAuction } from '@utils/networking';
 
 const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
+    const [zoom, setZoom] = useState(false);
+    const magnifierRef = useRef<HTMLImageElement | null>(null);
     const { artwork, artist } = auction;
     const { title } = artwork;
     const { name } = artist;
@@ -20,6 +22,17 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
             document.body.style.overflow = 'visible';
         };
     }, []);
+
+    const onHoverImage = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!zoom || !magnifierRef.current) return;
+        const { offsetX, offsetY } = e.nativeEvent;
+        magnifierRef.current.style.objectPosition = `${-(offsetX * 2)}px ${-(
+            offsetY * 2
+        )}px`;
+
+        magnifierRef.current.parentElement!.style.top = `${offsetY + 100}px`;
+        magnifierRef.current.parentElement!.style.left = `${offsetX + 90}px`;
+    };
 
     return (
         <>
@@ -32,12 +45,25 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
                 </Head>
                 <Layout>
                     <Container>
-                        <Background
-                            src={artwork.croppedImage}
-                        />
+                        <Background src={artwork.originalImage} />
                         <Grid>
                             <section>
-                                <img src={artwork.croppedImage} />
+                                <Image
+                                    src={artwork.originalImage}
+                                    onClick={() => {
+                                        setZoom(!zoom);
+                                    }}
+                                    onMouseMove={onHoverImage}
+                                />
+                                {zoom && (
+                                    <Magnifier>
+                                        <img
+                                            src={artwork.originalImage}
+                                            alt=""
+                                            ref={magnifierRef}
+                                        />
+                                    </Magnifier>
+                                )}
                             </section>
                             <ItemDetail auction={auction}/>
                         </Grid>
@@ -62,11 +88,12 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 const Container = styled.div`
     height: 100vh;
     position: relative;
-    top: -100px;
+    top: -70px;
     background-color: black;
     width: 100%;
     display: flex;
     align-items: center;
+    overflow: hidden;
 `;
 
 const Grid = styled.div`
@@ -80,6 +107,7 @@ const Grid = styled.div`
 
     & > section {
         height: 80%;
+        position: relative;
     }
 
     & section {
@@ -91,11 +119,26 @@ const Grid = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+`;
 
-        & img {
-            border: 5px solid ${(props) => props.theme.color.white};
-            box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.3);
-        }
+const Image = styled.img`
+    max-width: 45vh;
+    border: 5px solid ${(props) => props.theme.color.white};
+    box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.3);
+`;
+
+const Magnifier = styled.div`
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    z-index: 200;
+    background-color: black;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+
+    & > img {
+        object-fit: none;
     }
 `;
 
@@ -104,7 +147,6 @@ const Background = styled.img`
     width: 100%;
     height: 100vh;
     filter: blur(60px);
-    transform: scale(1.2);
 `;
 
 export default AuctionDetailPage;
