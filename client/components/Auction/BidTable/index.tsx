@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { Auction } from 'interfaces';
-import { GlobalContext } from '../../../store/GlobalStore';
+import { GlobalContext } from '@store/GlobalStore';
 import { trendHistory } from '@components/Auction/Trend';
 import getRemainingTime from '@utils/getRemainingTime';
 

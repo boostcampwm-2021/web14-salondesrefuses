@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import TrendHistory from '@components/Auction/Trend/TrendHistory';
-import { GlobalContext } from '../../../store/GlobalStore';
+import { GlobalContext } from '@store/GlobalStore';
 
-type trendHistory = {
+export type trendHistory = {
     price: string;
     userId: string;
     date: string;
@@ -34,7 +34,9 @@ const Trend = () => {
                         <th>to</th>
                         <th>date</th>
                     </tr>
-                    {trendHistory.map((history, idx) => TrendHistory(history, idx))}
+                    {trendHistory.map((history, idx) =>
+                        TrendHistory(history, idx))
+                    }
                 </tbody>
             </Table>
         </Container>

@@ -4,7 +4,7 @@ const TrendHistory = ({ price, userId, date }: {[key: string]: string}, idx: num
 
     return (
         <tr key={idx}>
-            <td>Sale</td>
+            <td>Bid</td>
             <td>{price} ETH</td>
             <td>{userId}</td>
             <td>Boost</td>

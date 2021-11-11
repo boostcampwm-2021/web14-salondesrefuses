@@ -5,8 +5,8 @@ import AboutArtist from './AboutArtist';
 import BidTable from '../BidTable';
 import Trend from '../Trend';
 import ArtworkDetail from './ArtworkDetail';
-import { GlobalContext } from '../../../store/GlobalStore';
 import { Auction } from 'interfaces';
+import { GlobalContext } from '@store/GlobalStore';
 
 const ItemDetail = ({ auction }: { auction: Auction }) => {
     const globalContext = useContext(GlobalContext);

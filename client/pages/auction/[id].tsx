@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { Auction } from 'interfaces';
 import Layout from '@components/common/Layout';
 import ItemDetail from '@components/Auction/ItemDetail';
-import { GlobalStore } from '../../store/GlobalStore';
+import { GlobalStore } from '@store/GlobalStore';
 import { getAuction } from '@utils/networking';
 
 const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
