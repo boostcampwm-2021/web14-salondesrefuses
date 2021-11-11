@@ -28,7 +28,7 @@ const Container = styled.div`
     display: flex;
     position: relative;
 
-    width: 920px;
+    width: 1120px;
     margin: 50px 0;
     user-select: none;
 `;
@@ -37,7 +37,7 @@ const Title = styled.div`
     display: flex;
     flex-direction: column;
 
-    width: 920px;
+    width: 1120px;
     margin: 0 auto;
     margin-top: 40px;
 
