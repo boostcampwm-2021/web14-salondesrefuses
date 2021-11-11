@@ -8,6 +8,11 @@ import {
     initialTextStyle,
 } from '@const/editor-initial-state';
 import { EditorElementName, EditorElementProp } from './types';
+import rectButtonIcon from '@assets/images/editor-rectangular.png';
+import colorButtonIcon from '@assets/images/editor-color.png';
+import textButtonIcon from '@assets/images/editor-text.png';
+import forwardButtonIcon from '@assets/images/editor-forward.png';
+import backwardButtonIcon from '@assets/images/editor-backward.png';
 
 const Editor = () => {
     const [elements, setElements] = useState<EditorElementProp[]>([]);
@@ -76,15 +81,17 @@ const Editor = () => {
     return (
         <EditorContainer>
             <ToolBar>
-                <Button onClick={createRectangular}>Rectangular</Button>
-                <Button onClick={onClickColorButton}>Color</Button>
-                <Button onClick={createText}>Text</Button>
-                <Button onClick={onClickZIndexButton('FORWARD')}>
-                    Forward
-                </Button>
-                <Button onClick={onClickZIndexButton('BACKWARD')}>
-                    Backward
-                </Button>
+                <Button onClick={createRectangular} bg={rectButtonIcon.src} />
+                <Button onClick={onClickColorButton} bg={colorButtonIcon.src} />
+                <Button onClick={createText} bg={textButtonIcon.src} />
+                <Button
+                    onClick={onClickZIndexButton('FORWARD')}
+                    bg={forwardButtonIcon.src}
+                />
+                <Button
+                    onClick={onClickZIndexButton('BACKWARD')}
+                    bg={backwardButtonIcon.src}
+                />
                 {showColorPicker && (
                     <ColorPicker
                         color={color}
@@ -116,9 +123,12 @@ const ToolBar = styled.div`
     position: relative;
     padding-left: 30px;
 `;
-const Button = styled.button`
+const Button = styled.button<{ bg: string }>`
+    width: 32px;
     height: 100%;
-    background: none;
+    background: url(${(props) => props.bg});
+    background-repeat: no-repeat;
+    background-position: center;
     border: none;
 
     &:hover {
