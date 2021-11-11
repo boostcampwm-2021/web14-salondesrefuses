@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
-import { GlobalContext } from '../../../store/GlobalStore';
-import getRemainingTime from '../../../utils/getRemainingTime';
 import { Auction } from 'interfaces';
+import { GlobalContext } from '../../../store/GlobalStore';
+import { trendHistory } from '@components/Auction/Trend';
+import getRemainingTime from '@utils/getRemainingTime';
 
 const BidTable = ({ auction }: { auction: Auction }) => {
     const globalContext = useContext(GlobalContext);
@@ -15,14 +16,18 @@ const BidTable = ({ auction }: { auction: Auction }) => {
 
     const bidArtwork = () => {
         auctionSocket.emit('bid', {
+            id,
             price,
-            userId: 'userId',
-            id
+            userId: 'userId'
         });
-        setPrice(prev => Number((prev + 0.01).toFixed(2)));
     };
 
     useEffect(() => {
+        auctionSocket.on('bid', (data: trendHistory) => {
+            const currentBidPrice = Number(data.price);
+            setPrice(Number((currentBidPrice + 0.01).toFixed(2)));
+        });
+
         eventSource.onmessage = ({ data }) => {
             setAuctionDeadline(getRemainingTime(Number(data), new Date(endAt).getTime()));
         };

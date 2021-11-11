@@ -41,8 +41,8 @@ export class AuctionGateway implements OnGatewayInit {
         @MessageBody() bidInfo: string,
         @ConnectedSocket() client: Socket
     ) {
-        const { price, userId, auctionId } = JSON.parse(JSON.stringify(bidInfo));
-        this.server.to(auctionId).emit('bid', {
+        const { price, userId, id } = JSON.parse(JSON.stringify(bidInfo));
+        this.server.to(id).emit('bid', {
             price,
             userId,
             date: '2021-11-08'
