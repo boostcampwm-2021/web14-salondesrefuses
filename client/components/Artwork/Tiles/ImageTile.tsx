@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 
 const ImageTile = ({ src }: { src: string }) => {

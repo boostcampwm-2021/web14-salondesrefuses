@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import Image from 'next/image';
 
+import { Artist } from 'interfaces';
 import { SpaceBetween } from '@styles/common';
 
-const AboutArtist = () => {
+const AboutArtist = ({ artist }: { artist: Artist }) => {
     const [expand, setExpand] = useState(false);
+    const { name, description } = artist;
 
-    const onClickExpandButon = () => {
+    const onClickExpandButton = () => {
         setExpand((expand) => !expand);
     };
 
@@ -15,7 +16,7 @@ const AboutArtist = () => {
         <Container>
             <Title>
                 <h1>작가 설명</h1>
-                <button onClick={onClickExpandButon}>
+                <button onClick={onClickExpandButton}>
                     <Img
                         src="/icons/arrow-down.png"
                         alt="expand"
@@ -25,9 +26,14 @@ const AboutArtist = () => {
             </Title>
             {expand && (
                 <Expanded>
-                    <span>
-                        작가설명입니다.작가설명입니다.작가설명입니다.작가설명입니다.
-                    </span>
+                    <div>
+                        <span>작가 이름:</span>
+                        <span>{name}</span>
+                    </div>
+                    <div>
+                        <span>작가 소개:</span>
+                        <Description>{description}</Description>
+                    </div>
                 </Expanded>
             )}
         </Container>
@@ -37,7 +43,7 @@ const AboutArtist = () => {
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    justfiy-content: flex-start;
+    justify-content: flex-start;
     align-items: center;
 
     & img {
@@ -66,12 +72,27 @@ const Img = styled.img<{ expand: boolean }>`
 `;
 
 const Expanded = styled.div`
+    display: flex;
+    flex-direction: column;
     width: 90%;
-    margin: 10px 0;
+    margin-bottom: 10px;
 
-    & > span {
+    & span {
+        min-width: 55px;
+        margin-right: 10px;
         font: ${(props) => props.theme.font.textSm};
     }
+    
+    & > div {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 10px;
+    }
+`;
+
+export const Description = styled.div`
+    max-width: 460px;
+    font: ${(props) => props.theme.font.textSm};
 `;
 
 export default AboutArtist;

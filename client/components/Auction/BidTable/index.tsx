@@ -1,29 +1,40 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
-import { GlobalContext } from '../../../store/GlobalStore';
-import getRemainingTime from '../../../utils/getRemainingTime';
+import { Auction } from 'interfaces';
+import { GlobalContext } from '@store/GlobalStore';
+import { trendHistory } from '@components/Auction/ItemDetail';
+import { getRemainingTime } from '@utils/time';
 
-const BidTable = (props: { auctionId: string }) => {
+const BidTable = ({ auction, currentPrice }: { auction: Auction, currentPrice: number }) => {
     const globalContext = useContext(GlobalContext);
-    const { auctionId } = props;
+    const { id, artwork, endAt } = auction;
     const { auctionSocket, eventSource } = globalContext!;
 
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState<number>(
+        currentPrice
+            ? Number((currentPrice + 0.01).toFixed(2))
+            : artwork.price
+    );
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
 
     const bidArtwork = () => {
         auctionSocket.emit('bid', {
+            id,
+            bidderName: 'userId',
             price,
-            userId: 'userId',
-            auctionId
+            biddedAt: Date.now(),
         });
-        setPrice(prev => Number((prev + 0.01).toFixed(2)));
     };
 
     useEffect(() => {
+        auctionSocket.on('bid', (data: trendHistory) => {
+            const currentBidPrice = Number(data.price);
+            setPrice(Number((currentBidPrice + 0.01).toFixed(2)));
+        });
+
         eventSource.onmessage = ({ data }) => {
-            setAuctionDeadline(getRemainingTime(Number(data), 1636581243367));
+            setAuctionDeadline(getRemainingTime(Number(data), new Date(endAt).getTime()));
         };
     }, [])
 
@@ -38,7 +49,7 @@ const BidTable = (props: { auctionId: string }) => {
                     <span>현재가격</span>
                     <b>{price} ETH</b>
                 </div>
-                <Button onClick={bidArtwork}>입찰 {price} ETH</Button>
+                <Button onClick={() => bidArtwork()}>입찰 {price} ETH</Button>
             </Bid>
         </Container>
     );
@@ -50,7 +61,7 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 30px 0;
+    padding: 20px 0;
 `;
 
 const Timer = styled.div`
@@ -73,8 +84,10 @@ const Bid = styled.div`
     & b,
     span {
         display: block;
+        min-width: 65px;
         font: ${(props) => props.theme.font.textMd};
         font-size: 15px;
+        margin-top: 5px;
     }
 `;
 
@@ -84,6 +97,7 @@ const Button = styled.button`
     background-color: rgba(255, 255, 255, 0.5);
     width: 150px;
     height: 45px;
+    margin-top: 5px;
     transition: all 0.3s ease;
 
     &:hover {

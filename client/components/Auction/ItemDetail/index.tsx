@@ -1,39 +1,48 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
 
 import AboutArtist from './AboutArtist';
 import BidTable from '../BidTable';
 import Trend from '../Trend';
 import ArtworkDetail from './ArtworkDetail';
-import { GlobalContext } from '../../../store/GlobalStore';
+import { Auction } from 'interfaces';
+import { GlobalContext } from '@store/GlobalStore';
 
-const ItemDetail = () => {
+export type trendHistory = {
+    bidderName: string;
+    price: string;
+    biddedAt: string;
+};
+
+const ItemDetail = ({ auction }: { auction: Auction }) => {
     const globalContext = useContext(GlobalContext);
     const { auctionSocket } = globalContext!;
 
-    const router = useRouter();
-    const auctionId = router.asPath.split('/')[2];
+    const { id, artwork, artist, auctionHistories } = auction;
+    const { title, type } = artwork;
+    const trendHistoryList = JSON.parse(JSON.stringify(auctionHistories))
+        .sort((a: trendHistory, b: trendHistory) => Number(b?.price) - Number(a?.price))
+        .slice(0, 6);
 
     useEffect(() => {
-        auctionSocket.emit('enter', auctionId);
+        auctionSocket.emit('enter', id);
 
         return (() => {
-            auctionSocket.emit('leave', auctionId);
+            auctionSocket.emit('leave', id);
         });
     }, []);
 
     return (
         <Container>
             <Summary>
-                <span>전시회 이름</span>
-                <h1>작품 이름</h1>
-                <span>태그, 태그, 태그, ...</span>
+                {/*<span>전시회 이름</span>*/}
+                <h1>{title}</h1>
+                <span>{type}</span>
             </Summary>
-            <AboutArtist />
-            <BidTable auctionId={auctionId}/>
-            <Trend />
-            <ArtworkDetail />
+            <AboutArtist artist={artist}/>
+            <BidTable auction={auction} currentPrice={Number(trendHistoryList[0]?.price)}/>
+            <Trend trendHistoryList={trendHistoryList}/>
+            <ArtworkDetail artwork={artwork}/>
         </Container>
     );
 };
@@ -41,10 +50,22 @@ const ItemDetail = () => {
 const Container = styled.section`
     width: 100%;
     overflow: scroll;
+    overflow-x: hidden;
+    padding: 10px 0;
+    
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: #BBBBBB;
+        border-radius: 10px;
+    }
+    
     & > div {
         display: flex;
         width: 80%;
-        max-width: 500px;
+        max-width: 600px;
         background-color: rgba(255, 255, 255, 0.5);
         border-radius: 10px;
         margin-top: 40px;
