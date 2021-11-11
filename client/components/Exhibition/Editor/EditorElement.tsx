@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import { Artwork } from 'interfaces';
 import { EditorElementStyle, EditorElementType } from './types';
 import { onDraggable, getPositions, getDotStyle, onResize } from './utils';
-import { Input } from '../style';
 
 interface Prop {
     style: EditorElementStyle;
@@ -31,7 +30,6 @@ const EditorElement = ({
 }: Prop) => {
     const elementRef = useRef<HTMLElement | null>(null);
     const positionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-    const [inputValue, setInputValue] = useState('');
     const [currentStyle, setCurrentStyle] = useState(style);
     let isSelected = currentElements.some(
         (element) => element === elementRef.current,
@@ -116,17 +114,12 @@ const EditorElement = ({
                     {isSelected && getBorderController()}
                 </div>
             ) : type === 'TEXT' ? (
-                <InputDiv
+                <Input
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     style={calculateStyle()}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
-                    ref={elementRef as RefObject<HTMLDivElement>}
-                    tabIndex={0}
-                    onKeyDown={(e) => isSelected && { inputValue }}
-                >
-                    <p>{inputValue}</p>
-                    {isSelected && getBorderController()}
-                </InputDiv>
+                    ref={elementRef as RefObject<HTMLInputElement>}
+                ></Input>
             ) : (
                 <img
                     src={image!.originalImage}
@@ -140,11 +133,8 @@ const EditorElement = ({
         </>
     );
 };
-
-const InputDiv = styled.div`
-    display: flex;
-    justify-content: center;
-    item-aligns: center;
+const Input = styled.input`
+    background-color: transparent;
 `;
 
 export default EditorElement;
