@@ -76,6 +76,7 @@ export const P = styled.p<textAlign>`
 export const Price = styled.p`
     margin-right: 10px;
     font: ${(props) => props.theme.font.textEnSm};
+    font-size: 16px;
 `;
 export const PriceContainer = styled.div`
     position: absolute;

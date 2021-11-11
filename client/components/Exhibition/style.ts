@@ -4,7 +4,8 @@ import { FilterProps } from '../../pages/exhibition/index';
 
 export const TopContainer = styled.div`
     display: flex;
-    width: 1180px;
+    width: 100%;
+    max-width: 1180px;
     margin: 45px 0;
 `;
 export const FilterWrapper = styled.div`
@@ -41,7 +42,7 @@ export const Buttons = styled.div`
 export const BlackButton = styled(Button)`
     color: black;
     border-bottom: 1px solid black;
-    font: ${(props) => props.theme.font.textEnLg};
+    font: ${(props) => props.theme.font.textEnMd};
 
     &:first-of-type {
         margin-right: 25px;
