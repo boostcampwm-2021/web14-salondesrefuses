@@ -41,6 +41,17 @@ const ItemDetail = () => {
 const Container = styled.section`
     width: 100%;
     overflow: scroll;
+    overflow-x: hidden;
+    
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: #BBBBBB;
+        border-radius: 10px;
+    }
+    
     & > div {
         display: flex;
         width: 80%;
