@@ -7,14 +7,23 @@ export const onDraggable = (
     const dom = element?.getBoundingClientRect();
     if (!dom || !element) return;
 
-    let shiftX = e.clientX - dom.left;
-    let shiftY = e.clientY - dom.top + element.offsetHeight / 2;
+    let shiftX = e.clientX;
+    let shiftY = e.clientY;
 
     element.style.setProperty('position', 'absolute');
 
     const onMouseMove = (ev: MouseEvent) => {
-        element.style.setProperty('left', `${ev.pageX - shiftX}px`);
-        element.style.setProperty('top', `${ev.pageY - shiftY}px`);
+        const { left, top } = (
+            e.target as HTMLElement
+        ).parentElement?.getBoundingClientRect()!;
+        element.style.setProperty(
+            'left',
+            `${ev.pageX - left - (e.target as HTMLElement).offsetWidth / 2}px`,
+        );
+        element.style.setProperty(
+            'top',
+            `${ev.pageY - top - (e.target as HTMLElement).offsetHeight / 2}px`,
+        );
     };
 
     document.addEventListener('mousemove', onMouseMove);

@@ -7,14 +7,9 @@ import { Artwork } from 'interfaces';
 import Layout from '@components/common/Layout';
 import ItemDetail from '@components/Auction/ItemDetail';
 import { GlobalStore } from '../../store/GlobalStore';
+import { getAuction } from '@utils/networking';
 
-const DUMMY_DATA: Artwork = {
-    id: 1,
-    imagePath:
-        'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg',
-};
-
-const AuctionDetailPage = ({ artwork = DUMMY_DATA }: { artwork: Artwork }) => {
+const AuctionDetailPage = ({ artwork }: { artwork: Artwork }) => {
     useEffect(() => {
         document.body.style.overflow = 'hidden';
         return () => {
@@ -40,7 +35,7 @@ const AuctionDetailPage = ({ artwork = DUMMY_DATA }: { artwork: Artwork }) => {
                         />
                         <Grid>
                             <section>
-                                <img src={DUMMY_DATA.imagePath} />
+                                <img src={artwork.croppedImage} />
                             </section>
                             <ItemDetail />
                         </Grid>
@@ -54,8 +49,11 @@ const AuctionDetailPage = ({ artwork = DUMMY_DATA }: { artwork: Artwork }) => {
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const artworkId = (params as { id: string }).id;
 
+    const auction = await getAuction(Number(artworkId));
+    console.log(auction.data);
+
     return {
-        props: {},
+        props: { artwork: auction.data.artwork },
     };
 };
 

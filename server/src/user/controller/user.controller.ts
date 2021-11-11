@@ -1,10 +1,4 @@
-import {
-    Body,
-    Controller,
-    Get, Put,
-    Req, UploadedFile,
-    UseGuards, UseInterceptors,
-} from '@nestjs/common';
+import { Body, Controller, Get, Put, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 import { User } from '../user.entity';
 import { Artwork } from '../../artwork/artwork.entity';
@@ -33,10 +27,8 @@ export class UserController {
     @Get('/')
     @ApiOperation(getUserProfile)
     @ApiResponse({ type: User })
-    getUserProfile(
-        @Req() req: Express.Request & { user: User }
-    ): Promise<User> {
-        return this.userService.getUserProfile(req.user);
+    getUserProfile(@Req() { user }: Express.Request & { user: User }): Promise<User> {
+        return this.userService.getUserProfile(user);
     }
 
     @Put('/')
@@ -44,56 +36,45 @@ export class UserController {
     @ApiOperation(updateUserProfileApiOperation)
     @ApiResponse({ type: UpdateResult })
     updateUserProfile(
-        @Req() req: Express.Request & { user: User },
+        @Req() { user }: Express.Request & { user: User },
         @UploadedFile() file: Express.Multer.File,
-        @Body() requestUserDTO: RequestUserDTO
+        @Body() requestUserDTO: RequestUserDTO,
     ): Promise<UpdateResult> {
-        return this.userService.updateUserProfile(req.user, file, requestUserDTO);
+        return this.userService.updateUserProfile(user, file, requestUserDTO);
     }
 
     @Get('/artworks')
     @ApiOperation(getUsersArtworksApiOperation)
     @ApiResponse({ type: Artwork })
-    getUsersArtworks(
-        @Req() req: Express.Request & { user: User }
-    ): Promise<Artwork[]> {
-        return this.userService.getUsersArtworks(req.user);
+    getUsersArtworks(@Req() { user }: Express.Request & { user: User }): Promise<Artwork[]> {
+        return this.userService.getUsersArtworks(user);
     }
 
     @Get('/artworks/interest')
     @ApiOperation(getInterestArtworksApiOperation)
     @ApiResponse({ type: Artwork })
-    getInterestArtworks(
-        @Req() req: Express.Request & { user: User }
-    ): Promise<Artwork[]> {
-        return this.userService.getInterestArtworks(req.user);
+    getInterestArtworks(@Req() { user }: Express.Request & { user: User }): Promise<Artwork[]> {
+        return this.userService.getInterestArtworks(user);
     }
 
     @Get('/artworks/transaction')
     @ApiOperation(getBiddingArtworksApiOperation)
     @ApiResponse({ type: Artwork })
-    getBiddingArtworks(
-        @Req() req: Express.Request & { user: User }
-    ): Promise<Artwork[]> {
-        return this.userService.getBiddingArtworks(req.user);
+    getBiddingArtworks(@Req() { user }: Express.Request & { user: User }): Promise<Artwork[]> {
+        return this.userService.getBiddingArtworks(user);
     }
 
     @Get('/artworks/bid')
     @ApiOperation(getBiddedArtworksApiOperation)
     @ApiResponse({ type: Artwork })
-    getBiddedArtworks(
-        @Req() req: Express.Request & { user: User }
-    ): Promise<Artwork[]> {
-        return this.userService.getBiddedArtworks(req.user);
+    getBiddedArtworks(@Req() { user }: Express.Request & { user: User }): Promise<Artwork[]> {
+        return this.userService.getBiddedArtworks(user);
     }
 
     @Get('/exhibitions')
     @ApiOperation(getUsersExhibitionsApiOperation)
     @ApiResponse({ type: Exhibition })
-    getUsersExhibitions(
-        @Req() req: Express.Request & { user: User }
-    ): Promise<Exhibition[]> {
-        return this.userService.getUsersExhibitions(req.user);
+    getUsersExhibitions(@Req() { user }: Express.Request & { user: User }): Promise<Exhibition[]> {
+        return this.userService.getUsersExhibitions(user);
     }
-
 }

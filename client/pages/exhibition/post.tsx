@@ -1,58 +1,76 @@
 import React, { useState } from 'react';
+import styled from '@emotion/styled';
+import Head from 'next/head';
 
+import Form from '@components/Exhibition/Form';
+import ArtworkSelector from '@components/Exhibition/ArtworkSelector';
 import Layout from '@components/common/Layout';
-import {
-    ContentBody,
-    ContentHeader,
-    Description,
-    NextButton,
-    Title,
-} from '@components/Exhibition/style';
-import InputElement from '@components/Exhibition/Editor/InputElement';
+import { Description, NextButton } from '@components/Exhibition/style';
 import Editor from '@components/Exhibition/Editor';
 
 const ExhibitionPostPage = () => {
-    const [isEditor, setIsEditor] = useState(false);
-    const changeEditor = (check: boolean) => {
-        setIsEditor(check);
+    const [currentPage, setCurrentPage] = useState<'FORM' | 'EDITOR'>('FORM');
+
+    const onClickNextButton = () => {
+        setCurrentPage('EDITOR');
     };
+
+    const handleBackButton = () => {
+        setCurrentPage('FORM');
+    };
+
     return (
-        <Layout>
-            <ContentHeader>
-                <div>
-                    <Title>
-                        {isEditor ? 'Hold Exhibition' : 'Edit Exhibirion'}
-                    </Title>
-                    <Description>나만의 전시회를 만들어 보세요!</Description>
-                </div>
-                <div>
-                    {isEditor ? (
-                        <>
-                            <NextButton onClick={() => changeEditor(false)}>
-                                Prev
+        <div>
+            <Head>
+                <title>벽전 - 전시회 등록</title>
+            </Head>
+            <Layout>
+                {currentPage === 'FORM' ? (
+                    <>
+                        <Title>
+                            <h1>Hold Exhibition</h1>
+                            <Description>
+                                나만의 전시회를 만들어 보세요!
+                            </Description>
+                        </Title>
+                        <Container>
+                            <Form />
+                            <ArtworkSelector />
+                            <NextButton onClick={onClickNextButton}>
+                                Next
                             </NextButton>
-                            <NextButton
-                                onClick={() => console.log('done api 연결')}
-                            >
-                                Done
-                            </NextButton>
-                        </>
-                    ) : (
-                        <NextButton onClick={() => changeEditor(true)}>
-                            Next
-                        </NextButton>
-                    )}
-                </div>
-            </ContentHeader>
-            <ContentBody>
-                {isEditor ? (
-                    <Editor />
+                        </Container>
+                    </>
                 ) : (
-                    <InputElement changeEditor={changeEditor} />
+                    <Editor backbuttonHandler={handleBackButton} />
                 )}
-            </ContentBody>
-        </Layout>
+            </Layout>
+        </div>
     );
 };
+
+const Container = styled.div`
+    display: flex;
+    position: relative;
+
+    width: 920px;
+    margin: 50px auto;
+`;
+
+const Title = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    width: 920px;
+    margin: 0 auto;
+    margin-top: 40px;
+
+    & > h1 {
+        font: ${(props) => props.theme.font.textEnLg};
+        color: ${(props) => props.theme.color.placeholder};
+        margin-bottom: 8px;
+        margin: 0;
+    }
+`;
 
 export default ExhibitionPostPage;
