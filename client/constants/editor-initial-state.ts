@@ -19,3 +19,14 @@ export const initialTextStyle = {
     backgroundColor: 'none',
     zIndex: 100,
 };
+
+export const initialImageStyle = {
+    size: {
+        width: 'auto',
+        height: 'auto',
+    },
+    top: 0,
+    left: 0,
+    backgroundColor: 'none',
+    zIndex: 100,
+};

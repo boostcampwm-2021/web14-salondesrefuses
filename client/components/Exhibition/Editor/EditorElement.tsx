@@ -1,3 +1,4 @@
+import { Artwork } from 'interfaces';
 import React, { useEffect, useState, useRef, RefObject } from 'react';
 import { EditorElementStyle, EditorElementType } from './types';
 import { onDraggable, getPositions, getLineStyle, getDotStyle } from './utils';
@@ -6,7 +7,7 @@ interface Prop {
     style: EditorElementStyle;
     editable?: boolean;
     type: EditorElementType;
-    imgSrc?: string;
+    image?: Artwork;
     text?: string;
     align?: string;
     idx: number;
@@ -18,7 +19,7 @@ const EditorElement = ({
     style,
     editable = true,
     type,
-    imgSrc,
+    image,
     text,
     align,
     idx,
@@ -111,7 +112,7 @@ const EditorElement = ({
                 >
                     {isSelected && getBorderController()}
                 </div>
-            ) : (
+            ) : type === 'TEXT' ? (
                 <input
                     type="text"
                     onClick={() => keyToCurrentElements([elementRef.current])}
@@ -119,6 +120,15 @@ const EditorElement = ({
                     onMouseDown={(e) => onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLInputElement>}
                 ></input>
+            ) : (
+                <img
+                    src={image!.originalImage}
+                    onClick={() => keyToCurrentElements([elementRef.current])}
+                    style={calculateStyle()}
+                    onMouseDown={(e) => onDraggable(e, element)}
+                    ref={elementRef as RefObject<HTMLImageElement>}
+                    draggable={false}
+                />
             )}
         </>
     );
