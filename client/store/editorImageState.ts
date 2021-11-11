@@ -1,5 +1,5 @@
 import { Artwork } from 'interfaces';
-import { atom, useRecoilState } from 'recoil';
+import { atom, useRecoilState, useResetRecoilState } from 'recoil';
 
 const selectedImageState = atom<Artwork[]>({
     key: '@editor/selected-images',

@@ -1,3 +1,5 @@
+import { Artwork } from 'interfaces';
+
 export enum EditorElementName {
     rectangular = 'RECTANGULAR',
     text = 'TEXT',
@@ -8,11 +10,12 @@ export type EditorElementStyle = {
     top: number;
     left: number;
     backgroundColor: string;
-    size: { width: number; height: number };
+    size: { width: number | string; height: number | string };
     zIndex: number;
 };
 
 export interface EditorElementProp {
     type: EditorElementType;
     style: EditorElementStyle;
+    image?: Artwork;
 }

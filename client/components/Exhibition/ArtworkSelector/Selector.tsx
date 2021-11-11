@@ -2,13 +2,17 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { Artwork } from 'interfaces';
-import { useSelectedImageState } from '@store/editorImageState';
+import {
+    useSelectedImageState,
+    useEditorImageState,
+} from '@store/editorImageState';
 import { getAllArtworks } from '@utils/networking';
 import { Center } from '@styles/common';
 
 const Selector = () => {
     const [images, setImages] = useState<Artwork[]>([]);
     const [selectedImages, setSelectedImages] = useSelectedImageState();
+    const [_, setEditorImageState] = useEditorImageState();
 
     useEffect(() => {
         getAllArtworks().then((res) => setImages(res.data));
@@ -27,6 +31,7 @@ const Selector = () => {
                 tmpSelectedImages.splice(idx, 1);
                 setSelectedImages(tmpSelectedImages);
             }
+            setEditorImageState([]);
         };
     };
 
@@ -37,7 +42,6 @@ const Selector = () => {
                     const selected = selectedImages.findIndex(
                         (img) => img.id === image.id,
                     );
-                    console.log(selected);
                     return (
                         <div key={image.id} onClick={onClickImage(image.id)}>
                             <img src={image.originalImage} alt={image.title} />

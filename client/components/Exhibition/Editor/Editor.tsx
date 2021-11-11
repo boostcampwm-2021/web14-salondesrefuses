@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ColorPicker from './ColorPicker';
 import EditorElement from './EditorElement';
 import {
+    initialImageStyle,
     initialRectStyle,
     initialTextStyle,
 } from '@const/editor-initial-state';
@@ -33,6 +34,18 @@ const Editor = () => {
             if (elem.tagName === 'INPUT') elem.style.color = color;
         });
     }, [color]);
+
+    useEffect(() => {
+        if (editorImageState.length === 0) return;
+        setElements([
+            ...elements,
+            {
+                type: 'IMAGE',
+                style: initialImageStyle,
+                image: editorImageState[editorImageState.length - 1],
+            },
+        ]);
+    }, [editorImageState]);
 
     const createRectangular = () => {
         const element: EditorElementProp = {
