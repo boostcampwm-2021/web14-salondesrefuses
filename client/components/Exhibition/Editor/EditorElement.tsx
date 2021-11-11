@@ -58,35 +58,35 @@ const EditorElement = ({
         return (
             <>
                 <div
-                    style={getDotStyle('NW', LT, LT)}
+                    style={getDotStyle('NW')}
                     onMouseDown={(e) => onResize('NW', element, e)}
                 ></div>
                 <div
-                    style={getDotStyle('N', LT, LT, RT)}
+                    style={getDotStyle('N')}
                     onMouseDown={(e) => onResize('N', element, e)}
                 ></div>
                 <div
-                    style={getDotStyle('NE', LT, RT)}
+                    style={getDotStyle('NE')}
                     onMouseDown={(e) => onResize('NE', element, e)}
                 ></div>
                 <div
-                    style={getDotStyle('E', LT, RT, RB)}
+                    style={getDotStyle('E')}
                     onMouseDown={(e) => onResize('E', element, e)}
                 ></div>
                 <div
-                    style={getDotStyle('SE', LT, RB)}
+                    style={getDotStyle('SE')}
                     onMouseDown={(e) => onResize('SE', element, e)}
                 ></div>
                 <div
-                    style={getDotStyle('S', LT, LB, RB)}
+                    style={getDotStyle('S')}
                     onMouseDown={(e) => onResize('S', element, e)}
                 ></div>
                 <div
-                    style={getDotStyle('SW', LT, LB)}
+                    style={getDotStyle('SW')}
                     onMouseDown={(e) => onResize('SW', element, e)}
                 ></div>
                 <div
-                    style={getDotStyle('W', LT, LB, LT)}
+                    style={getDotStyle('W')}
                     onMouseDown={(e) => onResize('W', element, e)}
                 ></div>
             </>
@@ -111,13 +111,18 @@ const EditorElement = ({
                     {isSelected && getBorderController()}
                 </div>
             ) : type === 'TEXT' ? (
-                <input
-                    type="text"
-                    onClick={() => keyToCurrentElements([elementRef.current])}
-                    style={calculateStyle()}
-                    onMouseDown={(e) => onDraggable(e, element)}
-                    ref={elementRef as RefObject<HTMLInputElement>}
-                ></input>
+                <div>
+                    <input
+                        type="text"
+                        onClick={() =>
+                            keyToCurrentElements([elementRef.current])
+                        }
+                        style={calculateStyle()}
+                        onMouseDown={(e) => onDraggable(e, element)}
+                        ref={elementRef as RefObject<HTMLInputElement>}
+                    ></input>
+                    {isSelected && getBorderController()}
+                </div>
             ) : (
                 <img
                     src={image!.originalImage}

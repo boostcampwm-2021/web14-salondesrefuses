@@ -55,19 +55,22 @@ export const getPositions = (element: HTMLElement | null) => {
 const getMouseCursor = (name: directionNames) => {
     return `${name.toLowerCase()}-resize`;
 };
+const getDotsPosition = {
+    NW: ['0%', '0%'],
+    N: ['50%', '0%'],
+    NE: ['100%', '0%'],
+    E: ['100%', '50%'],
+    SE: ['100%', '100%'],
+    S: ['50%', '100%'],
+    SW: ['0%', '100%'],
+    W: ['0%', '50%'],
+};
 export type directionNames = 'NW' | 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W';
-export const getDotStyle = (
-    name: directionNames,
-    originPoint: number[],
-    p1: number[],
-    p2?: number[],
-) => {
-    const [X, Y] = p2 ? [~~((p1[0] + p2[0]) / 2), ~~((p1[1] + p2[1]) / 2)] : p1;
-    const [Left, Top] = [X - originPoint[0] - 5, Y - originPoint[1] - 5];
+export const getDotStyle = (name: directionNames) => {
     return {
         position: 'absolute' as 'absolute',
-        top: Top,
-        left: Left,
+        top: `calc(${getDotsPosition[name][1]} - 5px)`,
+        left: `calc(${getDotsPosition[name][0]} - 5px)`,
         backgroundColor: '#3A8FD6',
         borderRadius: '10px',
         border: '2px solid #eee',
