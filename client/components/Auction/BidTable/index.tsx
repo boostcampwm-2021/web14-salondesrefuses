@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { Auction } from 'interfaces';
 import { GlobalContext } from '@store/GlobalStore';
 import { trendHistory } from '@components/Auction/Trend';
-import getRemainingTime from '@utils/getRemainingTime';
+import { getRemainingTime } from '@utils/time';
 
 const BidTable = ({ auction }: { auction: Auction }) => {
     const globalContext = useContext(GlobalContext);
@@ -18,7 +18,8 @@ const BidTable = ({ auction }: { auction: Auction }) => {
         auctionSocket.emit('bid', {
             id,
             price,
-            userId: 'userId'
+            userId: 'userId',
+            date: Date.now(),
         });
     };
 
@@ -44,7 +45,7 @@ const BidTable = ({ auction }: { auction: Auction }) => {
                     <span>현재가격</span>
                     <b>{price} ETH</b>
                 </div>
-                <Button onClick={bidArtwork}>입찰 {price} ETH</Button>
+                <Button onClick={() => bidArtwork()}>입찰 {price} ETH</Button>
             </Bid>
         </Container>
     );

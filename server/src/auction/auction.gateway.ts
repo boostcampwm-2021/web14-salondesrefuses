@@ -41,11 +41,11 @@ export class AuctionGateway implements OnGatewayInit {
         @MessageBody() bidInfo: string,
         @ConnectedSocket() client: Socket
     ) {
-        const { price, userId, id } = JSON.parse(JSON.stringify(bidInfo));
+        const { id, price, userId, date } = JSON.parse(JSON.stringify(bidInfo));
         this.server.to(id).emit('bid', {
             price,
             userId,
-            date: '2021-11-08'
+            date,
         });
         // TODO: insert Bid history with using AuctionHistoryService?
     }

@@ -1,4 +1,6 @@
-import React from 'react';
+import React  from 'react';
+
+import { calcBidDate } from '@utils/time';
 
 const TrendHistory = ({ price, userId, date }: {[key: string]: string}, idx: number) => {
 
@@ -8,7 +10,7 @@ const TrendHistory = ({ price, userId, date }: {[key: string]: string}, idx: num
             <td>{price} ETH</td>
             <td>{userId}</td>
             <td>Boost</td>
-            <td>{date}</td>
+            <td>{calcBidDate(Number(date))}</td>
         </tr>
     )
 };
