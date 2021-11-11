@@ -122,10 +122,20 @@ export const Description = styled.p`
 `;
 
 export const ThumbnailBox = styled.span`
-    width: 120px;
-    height: 120px;
+    position: relative;
+    width: 300px;
+    height: 450px;
 
+    overflow: hidden;
     border: 1px solid #a6a6a6;
+
+    & > img {
+        position: absolute;
+        left: 50%;
+        height: 450px;
+
+        transform: translateX(-50%);
+    }
 `;
 
 export const NextButton = styled(BlackButton)`

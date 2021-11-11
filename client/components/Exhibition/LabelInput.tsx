@@ -4,12 +4,16 @@ import { SpaceBetween } from '@styles/common';
 interface LabelInputProps {
     label: string;
     children: React.ReactNode;
+    require?: boolean;
 }
 
-const LabelInput = ({ label, children }: LabelInputProps) => {
+const LabelInput = ({ label, children, require = false }: LabelInputProps) => {
     return (
         <Container>
-            <label>{label}</label>
+            <label>
+                {label}
+                {require && '*'}
+            </label>
 
             <div>{children}</div>
         </Container>
