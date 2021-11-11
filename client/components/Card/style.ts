@@ -8,6 +8,9 @@ export const CardContainer = styled.div<CardContainerProps>`
     width: ${(props) => props.width}px;
     height: ${(props) => (props.width * 3) / 2}px;
     background-image: url(${(props) => props.thumbnailImage});
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto 100%;
     border-radius: 20px;
     cursor: pointer;
 `;
@@ -24,7 +27,7 @@ export const BlurBottom = styled.div`
         #2d2d2d 100%
     );
     border-radius: 0px 0px 20px 20px;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(20px);
     padding: 20px;
     div {
         width: 100%;
