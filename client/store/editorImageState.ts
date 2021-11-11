@@ -1,9 +1,15 @@
 import { Artwork } from 'interfaces';
 import { atom, useRecoilState } from 'recoil';
 
-const editorImageState = atom<Artwork[]>({
-    key: '@editor/images',
+const selectedImageState = atom<Artwork[]>({
+    key: '@editor/selected-images',
     default: [],
 });
 
-export default () => useRecoilState(editorImageState);
+const editorImageState = atom<Artwork[]>({
+    key: '@editor/editor-images',
+    default: [],
+});
+
+export const useSelectedImageState = () => useRecoilState(selectedImageState);
+export const useEditorImageState = () => useRecoilState(editorImageState);

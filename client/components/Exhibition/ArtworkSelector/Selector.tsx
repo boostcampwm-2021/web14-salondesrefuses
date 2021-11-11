@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { Artwork } from 'interfaces';
-import useEditorImageState from '@store/editorImageState';
+import { useSelectedImageState } from '@store/editorImageState';
 import { getAllArtworks } from '@utils/networking';
 import { Center } from '@styles/common';
 
 const Selector = () => {
     const [images, setImages] = useState<Artwork[]>([]);
-    const [selectedImages, setSelectedImages] = useEditorImageState();
+    const [selectedImages, setSelectedImages] = useSelectedImageState();
 
     useEffect(() => {
         getAllArtworks().then((res) => setImages(res.data));
@@ -81,7 +81,6 @@ const Check = styled.div`
     width: 100%;
     height: calc(100% - 5px);
     background-color: rgba(0, 0, 0, 0.4);
-    z-index: 200;
     ${Center};
     font: ${(props) => props.theme.font.textEnBase};
     color: white;

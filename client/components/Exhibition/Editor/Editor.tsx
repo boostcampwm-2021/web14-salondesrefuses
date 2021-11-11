@@ -13,6 +13,7 @@ import colorButtonIcon from '@assets/images/editor-color.png';
 import textButtonIcon from '@assets/images/editor-text.png';
 import forwardButtonIcon from '@assets/images/editor-forward.png';
 import backwardButtonIcon from '@assets/images/editor-backward.png';
+import { useEditorImageState } from '@store/editorImageState';
 
 const Editor = () => {
     const [elements, setElements] = useState<EditorElementProp[]>([]);
@@ -21,6 +22,9 @@ const Editor = () => {
     >([]);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [color, setColor] = useState('#000');
+
+    const [editorImageState, setEditorImageState] = useEditorImageState();
+    console.log(editorImageState);
 
     useEffect(() => {
         currentElements.forEach((elem) => {

@@ -20,7 +20,7 @@ const index = ({ backbuttonHandler }: EditorProp) => {
                 <Description>나만의 전시회를 만들어 보세요!</Description>
             </Title>
             <Container>
-                <ImageSlider selectedImages={[]} />
+                <ImageSlider />
                 <Editor />
                 <BackButton onClick={backbuttonHandler}>Back</BackButton>
             </Container>

@@ -3,11 +3,22 @@ import styled from '@emotion/styled';
 
 import chevronLeftIcon from '@assets/images/chevron-left.png';
 import chevronRightIcon from '@assets/images/chevron-right.png';
-import useEditorImageState from '@store/editorImageState';
+import {
+    useEditorImageState,
+    useSelectedImageState,
+} from '@store/editorImageState';
 
 const ImageSlider = () => {
-    const [selectedImages, setSelectedImages] = useEditorImageState();
-    console.log(selectedImages);
+    const [selectedImages, setSelectedImages] = useSelectedImageState();
+    const [editorImageState, setEditorImageState] = useEditorImageState();
+
+    const onClickImage = (id: number) => {
+        return () => {
+            const image = selectedImages.find((img) => img.id === id);
+            if (!image) return;
+            setEditorImageState([...editorImageState, image]);
+        };
+    };
 
     return (
         <Container>
@@ -17,7 +28,7 @@ const ImageSlider = () => {
             <ImageWrapper>
                 {selectedImages.map((image) => {
                     return (
-                        <Image key={image.id}>
+                        <Image key={image.id} onClick={onClickImage(image.id)}>
                             <img src={image.originalImage} alt={image.title} />
                         </Image>
                     );
