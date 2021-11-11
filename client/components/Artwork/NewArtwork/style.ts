@@ -33,11 +33,11 @@ export const Title = styled.section`
     align-items: center;
     z-index: 200;
     margin-bottom: 50px;
-    font: ${(props) => props.theme.font.textEnMd};
 
     & > h1 {
         color: white;
         font-weight: 200;
+        font: ${(props) => props.theme.font.textEnXl};
     }
 `;
 export const Form = styled.div`
@@ -51,7 +51,8 @@ export const Input = styled.div`
 
     & > span {
         font-weight: 200;
-        font-size: 24px;
+        font: ${(props) => props.theme.font.textEnLg};
+        /* font-size: 24px; */
         color: black;
     }
 
@@ -62,8 +63,8 @@ export const Input = styled.div`
         border: none;
         border-radius: 10px;
         padding: 0px 15px;
-        font-size: 18px;
-        font-weight: 200;
+        font: ${(props) => props.theme.font.textEnMd};
+        font-size: 16px;
 
         &:focus {
             outline: none;

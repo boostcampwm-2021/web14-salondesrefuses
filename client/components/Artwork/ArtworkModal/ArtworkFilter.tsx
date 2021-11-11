@@ -40,6 +40,7 @@ const Container = styled.div`
     }
 
     & span {
+        cursor: pointer;
         ${(props) => props.theme.font.textEnBase};
         color: white;
         font-weight: 200;
@@ -47,8 +48,8 @@ const Container = styled.div`
     }
 
     & img {
-        width: 32px;
-        height: 32px;
+        width: 24px;
+        height: 24px;
         border: none;
         box-shadow: none;
     }

@@ -48,7 +48,7 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
                         <span>Type</span>
                         <input
                             type="text"
-                            placeholder="Photography ..."
+                            placeholder="ex) Photography ..."
                             value={typeInput}
                             onChange={onChangeTypeInput}
                         />
