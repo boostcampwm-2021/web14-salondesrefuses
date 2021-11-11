@@ -10,7 +10,6 @@ const index = () => {
         <ArtworkSelectorWrapper>
             <ArtworkSelectorHeader>
                 <Label>작품 선택하기</Label>
-                <Link href="#">작품 추가하기</Link>
             </ArtworkSelectorHeader>
             <Selector />
         </ArtworkSelectorWrapper>
