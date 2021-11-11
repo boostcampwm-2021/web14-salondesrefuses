@@ -1,20 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
-import TrendHistory from '@components/Auction/Trend/TrendHistory';
 import { GlobalContext } from '@store/GlobalStore';
+import { trendHistory } from '@components/Auction/ItemDetail';
+import TrendHistory from '@components/Auction/Trend/TrendHistory';
 
-export type trendHistory = {
-    price: string;
-    userId: string;
-    date: string;
-};
-
-const Trend = () => {
+const Trend = ({ trendHistoryList }: { trendHistoryList: Array<trendHistory> }) => {
     const globalContext = useContext(GlobalContext);
     const { auctionSocket } = globalContext!;
 
-    const [trendHistory, setTrendHistory] = useState<Array<trendHistory>>([]);
+    const [trendHistory, setTrendHistory] = useState<Array<trendHistory>>(trendHistoryList);
 
     useEffect(() => {
         auctionSocket.on('bid', (data: trendHistory) => {

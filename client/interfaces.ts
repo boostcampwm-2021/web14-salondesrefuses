@@ -31,4 +31,5 @@ export interface Auction {
     endAt: Date;
     artwork: Artwork;
     artist: Artist;
+    auctionHistories: string[],
 }

@@ -3,23 +3,27 @@ import styled from '@emotion/styled';
 
 import { Auction } from 'interfaces';
 import { GlobalContext } from '@store/GlobalStore';
-import { trendHistory } from '@components/Auction/Trend';
+import { trendHistory } from '@components/Auction/ItemDetail';
 import { getRemainingTime } from '@utils/time';
 
-const BidTable = ({ auction }: { auction: Auction }) => {
+const BidTable = ({ auction, currentPrice }: { auction: Auction, currentPrice: number }) => {
     const globalContext = useContext(GlobalContext);
     const { id, artwork, endAt } = auction;
     const { auctionSocket, eventSource } = globalContext!;
 
-    const [price, setPrice] = useState<number>(Number(artwork.price));
+    const [price, setPrice] = useState<number>(
+        currentPrice
+            ? Number((currentPrice + 0.01).toFixed(2))
+            : artwork.price
+    );
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
 
     const bidArtwork = () => {
         auctionSocket.emit('bid', {
             id,
+            bidderName: 'userId',
             price,
-            userId: 'userId',
-            date: Date.now(),
+            biddedAt: Date.now(),
         });
     };
 

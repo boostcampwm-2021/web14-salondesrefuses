@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import AboutArtist from './AboutArtist';
@@ -8,12 +8,21 @@ import ArtworkDetail from './ArtworkDetail';
 import { Auction } from 'interfaces';
 import { GlobalContext } from '@store/GlobalStore';
 
+export type trendHistory = {
+    bidderName: string;
+    price: string;
+    biddedAt: string;
+};
+
 const ItemDetail = ({ auction }: { auction: Auction }) => {
     const globalContext = useContext(GlobalContext);
     const { auctionSocket } = globalContext!;
 
-    const { id, artwork, artist } = auction;
+    const { id, artwork, artist, auctionHistories } = auction;
     const { title, type } = artwork;
+    const trendHistoryList = JSON.parse(JSON.stringify(auctionHistories))
+        .sort((a: trendHistory, b: trendHistory) => Number(b?.price) - Number(a?.price))
+        .slice(0, 6);
 
     useEffect(() => {
         auctionSocket.emit('enter', id);
@@ -31,8 +40,8 @@ const ItemDetail = ({ auction }: { auction: Auction }) => {
                 <span>{type}</span>
             </Summary>
             <AboutArtist artist={artist}/>
-            <BidTable auction={auction}/>
-            <Trend />
+            <BidTable auction={auction} currentPrice={Number(trendHistoryList[0]?.price)}/>
+            <Trend trendHistoryList={trendHistoryList}/>
             <ArtworkDetail artwork={artwork}/>
         </Container>
     );
