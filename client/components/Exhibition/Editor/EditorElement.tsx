@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { Artwork } from 'interfaces';
 import { EditorElementStyle, EditorElementType } from './types';
 import { onDraggable, getPositions, getDotStyle, onResize } from './utils';
+import { Center } from '@styles/common';
 
 interface Prop {
     style: EditorElementStyle;
@@ -58,7 +59,7 @@ const EditorElement = ({
 
     const getDots = () => {
         return (
-            <>
+            <div>
                 <div
                     style={getDotStyle('NW')}
                     onMouseDown={(e) => onResize('NW', element, e)}
@@ -91,7 +92,7 @@ const EditorElement = ({
                     style={getDotStyle('W')}
                     onMouseDown={(e) => onResize('W', element, e)}
                 ></div>
-            </>
+            </div>
         );
     };
 
@@ -114,12 +115,15 @@ const EditorElement = ({
                     {isSelected && getBorderController()}
                 </div>
             ) : type === 'TEXT' ? (
-                <Input
-                    onClick={() => keyToCurrentElements([elementRef.current])}
+                <div
                     style={calculateStyle()}
+                    onClick={() => keyToCurrentElements([elementRef.current])}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
-                    ref={elementRef as RefObject<HTMLInputElement>}
-                ></Input>
+                    ref={elementRef as RefObject<HTMLDivElement>}
+                >
+                    <InputDiv contentEditable={true}></InputDiv>
+                    {isSelected && getBorderController()}
+                </div>
             ) : (
                 <img
                     src={image!.originalImage}
@@ -133,8 +137,14 @@ const EditorElement = ({
         </>
     );
 };
-const Input = styled.input`
+const InputDivWrapper = styled.div`
+    ${Center}
+`;
+const InputDiv = styled.div`
     background-color: transparent;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
 `;
 
 export default EditorElement;
