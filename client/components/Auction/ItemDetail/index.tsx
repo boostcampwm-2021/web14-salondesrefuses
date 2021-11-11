@@ -1,37 +1,37 @@
 import React, { useContext, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
 
 import AboutArtist from './AboutArtist';
 import BidTable from '../BidTable';
 import Trend from '../Trend';
 import ArtworkDetail from './ArtworkDetail';
 import { GlobalContext } from '../../../store/GlobalStore';
+import { Auction } from 'interfaces';
 
-const ItemDetail = () => {
+const ItemDetail = ({ auction }: { auction: Auction }) => {
     const globalContext = useContext(GlobalContext);
     const { auctionSocket } = globalContext!;
 
-    const router = useRouter();
-    const auctionId = router.asPath.split('/')[2];
+    const { id, artwork, artist } = auction;
+    const { title, type } = artwork;
 
     useEffect(() => {
-        auctionSocket.emit('enter', auctionId);
+        auctionSocket.emit('enter', id);
 
         return (() => {
-            auctionSocket.emit('leave', auctionId);
+            auctionSocket.emit('leave', id);
         });
     }, []);
 
     return (
         <Container>
             <Summary>
-                <span>전시회 이름</span>
-                <h1>작품 이름</h1>
-                <span>태그, 태그, 태그, ...</span>
+                {/*<span>전시회 이름</span>*/}
+                <h1>{title}</h1>
+                <span>{type}</span>
             </Summary>
-            <AboutArtist />
-            <BidTable auctionId={auctionId}/>
+            <AboutArtist artist={artist}/>
+            <BidTable auction={auction}/>
             <Trend />
             <ArtworkDetail />
         </Container>
@@ -55,7 +55,7 @@ const Container = styled.section`
     & > div {
         display: flex;
         width: 80%;
-        max-width: 500px;
+        max-width: 600px;
         background-color: rgba(255, 255, 255, 0.5);
         border-radius: 10px;
         margin-top: 40px;

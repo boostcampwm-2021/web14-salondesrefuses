@@ -3,13 +3,17 @@ import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
-import { Artwork } from 'interfaces';
+import { Auction } from 'interfaces';
 import Layout from '@components/common/Layout';
 import ItemDetail from '@components/Auction/ItemDetail';
 import { GlobalStore } from '../../store/GlobalStore';
 import { getAuction } from '@utils/networking';
 
-const AuctionDetailPage = ({ artwork }: { artwork: Artwork }) => {
+const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
+    const { artwork, artist } = auction;
+    const { title } = artwork;
+    const { name } = artist;
+
     useEffect(() => {
         document.body.style.overflow = 'hidden';
         return () => {
@@ -22,22 +26,20 @@ const AuctionDetailPage = ({ artwork }: { artwork: Artwork }) => {
             <GlobalStore>
                 <Head>
                     <title>
-                        Auction - {'Sky Study 3'} ({'Lisa Beck'}, {'2018'})
+                        Auction - {title} ({name}, {'2018'})
                     </title>
                     <meta name="경매" content="경매경매" />
                 </Head>
                 <Layout>
                     <Container>
                         <Background
-                            src={
-                                'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg'
-                            }
+                            src={artwork.croppedImage}
                         />
                         <Grid>
                             <section>
                                 <img src={artwork.croppedImage} />
                             </section>
-                            <ItemDetail />
+                            <ItemDetail auction={auction}/>
                         </Grid>
                     </Container>
                 </Layout>
@@ -48,12 +50,12 @@ const AuctionDetailPage = ({ artwork }: { artwork: Artwork }) => {
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const artworkId = (params as { id: string }).id;
-
     const auction = await getAuction(Number(artworkId));
-    console.log(auction.data);
 
     return {
-        props: { artwork: auction.data.artwork },
+        props: {
+            auction: auction.data,
+        },
     };
 };
 

@@ -3,27 +3,28 @@ import styled from '@emotion/styled';
 
 import { GlobalContext } from '../../../store/GlobalStore';
 import getRemainingTime from '../../../utils/getRemainingTime';
+import { Auction } from 'interfaces';
 
-const BidTable = (props: { auctionId: string }) => {
+const BidTable = ({ auction }: { auction: Auction }) => {
     const globalContext = useContext(GlobalContext);
-    const { auctionId } = props;
+    const { id, artwork } = auction;
     const { auctionSocket, eventSource } = globalContext!;
 
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState<number>(Number(artwork.price));
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
 
     const bidArtwork = () => {
         auctionSocket.emit('bid', {
             price,
             userId: 'userId',
-            auctionId
+            id
         });
         setPrice(prev => Number((prev + 0.01).toFixed(2)));
     };
 
     useEffect(() => {
         eventSource.onmessage = ({ data }) => {
-            setAuctionDeadline(getRemainingTime(Number(data), 1636581243367));
+            setAuctionDeadline(getRemainingTime(Number(data), Date.now()));
         };
     }, [])
 
@@ -75,6 +76,7 @@ const Bid = styled.div`
         display: block;
         font: ${(props) => props.theme.font.textMd};
         font-size: 15px;
+        margin-top: 5px;
     }
 `;
 
@@ -84,6 +86,7 @@ const Button = styled.button`
     background-color: rgba(255, 255, 255, 0.5);
     width: 150px;
     height: 45px;
+    margin-top: 5px;
     transition: all 0.3s ease;
 
     &:hover {
