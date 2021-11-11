@@ -137,3 +137,20 @@ export const NextButton = styled(BlackButton)`
 
     font: ${(props) => props.theme.font.textBase};
 `;
+
+export const Title = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    width: 1120px;
+    margin: 0 auto;
+    margin-top: 40px;
+    margin-bottom: 10px;
+
+    & > h1 {
+        font: ${(props) => props.theme.font.textEnLg};
+        color: ${(props) => props.theme.color.blackLight};
+        margin-bottom: 8px;
+        margin: 0;
+    }
+`;
