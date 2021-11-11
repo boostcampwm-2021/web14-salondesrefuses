@@ -80,4 +80,11 @@ export const PriceContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: end;
+
+    & img {
+        position: absolute;
+        bottom: 20px;
+        right: 10px;
+        opacity: 0.7;
+    }
 `;
