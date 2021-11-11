@@ -3,19 +3,26 @@ import styled from '@emotion/styled';
 
 import chevronLeftIcon from '@assets/images/chevron-left.png';
 import chevronRightIcon from '@assets/images/chevron-right.png';
-import { Artwork } from 'interfaces';
+import useEditorImageState from '@store/editorImageState';
 
-interface SliderProp {
-    selectedImages: Artwork[];
-}
+const ImageSlider = () => {
+    const [selectedImages, setSelectedImages] = useEditorImageState();
+    console.log(selectedImages);
 
-const ImageSlider = ({ selectedImages }: SliderProp) => {
     return (
         <Container>
             <LeftButton>
                 <img src={chevronLeftIcon.src} alt="left button" />
             </LeftButton>
-
+            <ImageWrapper>
+                {selectedImages.map((image) => {
+                    return (
+                        <Image key={image.id}>
+                            <img src={image.originalImage} alt={image.title} />
+                        </Image>
+                    );
+                })}
+            </ImageWrapper>
             <RightButton>
                 <img src={chevronRightIcon.src} alt="right button" />
             </RightButton>
@@ -48,6 +55,22 @@ const LeftButton = styled(Button)`
 
 const RightButton = styled(Button)`
     right: 0px;
+`;
+
+const ImageWrapper = styled.div`
+    width: 100%;
+    height: 100%;
+    padding: 0 50px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    overflow-x: scroll;
+`;
+
+const Image = styled.div`
+    & img {
+        max-height: 130px;
+    }
 `;
 
 export default ImageSlider;
