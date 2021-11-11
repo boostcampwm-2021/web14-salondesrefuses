@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { Artwork } from 'interfaces';
 import useEditorImageState from '@store/editorImageState';
 import { getAllArtworks } from '@utils/networking';
+import { Center } from '@styles/common';
 
 const Selector = () => {
     const [images, setImages] = useState<Artwork[]>([]);
@@ -32,10 +33,15 @@ const Selector = () => {
     return (
         <Container>
             <Tiles>
-                {images.map((image) => {
+                {images.map((image, idx) => {
+                    const selected = selectedImages.findIndex(
+                        (img) => img.id === image.id,
+                    );
+                    console.log(selected);
                     return (
                         <div key={image.id} onClick={onClickImage(image.id)}>
                             <img src={image.originalImage} alt={image.title} />
+                            {selected >= 0 && <Check>Selected</Check>}
                         </div>
                     );
                 })}
@@ -60,11 +66,25 @@ const Tiles = styled.div`
         display: inline-block;
         justify-content: center;
         margin: 0 0 1rem;
+        position: relative;
     }
 
     & img {
         width: 100px;
     }
+`;
+
+const Check = styled.div`
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: calc(100% - 5px);
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 200;
+    ${Center};
+    font: ${(props) => props.theme.font.textEnBase};
+    color: white;
 `;
 
 export default Selector;
