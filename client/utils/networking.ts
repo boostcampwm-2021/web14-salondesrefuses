@@ -40,6 +40,17 @@ export const getExhibitions = (filter: string, page: number) => {
     return axios.get(`${API_SERVER_URL}/exhibitions/${filter}?page=${page}`);
 };
 
+export const holdExhibition = (data: FormData) => {
+    return axios.post<PostArtworkResponse>(
+        `${API_SERVER_URL}/exhibitions/post`,
+        data,
+        {
+            withCredentials: true,
+            headers: { 'Content-Type': 'multipart/form-data' },
+        },
+    );
+};
+
 export const getRandomAuctions = () => {
     return axios.get(`${API_SERVER_URL}/auctions/random?status=onSale`);
 };

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 const usePreviewImage = (image: File) => {
     const backgroundImageRef = useRef<HTMLImageElement | null>(null);
@@ -7,11 +7,13 @@ const usePreviewImage = (image: File) => {
     useEffect(() => {
         const fileReader = new FileReader();
         fileReader.onload = (e) => {
-            backgroundImageRef.current!.src = e.target!.result as string;
+            if (backgroundImageRef.current) {
+                backgroundImageRef.current.src = e.target!.result as string;
+            }
             imageRef.current!.src = e.target!.result as string;
         };
         fileReader.readAsDataURL(image);
-    }, []);
+    }, [image]);
 
     return { backgroundImageRef, imageRef };
 };

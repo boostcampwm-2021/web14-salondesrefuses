@@ -5,11 +5,15 @@ import Head from 'next/head';
 import Form from '@components/Exhibition/Form';
 import ArtworkSelector from '@components/Exhibition/ArtworkSelector';
 import Layout from '@components/common/Layout';
-import { Description, NextButton } from '@components/Exhibition/style';
+import { Description, NextButton, Title } from '@components/Exhibition/style';
 import Editor from '@components/Exhibition/Editor';
+import useInputExhibition from '@hooks/useInputExhibition';
 
 const ExhibitionPostPage = () => {
     const [currentPage, setCurrentPage] = useState<'FORM' | 'EDITOR'>('FORM');
+    const { formInput, onChangeContents, contents, onClickHold } =
+        useInputExhibition();
+    const [thumbnail, setThumbnail] = useState<File | null>(null);
 
     const onClickNextButton = () => {
         setCurrentPage('EDITOR');
@@ -17,6 +21,10 @@ const ExhibitionPostPage = () => {
 
     const handleBackButton = () => {
         setCurrentPage('FORM');
+    };
+
+    const onChangeThumbnail = (current: HTMLInputElement | null) => {
+        current!.files && setThumbnail(current!.files[0]);
     };
 
     return (
@@ -34,7 +42,11 @@ const ExhibitionPostPage = () => {
                             </Description>
                         </Title>
                         <Container>
-                            <Form />
+                            <Form
+                                formInput={formInput}
+                                thumbnail={thumbnail}
+                                onChangeThumbnail={onChangeThumbnail}
+                            />
                             <ArtworkSelector />
                             <NextButton onClick={onClickNextButton}>
                                 Next
@@ -53,24 +65,8 @@ const Container = styled.div`
     display: flex;
     position: relative;
 
-    width: 920px;
+    width: 1120px;
     margin: 50px auto;
-`;
-
-const Title = styled.div`
-    display: flex;
-    flex-direction: column;
-
-    width: 920px;
-    margin: 0 auto;
-    margin-top: 40px;
-
-    & > h1 {
-        font: ${(props) => props.theme.font.textEnLg};
-        color: ${(props) => props.theme.color.placeholder};
-        margin-bottom: 8px;
-        margin: 0;
-    }
 `;
 
 export default ExhibitionPostPage;
