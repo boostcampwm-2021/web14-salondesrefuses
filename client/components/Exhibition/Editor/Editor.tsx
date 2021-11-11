@@ -91,6 +91,7 @@ const Editor = () => {
                 currentElements={currentElements}
                 keyToCurrentElements={keyToCurrentElements}
                 type={element.type}
+                image={element.image}
             ></EditorElement>
         ));
     };

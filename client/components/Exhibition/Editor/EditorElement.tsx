@@ -112,7 +112,7 @@ const EditorElement = ({
                 >
                     {isSelected && getBorderController()}
                 </div>
-            ) : (
+            ) : type === 'TEXT' ? (
                 <input
                     type="text"
                     onClick={() => keyToCurrentElements([elementRef.current])}
@@ -120,6 +120,15 @@ const EditorElement = ({
                     onMouseDown={(e) => onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLInputElement>}
                 ></input>
+            ) : (
+                <img
+                    src={image!.originalImage}
+                    onClick={() => keyToCurrentElements([elementRef.current])}
+                    style={calculateStyle()}
+                    onMouseDown={(e) => onDraggable(e, element)}
+                    ref={elementRef as RefObject<HTMLImageElement>}
+                    draggable={false}
+                />
             )}
         </>
     );
