@@ -153,7 +153,7 @@ export const Title = styled.div`
     display: flex;
     flex-direction: column;
 
-    width: 1120px;
+    width: 1180px;
     margin: 0 auto;
     margin-top: 40px;
     margin-bottom: 10px;

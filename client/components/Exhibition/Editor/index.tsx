@@ -38,20 +38,4 @@ const Container = styled.div`
     user-select: none;
 `;
 
-const Title = styled.div`
-    display: flex;
-    flex-direction: column;
-
-    width: 1180px;
-    margin: 0 auto;
-    margin-top: 40px;
-
-    & > h1 {
-        font: ${(props) => props.theme.font.textEnLg};
-        color: ${(props) => props.theme.color.title};
-        margin-bottom: 8px;
-        margin: 0;
-    }
-`;
-
 export default index;

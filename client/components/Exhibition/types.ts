@@ -13,9 +13,9 @@ export interface HoldExhibition {
     collaborator: string;
     description: string;
     onChangeTitleInput: (e: React.FormEvent) => void;
-    onChangeStartAt: (e: React.FormEvent) => void;,
-    onChangeEndAt: (e: React.FormEvent) => void;,
-    onChangeTheme: (e: React.FormEvent) => void;,
-    onChangeCollaborator: (e: React.FormEvent) => void;,
-    onChangeDescription: (e: React.FormEvent) => void;,
+    onChangeStartAt: (e: React.FormEvent) => void;
+    onChangeEndAt: (e: React.FormEvent) => void;
+    onChangeTheme: (e: React.FormEvent) => void;
+    onChangeCollaborator: (e: React.FormEvent) => void;
+    onChangeDescription: (e: React.FormEvent) => void;
 }

@@ -10,7 +10,7 @@ const DUMMY_DATA: Artwork = {
     id: 1,
     title: 'placeat',
     type: '사진',
-    price: '0.91',
+    price: 0.91,
     description: 'Id temporibus reiciendis molestias.',
     status: 'InBid',
     nftToken: 'Qui nisi aut.',
