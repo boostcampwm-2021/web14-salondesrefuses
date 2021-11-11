@@ -6,4 +6,6 @@ const editorImageState = atom<Artwork[]>({
     default: [],
 });
 
-export default () => useRecoilState(editorImageState);
+const useEditorImageState = () => useRecoilState(editorImageState);
+
+export default useEditorImageState;
