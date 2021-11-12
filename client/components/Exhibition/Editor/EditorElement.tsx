@@ -1,7 +1,10 @@
-import { Artwork } from 'interfaces';
 import React, { useEffect, useState, useRef, RefObject } from 'react';
+import styled from '@emotion/styled';
+
+import { Artwork } from 'interfaces';
 import { EditorElementStyle, EditorElementType } from './types';
 import { onDraggable, getPositions, getDotStyle, onResize } from './utils';
+import { Center } from '@styles/common';
 
 interface Prop {
     style: EditorElementStyle;
@@ -46,7 +49,7 @@ const EditorElement = ({
             height: `${currentStyle.size.height}px`,
             backgroundColor: currentStyle.backgroundColor,
             position: 'absolute' as 'absolute',
-            border: isSelected ? '1px solid #3A8FD6' : '0px solid 3A8FD6',
+            border: isSelected ? '1px solid #3A8FD6' : '0px',
         };
     };
 
@@ -56,40 +59,40 @@ const EditorElement = ({
 
     const getDots = () => {
         return (
-            <>
+            <div>
                 <div
-                    style={getDotStyle('NW', LT, LT)}
+                    style={getDotStyle('NW')}
                     onMouseDown={(e) => onResize('NW', element, e)}
                 ></div>
                 <div
-                    style={getDotStyle('N', LT, LT, RT)}
+                    style={getDotStyle('N')}
                     onMouseDown={(e) => onResize('N', element, e)}
                 ></div>
                 <div
-                    style={getDotStyle('NE', LT, RT)}
+                    style={getDotStyle('NE')}
                     onMouseDown={(e) => onResize('NE', element, e)}
                 ></div>
                 <div
-                    style={getDotStyle('E', LT, RT, RB)}
+                    style={getDotStyle('E')}
                     onMouseDown={(e) => onResize('E', element, e)}
                 ></div>
                 <div
-                    style={getDotStyle('SE', LT, RB)}
+                    style={getDotStyle('SE')}
                     onMouseDown={(e) => onResize('SE', element, e)}
                 ></div>
                 <div
-                    style={getDotStyle('S', LT, LB, RB)}
+                    style={getDotStyle('S')}
                     onMouseDown={(e) => onResize('S', element, e)}
                 ></div>
                 <div
-                    style={getDotStyle('SW', LT, LB)}
+                    style={getDotStyle('SW')}
                     onMouseDown={(e) => onResize('SW', element, e)}
                 ></div>
                 <div
-                    style={getDotStyle('W', LT, LB, LT)}
+                    style={getDotStyle('W')}
                     onMouseDown={(e) => onResize('W', element, e)}
                 ></div>
-            </>
+            </div>
         );
     };
 
@@ -105,25 +108,28 @@ const EditorElement = ({
                 <div
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     style={calculateStyle()}
-                    onMouseDown={(e) => onDraggable(e, element)}
+                    onMouseDown={(e) => isSelected && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
+                    onKeyDown={(e) => isSelected && console.log(e)}
                 >
                     {isSelected && getBorderController()}
                 </div>
             ) : type === 'TEXT' ? (
-                <input
-                    type="text"
-                    onClick={() => keyToCurrentElements([elementRef.current])}
+                <div
                     style={calculateStyle()}
-                    onMouseDown={(e) => onDraggable(e, element)}
-                    ref={elementRef as RefObject<HTMLInputElement>}
-                ></input>
+                    onClick={() => keyToCurrentElements([elementRef.current])}
+                    onMouseDown={(e) => isSelected && onDraggable(e, element)}
+                    ref={elementRef as RefObject<HTMLDivElement>}
+                >
+                    <InputDiv contentEditable={true}></InputDiv>
+                    {isSelected && getBorderController()}
+                </div>
             ) : (
                 <img
                     src={image!.originalImage}
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     style={calculateStyle()}
-                    onMouseDown={(e) => onDraggable(e, element)}
+                    onMouseDown={(e) => isSelected && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLImageElement>}
                     draggable={false}
                 />
@@ -131,5 +137,14 @@ const EditorElement = ({
         </>
     );
 };
+const InputDivWrapper = styled.div`
+    ${Center}
+`;
+const InputDiv = styled.div`
+    background-color: transparent;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+`;
 
 export default EditorElement;

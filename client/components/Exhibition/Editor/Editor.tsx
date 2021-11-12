@@ -25,7 +25,6 @@ const Editor = () => {
     const [color, setColor] = useState('#000');
 
     const [editorImageState, setEditorImageState] = useEditorImageState();
-    console.log(editorImageState);
 
     useEffect(() => {
         currentElements.forEach((elem) => {
