@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 
 import {
@@ -15,6 +15,7 @@ import {
     BlurFull,
     PriceContainer,
 } from './style';
+import LazyImage from './LazyImage';
 import ethLogo from '@assets/images/ETH.png';
 
 interface Props {
@@ -29,8 +30,6 @@ interface AuctionFormProps {
     content: AuctionCardProps;
     isHovered: boolean;
 }
-
-const LazyImage = lazy(() => import('./LazyImage'));
 
 const ExhibitionForm = ({ content, isHovered }: ExhibitionFormProps) => {
     return isHovered ? (
@@ -96,12 +95,7 @@ const Card = ({ width, content }: Props) => {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
-                <Suspense fallback={<div>...loading</div>}>
-                    <LazyImage
-                        src={content.thumbnailImage}
-                        alt={content.title}
-                    />
-                </Suspense>
+                <LazyImage src={content.thumbnailImage} alt={content.title} />
                 {isExhibition ? (
                     <ExhibitionForm
                         content={content as ExhibitionCardProps}
