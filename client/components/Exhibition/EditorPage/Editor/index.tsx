@@ -1,8 +1,7 @@
-import styled from '@emotion/styled';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import ColorPicker from './ColorPicker';
-import EditorElement from './EditorElement';
+import ColorPicker from '../ColorPicker';
+import EditorElement from '../EditorElement';
 import {
     initialImageStyle,
     initialRectStyle,
@@ -15,6 +14,7 @@ import textButtonIcon from '@assets/images/editor-text.png';
 import forwardButtonIcon from '@assets/images/editor-forward.png';
 import backwardButtonIcon from '@assets/images/editor-backward.png';
 import { useEditorImageState } from '@store/editorImageState';
+import { EditorContainer, ToolBar, Button, EditArea } from './style';
 
 const Editor = () => {
     const [elements, setElements] = useState<EditorElementProp[]>([]);
@@ -123,38 +123,4 @@ const Editor = () => {
     );
 };
 
-const EditorContainer = styled.div`
-    width: 100%;
-    height: 100vh;
-    border: 1px solid ${(props) => props.theme.color.gray1};
-`;
-
-const ToolBar = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 20px;
-    width: 100%;
-    height: 50px;
-    border-bottom: 1px solid ${(props) => props.theme.color.gray1};
-    position: relative;
-    padding-left: 30px;
-`;
-const Button = styled.button<{ bg: string }>`
-    width: 32px;
-    height: 100%;
-    background: url(${(props) => props.bg});
-    background-repeat: no-repeat;
-    background-position: center;
-    border: none;
-
-    &:hover {
-        border-bottom: 2px solid black;
-    }
-`;
-const EditArea = styled.div`
-    position: relative;
-    overflow: hidden;
-    height: calc(100% - 50px);
-`;
 export default Editor;

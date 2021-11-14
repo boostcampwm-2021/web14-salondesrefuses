@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, RefObject } from 'react';
 import styled from '@emotion/styled';
 
 import { Artwork } from 'interfaces';
-import { EditorElementStyle, EditorElementType } from './types';
+import { EditorElementStyle, EditorElementType } from '../Editor/types';
 import { onDraggable, getPositions, getDotStyle, onResize } from './utils';
 import { Center } from '@styles/common';
 

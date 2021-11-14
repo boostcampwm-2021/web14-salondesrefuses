@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+import styled from '@emotion/styled';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 
 import Layout from '@components/common/Layout';
-import Card from '@components/Card';
+import Card from '@components/common/Card';
 import {
     TopContainer,
     FilterWrapper,
@@ -17,6 +18,7 @@ import { getExhibitions } from '@utils/networking';
 import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
 import RequireLoginModal from '@components/common/RequireLoginModal';
 import parseCookie from '@utils/parseCookie';
+import { Button, SpaceBetween } from '@styles/common';
 
 let accessToken: string | undefined;
 

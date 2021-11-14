@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 import { Artwork } from 'interfaces';
 import { SpaceBetween } from '@styles/common';
-import { Description } from '@components/Auction/ItemDetail/AboutArtist';
+import { Description } from '@components/Auction/AboutArtist';
 
 const ArtworkDetail = ({ artwork }: { artwork: Artwork }) => {
     const { title, type, description } = artwork;
@@ -64,14 +64,14 @@ const Detail = styled.div`
     display: flex;
     flex-direction: column;
     font: ${(props) => props.theme.font.textSm};
-    
+
     & > div {
         display: flex;
         flex-direction: row;
         margin-bottom: 20px;
     }
-    
-    & span {        
+
+    & span {
         min-width: 55px;
         margin-right: 10px;
     }

@@ -1,4 +1,3 @@
-import EditorElement from './EditorElement';
 import { dirctionToResize } from './resizeFunctions';
 
 export const onDraggable = (

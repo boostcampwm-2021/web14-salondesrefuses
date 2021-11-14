@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import Head from 'next/head';
 
-import Form from '@components/Exhibition/Form';
-import ArtworkSelector from '@components/Exhibition/ArtworkSelector';
+import Form from '@components/Exhibition/FormPage';
+import ArtworkSelector from '@components/Exhibition/ArtworkSelectorWrapper';
 import Layout from '@components/common/Layout';
 import { Description, NextButton, Title } from '@components/Exhibition/style';
-import Editor from '@components/Exhibition/Editor';
+import Editor from '@components/Exhibition/EditorPage';
 import useInputExhibition from '@hooks/useInputExhibition';
 
 const ExhibitionPostPage = () => {
