@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import Link from 'next/link';
 
 import {
@@ -29,6 +29,9 @@ interface AuctionFormProps {
     content: AuctionCardProps;
     isHovered: boolean;
 }
+
+const LazyImage = lazy(() => import('./LazyImage'));
+
 const ExhibitionForm = ({ content, isHovered }: ExhibitionFormProps) => {
     return isHovered ? (
         <BlurFull>
@@ -89,11 +92,16 @@ const Card = ({ width, content }: Props) => {
             }
         >
             <CardContainer
-                thumbnailImage={content.thumbnailImage}
                 width={CardSize[width]}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
+                <Suspense fallback={<div>...loading</div>}>
+                    <LazyImage
+                        src={content.thumbnailImage}
+                        alt={content.title}
+                    />
+                </Suspense>
                 {isExhibition ? (
                     <ExhibitionForm
                         content={content as ExhibitionCardProps}
