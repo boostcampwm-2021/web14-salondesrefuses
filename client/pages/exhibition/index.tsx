@@ -8,7 +8,6 @@ import Card from '@components/common/Card';
 import {
     TopContainer,
     FilterWrapper,
-    Filter,
     Buttons,
     BlackButton,
     ExhibitionList,
@@ -19,6 +18,7 @@ import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
 import RequireLoginModal from '@components/common/RequireLoginModal';
 import parseCookie from '@utils/parseCookie';
 import { Button, SpaceBetween } from '@styles/common';
+import ListFilter from '@components/Exhibition/ListFilter';
 
 let accessToken: string | undefined;
 
@@ -46,65 +46,37 @@ const ExhibitionPage: NextPage = () => {
         );
     }, [onSelect]);
 
-    const onClickFilter = ({ currentTarget }: React.MouseEvent) => {
+    const handleFilter = ({ currentTarget }: React.MouseEvent) => {
         setOnSelect(currentTarget.textContent || 'Newest');
+    };
+
+    const buildButtons = () => {
+        return accessToken ? (
+            <>
+                <Link href="/exhibition/post">
+                    <BlackButton>Hold Exhibition</BlackButton>
+                </Link>
+                <Link href="/artwork/post">
+                    <BlackButton>Post Artwork</BlackButton>
+                </Link>
+            </>
+        ) : (
+            <>
+                <BlackButton onClick={onClickPostArtworkWithoutLogin}>
+                    Hold Exhibition
+                </BlackButton>
+                <BlackButton onClick={onClickPostArtworkWithoutLogin}>
+                    Post Artwork
+                </BlackButton>
+            </>
+        );
     };
 
     return (
         <Layout>
             <TopContainer>
-                <FilterWrapper>
-                    <div>
-                        <Filter
-                            select={onSelect === 'Newest'}
-                            onClick={onClickFilter}
-                        >
-                            Newest
-                        </Filter>
-                    </div>
-                    <div>
-                        <Filter
-                            select={onSelect === 'Popular'}
-                            onClick={onClickFilter}
-                        >
-                            Popular
-                        </Filter>
-                    </div>
-                    <div>
-                        <Filter
-                            select={onSelect === 'Deadline'}
-                            onClick={onClickFilter}
-                        >
-                            Deadline
-                        </Filter>
-                    </div>
-                </FilterWrapper>
-
-                <Buttons>
-                    {accessToken ? (
-                        <>
-                            <Link href="/exhibition/post">
-                                <BlackButton>Hold Exhibition</BlackButton>
-                            </Link>
-                            <Link href="/artwork/post">
-                                <BlackButton>Post Artwork</BlackButton>
-                            </Link>
-                        </>
-                    ) : (
-                        <>
-                            <BlackButton
-                                onClick={onClickPostArtworkWithoutLogin}
-                            >
-                                Hold Exhibition
-                            </BlackButton>
-                            <BlackButton
-                                onClick={onClickPostArtworkWithoutLogin}
-                            >
-                                Post Artwork
-                            </BlackButton>
-                        </>
-                    )}
-                </Buttons>
+                <ListFilter handleFilter={handleFilter} select={onSelect} />
+                <Buttons>{buildButtons()}</Buttons>
             </TopContainer>
 
             <ExhibitionList>

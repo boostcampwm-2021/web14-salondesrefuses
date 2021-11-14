@@ -37,7 +37,7 @@ const Selector = () => {
     return (
         <Container>
             <Tiles>
-                {images.map((image, idx) => {
+                {images.map((image) => {
                     const selected = selectedImages.findIndex(
                         (img) => img.id === image.id,
                     );
