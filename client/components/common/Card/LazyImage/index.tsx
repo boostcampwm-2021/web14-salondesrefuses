@@ -13,7 +13,6 @@ const LazyImage = ({ src, alt }: ILazyImage) => {
 
     useEffect(() => {
         function loadImage() {
-            console.log(src);
             setIsLoad(true);
         }
 
