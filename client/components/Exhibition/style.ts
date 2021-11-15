@@ -48,16 +48,7 @@ export const BlackButton = styled(Button)`
         margin-right: 25px;
     }
 `;
-export const ExhibitionList = styled.div`
-    ${SpaceBetween}
-    flex-wrap: wrap;
 
-    width: 1180px;
-
-    & > div {
-        margin-bottom: 45px;
-    }
-`;
 export const Input = styled.input`
     width: 100%;
     padding: 4px 12px;
