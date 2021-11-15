@@ -102,6 +102,12 @@ const EditorElement = ({
         );
     }, [currentElements]);
 
+    useEffect(() => {
+        if (!elementRef.current) return;
+        type === 'TEXT' && keyToCurrentElements([elementRef.current]);
+        (elementRef.current.children[0] as HTMLElement).focus();
+    }, []);
+
     return (
         <>
             {type === 'RECTANGULAR' ? (
@@ -145,6 +151,9 @@ const InputDiv = styled.div`
     overflow: hidden;
     width: 100%;
     height: 100%;
+    &:focus {
+        outline: 0px;
+    }
 `;
 
 export default EditorElement;
