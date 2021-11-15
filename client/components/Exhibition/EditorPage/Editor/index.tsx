@@ -30,8 +30,9 @@ const Editor = () => {
     useEffect(() => {
         currentElements.forEach((elem) => {
             if (!elem) return;
-            if (elem.tagName === 'DIV') elem.style.backgroundColor = color;
-            if (elem.tagName === 'INPUT') elem.style.color = color;
+            if (elem.classList.contains('RECTANGULAR'))
+                elem.style.backgroundColor = color;
+            if (elem.classList.contains('TEXT')) elem.style.color = color;
         });
     }, [color]);
 

@@ -108,18 +108,17 @@ const EditorElement = ({
         <>
             {type === 'RECTANGULAR' ? (
                 <div
-                    className="editorElement"
+                    className="editorElement RECTANGULAR"
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     style={calculateStyle()}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
-                    onKeyDown={(e) => isSelected && console.log(e)}
                 >
                     {isSelected && getBorderController()}
                 </div>
             ) : type === 'TEXT' ? (
                 <div
-                    className="editorElement"
+                    className="editorElement TEXT"
                     style={calculateStyle()}
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
@@ -129,15 +128,21 @@ const EditorElement = ({
                     {isSelected && getBorderController()}
                 </div>
             ) : (
-                <img
-                    className="editorElement"
-                    src={image!.originalImage}
+                <div
+                    className="editorElement IMAGE"
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     style={calculateStyle()}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
-                    ref={elementRef as RefObject<HTMLImageElement>}
+                    ref={elementRef as RefObject<HTMLDivElement>}
                     draggable={false}
-                />
+                >
+                    <img
+                        src={image!.originalImage}
+                        draggable={false}
+                        style={{ width: 'auto', height: 'auto' }}
+                    />
+                    {isSelected && getBorderController()}
+                </div>
             )}
         </>
     );
