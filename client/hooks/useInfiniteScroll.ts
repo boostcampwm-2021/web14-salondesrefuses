@@ -1,11 +1,11 @@
-import { ExhibitionCardProps } from '@const/card-type';
+import { AuctionCardProps, ExhibitionCardProps } from '@const/card-type';
 import { useEffect, useRef } from 'react';
 
 let observer: IntersectionObserver | null;
 
 const useInfiniteScroll = (
     handlePage: () => void,
-    exhibitions: ExhibitionCardProps[],
+    items: ExhibitionCardProps[] | AuctionCardProps[],
 ) => {
     const gridRef = useRef<HTMLDivElement>(null);
 
@@ -19,15 +19,17 @@ const useInfiniteScroll = (
                     handlePage();
                 },
                 {
-                    rootMargin: '10% 0px 0px 0px',
+                    rootMargin: '50% 0px 0px 0px',
                 },
             );
         }
-        console.log(observer);
         observer.observe(
-            gridRef.current.children[gridRef.current.children.length - 1],
+            gridRef.current.children[gridRef.current.children.length - 3],
         );
-    }, [exhibitions.length]);
+        return () => {
+            observer = null;
+        };
+    }, [items.length]);
 
     return { gridRef };
 };

@@ -10,11 +10,13 @@ import useInfiniteScroll from '@hooks/useInfiniteScroll';
 const ExhibitionList = ({ filter }: { filter: string }) => {
     const [exhibitions, setExhibitions] = useState<ExhibitionCardProps[]>([]);
     const [page, setPage] = useState(0);
-    const { gridRef } = useInfiniteScroll(handlePage, exhibitions);
+    const { gridRef } = useInfiniteScroll(
+        () => setPage((page) => page + 1),
+        exhibitions,
+    );
 
     useEffect(() => {
         getExhibitions(filter.toLowerCase(), page).then((res) => {
-            console.log(res);
             setExhibitions([...exhibitions, ...res.data]);
         });
     }, [page]);
@@ -24,10 +26,6 @@ const ExhibitionList = ({ filter }: { filter: string }) => {
             setExhibitions(res.data),
         );
     }, [filter]);
-
-    function handlePage() {
-        setPage((page) => page + 1);
-    }
 
     return (
         <Container ref={gridRef}>
