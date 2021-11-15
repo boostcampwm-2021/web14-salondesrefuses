@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { getAllArtworks } from 'utils/networking';
-import ImageTile from './ImageTile';
+import ImageTile from '../ImageTile';
 import { Artwork } from 'interfaces';
 
 const Tiles = () => {

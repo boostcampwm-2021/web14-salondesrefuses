@@ -1,29 +1,56 @@
-import React from 'react';
-import styled from '@emotion/styled';
+import React, { useEffect, useState } from 'react';
 
-import { Label } from '@components/Exhibition/style';
-import { SpaceBetween } from '@styles/common';
-import Selector from './Selector';
+import { Artwork } from 'interfaces';
+import {
+    useSelectedImageState,
+    useEditorImageState,
+} from '@store/editorImageState';
+import { getAllArtworks } from '@utils/networking';
+import { Container, Tiles, Check } from './style';
 
-const index = () => {
+const Selector = () => {
+    const [images, setImages] = useState<Artwork[]>([]);
+    const [selectedImages, setSelectedImages] = useSelectedImageState();
+    const [_, setEditorImageState] = useEditorImageState();
+
+    useEffect(() => {
+        getAllArtworks().then((res) => setImages(res.data));
+    }, []);
+
+    const onClickImage = (id: number) => {
+        return () => {
+            const idx = selectedImages.findIndex((image) => image.id === id);
+            if (idx < 0)
+                setSelectedImages([
+                    ...selectedImages,
+                    images.find((image) => image.id === id)!,
+                ]);
+            else {
+                const tmpSelectedImages = [...selectedImages];
+                tmpSelectedImages.splice(idx, 1);
+                setSelectedImages(tmpSelectedImages);
+            }
+            setEditorImageState([]);
+        };
+    };
+
     return (
-        <ArtworkSelectorWrapper>
-            <ArtworkSelectorHeader>
-                <Label>작품 선택하기</Label>
-            </ArtworkSelectorHeader>
-            <Selector />
-        </ArtworkSelectorWrapper>
+        <Container>
+            <Tiles>
+                {images.map((image) => {
+                    const selected = selectedImages.findIndex(
+                        (img) => img.id === image.id,
+                    );
+                    return (
+                        <div key={image.id} onClick={onClickImage(image.id)}>
+                            <img src={image.originalImage} alt={image.title} />
+                            {selected >= 0 && <Check>Selected</Check>}
+                        </div>
+                    );
+                })}
+            </Tiles>
+        </Container>
     );
 };
 
-export const ArtworkSelectorWrapper = styled.div`
-    width: 470px;
-    margin-left: auto;
-`;
-
-export const ArtworkSelectorHeader = styled.div`
-    ${SpaceBetween}
-    margin-bottom: 24px;
-`;
-
-export default index;
+export default Selector;

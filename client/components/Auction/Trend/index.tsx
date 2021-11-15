@@ -3,19 +3,24 @@ import styled from '@emotion/styled';
 
 import { GlobalContext } from '@store/GlobalStore';
 import { trendHistory } from '@components/Auction/ItemDetail';
-import TrendHistory from '@components/Auction/Trend/TrendHistory';
+import TrendHistory from '@components/Auction/TrendHistory';
 
-const Trend = ({ trendHistoryList }: { trendHistoryList: Array<trendHistory> }) => {
+const Trend = ({
+    trendHistoryList,
+}: {
+    trendHistoryList: Array<trendHistory>;
+}) => {
     const globalContext = useContext(GlobalContext);
     const { auctionSocket } = globalContext!;
 
-    const [trendHistory, setTrendHistory] = useState<Array<trendHistory>>(trendHistoryList);
+    const [trendHistory, setTrendHistory] =
+        useState<Array<trendHistory>>(trendHistoryList);
 
     useEffect(() => {
         auctionSocket.on('bid', (data: trendHistory) => {
-            setTrendHistory(prev => [ data, ...prev ].slice(0, 6));
+            setTrendHistory((prev) => [data, ...prev].slice(0, 6));
         });
-    }, [])
+    }, []);
 
     return (
         <Container>
@@ -30,8 +35,8 @@ const Trend = ({ trendHistoryList }: { trendHistoryList: Array<trendHistory> }) 
                         <th>date</th>
                     </tr>
                     {trendHistory.map((history, idx) =>
-                        TrendHistory(history, idx))
-                    }
+                        TrendHistory(history, idx),
+                    )}
                 </tbody>
             </Table>
         </Container>
