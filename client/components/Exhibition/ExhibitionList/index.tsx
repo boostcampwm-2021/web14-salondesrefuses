@@ -1,19 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 
 import { ExhibitionCardProps } from '@const/card-type';
 import Card from '@components/common/Card';
 import { getExhibitions } from '@utils/networking';
 import { SpaceBetween } from '@styles/common';
+import useInfiniteScroll from '@hooks/useInfiniteScroll';
 
 const ExhibitionList = ({ filter }: { filter: string }) => {
     const [exhibitions, setExhibitions] = useState<ExhibitionCardProps[]>([]);
     const [page, setPage] = useState(0);
+    const { gridRef } = useInfiniteScroll(handlePage, exhibitions);
 
     useEffect(() => {
-        getExhibitions(filter.toLowerCase(), page).then((res) =>
-            setExhibitions([...exhibitions, ...res.data]),
-        );
+        getExhibitions(filter.toLowerCase(), page).then((res) => {
+            console.log(res);
+            setExhibitions([...exhibitions, ...res.data]);
+        });
     }, [page]);
 
     useEffect(() => {
@@ -22,8 +25,12 @@ const ExhibitionList = ({ filter }: { filter: string }) => {
         );
     }, [filter]);
 
+    function handlePage() {
+        setPage((page) => page + 1);
+    }
+
     return (
-        <Container>
+        <Container ref={gridRef}>
             {exhibitions.map((exihibition, idx) => (
                 // TODO : idx를 id로 교체해야하는데 굳이 할필요 없기도 함
                 <Card key={idx} width="lg" content={exihibition} />
