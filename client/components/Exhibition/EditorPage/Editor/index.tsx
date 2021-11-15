@@ -50,9 +50,13 @@ const Editor = () => {
     useEffect(() => {
         if (!editorRef.current) return;
         editorRef.current.addEventListener('click', (e) => {
-            (e.target as HTMLDivElement).getElementsByClassName(
-                'editorElement',
-            ) && keyToCurrentElements([]);
+            if (
+                !(e.target as HTMLDivElement).classList.contains(
+                    'editorElement',
+                )
+            ) {
+                keyToCurrentElements([]);
+            }
         });
     }, []);
 
@@ -106,7 +110,7 @@ const Editor = () => {
     };
 
     return (
-        <EditorContainer ref={editorRef}>
+        <EditorContainer>
             <ToolBar>
                 <Button onClick={createRectangular} bg={rectButtonIcon.src} />
                 <Button onClick={onClickColorButton} bg={colorButtonIcon.src} />
@@ -128,7 +132,7 @@ const Editor = () => {
                     />
                 )}
             </ToolBar>
-            <EditArea>{renderElements()}</EditArea>
+            <EditArea ref={editorRef}>{renderElements()}</EditArea>
         </EditorContainer>
     );
 };
