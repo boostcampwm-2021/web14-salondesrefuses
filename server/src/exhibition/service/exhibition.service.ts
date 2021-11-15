@@ -60,7 +60,7 @@ export class ExhibitionService {
         image: Express.Multer.File,
         holdExhibitionDTO: HoldExhibitionDTO,
         user: User,
-    ): Promise<ExhibitionDTO> {
+    ): Promise<HoldExhibitionDTO> {
         const croppedThumbnail = await this.imageService.cropImage(image);
         const thumbnailPath = await this.imageService.fileUpload({ ...image, buffer: croppedThumbnail });
 
@@ -70,7 +70,7 @@ export class ExhibitionService {
             user,
         );
 
-        this.exhibitionRepository.save(newExhibition);
-        return ExhibitionDTO.from(newExhibition, []);
+        await this.exhibitionRepository.save(newExhibition);
+        return HoldExhibitionDTO.from(newExhibition);
     }
 }

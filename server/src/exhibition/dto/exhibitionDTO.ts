@@ -59,20 +59,36 @@ export class HoldExhibitionDTO {
 
     collaborator: string;
 
+    theme: string;
+
+    description: string;
+
     @IsNotEmpty()
     startAt: Date;
 
     @IsNotEmpty()
     endAt: Date;
 
-    description: string;
-
-    artworkIds: number[];
-
     @IsNotEmpty()
     contents: string;
 
-    categories: string[];
+    categories: string;
 
-    theme: string;
+    artworkIds: number[];
+
+    static from(exhibition: Exhibition): HoldExhibitionDTO {
+        const dto = new HoldExhibitionDTO();
+        const { title, collaborator, theme, description, startAt, endAt, contents, categories } = exhibition;
+
+        dto.title = title;
+        dto.collaborator = collaborator;
+        dto.theme = theme;
+        dto.description = description;
+        dto.startAt = startAt;
+        dto.endAt = endAt;
+        dto.contents = contents;
+        dto.categories = categories;
+        return dto;
+    }
+
 }
