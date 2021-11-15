@@ -6,7 +6,7 @@ import {
     AuctionCardContainer,
     MoreButtonContainer,
 } from './styles';
-import Card from '@components/Card';
+import Card from '@components/common/Card';
 import { AuctionCardProps } from '@const/card-type';
 import { BlackButton } from '@styles/common';
 
@@ -19,9 +19,9 @@ const MainAuctionList = ({ AuctionsData }: Props) => {
         <AuctionContainer>
             <p>Auction.</p>
             <AuctionCardContainer>
-                {AuctionsData.map((auction) =>
-                    <Card width={'md'} content={auction} key={auction.id}/>
-                )}
+                {AuctionsData.map((auction) => (
+                    <Card width={'md'} content={auction} key={auction.id} />
+                ))}
             </AuctionCardContainer>
             <Link href="/auction">
                 <MoreButtonContainer>

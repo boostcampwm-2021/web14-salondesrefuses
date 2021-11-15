@@ -15,6 +15,7 @@ import {
     BlurFull,
     PriceContainer,
 } from './style';
+import LazyImage from './LazyImage';
 import ethLogo from '@assets/images/ETH.png';
 
 interface Props {
@@ -29,6 +30,7 @@ interface AuctionFormProps {
     content: AuctionCardProps;
     isHovered: boolean;
 }
+
 const ExhibitionForm = ({ content, isHovered }: ExhibitionFormProps) => {
     return isHovered ? (
         <BlurFull>
@@ -89,11 +91,11 @@ const Card = ({ width, content }: Props) => {
             }
         >
             <CardContainer
-                thumbnailImage={content.thumbnailImage}
                 width={CardSize[width]}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
+                <LazyImage src={content.thumbnailImage} alt={content.title} />
                 {isExhibition ? (
                     <ExhibitionForm
                         content={content as ExhibitionCardProps}

@@ -1,20 +1,25 @@
 import styled from '@emotion/styled';
 interface CardContainerProps {
-    thumbnailImage: string;
     width: number;
 }
 export const CardContainer = styled.div<CardContainerProps>`
     display: flex;
     width: ${(props) => props.width}px;
     height: ${(props) => (props.width * 3) / 2}px;
-    background-image: url(${(props) => props.thumbnailImage});
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: auto 100%;
     border-radius: 20px;
     cursor: pointer;
     box-shadow: 0px 3px 3px 1px rgba(0, 0, 0, 0.4);
     transition: 0.5s ease-out;
+    position: relative;
+
+    & > img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        object-position: center;
+        object-fit: cover;
+    }
 
     &:hover {
         transform: translateY(-3px);

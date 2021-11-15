@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
-import AboutArtist from './AboutArtist';
+import AboutArtist from '../AboutArtist';
 import BidTable from '../BidTable';
 import Trend from '../Trend';
-import ArtworkDetail from './ArtworkDetail';
+import ArtworkDetail from '../ArtworkDetail';
 import { Auction } from 'interfaces';
 import { GlobalContext } from '@store/GlobalStore';
 
@@ -21,15 +21,18 @@ const ItemDetail = ({ auction }: { auction: Auction }) => {
     const { id, artwork, artist, auctionHistories } = auction;
     const { title, type } = artwork;
     const trendHistoryList = JSON.parse(JSON.stringify(auctionHistories))
-        .sort((a: trendHistory, b: trendHistory) => Number(b?.price) - Number(a?.price))
+        .sort(
+            (a: trendHistory, b: trendHistory) =>
+                Number(b?.price) - Number(a?.price),
+        )
         .slice(0, 6);
 
     useEffect(() => {
         auctionSocket.emit('enter', id);
 
-        return (() => {
+        return () => {
             auctionSocket.emit('leave', id);
-        });
+        };
     }, []);
 
     return (
@@ -39,10 +42,13 @@ const ItemDetail = ({ auction }: { auction: Auction }) => {
                 <h1>{title}</h1>
                 <span>{type}</span>
             </Summary>
-            <AboutArtist artist={artist}/>
-            <BidTable auction={auction} currentPrice={Number(trendHistoryList[0]?.price)}/>
-            <Trend trendHistoryList={trendHistoryList}/>
-            <ArtworkDetail artwork={artwork}/>
+            <AboutArtist artist={artist} />
+            <BidTable
+                auction={auction}
+                currentPrice={Number(trendHistoryList[0]?.price)}
+            />
+            <Trend trendHistoryList={trendHistoryList} />
+            <ArtworkDetail artwork={artwork} />
         </Container>
     );
 };
@@ -52,16 +58,16 @@ const Container = styled.section`
     overflow: scroll;
     overflow-x: hidden;
     padding: 10px 0;
-    
+
     &::-webkit-scrollbar {
         width: 8px;
     }
-    
+
     &::-webkit-scrollbar-thumb {
-        background: #BBBBBB;
+        background: #bbbbbb;
         border-radius: 10px;
     }
-    
+
     & > div {
         display: flex;
         width: 80%;

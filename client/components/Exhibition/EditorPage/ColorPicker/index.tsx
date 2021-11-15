@@ -22,7 +22,7 @@ const ColorPicker = ({ color, handleColor }: Props) => {
 const Container = styled.div`
     position: absolute;
     top: 60px;
-    left: 100px;
+    left: 15px;
     z-index: 900;
 `;
 

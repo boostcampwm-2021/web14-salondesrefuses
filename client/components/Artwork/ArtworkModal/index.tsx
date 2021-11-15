@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import ArtworkFilter from './ArtworkFilter';
+import ArtworkFilter from '../ArtworkFilter';
 import { Modal, Form, LightForm, ConfirmButton } from './style';
 
 const date = new Date();

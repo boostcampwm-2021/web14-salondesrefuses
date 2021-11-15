@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react';
 import styled from '@emotion/styled';
 
 import LabelInput from '../LabelInput';
-import { Input, Label, TextArea, ThumbnailBox } from '../style';
-import Preview from './Preview';
+import { Input, TextArea, ThumbnailBox } from '../style';
+import Preview from './Preview/Preview';
 import { HoldExhibition } from '../types';
 
 interface FormProps {
@@ -106,6 +106,10 @@ const Container = styled.div`
     & > div {
         margin-bottom: 40px;
     }
+`;
+
+const Label = styled.label`
+    font: ${(props) => props.theme.font.textBase};
 `;
 
 export default index;
