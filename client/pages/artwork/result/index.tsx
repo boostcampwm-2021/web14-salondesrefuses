@@ -7,7 +7,8 @@ import Web3 from 'web3';
 import { Artwork } from 'interfaces';
 import Layout from '@components/common/Layout';
 import { getSingleArtwork } from '@utils/networking';
-import { Center } from '@styles/common';
+import { Center, SpaceAround } from '@styles/common';
+import ResultDetail from '@components/Artwork/ResultDetail';
 
 const DUMMY_DATA: Artwork = {
     id: 1,
@@ -69,24 +70,10 @@ const ResultPage = () => {
                         src={artwork.originalImage}
                         alt={artwork.title}
                     />
-                    <div>
-                        <Inner>
-                            <FrontFace>
-                                <img src={artwork.originalImage} alt="" />
-                            </FrontFace>
-                            <BackFace>
-                                <div>
-                                    <span>title : {artwork.title}</span>
-                                    <span>
-                                        description : {artwork.description}
-                                    </span>
-                                    <span>type: {artwork.type}</span>
-                                    <span>NFT Token : ${artwork.nftToken}</span>
-                                </div>
-                                <img src={artwork.originalImage} alt="" />
-                            </BackFace>
-                        </Inner>
-                    </div>
+                    <Body>
+                        <img src={artwork.originalImage} alt="" />
+                        <ResultDetail artwork={artwork} />
+                    </Body>
                     <Buttons>
                         <button>Confirm</button>
                         <button>Reject</button>
@@ -104,9 +91,23 @@ const Container = styled.div`
     top: -70px;
     z-index: 200;
     ${Center};
+`;
 
-    & > div {
-        perspective: 1000px;
+const Body = styled.div`
+    width: 80%;
+    height: 40%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    justify-items: center;
+
+    & > img {
+        z-index: 200;
+        max-height: 60vh;
+        max-width: 35vw;
+        border: 5px solid white;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
     }
 `;
 
@@ -116,60 +117,6 @@ const Background = styled.img`
     height: 100%;
     transform: scale(1.3);
     filter: blur(50px);
-`;
-
-const Inner = styled.div`
-    position: relative;
-    transition: transform 0.8s;
-    transform-style: preserve-3d;
-    ${Center};
-    top: 30px;
-
-    &:hover {
-        transform: rotateY(180deg);
-    }
-`;
-
-const FrontFace = styled.div`
-    position: absolute;
-    backface-visibility: hidden;
-    z-index: 300;
-    box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.2);
-    border: 5px solid white;
-
-    & > img {
-        max-height: 500px;
-        max-width: 500px;
-    }
-`;
-
-const BackFace = styled.div`
-    box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.2);
-
-    & > div {
-        position: absolute;
-        backface-visibility: visible;
-        background-color: rgba(0, 0, 0, 0.4);
-        width: 100%;
-        height: 100%;
-        z-index: 200;
-        overflow-y: scroll;
-        color: white;
-        transform: scaleX(-1);
-        padding: 5% 5%;
-
-        & > span {
-            display: block;
-            font: ${(props) => props.theme.font.textMd};
-            margin-bottom: 5px;
-        }
-    }
-
-    & > img {
-        transform: scaleX(-1);
-        max-height: 500px;
-        filter: blur(100px);
-    }
 `;
 
 const Buttons = styled.div`
