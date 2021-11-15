@@ -12,8 +12,10 @@ import { getAuction } from '@utils/networking';
 const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
     const [zoom, setZoom] = useState(false);
     const magnifierRef = useRef<HTMLImageElement | null>(null);
+    const sectionRef = useRef<HTMLImageElement | null>(null);
+
     const { artwork, artist } = auction;
-    const { title } = artwork;
+    const { title, originalImage } = artwork;
     const { name } = artist;
 
     useEffect(() => {
@@ -26,12 +28,11 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
     const onHoverImage = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!zoom || !magnifierRef.current) return;
         const { offsetX, offsetY } = e.nativeEvent;
-        magnifierRef.current.style.objectPosition = `${-(offsetX * 2)}px ${-(
-            offsetY * 2
-        )}px`;
+        const { top, left } = sectionRef.current?.getBoundingClientRect()!;
+        magnifierRef.current.style.objectPosition = `${-(offsetX * 1.5) + 50}px ${-(offsetY * 1.5) + 50}px`;
 
-        magnifierRef.current.parentElement!.style.top = `${offsetY + 100}px`;
-        magnifierRef.current.parentElement!.style.left = `${offsetX + 90}px`;
+        magnifierRef.current.parentElement!.style.top = `${e.clientY - top + 5}px`;
+        magnifierRef.current.parentElement!.style.left = `${e.clientX - left + 5}px`;
     };
 
     return (
@@ -45,25 +46,26 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
                 </Head>
                 <Layout>
                     <Container>
-                        <Background src={artwork.originalImage} />
+                        <Background src={originalImage} />
                         <Grid>
-                            <section>
-                                <Image
-                                    src={artwork.originalImage}
-                                    onClick={() => {
-                                        setZoom(!zoom);
-                                    }}
-                                    onMouseMove={onHoverImage}
-                                />
-                                {zoom && (
-                                    <Magnifier>
-                                        <img
-                                            src={artwork.originalImage}
-                                            alt=""
-                                            ref={magnifierRef}
-                                        />
-                                    </Magnifier>
-                                )}
+                            <section ref={sectionRef}>
+                                <ImageWrapper onMouseMove={onHoverImage}>
+                                    <Image
+                                        src={originalImage}
+                                        onClick={() => {
+                                            setZoom(!zoom);
+                                        }}
+                                    />
+                                    {zoom && (
+                                        <Magnifier>
+                                            <img
+                                                src={originalImage}
+                                                alt=""
+                                                ref={magnifierRef}
+                                            />
+                                        </Magnifier>
+                                    )}
+                                </ImageWrapper>
                             </section>
                             <ItemDetail auction={auction}/>
                         </Grid>
@@ -120,6 +122,13 @@ const Grid = styled.div`
         align-items: center;
         justify-content: center;
     }
+`;
+
+const ImageWrapper = styled.div`
+    justify-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 const Image = styled.img`
