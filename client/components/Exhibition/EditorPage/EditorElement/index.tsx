@@ -38,10 +38,6 @@ const EditorElement = ({
     const element = elementRef?.current;
     const [LT, LB, RT, RB] = getPositions(element);
 
-    useEffect(() => {
-        type === 'TEXT' && elementRef.current && elementRef.current.focus();
-    }, []);
-
     const calculateStyle = () => {
         return {
             transform: `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`,
@@ -103,8 +99,8 @@ const EditorElement = ({
     }, [currentElements]);
 
     useEffect(() => {
-        if (!elementRef.current) return;
-        type === 'TEXT' && keyToCurrentElements([elementRef.current]);
+        if (!elementRef.current || type !== 'TEXT') return;
+        keyToCurrentElements([elementRef.current]);
         (elementRef.current.children[0] as HTMLElement).focus();
     }, []);
 
