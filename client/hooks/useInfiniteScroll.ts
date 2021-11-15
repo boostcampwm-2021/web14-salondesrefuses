@@ -31,7 +31,7 @@ const useInfiniteScroll = (
         };
     }, [items.length]);
 
-    return { gridRef };
+    return gridRef;
 };
 
 export default useInfiniteScroll;

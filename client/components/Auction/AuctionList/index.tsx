@@ -21,7 +21,7 @@ const AuctionList = () => {
     const [page, setPage] = useState(0);
     const { requireLoginModal, onClickPostArtworkWithoutLogin, closeModal } =
         useHandleRequireLoginModal();
-    const { gridRef } = useInfiniteScroll(() => {
+    const gridRef = useInfiniteScroll(() => {
         setPage((page) => page + 1);
     }, auctionItems);
 
