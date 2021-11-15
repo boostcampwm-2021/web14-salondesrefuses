@@ -92,3 +92,11 @@ export class HoldExhibitionDTO {
     }
 
 }
+
+export class UpdateExhibitionDTO {
+    @IsNotEmpty()
+    id: string;
+
+    @IsNotEmpty()
+    contents: string;
+}

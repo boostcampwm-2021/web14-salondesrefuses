@@ -38,3 +38,8 @@ export const holdExhibitionApiBody = {
         },
     },
 };
+
+export const updateExhibitionApiOperation = {
+    summary: '전시회 수정 API',
+    description: '전시회의 contents를 수정한다.'
+}

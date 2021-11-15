@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExhibitionRepository } from '../exhibition.repository';
-import { ExhibitionDTO, HoldExhibitionDTO } from '../dto/exhibitionDTO';
+import { ExhibitionDTO, HoldExhibitionDTO, UpdateExhibitionDTO } from '../dto/exhibitionDTO';
 import { User } from 'src/user/user.entity';
 import { ImageService } from 'src/image/service/image.service';
 import { ArtworkRepository } from 'src/artwork/artwork.repository';
+import { UpdateResult } from 'typeorm';
 
 @Injectable()
 export class ExhibitionService {
@@ -72,5 +73,9 @@ export class ExhibitionService {
 
         await this.exhibitionRepository.save(newExhibition);
         return HoldExhibitionDTO.from(newExhibition);
+    }
+
+    async updateExhibition({ id, contents }: UpdateExhibitionDTO): Promise<UpdateResult> {
+        return await this.exhibitionRepository.update(id, { contents });
     }
 }
