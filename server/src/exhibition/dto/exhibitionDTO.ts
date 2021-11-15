@@ -37,8 +37,9 @@ export class ExhibitionDTO {
 
     static from(exhibition: Exhibition, artworks: Artwork[]): ExhibitionDTO {
         const dto = new ExhibitionDTO();
-        const { title, description, artist, collaborator, thumbnailImage, categories, theme } = exhibition;
+        const { id, title, description, artist, collaborator, thumbnailImage, categories, theme } = exhibition;
 
+        dto.id = id;
         dto.title = title;
         dto.description = description;
         dto.artist = artist.name;
