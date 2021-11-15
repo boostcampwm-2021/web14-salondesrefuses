@@ -1,31 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import styled from '@emotion/styled';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 
 import Layout from '@components/common/Layout';
-import Card from '@components/common/Card';
 import {
     TopContainer,
-    FilterWrapper,
     Buttons,
     BlackButton,
-    ExhibitionList,
 } from '../../components/Exhibition/style';
-import { ExhibitionCardProps } from '@const/card-type';
-import { getExhibitions } from '@utils/networking';
 import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
 import RequireLoginModal from '@components/common/RequireLoginModal';
 import parseCookie from '@utils/parseCookie';
-import { Button, SpaceBetween } from '@styles/common';
 import ListFilter from '@components/Exhibition/ListFilter';
+import ExhibitionList from '@components/Exhibition/ExhibitionList';
 
 let accessToken: string | undefined;
 
 const ExhibitionPage: NextPage = () => {
     const [onSelect, setOnSelect] = useState<string>('Newest');
-    const [exhibitions, setExhibitions] = useState<ExhibitionCardProps[]>([]);
-    const [page, setPage] = useState(0);
 
     const { requireLoginModal, onClickPostArtworkWithoutLogin, closeModal } =
         useHandleRequireLoginModal();
@@ -33,18 +25,6 @@ const ExhibitionPage: NextPage = () => {
     useEffect(() => {
         accessToken = parseCookie()('accessToken');
     }, []);
-
-    useEffect(() => {
-        getExhibitions(onSelect.toLowerCase(), page).then((res) =>
-            setExhibitions([...exhibitions, ...res.data]),
-        );
-    }, [page]);
-
-    useEffect(() => {
-        getExhibitions(onSelect.toLowerCase(), page).then((res) =>
-            setExhibitions(res.data),
-        );
-    }, [onSelect]);
 
     const handleFilter = ({ currentTarget }: React.MouseEvent) => {
         setOnSelect(currentTarget.textContent || 'Newest');
@@ -78,12 +58,7 @@ const ExhibitionPage: NextPage = () => {
                 <ListFilter handleFilter={handleFilter} select={onSelect} />
                 <Buttons>{buildButtons()}</Buttons>
             </TopContainer>
-
-            <ExhibitionList>
-                {exhibitions.map((exihibition, idx) => (
-                    <Card key={idx} width="lg" content={exihibition} />
-                ))}
-            </ExhibitionList>
+            <ExhibitionList filter={onSelect} />
             {requireLoginModal && <RequireLoginModal close={closeModal} />}
         </Layout>
     );

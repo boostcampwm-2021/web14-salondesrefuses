@@ -9,7 +9,9 @@ import { Filter } from '@components/Exhibition/style';
 import { getAuctions } from '@utils/networking';
 import RequireLoginModal from '@components/common/RequireLoginModal';
 import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
+import useInfiniteScroll from '@hooks/useInfiniteScroll';
 import parseCookie from '@utils/parseCookie';
+import { useRef } from 'react';
 
 let accessToken: string | undefined;
 
@@ -19,6 +21,9 @@ const AuctionList = () => {
     const [page, setPage] = useState(0);
     const { requireLoginModal, onClickPostArtworkWithoutLogin, closeModal } =
         useHandleRequireLoginModal();
+    const gridRef = useInfiniteScroll(() => {
+        setPage((page) => page + 1);
+    }, auctionItems);
 
     useEffect(() => {
         accessToken = parseCookie()('accessToken');
@@ -78,9 +83,9 @@ const AuctionList = () => {
                         </BlackButton>
                     )}
                 </Title>
-                <Grid>
-                    {auctionItems.map((item) => {
-                        return <Card width="lg" content={item} key={item.id} />;
+                <Grid ref={gridRef}>
+                    {auctionItems.map((item, idx) => {
+                        return <Card width="lg" content={item} key={idx} />;
                     })}
                 </Grid>
             </Container>
