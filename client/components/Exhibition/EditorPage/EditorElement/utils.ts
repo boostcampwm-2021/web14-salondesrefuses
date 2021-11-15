@@ -1,5 +1,20 @@
 import { dirctionToResize } from './resizeFunctions';
 
+
+const setMouseEventListener = (
+    eventType: keyof DocumentEventMap,
+    cb: (this: Document, ev: MouseEvent) => any,
+    element: HTMLElement | null,
+) => {
+    document.addEventListener(eventType, cb as (ev: Event) => void);
+    const removeEvent = () => {
+        document.removeEventListener(eventType, cb as (ev: Event) => void);
+        element!.onmouseup = null;
+    };
+    document.body.onmouseup = removeEvent;
+};
+
+
 export const onDraggable = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     element: HTMLElement | null,
@@ -25,13 +40,7 @@ export const onDraggable = (
         );
     };
 
-    document.addEventListener('mousemove', onMouseMove);
-
-    const removeEvent = () => {
-        document.removeEventListener('mousemove', onMouseMove);
-        element.onmouseup = null;
-    };
-    document.body.onmouseup = removeEvent;
+    setMouseEventListener('mousemove', onMouseMove, element);
 };
 
 export const getPositions = (element: HTMLElement | null) => {
@@ -108,22 +117,6 @@ export const onResize = (
         );
     };
 
-    document.addEventListener('mousemove', onResizePoint);
-    const removeEvent = () => {
-        document.removeEventListener('mousemove', onResizePoint);
-        element.onmouseup = null;
-    };
-    document.body.onmouseup = removeEvent;
+    setMouseEventListener('mousemove', onResizePoint, element);
 };
 
-// const setMouseEventListener = (
-//     eventType: keyof DocumentEventMap,
-//     cb: (this: Document, ev: MouseEvent) => any,
-// ) => {
-//     document.addEventListener(eventType, cb);
-//     const removeEvent = () => {
-//         document.removeEventListener(eventType, cb);
-//         element.onmouseup = null;
-//     };
-//     document.body.onmouseup = removeEvent;
-// };
