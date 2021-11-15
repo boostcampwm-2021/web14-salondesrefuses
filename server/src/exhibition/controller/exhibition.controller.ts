@@ -1,18 +1,30 @@
-import { Controller, Get, ParseIntPipe, Query } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    ParseIntPipe,
+    Post,
+    Query,
+    Req,
+    UploadedFile,
+    UseGuards,
+    UseInterceptors,
+    UsePipes,
+    ValidationPipe,
+} from '@nestjs/common';
 import { ExhibitionService } from '../service/exhibition.service';
-import { Exhibition } from '../exhibition.entity';
+import { ExhibitionDTO, HoldExhibitionDTO } from '../dto/exhibitionDTO';
+import { ApiBody, ApiConsumes, ApiOperation, ApiProperty, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
-    ApiOperation,
-    ApiProperty, ApiQuery, ApiResponse,
-    ApiTags,
-} from '@nestjs/swagger';
-import {
-    getExhibitionApiResponse, getExhibitionsSortedByDeadlineApiOperation, getExhibitionsSortedByInterestApiOperation,
+    getExhibitionsSortedByDeadlineApiOperation,
+    getExhibitionsSortedByInterestApiOperation,
     getNewestExhibitionApiOperation,
-    getRandomExhibitionApiResponse,
     getRandomExhibitionsAPiOperation,
+    holdExhibitionApiBody,
 } from '../swagger';
-
+import { User } from 'src/user/user.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { CustomAuthGuard } from 'src/auth/guard/CustomAuthGuard';
 
 @Controller('/exhibitions')
 @ApiTags('전시회 컨트롤러')
@@ -21,35 +33,48 @@ export class ExhibitionController {
 
     @Get('/random')
     @ApiOperation(getRandomExhibitionsAPiOperation)
-    @ApiResponse(getRandomExhibitionApiResponse)
+    @ApiResponse({ type: ExhibitionDTO })
     @ApiProperty({})
-    getRandomExhibitions(): Promise<Exhibition[]> {
+    getRandomExhibitions(): Promise<ExhibitionDTO[]> {
         return this.exhibitionService.getRandomExhibitions();
     }
 
     @Get('/newest')
     @ApiOperation(getNewestExhibitionApiOperation)
-    @ApiResponse(getExhibitionApiResponse)
-    @ApiQuery({name: "page", type: Number })
-    getNewestExhibitions(@Query('page', ParseIntPipe) page: number): Promise<Exhibition[]> {
+    @ApiResponse({ type: ExhibitionDTO })
+    @ApiQuery({ name: 'page', type: Number })
+    getNewestExhibitions(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDTO[]> {
         return this.exhibitionService.getNewestExhibitions(page);
     }
 
     @Get('/deadline')
     @ApiOperation(getExhibitionsSortedByDeadlineApiOperation)
-    @ApiResponse(getExhibitionApiResponse)
-    @ApiQuery({name: "page", type: Number })
-    getExhibitionsSortedByDeadline(@Query('page', ParseIntPipe) page: number): Promise<Exhibition[]> {
+    @ApiResponse({ type: ExhibitionDTO })
+    @ApiQuery({ name: 'page', type: Number })
+    getExhibitionsSortedByDeadline(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDTO[]> {
         return this.exhibitionService.getExhibitionsSortedByDeadline(page);
     }
 
     @Get('/popular')
     @ApiOperation(getExhibitionsSortedByInterestApiOperation)
-    @ApiResponse(getExhibitionApiResponse)
-    @ApiQuery({name: "page", type: Number })
-    getExhibitionsSortedByInterest(@Query('page', ParseIntPipe) page: number): Promise<Exhibition[]> {
+    @ApiResponse({ type: ExhibitionDTO })
+    @ApiQuery({ name: 'page', type: Number })
+    getExhibitionsSortedByInterest(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDTO[]> {
         return this.exhibitionService.getExhibitionsSortedByInterest(page);
     }
 
-
+    @Post('/post')
+    @UseGuards(CustomAuthGuard)
+    @UsePipes(ValidationPipe)
+    @UseInterceptors(FileInterceptor('thumbnail'))
+    @ApiConsumes('multipart/form-data')
+    @ApiOperation({ summary: '전시회 등록 api' })
+    @ApiBody(holdExhibitionApiBody)
+    holdExhibition(
+        @UploadedFile() image: Express.Multer.File,
+        @Body() holdExhibitionDTO: HoldExhibitionDTO,
+        @Req() { user }: Request & { user: User },
+    ): Promise<ExhibitionDTO> {
+        return this.exhibitionService.holdExhibition(image, holdExhibitionDTO, user);
+    }
 }

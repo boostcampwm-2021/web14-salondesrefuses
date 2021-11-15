@@ -9,14 +9,16 @@ const Tiles = () => {
     const [artworks, setArtworks] = useState<Artwork[]>([]);
 
     useEffect(() => {
-        getAllArtworks(1).then((result) => setArtworks(result.data));
+        getAllArtworks().then((result) => {
+            setArtworks(result.data);
+        });
     }, []);
 
     return (
         <Container>
             <Grid>
                 {artworks.map((item, idx: number) => (
-                    <ImageTile key={idx} src={item.imagePath} />
+                    <ImageTile key={idx} src={item.originalImage} />
                 ))}
             </Grid>
         </Container>

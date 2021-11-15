@@ -1,84 +1,91 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
+
 import { Button, Center } from '@styles/common';
 import { AuctionCardProps } from '@const/card-type';
 import Card from '@components/Card';
+import { Filter } from '@components/Exhibition/style';
+import { getAuctions } from '@utils/networking';
+import RequireLoginModal from '@components/common/RequireLoginModal';
+import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
+import parseCookie from '@utils/parseCookie';
 
-const DUMMY_DATA: Array<AuctionCardProps> = [
-    {
-        title: 'test',
-        description: 'this is description',
-        artist: 'imnotmoon',
-        imgSrc: 'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg',
-        price: 1.23,
-        id: 2,
-    },
-    {
-        title: 'test',
-        description: 'this is description',
-        artist: 'imnotmoon',
-        imgSrc: 'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg',
-        price: 1.23,
-        id: 3,
-    },
-    {
-        title: 'test',
-        description: 'this is description',
-        artist: 'imnotmoon',
-        imgSrc: 'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg',
-        price: 1.23,
-        id: 4,
-    },
-    {
-        title: 'test',
-        description: 'this is description',
-        artist: 'imnotmoon',
-        imgSrc: 'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg',
-        price: 1.23,
-        id: 5,
-    },
-    {
-        title: 'test',
-        description: 'this is description',
-        artist: 'imnotmoon',
-        imgSrc: 'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg',
-        price: 1.23,
-        id: 1,
-    },
-    {
-        title: 'test',
-        description: 'this is description',
-        artist: 'imnotmoon',
-        imgSrc: 'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg',
-        price: 1.23,
-        id: 2,
-    },
-    {
-        title: 'test',
-        description: 'this is description',
-        artist: 'imnotmoon',
-        imgSrc: 'https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=210&height=276&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FVju3jVJD5yaSEb1vTQbA1w%2Flarge.jpg',
-        price: 1.23,
-        id: 2,
-    },
-];
+let accessToken: string | undefined;
 
 const AuctionList = () => {
+    const [onSelect, setOnSelect] = useState('Popular');
+    const [auctionItems, setAuctionItems] = useState<AuctionCardProps[]>([]);
+    const [page, setPage] = useState(0);
+    const { requireLoginModal, onClickPostArtworkWithoutLogin, closeModal } =
+        useHandleRequireLoginModal();
+
+    useEffect(() => {
+        accessToken = parseCookie()('accessToken');
+    }, []);
+
+    useEffect(() => {
+        getAuctions(onSelect.toLowerCase(), page).then((res) =>
+            setAuctionItems([...auctionItems, ...res.data]),
+        );
+    }, [page]);
+
+    useEffect(() => {
+        getAuctions(onSelect.toLowerCase(), page).then((res) =>
+            setAuctionItems(res.data),
+        );
+    }, [onSelect]);
+
+    const onClickFilter = ({ currentTarget }: React.MouseEvent) => {
+        setOnSelect(currentTarget.textContent || 'Newest');
+    };
+
+    const buildFilterWrapper = () => {
+        return (
+            <FilterWrapper>
+                <div>
+                    <Filter
+                        onClick={onClickFilter}
+                        select={onSelect === 'Popular'}
+                    >
+                        Popular
+                    </Filter>
+                </div>
+                <div>
+                    <Filter
+                        onClick={onClickFilter}
+                        select={onSelect === 'Newest'}
+                    >
+                        Newest
+                    </Filter>
+                </div>
+            </FilterWrapper>
+        );
+    };
+
     return (
-        <Container>
-            <Title>
-                <h1>지금 판매중인 작품</h1>
-                <Link href="artwork/post">
-                    <BlackButton>Post Artwork</BlackButton>
-                </Link>
-            </Title>
-            <Grid>
-                {DUMMY_DATA.map((item) => {
-                    return <Card width="lg" content={item} />;
-                })}
-            </Grid>
-        </Container>
+        <>
+            <Container>
+                <Title>
+                    {buildFilterWrapper()}
+                    {accessToken ? (
+                        <Link href="artwork/post">
+                            <BlackButton>Post Artwork</BlackButton>
+                        </Link>
+                    ) : (
+                        <BlackButton onClick={onClickPostArtworkWithoutLogin}>
+                            Post Artwork
+                        </BlackButton>
+                    )}
+                </Title>
+                <Grid>
+                    {auctionItems.map((item) => {
+                        return <Card width="lg" content={item} key={item.id} />;
+                    })}
+                </Grid>
+            </Container>
+            {requireLoginModal && <RequireLoginModal close={closeModal} />}
+        </>
     );
 };
 
@@ -86,7 +93,16 @@ const Container = styled.div`
     ${Center}
     flex-direction: column;
     width: 80%;
+    max-width: 1180px;
     margin-top: 50px;
+
+    & h1 {
+        font: ${(props) => props.theme.font.textEnMd};
+        color: ${(props) => props.theme.color.title};
+        margin: 0;
+        align-self: flex-start;
+        margin-bottom: 50px;
+    }
 `;
 
 const Title = styled.div`
@@ -94,12 +110,7 @@ const Title = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-bottom: 30px;
-
-    & h1 {
-        font: ${(props) => props.theme.font.textXl};
-        color: ${(props) => props.theme.color.title};
-    }
+    margin-bottom: 45px;
 `;
 
 const BlackButton = styled(Button)`
@@ -111,6 +122,26 @@ const Grid = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 50px;
+    margin-bottom: 45px;
+`;
+
+const FilterWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-self: flex-start;
+
+    & div {
+        border-left: 1px solid ${(props) => props.theme.color.placeholder};
+    }
+
+    & > div:first-of-type {
+        border: none;
+    }
+
+    & button {
+        margin: 0 30px 0 30px;
+        box-sizing: content-box;
+    }
 `;
 
 export default AuctionList;

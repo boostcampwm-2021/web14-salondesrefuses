@@ -5,6 +5,11 @@ import { ExhibitionModule } from './exhibition/exhibition.module';
 import { ArtworkModule } from './artwork/artwork.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { AuctionModule } from './auction/auction.module';
+import { SseModule } from './utils/sse/sse.module';
+import { InterestArtworkModule } from './interestArtwork/interestArtwork.module';
+import { CategoryModule } from './category/category.module';
+import { AuctionHistoryModule } from './auctionHistory/auctionHistory.module';
 
 @Module({
     imports: [
@@ -13,6 +18,11 @@ import { AuthModule } from './auth/auth.module';
         ArtworkModule,
         UserModule,
         AuthModule,
+        AuctionModule,
+        InterestArtworkModule,
+        SseModule,
+        CategoryModule,
+        AuctionHistoryModule,
     ],
 })
 export class AppModule {}

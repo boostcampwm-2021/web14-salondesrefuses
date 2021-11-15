@@ -8,34 +8,19 @@ const ArtworkFilter = ({
     checked: string;
     setChecked: React.Dispatch<string>;
 }) => {
-    const onClickArtwork = () => {
-        setChecked('artwork');
-    };
-    const onClickAuction = () => {
-        setChecked('auction');
-    };
+    const getColor = (checked: string, current: string) =>
+        checked === current
+            ? '/icons/check_green.png'
+            : '/icons/check_grey.png';
+
     return (
         <Container>
-            <div onClick={onClickArtwork}>
-                <img
-                    src={
-                        checked === 'artwork'
-                            ? '/icons/check_green.png'
-                            : '/icons/check_grey.png'
-                    }
-                    alt="only art work"
-                />
+            <div onClick={() => setChecked('artwork')}>
+                <img src={getColor(checked, 'artwork')} alt="only art work" />
                 <span>Only Artwork</span>
             </div>
-            <div onClick={onClickAuction}>
-                <img
-                    src={
-                        checked === 'auction'
-                            ? '/icons/check_green.png'
-                            : '/icons/check_grey.png'
-                    }
-                    alt="also on auction"
-                />
+            <div onClick={() => setChecked('auction')}>
+                <img src={getColor(checked, 'auction')} alt="also on auction" />
                 <span>Also On Auction</span>
             </div>
         </Container>
@@ -55,15 +40,16 @@ const Container = styled.div`
     }
 
     & span {
+        cursor: pointer;
+        ${(props) => props.theme.font.textEnBase};
         color: white;
-        font-size: 24px;
         font-weight: 200;
         margin-left: 10px;
     }
 
     & img {
-        width: 32px;
-        height: 32px;
+        width: 24px;
+        height: 24px;
         border: none;
         box-shadow: none;
     }

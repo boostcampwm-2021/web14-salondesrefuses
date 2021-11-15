@@ -10,7 +10,7 @@ export class CustomAuthGuard extends AuthGuard('jwt') {
     constructor(
         private jwtService: JwtService,
         @InjectRepository(UserRepository)
-        private readonly userRepository: UserRepository
+        private readonly userRepository: UserRepository,
     ) {
         super();
     }
@@ -18,31 +18,38 @@ export class CustomAuthGuard extends AuthGuard('jwt') {
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = context.switchToHttp().getRequest();
         const response = context.switchToHttp().getResponse();
+        const jwtOneHour = 60 * 60,
+            cookieOneHour = 1000 * 60 * 60;
 
         const { accessToken, refreshToken } = request.cookies;
 
         const verifiedAccessToken = await this.verifyToken(accessToken);
-        if(verifiedAccessToken) return true;
+        if (verifiedAccessToken) {
+            request.user = verifiedAccessToken;
+            return true;
+        }
 
         const verifiedRefreshToken = await this.verifyToken(refreshToken);
-        if(!verifiedRefreshToken) {
+        if (!verifiedRefreshToken) {
             throw new UnauthorizedException('Refresh token is not valid');
         }
 
-        const { userId } = verifiedRefreshToken;
-        const newAccessToken = this.jwtService.sign({ userId }, { expiresIn: 60 * 60 });
-        response.cookie('accessToken', newAccessToken, { maxAge: 1000 * 60 * 60 });
+        request.user = verifiedRefreshToken;
+        const { userId, loginStrategy } = verifiedRefreshToken;
+        const newAccessToken = this.jwtService.sign({ userId, loginStrategy }, { expiresIn: jwtOneHour });
+        response.cookie('accessToken', newAccessToken, {
+            maxAge: cookieOneHour,
+        });
 
         return true;
     }
 
     async verifyToken(token: string): Promise<User> {
         try {
-            const { userId } = this.jwtService.verify(token);
-            return await this.userRepository.findOne({ userId });
-        } catch(err) {
+            const { userId, loginStrategy } = this.jwtService.verify(token);
+            return await this.userRepository.findOne({ userId, loginStrategy });
+        } catch (err) {
             return null;
         }
     }
-
 }

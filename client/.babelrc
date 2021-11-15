@@ -24,7 +24,8 @@
                     "@styles": "./styles",
                     "@assets": "./assets",
                     "@utils": "./utils",
-                    "@constants": "./constants"
+                    "@constants": "./constants",
+                    "@store": "./store"
                 },
                 "extensions": [".ts", ".tsx"]
             }

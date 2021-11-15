@@ -9,9 +9,7 @@ export class ImageService {
     private s3: AWS.S3;
 
     constructor() {
-        const endpoint = new AWS.Endpoint(
-            process.env.NCP_OBJECT_STORAGE_END_POINT,
-        );
+        const endpoint = new AWS.Endpoint(process.env.NCP_OBJECT_STORAGE_END_POINT);
         const region = process.env.NCP_REGION;
         this.s3 = new AWS.S3({
             endpoint,
@@ -23,9 +21,10 @@ export class ImageService {
         });
     }
 
-    async fileUpload(image): Promise<ObjectStorageData> {
+    async fileUpload(image: Express.Multer.File): Promise<ObjectStorageData> {
         const params = {
             Bucket: process.env.AWS_S3_BUCKET_NAME,
+            ACL: 'public-read',
             Key: `objects/${Date.now()}-${image.originalname}`,
             Body: image.buffer,
         };
@@ -40,13 +39,11 @@ export class ImageService {
         });
     }
 
-    async cropImage(originalImage) {
+    async cropImage(originalImage: Express.Multer.File) {
         const sharpImage = sharp(originalImage.buffer);
         const { height } = await sharpImage.metadata();
 
         const newWidth = Math.floor((height * 2) / 3);
-        return await sharpImage
-            .resize({ width: newWidth, height: height })
-            .toBuffer();
+        return await sharpImage.resize({ width: newWidth, height: height }).toBuffer();
     }
 }

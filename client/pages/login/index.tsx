@@ -45,7 +45,7 @@ const LoginPage = () => {
             <Body>
                 <Logo>
                     <Link href="/">
-                        <Image src={logo} />
+                        <img src={logo.src} alt="logo" />
                     </Link>
                 </Logo>
                 <Image src={sideImage} alt="side image" />
@@ -75,6 +75,7 @@ const Logo = styled.div`
     top: 20px;
     left: 20px;
     z-index: 500;
+    cursor: pointer;
 
     & img {
         height: 40px;

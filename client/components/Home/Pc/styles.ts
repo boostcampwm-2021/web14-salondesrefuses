@@ -18,7 +18,7 @@ export const CarouselSlider = styled(Slider)`
     height: 100%;
 
     & > div {
-        height: 100%;더했습
+        height: 100%;
         width: 100%;
     }
     .slick-slice div {
@@ -26,10 +26,10 @@ export const CarouselSlider = styled(Slider)`
     }
 `;
 interface carouselContentInterface {
-    imgSrc: string;
+    thumbnailImage: string;
 }
 export const CarouselContent = styled.div<carouselContentInterface>`
-    background-image: url(${(props) => props.imgSrc});
+    background-image: url(${(props) => props.thumbnailImage});
     width: 100%;
     height: 500px;
     background-size: cover;
@@ -126,8 +126,8 @@ export const AuctionContainer = styled.div`
     }
 `;
 export const AuctionCardContainer = styled.div`
-    width: 100%;
-    margin-top: 50px;
+    width: 1180px;
+    margin: 50px auto 0 auto;
     ${SpaceBetween};
 `;
 

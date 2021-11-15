@@ -1,11 +1,10 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
-import Image from 'next/image';
 
 const ImageTile = ({ src }: { src: string }) => {
     return (
         <Container>
-            <Image src={src} />
+            <img src={src} />
         </Container>
     );
 };

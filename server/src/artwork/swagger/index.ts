@@ -20,3 +20,15 @@ export const createArtworkApiBody = {
         },
     },
 };
+
+export const interestApiOperation = {
+    summary: '작품 좋아요 등록/해제 API',
+    description: 'isInterest 값이 true면 등록/false면 해제',
+};
+
+export const getArtworkApiOperation = {
+    summary: '특정 작품 조회 API',
+    description: '작품 ID로 특정 작품을 조회한다.'
+};
+
+

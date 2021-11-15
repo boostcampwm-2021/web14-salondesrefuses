@@ -4,10 +4,10 @@ import styled from '@emotion/styled';
 import Tiles from '../Tiles';
 
 interface UploaderProps {
-    setNewImage: React.Dispatch<any>;
+    handleNewImage: (image: File) => void;
 }
 
-const Uploader = ({ setNewImage }: UploaderProps) => {
+const Uploader = ({ handleNewImage }: UploaderProps) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const onClickFileInput = (e: React.MouseEvent) => {
@@ -16,7 +16,7 @@ const Uploader = ({ setNewImage }: UploaderProps) => {
     };
 
     const onChangeFile = (e: React.FormEvent) => {
-        inputRef.current!.files && setNewImage(inputRef.current?.files[0]);
+        inputRef.current?.files && handleNewImage(inputRef.current?.files[0]);
     };
 
     return (
@@ -54,6 +54,7 @@ const FileInput = styled.div`
     height: 100px;
     border: 1px dashed black;
     margin-bottom: 20px;
+    cursor: pointer;
 
     & > input {
         position: absolute;

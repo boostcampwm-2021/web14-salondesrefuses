@@ -1,5 +1,5 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Exhibition } from '../exhibition/exhibition.entity';
+import { ApiProperty } from '@nestjs/swagger';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Category {
@@ -7,8 +7,6 @@ export class Category {
     id: number;
 
     @Column()
+    @ApiProperty()
     name: string;
-
-    @ManyToOne(type => Exhibition, exhibition => exhibition.categories)
-    exhibition: Exhibition;
 }

@@ -7,11 +7,13 @@ import { ArtworkController } from './controller/artwork.controller';
 import { ArtworkService } from './service/artwork.service';
 import { UserRepository } from '../user/user.repository';
 import { JwtModule } from '@nestjs/jwt';
+import { InterestArtworkModule } from '../interestArtwork/interestArtwork.module';
 
 @Module({
     imports: [
         ImageModule,
-        TypeOrmModule.forFeature([ ArtworkRepository, AuctionRepository, UserRepository ]),
+        InterestArtworkModule,
+        TypeOrmModule.forFeature([ArtworkRepository, AuctionRepository, UserRepository]),
         JwtModule.register({
             secret: process.env.JWT_SECRET_KEY,
         }),

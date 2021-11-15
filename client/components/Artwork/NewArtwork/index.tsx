@@ -18,10 +18,10 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
         onChangeTypeInput,
         titleInput,
         typeInput,
-        setModalInputData,
+        handleModalInput,
     } = useInputArtwork(image);
     const { backgroundImageRef, imageRef } = usePreviewImage(image);
-    const { modalPositionBottom, setModalPositionBottom } =
+    const { modalPositionBottom, handleModalPosition } =
         useControlModalPosition();
 
     return (
@@ -48,16 +48,16 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
                         <span>Type</span>
                         <input
                             type="text"
-                            placeholder="Photography ..."
+                            placeholder="ex) Photography ..."
                             value={typeInput}
                             onChange={onChangeTypeInput}
                         />
                     </Input>
                 </Form>
                 <ArtworkModal
-                    setData={setModalInputData}
+                    handleModalInput={handleModalInput}
                     position={modalPositionBottom}
-                    setPosition={setModalPositionBottom}
+                    handleModalPosition={handleModalPosition}
                 />
             </Container>
             <img ref={backgroundImageRef} src="" alt="background" />

@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import { randomExhibitionType } from 'constants/fakeDatas';
 import {
     CarouselSlider,
     SlideWrapper,
@@ -17,24 +16,29 @@ import {
 } from './styles';
 import { setColorFromImage } from '@utils/setColorFromImage';
 import { BlackButton } from '@styles/common';
+import { ExhibitionCardProps } from '@const/card-type';
 
 interface Props {
-    ExhibitionsData: randomExhibitionType[];
+    ExhibitionsData: ExhibitionCardProps[];
 }
 
 const MainCarousel = ({ ExhibitionsData }: Props) => {
-    let [colorList, setColorList] = useState(new Array(5).fill(false));
-    let titleColor = false;
-    // let el: Element | null = null;
+    let [colorList, setColorList] = useState<boolean[]>(
+        new Array(5).fill(false),
+    );
 
     useEffect(() => {
-        setColorList(
-            ExhibitionsData.map((exhibition) =>
-                setColorFromImage(exhibition.imgSrc),
-            ),
-        );
-        // el = document.getElementsByClassName('slick-track')[0];
+        ExhibitionsData.map((exhibition, i) => {
+            setColorFromImage(exhibition.thumbnailImage).then((value) =>
+                setColorList((colorList) => {
+                    let tmp = [...colorList];
+                    tmp[i] = value;
+                    return tmp;
+                }),
+            );
+        });
     }, []);
+
     // useEffect(() => {
     //     console.log(el);
     //     console.log(window.getComputedStyle(el as Element).transition);
@@ -48,7 +52,7 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
                     {ExhibitionsData.map((exhibition, i) => {
                         return (
                             <CarouselContent
-                                imgSrc={exhibition.imgSrc}
+                                thumbnailImage={exhibition.thumbnailImage}
                                 key={exhibition.id}
                             >
                                 <Title isBlack={colorList[i]}>
@@ -58,7 +62,7 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
                                     <ExhibitionContainer>
                                         <StyledImage>
                                             <img
-                                                src={exhibition.imgSrc}
+                                                src={exhibition.thumbnailImage}
                                                 alt="exhibition_id"
                                             />
                                         </StyledImage>
@@ -67,7 +71,7 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
                                                 {exhibition.title}
                                             </InfoTitle>
                                             <InfoDescription>
-                                                {exhibition.artist.nickname}
+                                                {exhibition.artist}
                                             </InfoDescription>
                                             <InfoDescription>
                                                 {exhibition.description}

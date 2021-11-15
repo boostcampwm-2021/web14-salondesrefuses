@@ -1,7 +1,22 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
-const Trend = () => {
+import { GlobalContext } from '@store/GlobalStore';
+import { trendHistory } from '@components/Auction/ItemDetail';
+import TrendHistory from '@components/Auction/Trend/TrendHistory';
+
+const Trend = ({ trendHistoryList }: { trendHistoryList: Array<trendHistory> }) => {
+    const globalContext = useContext(GlobalContext);
+    const { auctionSocket } = globalContext!;
+
+    const [trendHistory, setTrendHistory] = useState<Array<trendHistory>>(trendHistoryList);
+
+    useEffect(() => {
+        auctionSocket.on('bid', (data: trendHistory) => {
+            setTrendHistory(prev => [ data, ...prev ].slice(0, 6));
+        });
+    }, [])
+
     return (
         <Container>
             <h1>가격 변동 추이</h1>
@@ -14,27 +29,9 @@ const Trend = () => {
                         <th>to</th>
                         <th>date</th>
                     </tr>
-                    <tr>
-                        <td>Sale</td>
-                        <td>4 ETH</td>
-                        <td>Moonis</td>
-                        <td>Boost</td>
-                        <td>a Week ago</td>
-                    </tr>
-                    <tr>
-                        <td>Sale</td>
-                        <td>4 ETH</td>
-                        <td>Moonis</td>
-                        <td>Boost</td>
-                        <td>a Week ago</td>
-                    </tr>
-                    <tr>
-                        <td>Sale</td>
-                        <td>4 ETH</td>
-                        <td>Moonis</td>
-                        <td>Boost</td>
-                        <td>a Week ago</td>
-                    </tr>
+                    {trendHistory.map((history, idx) =>
+                        TrendHistory(history, idx))
+                    }
                 </tbody>
             </Table>
         </Container>
