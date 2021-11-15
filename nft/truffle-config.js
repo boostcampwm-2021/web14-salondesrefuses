@@ -78,12 +78,12 @@ module.exports = {
   // timeout: 100000
   // },
 
-  contracts_directory: "./contracts/",
-  contracts_build_directory: "./abis/",
+  // contracts_directory: "./contracts/",
+  // contracts_build_directory: "./abis/",
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.8.9", // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.8.6", // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {

@@ -3,3 +3,4 @@ node_modules
 client/.next
 
 output.sql
+build
