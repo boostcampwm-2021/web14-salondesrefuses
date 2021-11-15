@@ -108,6 +108,7 @@ const EditorElement = ({
         <>
             {type === 'RECTANGULAR' ? (
                 <div
+                    className="editorElement"
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     style={calculateStyle()}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
@@ -118,6 +119,7 @@ const EditorElement = ({
                 </div>
             ) : type === 'TEXT' ? (
                 <div
+                    className="editorElement"
                     style={calculateStyle()}
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
@@ -128,6 +130,7 @@ const EditorElement = ({
                 </div>
             ) : (
                 <img
+                    className="editorElement"
                     src={image!.originalImage}
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     style={calculateStyle()}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import ColorPicker from '../ColorPicker';
 import EditorElement from '../EditorElement';
@@ -23,6 +23,7 @@ const Editor = () => {
     >([]);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [color, setColor] = useState('#000');
+    const editorRef = useRef<HTMLDivElement | null>(null);
 
     const [editorImageState, setEditorImageState] = useEditorImageState();
 
@@ -45,6 +46,15 @@ const Editor = () => {
             },
         ]);
     }, [editorImageState]);
+
+    useEffect(() => {
+        if (!editorRef.current) return;
+        editorRef.current.addEventListener('click', (e) => {
+            (e.target as HTMLDivElement).getElementsByClassName(
+                'editorElement',
+            ) && keyToCurrentElements([]);
+        });
+    }, []);
 
     const createRectangular = () => {
         const element: EditorElementProp = {
@@ -96,7 +106,7 @@ const Editor = () => {
     };
 
     return (
-        <EditorContainer>
+        <EditorContainer ref={editorRef}>
             <ToolBar>
                 <Button onClick={createRectangular} bg={rectButtonIcon.src} />
                 <Button onClick={onClickColorButton} bg={colorButtonIcon.src} />
