@@ -32,13 +32,12 @@ const NWResize = (
 ) => {
     if (!element) return;
     element.style.setProperty(
-        'top',
-        `${top + (ev.clientY - originPoint[1])}px`,
+        'transform',
+        `translate(${ev.clientX - originPoint[0] + left}px, ${
+            ev.clientY - originPoint[1] + top
+        }px)`,
     );
-    element.style.setProperty(
-        'left',
-        `${left + (ev.clientX - originPoint[0])}px`,
-    );
+
     element.style.setProperty(
         'height',
         `${currentHeight - (ev.clientY - originPoint[1])}px`,
@@ -59,8 +58,8 @@ const NResize = (
 ) => {
     if (!element) return;
     element.style.setProperty(
-        'top',
-        `${top + (ev.clientY - originPoint[1])}px`,
+        'transform',
+        `translate(${left}px, ${ev.clientY - originPoint[1] + top}px)`,
     );
     element.style.setProperty(
         'height',
@@ -78,8 +77,8 @@ const NEResize = (
 ) => {
     if (!element) return;
     element.style.setProperty(
-        'top',
-        `${top + (ev.clientY - originPoint[1])}px`,
+        'transform',
+        `translate(${left}px, ${ev.clientY - originPoint[1] + top}px)`,
     );
     element.style.setProperty(
         'height',
@@ -100,7 +99,6 @@ const EResize = (
     originPoint: number[],
 ) => {
     if (!element) return;
-
     element.style.setProperty(
         'width',
         `${currentWidth + (ev.clientX - originPoint[0])}px`,
@@ -151,8 +149,8 @@ const SWResize = (
 ) => {
     if (!element) return;
     element.style.setProperty(
-        'left',
-        `${left + (ev.clientX - originPoint[0])}px`,
+        'transform',
+        `translate(${ev.clientX - originPoint[0] + left}px, ${top}px)`,
     );
     element.style.setProperty(
         'height',
@@ -174,8 +172,8 @@ const WResize = (
 ) => {
     if (!element) return;
     element.style.setProperty(
-        'left',
-        `${left + (ev.clientX - originPoint[0])}px`,
+        'transform',
+        `translate(${ev.clientX - originPoint[0] + left}px, ${top}px)`,
     );
     element.style.setProperty(
         'width',

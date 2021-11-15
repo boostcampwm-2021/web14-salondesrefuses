@@ -1,6 +1,5 @@
 import { dirctionToResize } from './resizeFunctions';
 
-
 const setMouseEventListener = (
     eventType: keyof DocumentEventMap,
     cb: (this: Document, ev: MouseEvent) => any,
@@ -14,29 +13,25 @@ const setMouseEventListener = (
     document.body.onmouseup = removeEvent;
 };
 
-
 export const onDraggable = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     element: HTMLElement | null,
 ) => {
     const dom = element?.getBoundingClientRect();
     if (!dom || !element) return;
-
     const onMouseMove = (ev: MouseEvent) => {
+        // console.log(ev.clientY);
         const { left, top } = (
             e.target as HTMLElement
         ).parentElement?.getBoundingClientRect()!;
+        let newX =
+            ev.clientX - left - (e.target as HTMLElement).offsetWidth / 2;
+        let newY =
+            ev.clientY - top - (e.target as HTMLElement).offsetHeight / 2;
+
         element.style.setProperty(
-            'left',
-            `${
-                ev.clientX - left - (e.target as HTMLElement).offsetWidth / 2
-            }px`,
-        );
-        element.style.setProperty(
-            'top',
-            `${
-                ev.clientY - top - (e.target as HTMLElement).offsetHeight / 2
-            }px`,
+            'transform',
+            `translate(${newX}px, ${newY}px)`,
         );
     };
 
@@ -98,11 +93,13 @@ export const onResize = (
     if (!dom || !element) return;
     let originPoint = [e.clientX, e.clientY];
 
-    const [currentHeight, currentWidth, top, left] = [
+    let [left, top] = element.style.transform
+        .replace(/[^0-9.]+/g, ' ')
+        .split(' ')
+        .filter(Boolean);
+    const [currentHeight, currentWidth] = [
         parseInt(element.style.height),
         parseInt(element.style.width),
-        parseInt(element.style.top),
-        parseInt(element.style.left),
     ];
     const onResizePoint = (ev: MouseEvent) => {
         dirctionToResize(
@@ -111,12 +108,11 @@ export const onResize = (
             ev,
             currentHeight,
             currentWidth,
-            top,
-            left,
+            parseInt(top),
+            parseInt(left),
             originPoint,
         );
     };
 
     setMouseEventListener('mousemove', onResizePoint, element);
 };
-
