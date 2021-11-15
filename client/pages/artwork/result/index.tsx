@@ -7,7 +7,7 @@ import Web3 from 'web3';
 import { Artwork } from 'interfaces';
 import Layout from '@components/common/Layout';
 import { getSingleArtwork } from '@utils/networking';
-import { Center, SpaceAround } from '@styles/common';
+import { Center } from '@styles/common';
 import ResultDetail from '@components/Artwork/ResultDetail';
 
 const DUMMY_DATA: Artwork = {
@@ -47,7 +47,6 @@ const ResultPage = () => {
     };
 
     useEffect(() => {
-        // TODO: id값으로 완성된 Artwork 하나의 정보 가져오기
         if (!id) return;
         getSingleArtwork(+id).then((res) => setArtwork(res.data));
 
@@ -104,7 +103,7 @@ const Body = styled.div`
 
     & > img {
         z-index: 200;
-        max-height: 60vh;
+        max-height: 50vh;
         max-width: 35vw;
         border: 5px solid white;
         box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
