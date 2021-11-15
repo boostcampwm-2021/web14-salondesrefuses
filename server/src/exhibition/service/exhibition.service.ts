@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExhibitionRepository } from '../exhibition.repository';
-import { ExhibitionDTO, HoldExhibitionDTO } from '../dto/exhibitionDTO';
+import { ExhibitionDTO, HoldExhibitionDTO, UpdateExhibitionDTO } from '../dto/exhibitionDTO';
 import { User } from 'src/user/user.entity';
 import { ImageService } from 'src/image/service/image.service';
 import { ArtworkRepository } from 'src/artwork/artwork.repository';
+import { UpdateResult } from 'typeorm';
 
 @Injectable()
 export class ExhibitionService {
@@ -60,7 +61,7 @@ export class ExhibitionService {
         image: Express.Multer.File,
         holdExhibitionDTO: HoldExhibitionDTO,
         user: User,
-    ): Promise<ExhibitionDTO> {
+    ): Promise<HoldExhibitionDTO> {
         const croppedThumbnail = await this.imageService.cropImage(image);
         const thumbnailPath = await this.imageService.fileUpload({ ...image, buffer: croppedThumbnail });
 
@@ -70,7 +71,11 @@ export class ExhibitionService {
             user,
         );
 
-        this.exhibitionRepository.save(newExhibition);
-        return ExhibitionDTO.from(newExhibition, []);
+        await this.exhibitionRepository.save(newExhibition);
+        return HoldExhibitionDTO.from(newExhibition);
+    }
+
+    async updateExhibition({ id, contents }: UpdateExhibitionDTO): Promise<UpdateResult> {
+        return await this.exhibitionRepository.update(id, { contents });
     }
 }

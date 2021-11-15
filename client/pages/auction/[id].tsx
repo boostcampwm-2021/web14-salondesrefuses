@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
@@ -10,11 +10,64 @@ import { GlobalStore } from '@store/GlobalStore';
 import { getAuction } from '@utils/networking';
 
 const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
-    const [zoom, setZoom] = useState(false);
+    const imageRef = useRef<HTMLImageElement | null>(null);
     const magnifierRef = useRef<HTMLImageElement | null>(null);
     const { artwork, artist } = auction;
-    const { title } = artwork;
+    const { title, originalImage } = artwork;
     const { name } = artist;
+    const zoomLevel = 2;
+
+    const getCursorPosition = (e: MouseEvent) => {
+        const { top, left } = imageRef.current?.getBoundingClientRect()!;
+        const { pageX, pageY } = e;
+
+        return {
+            x: pageX - left,
+            y: pageY - top,
+        };
+    };
+
+    const moveMagnifier = (e: MouseEvent) => {
+        if(!magnifierRef.current || !imageRef.current) return;
+
+        const radius = Number(window.getComputedStyle(magnifierRef.current)
+            .width
+            .split('px')[0]) / 2;
+        let { x, y } = getCursorPosition(e);
+        let { width, height } = window.getComputedStyle(imageRef.current);
+        width = width.split('px')[0];
+        height = height.split('px')[0];
+
+        if(x < 0) x = 0;
+        if(y < 0) y = 0;
+        if(x > Number(width)) x = Number(width);
+        if(y > Number(height)) y = Number(height);
+
+        magnifierRef.current.style.top = `${y}px`;
+        magnifierRef.current.style.left = `${x}px`;
+        magnifierRef.current.style.backgroundPosition = `-${(x * zoomLevel) - radius}px -${(y * zoomLevel) - radius}px`;
+    };
+
+    const showMagnify = () => {
+        magnifierRef.current!.classList.toggle('setVisible');
+    }
+
+    useEffect(() => {
+        let { width, height } = window.getComputedStyle(imageRef.current!);
+        width = width.split('px')[0];
+        height = height.split('px')[0];
+
+        magnifierRef.current!.style.backgroundSize =
+            `${Number(width) * zoomLevel}px ${Number(height) * zoomLevel}px`;
+
+        imageRef.current?.addEventListener('mousemove', moveMagnifier);
+        magnifierRef.current?.addEventListener('mousemove', moveMagnifier);
+
+        return(() => {
+            imageRef.current?.removeEventListener('mousemove', moveMagnifier);
+            magnifierRef.current?.removeEventListener('mousemove', moveMagnifier);
+        });
+    }, [])
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -22,17 +75,6 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
             document.body.style.overflow = 'visible';
         };
     }, []);
-
-    const onHoverImage = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!zoom || !magnifierRef.current) return;
-        const { offsetX, offsetY } = e.nativeEvent;
-        magnifierRef.current.style.objectPosition = `${-(offsetX * 2)}px ${-(
-            offsetY * 2
-        )}px`;
-
-        magnifierRef.current.parentElement!.style.top = `${offsetY + 100}px`;
-        magnifierRef.current.parentElement!.style.left = `${offsetX + 90}px`;
-    };
 
     return (
         <>
@@ -45,25 +87,21 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
                 </Head>
                 <Layout>
                     <Container>
-                        <Background src={artwork.originalImage} />
+                        <Background src={originalImage} />
                         <Grid>
                             <section>
-                                <Image
-                                    src={artwork.originalImage}
-                                    onClick={() => {
-                                        setZoom(!zoom);
-                                    }}
-                                    onMouseMove={onHoverImage}
-                                />
-                                {zoom && (
-                                    <Magnifier>
-                                        <img
-                                            src={artwork.originalImage}
-                                            alt=""
-                                            ref={magnifierRef}
-                                        />
-                                    </Magnifier>
-                                )}
+                                <ImageWrapper>
+                                    <Magnifier
+                                        imagePath={originalImage}
+                                        onClick={() => showMagnify()}
+                                        ref={magnifierRef}
+                                    />
+                                    <Image
+                                        src={originalImage}
+                                        onClick={() => showMagnify()}
+                                        ref={imageRef}
+                                    />
+                                </ImageWrapper>
                             </section>
                             <ItemDetail auction={auction}/>
                         </Grid>
@@ -122,23 +160,33 @@ const Grid = styled.div`
     }
 `;
 
+const ImageWrapper = styled.div`
+    display: flex;
+    position: relative;
+`;
+
 const Image = styled.img`
     max-width: 45vh;
     border: 5px solid ${(props) => props.theme.color.white};
     box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.3);
 `;
 
-const Magnifier = styled.div`
+interface MagnifierProps {
+    imagePath: string;
+}
+
+const Magnifier = styled.div<MagnifierProps>`
     width: 100px;
     height: 100px;
     position: absolute;
     z-index: 200;
-    background-color: black;
-    overflow: hidden;
     border: 2px solid rgba(255, 255, 255, 0.9);
-
-    & > img {
-        object-fit: none;
+    background-image: url("${props => props.imagePath}");
+    background-repeat: no-repeat;
+    visibility: hidden;
+    
+    &.setVisible {
+        visibility: visible;
     }
 `;
 
