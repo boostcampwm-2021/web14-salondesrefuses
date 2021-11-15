@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
@@ -28,11 +28,13 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
     };
 
     const moveMagnifier = (e: MouseEvent) => {
-        const radius = Number(window.getComputedStyle(magnifierRef.current!)
+        if(!magnifierRef.current || !imageRef.current) return;
+
+        const radius = Number(window.getComputedStyle(magnifierRef.current)
             .width
             .split('px')[0]) / 2;
         let { x, y } = getCursorPosition(e);
-        let { width, height } = window.getComputedStyle(imageRef.current!);
+        let { width, height } = window.getComputedStyle(imageRef.current);
         width = width.split('px')[0];
         height = height.split('px')[0];
 
@@ -41,9 +43,9 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
         if(x > Number(width)) x = Number(width);
         if(y > Number(height)) y = Number(height);
 
-        magnifierRef.current!.style.top = `${y}px`;
-        magnifierRef.current!.style.left = `${x}px`;
-        magnifierRef.current!.style.backgroundPosition = `-${(x * zoomLevel) - radius}px -${(y * zoomLevel) - radius}px`;
+        magnifierRef.current.style.top = `${y}px`;
+        magnifierRef.current.style.left = `${x}px`;
+        magnifierRef.current.style.backgroundPosition = `-${(x * zoomLevel) - radius}px -${(y * zoomLevel) - radius}px`;
     };
 
     const showMagnify = () => {
