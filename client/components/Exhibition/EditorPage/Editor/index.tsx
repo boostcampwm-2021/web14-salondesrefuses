@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import ColorPicker from '../ColorPicker';
 import EditorElement from '../EditorElement';
@@ -23,14 +23,16 @@ const Editor = () => {
     >([]);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [color, setColor] = useState('#000');
+    const editorRef = useRef<HTMLDivElement | null>(null);
 
     const [editorImageState, setEditorImageState] = useEditorImageState();
 
     useEffect(() => {
         currentElements.forEach((elem) => {
             if (!elem) return;
-            if (elem.tagName === 'DIV') elem.style.backgroundColor = color;
-            if (elem.tagName === 'INPUT') elem.style.color = color;
+            if (elem.classList.contains('RECTANGULAR'))
+                elem.style.backgroundColor = color;
+            if (elem.classList.contains('TEXT')) elem.style.color = color;
         });
     }, [color]);
 
@@ -45,6 +47,19 @@ const Editor = () => {
             },
         ]);
     }, [editorImageState]);
+
+    useEffect(() => {
+        if (!editorRef.current) return;
+        editorRef.current.addEventListener('click', (e) => {
+            if (
+                !(e.target as HTMLDivElement).classList.contains(
+                    'editorElement',
+                )
+            ) {
+                keyToCurrentElements([]);
+            }
+        });
+    }, []);
 
     const createRectangular = () => {
         const element: EditorElementProp = {
@@ -118,7 +133,7 @@ const Editor = () => {
                     />
                 )}
             </ToolBar>
-            <EditArea>{renderElements()}</EditArea>
+            <EditArea ref={editorRef}>{renderElements()}</EditArea>
         </EditorContainer>
     );
 };

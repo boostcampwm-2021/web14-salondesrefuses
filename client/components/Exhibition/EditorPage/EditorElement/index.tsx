@@ -38,10 +38,6 @@ const EditorElement = ({
     const element = elementRef?.current;
     const [LT, LB, RT, RB] = getPositions(element);
 
-    useEffect(() => {
-        type === 'TEXT' && elementRef.current && elementRef.current.focus();
-    }, []);
-
     const calculateStyle = () => {
         return {
             transform: `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`,
@@ -102,20 +98,27 @@ const EditorElement = ({
         );
     }, [currentElements]);
 
+    useEffect(() => {
+        if (!elementRef.current || type !== 'TEXT') return;
+        keyToCurrentElements([elementRef.current]);
+        (elementRef.current.children[0] as HTMLElement).focus();
+    }, []);
+
     return (
         <>
             {type === 'RECTANGULAR' ? (
                 <div
+                    className="editorElement RECTANGULAR"
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     style={calculateStyle()}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
-                    onKeyDown={(e) => isSelected && console.log(e)}
                 >
                     {isSelected && getBorderController()}
                 </div>
             ) : type === 'TEXT' ? (
                 <div
+                    className="editorElement TEXT"
                     style={calculateStyle()}
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
@@ -125,14 +128,21 @@ const EditorElement = ({
                     {isSelected && getBorderController()}
                 </div>
             ) : (
-                <img
-                    src={image!.originalImage}
+                <div
+                    className="editorElement IMAGE"
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     style={calculateStyle()}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
-                    ref={elementRef as RefObject<HTMLImageElement>}
+                    ref={elementRef as RefObject<HTMLDivElement>}
                     draggable={false}
-                />
+                >
+                    <img
+                        src={image!.originalImage}
+                        draggable={false}
+                        style={{ width: 'auto', height: 'auto' }}
+                    />
+                    {isSelected && getBorderController()}
+                </div>
             )}
         </>
     );
@@ -145,6 +155,9 @@ const InputDiv = styled.div`
     overflow: hidden;
     width: 100%;
     height: 100%;
+    &:focus {
+        outline: 0px;
+    }
 `;
 
 export default EditorElement;
