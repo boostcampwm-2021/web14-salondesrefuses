@@ -8,66 +8,14 @@ import Layout from '@components/common/Layout';
 import ItemDetail from '@components/Auction/ItemDetail';
 import { GlobalStore } from '@store/GlobalStore';
 import { getAuction } from '@utils/networking';
+import useMagnifier from '@hooks/useMagnifier';
 
 const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
-    const imageRef = useRef<HTMLImageElement | null>(null);
-    const magnifierRef = useRef<HTMLImageElement | null>(null);
+    const { imageRef, magnifierRef, showMagnify } = useMagnifier();
+
     const { artwork, artist } = auction;
     const { title, originalImage } = artwork;
     const { name } = artist;
-    const zoomLevel = 2;
-
-    const getCursorPosition = (e: MouseEvent) => {
-        const { top, left } = imageRef.current?.getBoundingClientRect()!;
-        const { pageX, pageY } = e;
-
-        return {
-            x: pageX - left,
-            y: pageY - top,
-        };
-    };
-
-    const moveMagnifier = (e: MouseEvent) => {
-        if(!magnifierRef.current || !imageRef.current) return;
-
-        const radius = Number(window.getComputedStyle(magnifierRef.current)
-            .width
-            .split('px')[0]) / 2;
-        let { x, y } = getCursorPosition(e);
-        let { width, height } = window.getComputedStyle(imageRef.current);
-        width = width.split('px')[0];
-        height = height.split('px')[0];
-
-        if(x < 0) x = 0;
-        if(y < 0) y = 0;
-        if(x > Number(width)) x = Number(width);
-        if(y > Number(height)) y = Number(height);
-
-        magnifierRef.current.style.top = `${y}px`;
-        magnifierRef.current.style.left = `${x}px`;
-        magnifierRef.current.style.backgroundPosition = `-${(x * zoomLevel) - radius}px -${(y * zoomLevel) - radius}px`;
-    };
-
-    const showMagnify = () => {
-        magnifierRef.current!.classList.toggle('setVisible');
-    }
-
-    useEffect(() => {
-        let { width, height } = window.getComputedStyle(imageRef.current!);
-        width = width.split('px')[0];
-        height = height.split('px')[0];
-
-        magnifierRef.current!.style.backgroundSize =
-            `${Number(width) * zoomLevel}px ${Number(height) * zoomLevel}px`;
-
-        imageRef.current?.addEventListener('mousemove', moveMagnifier);
-        magnifierRef.current?.addEventListener('mousemove', moveMagnifier);
-
-        return(() => {
-            imageRef.current?.removeEventListener('mousemove', moveMagnifier);
-            magnifierRef.current?.removeEventListener('mousemove', moveMagnifier);
-        });
-    }, [])
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -103,7 +51,7 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
                                     />
                                 </ImageWrapper>
                             </section>
-                            <ItemDetail auction={auction}/>
+                            <ItemDetail auction={auction} />
                         </Grid>
                     </Container>
                 </Layout>
@@ -181,10 +129,10 @@ const Magnifier = styled.div<MagnifierProps>`
     position: absolute;
     z-index: 200;
     border: 2px solid rgba(255, 255, 255, 0.9);
-    background-image: url("${props => props.imagePath}");
+    background-image: url('${(props) => props.imagePath}');
     background-repeat: no-repeat;
     visibility: hidden;
-    
+
     &.setVisible {
         visibility: visible;
     }
