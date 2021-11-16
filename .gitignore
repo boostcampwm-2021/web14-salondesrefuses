@@ -4,3 +4,5 @@ client/.next
 
 output.sql
 build
+
+.DS_Store
