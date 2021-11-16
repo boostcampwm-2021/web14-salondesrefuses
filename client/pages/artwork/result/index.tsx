@@ -3,12 +3,15 @@ import styled from '@emotion/styled';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Web3 from 'web3';
+import { AbiItem } from 'web3-utils';
 
 import { Artwork } from 'interfaces';
 import Layout from '@components/common/Layout';
 import { getSingleArtwork } from '@utils/networking';
 import { Center } from '@styles/common';
 import ResultDetail from '@components/Artwork/ResultDetail';
+import ABI from '@public/ethereum/abi.json';
+import contractAddress from '@public/ethereum/address.json';
 
 const DUMMY_DATA: Artwork = {
     id: 1,
@@ -27,30 +30,41 @@ const DUMMY_DATA: Artwork = {
     ownerId: 2,
 };
 
-// TODO: web3.js 연동, NFT 토큰 Metamask 지갑에 집어넣기.
+let account: string | null;
+
 const ResultPage = () => {
     const { id } = useRouter().query;
     const [artwork, setArtwork] = useState<Artwork>(DUMMY_DATA);
-    const [hover, setHover] = useState(false);
     const web3 = new Web3(
-        new Web3.providers.HttpProvider('http://localhost:7545'),
+        new Web3.providers.HttpProvider('http://118.67.132.119:8545'),
     );
-    console.log(id);
 
-    const getAccounts = async () => {
-        const address = await web3.eth.personal.getAccounts();
-        console.log(address[0]);
-        const balance = await web3.eth
-            .getBalance(address[0])
-            .then((res) => +res / 1000000000000000000);
-        console.log(balance);
+    const onClickConfirm = async () => {
+        if (!window.ethereum) return;
+        await window.ethereum.enable();
+        [account] = await window.ethereum.request({
+            method: 'eth_requestAccounts',
+        });
+        console.log(account);
+
+        const contract = new web3.eth.Contract(
+            ABI.abi as AbiItem[],
+            contractAddress.address,
+        );
+        const result = await contract.methods
+            .createNFT(account, artwork.nftToken)
+            .send({ from: account, gas: 3000000 })
+            .once('receipt', console.log)
+            .on('error', console.log);
+        console.log(result);
     };
 
     useEffect(() => {
         if (!id) return;
         getSingleArtwork(+id).then((res) => setArtwork(res.data));
-
-        getAccounts();
+        window.ethereum.on('accountsChanged', (accounts: string[]) => {
+            account = accounts[0];
+        });
         document.documentElement.style.overflow = 'hidden';
 
         return () => {
@@ -74,7 +88,7 @@ const ResultPage = () => {
                         <ResultDetail artwork={artwork} />
                     </Body>
                     <Buttons>
-                        <button>Confirm</button>
+                        <button onClick={onClickConfirm}>Confirm</button>
                         <button>Reject</button>
                     </Buttons>
                 </Container>
