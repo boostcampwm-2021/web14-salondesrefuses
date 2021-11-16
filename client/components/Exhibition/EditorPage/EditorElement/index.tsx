@@ -16,6 +16,8 @@ interface Prop {
     idx: number;
     currentElements: Array<HTMLElement | null>;
     keyToCurrentElements: (arr: Array<HTMLElement | null>) => void;
+    isDoubleClicked: boolean;
+    setIsDoubleClickedFunc: (check: boolean) => void;
 }
 
 const EditorElement = ({
@@ -28,6 +30,8 @@ const EditorElement = ({
     idx,
     currentElements = [],
     keyToCurrentElements,
+    isDoubleClicked,
+    setIsDoubleClickedFunc,
 }: Prop) => {
     const elementRef = useRef<HTMLElement | null>(null);
     const positionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -41,14 +45,12 @@ const EditorElement = ({
     const calculateStyle = () => {
         let imageHeight;
         let imageWidth;
-        let ratio;
         if (type === 'IMAGE') {
             if (!image) return;
             const tmpImg = new Image();
             tmpImg.src = image.originalImage;
             imageHeight = tmpImg.height;
             imageWidth = tmpImg.width;
-            ratio = imageHeight / imageWidth;
         }
         return {
             transform: `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`,
@@ -153,8 +155,13 @@ const EditorElement = ({
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
+                    onDoubleClick={() => setIsDoubleClickedFunc(true)}
                 >
-                    <InputDiv contentEditable={true}></InputDiv>
+                    <InputDiv
+                        contentEditable={true}
+                        isDoubleClicked={isDoubleClicked}
+                        spellCheck={false}
+                    ></InputDiv>
                     {isSelected && getBorderController(type)}
                 </div>
             ) : (
@@ -182,7 +189,10 @@ const ImgDiv = styled.div<ImgDivProps>`
     background-repeat: no-repeat;
 }
 `;
-const InputDiv = styled.div`
+interface InputDivProps {
+    isDoubleClicked: boolean;
+}
+const InputDiv = styled.div<InputDivProps>`
     background-color: transparent;
     overflow: hidden;
     width: 100%;
@@ -190,6 +200,7 @@ const InputDiv = styled.div`
     &:focus {
         outline: 0px;
     }
+    pointer-events: ${(props) => (props.isDoubleClicked ? 'auto' : 'none')};
 `;
 
 export default EditorElement;
