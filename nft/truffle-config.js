@@ -1,3 +1,4 @@
+require("dotenv").config();
 /**
  * Use this file to configure your truffle project. It's seeded with some
  * common settings for different networks and features like migrations,
@@ -42,7 +43,7 @@ module.exports = {
     // options below to some value.
     //
     development: {
-      host: "118.67.132.119", // Localhost (default: none)
+      host: process.env.NETWORK_HOST, // Localhost (default: none)
       port: 8545, // Standard Ethereum port (default: none)
       network_id: "*", // Any network (default: none)
     },

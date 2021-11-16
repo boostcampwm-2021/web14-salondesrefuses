@@ -34,7 +34,7 @@ contract SalonDesRefuse is ERC721, Ownable {
     }
     
     // 경매 로직 어떻게 할건지 생각해야겠다.
-    function buyToken(uint _tokenId, uint _price) external payable {
+    function buyToken(uint _tokenId) external payable {
         tokenPrice[_tokenId] = msg.value;
     }
 

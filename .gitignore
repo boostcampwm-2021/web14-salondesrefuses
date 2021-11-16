@@ -6,3 +6,4 @@ output.sql
 build
 
 .DS_Store
+.env
