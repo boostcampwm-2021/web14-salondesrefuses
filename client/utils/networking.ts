@@ -15,6 +15,12 @@ export const getAllArtworks = () => {
     });
 };
 
+export const getSingleArtwork = (id: number) => {
+    return axios.get<Artwork>(`${API_SERVER_URL}/artworks/${id}`, {
+        withCredentials: true,
+    });
+};
+
 export const postArtwork = (data: FormData) => {
     return axios.post<PostArtworkResponse>(`${API_SERVER_URL}/artworks`, data, {
         withCredentials: true,
