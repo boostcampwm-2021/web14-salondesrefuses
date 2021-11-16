@@ -16,7 +16,7 @@ const Trend = ({
         useState<Array<trendHistory>>(trendHistoryList);
 
     useEffect(() => {
-        socket.on('bid', (data: trendHistory) => {
+        socket.on('@auction/bid', (data: trendHistory) => {
             setTrendHistory((prev) => [data, ...prev].slice(0, 6));
         });
     }, []);

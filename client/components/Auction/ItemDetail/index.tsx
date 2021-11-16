@@ -27,10 +27,10 @@ const ItemDetail = ({ auction }: { auction: Auction }) => {
         .slice(0, 6);
 
     useEffect(() => {
-        socket.emit('enter', id);
+        socket.emit('@auction/enter', id);
 
         return () => {
-            socket.emit('leave', id);
+            socket.emit('@auction/leave', id);
         };
     }, []);
 

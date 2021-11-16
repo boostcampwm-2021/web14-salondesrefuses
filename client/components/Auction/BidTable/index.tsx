@@ -24,7 +24,7 @@ const BidTable = ({
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
 
     const bidArtwork = () => {
-        socket.emit('bid', {
+        socket.emit('@auction/bid', {
             id,
             bidderName: 'userId',
             price,
@@ -33,7 +33,7 @@ const BidTable = ({
     };
 
     useEffect(() => {
-        socket.on('bid', (data: trendHistory) => {
+        socket.on('@auction/bid', (data: trendHistory) => {
             const currentBidPrice = Number(data.price);
             setPrice(Number((currentBidPrice + 0.01).toFixed(2)));
         });
