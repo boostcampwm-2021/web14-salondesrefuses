@@ -2,24 +2,29 @@ import React, { useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { Auction } from 'interfaces';
-import { GlobalContext } from '@store/GlobalStore';
+import useAuctionSocketState from '@store/auctionSocketState';
 import { trendHistory } from '@components/Auction/ItemDetail';
 import { getRemainingTime } from '@utils/time';
 
-const BidTable = ({ auction, currentPrice }: { auction: Auction, currentPrice: number }) => {
-    const globalContext = useContext(GlobalContext);
+let eventSource: EventSource | null;
+
+const BidTable = ({
+    auction,
+    currentPrice,
+}: {
+    auction: Auction;
+    currentPrice: number;
+}) => {
     const { id, artwork, endAt } = auction;
-    const { auctionSocket, eventSource } = globalContext!;
+    const [socket] = useAuctionSocketState();
 
     const [price, setPrice] = useState<number>(
-        currentPrice
-            ? Number((currentPrice + 0.01).toFixed(2))
-            : artwork.price
+        currentPrice ? Number((currentPrice + 0.01).toFixed(2)) : artwork.price,
     );
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
 
     const bidArtwork = () => {
-        auctionSocket.emit('bid', {
+        socket.emit('bid', {
             id,
             bidderName: 'userId',
             price,
@@ -28,15 +33,19 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction, currentPrice: n
     };
 
     useEffect(() => {
-        auctionSocket.on('bid', (data: trendHistory) => {
+        socket.on('bid', (data: trendHistory) => {
             const currentBidPrice = Number(data.price);
             setPrice(Number((currentBidPrice + 0.01).toFixed(2)));
         });
 
+        eventSource = new EventSource(`${process.env.API_SERVER_URL}/sse`);
+
         eventSource.onmessage = ({ data }) => {
-            setAuctionDeadline(getRemainingTime(Number(data), new Date(endAt).getTime()));
+            setAuctionDeadline(
+                getRemainingTime(Number(data), new Date(endAt).getTime()),
+            );
         };
-    }, [])
+    }, []);
 
     return (
         <Container>

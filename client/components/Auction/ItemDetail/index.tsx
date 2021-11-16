@@ -6,7 +6,7 @@ import BidTable from '../BidTable';
 import Trend from '../Trend';
 import ArtworkDetail from '../ArtworkDetail';
 import { Auction } from 'interfaces';
-import { GlobalContext } from '@store/GlobalStore';
+import useAuctionSocketState from '@store/auctionSocketState';
 
 export type trendHistory = {
     bidderName: string;
@@ -15,8 +15,7 @@ export type trendHistory = {
 };
 
 const ItemDetail = ({ auction }: { auction: Auction }) => {
-    const globalContext = useContext(GlobalContext);
-    const { auctionSocket } = globalContext!;
+    const [socket] = useAuctionSocketState();
 
     const { id, artwork, artist, auctionHistories } = auction;
     const { title, type } = artwork;
@@ -28,17 +27,16 @@ const ItemDetail = ({ auction }: { auction: Auction }) => {
         .slice(0, 6);
 
     useEffect(() => {
-        auctionSocket.emit('enter', id);
+        socket.emit('enter', id);
 
         return () => {
-            auctionSocket.emit('leave', id);
+            socket.emit('leave', id);
         };
     }, []);
 
     return (
         <Container>
             <Summary>
-                {/*<span>전시회 이름</span>*/}
                 <h1>{title}</h1>
                 <span>{type}</span>
             </Summary>

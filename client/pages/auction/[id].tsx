@@ -6,7 +6,6 @@ import Head from 'next/head';
 import { Auction } from 'interfaces';
 import Layout from '@components/common/Layout';
 import ItemDetail from '@components/Auction/ItemDetail';
-import { GlobalStore } from '@store/GlobalStore';
 import { getAuction } from '@utils/networking';
 import useMagnifier from '@hooks/useMagnifier';
 
@@ -26,36 +25,34 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
 
     return (
         <>
-            <GlobalStore>
-                <Head>
-                    <title>
-                        Auction - {title} ({name}, {'2018'})
-                    </title>
-                    <meta name="경매" content="경매경매" />
-                </Head>
-                <Layout>
-                    <Container>
-                        <Background src={originalImage} />
-                        <Grid>
-                            <section>
-                                <ImageWrapper>
-                                    <Magnifier
-                                        imagePath={originalImage}
-                                        onClick={() => showMagnify()}
-                                        ref={magnifierRef}
-                                    />
-                                    <Image
-                                        src={originalImage}
-                                        onClick={() => showMagnify()}
-                                        ref={imageRef}
-                                    />
-                                </ImageWrapper>
-                            </section>
-                            <ItemDetail auction={auction} />
-                        </Grid>
-                    </Container>
-                </Layout>
-            </GlobalStore>
+            <Head>
+                <title>
+                    Auction - {title} ({name}, {'2018'})
+                </title>
+                <meta name="경매" content="경매경매" />
+            </Head>
+            <Layout>
+                <Container>
+                    <Background src={originalImage} />
+                    <Grid>
+                        <section>
+                            <ImageWrapper>
+                                <Magnifier
+                                    imagePath={originalImage}
+                                    onClick={() => showMagnify()}
+                                    ref={magnifierRef}
+                                />
+                                <Image
+                                    src={originalImage}
+                                    onClick={() => showMagnify()}
+                                    ref={imageRef}
+                                />
+                            </ImageWrapper>
+                        </section>
+                        <ItemDetail auction={auction} />
+                    </Grid>
+                </Container>
+            </Layout>
         </>
     );
 };
