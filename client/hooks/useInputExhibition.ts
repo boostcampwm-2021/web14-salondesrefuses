@@ -54,8 +54,8 @@ const useInputExhibition = () => {
         setDescription((e.target as HTMLInputElement).value);
     };
 
-    const onChangeContents = (e: React.FormEvent) => {
-        setContents((e.target as HTMLInputElement).value);
+    const onChangeContents = (contents: string) => {
+        setContents(contents);
     };
 
     return {

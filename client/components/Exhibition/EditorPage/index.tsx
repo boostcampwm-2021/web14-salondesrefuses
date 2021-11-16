@@ -8,9 +8,18 @@ import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/type
 
 interface EditorProp {
     backButtonHandler: () => void;
+    onChangeContents: (contents: string) => void;
+    holdExhibition: (image: File) => void;
+}
+interface ExhibitionElement {
+    tagName: string;
+    innerText: string;
+    style: {
+        [key:string]: string
+    }
 }
 
-const index = ({ backButtonHandler }: EditorProp) => {
+const index = ({ backButtonHandler, onChangeContents, holdExhibition }: EditorProp) => {
     const [elements, setElements] = useState<EditorElementProp[]>([]);
     const editorRef = useRef<HTMLDivElement | null>(null);
 
@@ -18,9 +27,35 @@ const index = ({ backButtonHandler }: EditorProp) => {
         setElements(elementList);
     }
 
+
     const saveButtonHandler = () => {
-        // [ ...editorRef.current?.childNodes! ]
-        //     .forEach((el: ChildNode) => console.log((el as HTMLElement).style));
+        const exhibitionElements: Array<ExhibitionElement> = [];
+        [ ...editorRef.current?.childNodes! ]
+            .forEach((el: ChildNode) => {
+                const element = (el as HTMLElement);
+
+                const { tagName, innerText } = element;
+                const { width, height, color, transform, backgroundColor } = element.style;
+                const { top, left, zIndex } = window.getComputedStyle(element);
+
+                exhibitionElements.push({
+                    tagName,
+                    innerText,
+                    style: {
+                        top,
+                        left,
+                        width,
+                        height,
+                        color,
+                        backgroundColor,
+                        transform,
+                        zIndex,
+                    },
+                });
+            });
+
+            onChangeContents(JSON.stringify(exhibitionElements));
+            // TODO: onClickHold를 통한 전시회 저장
     };
 
     return (

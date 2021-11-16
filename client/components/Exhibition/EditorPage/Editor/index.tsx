@@ -23,13 +23,12 @@ type Props = {
     setElements: Function;
 };
 
-const Editor = ({ elements, setElements }: Props, editorRef: React.MutableRefObject<HTMLDivElement | null>) => {
+const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     const [currentElements, setCurrentElements] = useState<
         Array<HTMLElement | null>
     >([]);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [color, setColor] = useState('#000');
-    // const editorRef = useRef<HTMLDivElement | null>(null);
 
     const [editorImageState, setEditorImageState] = useEditorImageState();
     const [height, setHeight] = useState<number>(1000);
@@ -159,4 +158,4 @@ const Editor = ({ elements, setElements }: Props, editorRef: React.MutableRefObj
     );
 };
 
-export default forwardRef<Props, React.MutableRefObject<HTMLDivElement> | null>(Editor);
+export default forwardRef(Editor);
