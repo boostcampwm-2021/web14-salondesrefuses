@@ -35,11 +35,13 @@ export class AuctionGateway implements OnGatewayInit {
 
     @SubscribeMessage('@auction/bid')
     handleBidAuction(@MessageBody() bidInfo: string, @ConnectedSocket() client: Socket) {
-        const { id, bidderName, price, biddedAt } = JSON.parse(JSON.stringify(bidInfo));
+        const { id, bidderName, price, biddedAt, reset } = JSON.parse(JSON.stringify(bidInfo));
+        console.log(reset);
         this.server.to(id).emit('@auction/bid', {
             bidderName,
             price,
             biddedAt,
+            reset,
         });
         this.auctionHistoryService.saveAuctionHistory(id, bidderName, price, biddedAt);
     }

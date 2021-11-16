@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { Auction } from 'interfaces';
 import useAuctionSocketState from '@store/auctionSocketState';
 import { trendHistory } from '@components/Auction/ItemDetail';
-import { getRemainingTime } from '@utils/time';
+import { getRemainingTime, checkTimeDeltaUnderOneMinute } from '@utils/time';
 
 let eventSource: EventSource | null;
 
@@ -29,6 +29,9 @@ const BidTable = ({
             bidderName: 'userId',
             price,
             biddedAt: Date.now(),
+            reset: checkTimeDeltaUnderOneMinute(endAt, Date.now())
+                ? true
+                : false,
         });
     };
 
