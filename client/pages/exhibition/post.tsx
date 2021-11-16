@@ -54,7 +54,7 @@ const ExhibitionPostPage = () => {
                         </Container>
                     </>
                 ) : (
-                    <Editor backbuttonHandler={handleBackButton} />
+                    <Editor backButtonHandler={handleBackButton} />
                 )}
             </Layout>
         </div>
