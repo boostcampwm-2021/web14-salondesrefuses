@@ -1,9 +1,14 @@
 import styled from '@emotion/styled';
 
-export const EditorContainer = styled.div`
+interface EditorProps {
+    height: number;
+}
+
+export const EditorContainer = styled.div<EditorProps>`
     width: 100%;
-    height: 100vh;
+    height: ${props => props.height}px;
     border: 1px solid ${(props) => props.theme.color.gray1};
+    overflow: hidden;
 `;
 export const ToolBar = styled.div`
     display: flex;
@@ -28,8 +33,9 @@ export const Button = styled.button<{ bg: string }>`
         border-bottom: 2px solid black;
     }
 `;
-export const EditArea = styled.div`
+
+export const EditArea = styled.div<EditorProps>`
     position: relative;
     overflow: hidden;
-    height: calc(100% - 50px);
+    height: ${props => props.height}px;
 `;
