@@ -1,12 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { Auction } from 'interfaces';
 import useAuctionSocketState from '@store/auctionSocketState';
 import { trendHistory } from '@components/Auction/ItemDetail';
 import { getRemainingTime, checkTimeDeltaUnderOneMinute } from '@utils/time';
+import Web3 from 'web3';
+import { WEI } from '@constants/eth';
 
 let eventSource: EventSource | null;
+let account: string | null;
 
 const BidTable = ({
     auction,
@@ -23,7 +26,25 @@ const BidTable = ({
     );
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
 
-    const bidArtwork = () => {
+    const web3 = new Web3(
+        new Web3.providers.HttpProvider('http://118.67.132.119:8545'),
+    );
+
+    const checkBiddable = async (price: number) => {
+        if (!window.ethereum) return false;
+        [account] = await window.ethereum.request({
+            method: 'eth_requestAccounts',
+        });
+        if (!account) return false;
+        const balance = await web3.eth.getBalance(account);
+
+        if (price > +balance / WEI) return false;
+        return true;
+    };
+
+    const bidArtwork = async () => {
+        const biddable = await checkBiddable(price + 100);
+
         socket.emit('@auction/bid', {
             id,
             bidderName: 'userId',
