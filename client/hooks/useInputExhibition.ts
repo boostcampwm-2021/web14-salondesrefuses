@@ -13,16 +13,22 @@ const useInputExhibition = () => {
     const [collaborator, setCollaborator] = useState('');
     const [description, setDescription] = useState('');
     const [contents, setContents] = useState('');
+    const [thumbnail, setThumbnail] = useState<File | null>(null);
 
-    const onClickHold = async (image: File) => {
+    const onClickHold = async () => {
+        if(!contents) {
+            return;
+        }
+
         const formData = new FormData();
         formData.append('title', titleInput);
+        formData.append('collaborator', collaborator);
+        formData.append('theme', theme);
+        formData.append('description', description);
         formData.append('startAt', startAt);
         formData.append('endAt', endAt);
-        formData.append('year', collaborator);
-        formData.append('description', description);
         formData.append('contents', contents);
-        formData.append('thumbnail', image);
+        formData.append('thumbnail', thumbnail!);
 
         const result = await holdExhibition(formData);
         if (onResponseSuccess(result.status)) {
@@ -54,8 +60,12 @@ const useInputExhibition = () => {
         setDescription((e.target as HTMLInputElement).value);
     };
 
-    const onChangeContents = (contents: string) => {
-        setContents(contents);
+    const onChangeContents = async (contents: string): Promise<void> => {
+        await setContents(contents);
+    };
+
+    const onChangeThumbnail = (current: HTMLInputElement | null) => {
+        current!.files && setThumbnail(current!.files[0]);
     };
 
     return {
@@ -66,12 +76,14 @@ const useInputExhibition = () => {
             theme,
             collaborator,
             description,
+            thumbnail,
             onChangeTitleInput,
             onChangeStartAt,
             onChangeEndAt,
             onChangeTheme,
             onChangeCollaborator,
             onChangeDescription,
+            onChangeThumbnail,
         },
         onChangeContents,
         contents,

@@ -8,11 +8,9 @@ import { HoldExhibition } from '../types';
 
 interface FormProps {
     formInput: HoldExhibition;
-    thumbnail: File | null;
-    onChangeThumbnail: (current: HTMLInputElement | null) => void;
 }
 
-const index = ({ formInput, thumbnail, onChangeThumbnail }: FormProps) => {
+const index = ({ formInput }: FormProps) => {
     const thumbnailRef = useRef<HTMLInputElement>(null);
 
     const {
@@ -22,12 +20,14 @@ const index = ({ formInput, thumbnail, onChangeThumbnail }: FormProps) => {
         theme,
         collaborator,
         description,
+        thumbnail,
         onChangeTitleInput,
         onChangeStartAt,
         onChangeEndAt,
         onChangeTheme,
         onChangeCollaborator,
         onChangeDescription,
+        onChangeThumbnail,
     } = formInput;
     return (
         <Container>

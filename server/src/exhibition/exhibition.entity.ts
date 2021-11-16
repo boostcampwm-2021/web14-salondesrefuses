@@ -30,7 +30,10 @@ export class Exhibition {
     @Column()
     thumbnailImage: string;
 
-    @Column()
+    @Column({
+        type: 'text',
+        nullable: true,
+    })
     contents: string;
 
     @ManyToOne(type => User, user => user.exhibitionList)

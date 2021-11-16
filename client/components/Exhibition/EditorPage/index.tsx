@@ -8,12 +8,13 @@ import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/type
 
 interface EditorProp {
     backButtonHandler: () => void;
-    onChangeContents: (contents: string) => void;
-    holdExhibition: (image: File) => void;
+    onChangeContents: (contents: string) => Promise<void>;
+    holdExhibition: () => void;
 }
 interface ExhibitionElement {
     tagName: string;
     innerText: string;
+    imageSrc: string | null;
     style: {
         [key:string]: string
     }
@@ -27,7 +28,6 @@ const index = ({ backButtonHandler, onChangeContents, holdExhibition }: EditorPr
         setElements(elementList);
     }
 
-
     const saveButtonHandler = () => {
         const exhibitionElements: Array<ExhibitionElement> = [];
         [ ...editorRef.current?.childNodes! ]
@@ -37,10 +37,16 @@ const index = ({ backButtonHandler, onChangeContents, holdExhibition }: EditorPr
                 const { tagName, innerText } = element;
                 const { width, height, color, transform, backgroundColor } = element.style;
                 const { top, left, zIndex } = window.getComputedStyle(element);
+                let imageSrc = null;
+
+                if(element.classList.contains('IMAGE')) {
+                    imageSrc = (element.childNodes[0] as HTMLElement).getAttribute('src');
+                }
 
                 exhibitionElements.push({
                     tagName,
                     innerText,
+                    imageSrc,
                     style: {
                         top,
                         left,
@@ -54,8 +60,8 @@ const index = ({ backButtonHandler, onChangeContents, holdExhibition }: EditorPr
                 });
             });
 
-            onChangeContents(JSON.stringify(exhibitionElements));
-            // TODO: onClickHold를 통한 전시회 저장
+        onChangeContents(JSON.stringify(exhibitionElements))
+            .then(() => holdExhibition());
     };
 
     return (
