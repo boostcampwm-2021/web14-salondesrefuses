@@ -55,7 +55,7 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
                         return (
                             <CarouselContent
                                 thumbnailImage={exhibition.thumbnailImage}
-                                key={exhibition.id}
+                                key={i}
                             >
                                 <Title isBlack={colorList[i]}>
                                     Exhibition.

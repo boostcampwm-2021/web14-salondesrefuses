@@ -1,6 +1,8 @@
-import { NestFactory } from '@nestjs/core';
 import * as dotenv from 'dotenv';
 dotenv.config();
+
+import 'pinpoint-node-agent';
+import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { SwaggerModule } from '@nestjs/swagger';

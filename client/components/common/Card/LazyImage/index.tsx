@@ -32,6 +32,10 @@ const LazyImage = ({ src, alt }: ILazyImage) => {
             });
         }
         imageRef.current && observer.observe(imageRef.current);
+
+        return () => {
+            observer = null;
+        };
     }, []);
 
     return (
