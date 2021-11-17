@@ -31,6 +31,8 @@ const ResultDetail = ({ artwork, token }: IResultDetail) => {
 };
 
 const Container = styled.div`
+    width: 100%;
+    min-width: 300px;
     backgrond: black;
     z-index: 200;
     overflow-y: scroll;

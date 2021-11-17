@@ -4,20 +4,16 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
+import { Contract } from 'web3-eth-contract';
 
 import { Artwork } from 'interfaces';
 import Layout from '@components/common/Layout';
 import { getSingleArtwork } from '@utils/networking';
 import { Center } from '@styles/common';
 import ResultDetail from '@components/Artwork/ResultDetail';
-import { Contract } from 'web3-eth-contract';
 
 import ABI from '@public/ethereum/abi.json';
 import contractAddress from '@public/ethereum/address.json';
-
-let account: string | null;
-const ETHEREUM_HOST = process.env.ETHEREUM_HOST;
-const GAS_LIMIT = 3000000;
 
 const ResultPage = () => {
     const {
@@ -29,7 +25,7 @@ const ResultPage = () => {
     const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
     const [contract, setContract] = useState<Contract>();
 
-    const onClickConfirm = async () => {
+    const mint = async () => {
         if (!window.ethereum || !contract) return;
         await window.ethereum.enable();
         [account] = await window.ethereum.request({
@@ -41,8 +37,13 @@ const ResultPage = () => {
             .send({ from: account, gas: GAS_LIMIT });
         const tokenId = result.events.Transfer.returnValues.tokenId;
 
-        const balanceOf = await contract.methods.balanceOf(account!).call();
-        console.log('balance : ', balanceOf);
+        // const balanceOf = await contract.methods.balanceOf(account!).call();
+        // console.log('balance : ', balanceOf);
+        return tokenId;
+    };
+
+    const onClickConfirm = async () => {
+        const tokenId = await mint();
         if (tokenId) setToken(tokenId);
     };
 
@@ -52,21 +53,25 @@ const ResultPage = () => {
     };
 
     useEffect(() => {
-        if (!id) return;
-        getSingleArtwork(+id).then((res) => setArtwork(res.data));
-        window.ethereum.on('accountsChanged', (accounts: string[]) => {
-            account = accounts[0];
-        });
-        let contract = new web3.eth.Contract(
-            ABI.abi as AbiItem[],
-            contractAddress.address,
-        );
-        setContract(contract);
         document.documentElement.style.overflow = 'hidden';
 
         return () => {
             document.documentElement.style.overflow = 'visible';
         };
+    }, []);
+
+    useEffect(() => {
+        if (!id) return;
+        getSingleArtwork(+id).then((res) => setArtwork(res.data));
+        window.ethereum.on('accountsChanged', (accounts: string[]) => {
+            account = accounts[0];
+        });
+        setContract(
+            new web3.eth.Contract(
+                ABI.abi as AbiItem[],
+                contractAddress.address,
+            ),
+        );
     }, [id]);
 
     useEffect(() => {
@@ -109,6 +114,10 @@ const ResultPage = () => {
         </>
     );
 };
+
+let account: string | null;
+const ETHEREUM_HOST = process.env.ETHEREUM_HOST;
+const GAS_LIMIT = 3000000;
 
 const Container = styled.div`
     width: 100vw;
