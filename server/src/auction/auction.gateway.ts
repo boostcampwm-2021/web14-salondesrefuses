@@ -8,6 +8,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { AuctionHistoryService } from '../auctionHistory/auctionHistory.service';
+import AuctionService from './service/auction.service';
 
 @WebSocketGateway({
     namespace: '/auction',
@@ -17,7 +18,10 @@ export class AuctionGateway implements OnGatewayInit {
     @WebSocketServer()
     private server: Server;
 
-    constructor(private readonly auctionHistoryService: AuctionHistoryService) {}
+    constructor(
+        private readonly auctionService: AuctionService,
+        private readonly auctionHistoryService: AuctionHistoryService,
+    ) {}
 
     afterInit(server: Server): void {
         console.log('socket init');
@@ -34,10 +38,23 @@ export class AuctionGateway implements OnGatewayInit {
     }
 
     @SubscribeMessage('@auction/bid')
-    handleBidAuction(@MessageBody() bidInfo: string, @ConnectedSocket() client: Socket) {
-        const { id, bidderName, price, biddedAt, reset } = JSON.parse(JSON.stringify(bidInfo));
-        console.log(reset);
-        this.server.to(id).emit('@auction/bid', {
+    async handleBidAuction(@MessageBody() bidInfo: string, @ConnectedSocket() client: Socket) {
+        const { id, bidderName, price, biddedAt } = JSON.parse(JSON.stringify(bidInfo));
+        const auction = await this.auctionService.getAuctionInfo(id);
+
+        if (auction.endAt.valueOf() - new Date(biddedAt).valueOf() < 60000) {
+            const newEndAt = new Date();
+            newEndAt.setMinutes(newEndAt.getMinutes() + 1);
+
+            this.auctionService.updateAuctionEndAt(id, newEndAt);
+
+            this.server.to(id).emit('time_update', {
+                id,
+                endAt: newEndAt.valueOf(),
+            });
+        }
+
+        this.server.to(id).emit('bid', {
             bidderName,
             price,
             biddedAt,
