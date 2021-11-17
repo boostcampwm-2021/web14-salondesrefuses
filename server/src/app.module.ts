@@ -11,9 +11,12 @@ import { InterestArtworkModule } from './interestArtwork/interestArtwork.module'
 import { CategoryModule } from './category/category.module';
 import { AuctionHistoryModule } from './auctionHistory/auctionHistory.module';
 import { CompletedAuctionModule } from './completedAuction/completedAuction.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronTaskModule } from './cronTask/crontask.module';
 
 @Module({
     imports: [
+        ScheduleModule.forRoot(),
         TypeOrmModule.forRoot(typeORMConfig),
         ExhibitionModule,
         ArtworkModule,
@@ -25,6 +28,7 @@ import { CompletedAuctionModule } from './completedAuction/completedAuction.modu
         CategoryModule,
         AuctionHistoryModule,
         CompletedAuctionModule,
+        CronTaskModule,
     ],
 })
 export class AppModule {}

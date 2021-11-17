@@ -1,5 +1,5 @@
 import { ObjectStorageData } from 'src/image/dto/ImageDTOs';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, In, Repository } from 'typeorm';
 import { Artwork } from './artwork.entity';
 import { ArtworkStatus } from './artwork.status.enum';
 import { CreateArtworkDTO } from './dto/artworkDTOs';
@@ -83,5 +83,13 @@ export class ArtworkRepository extends Repository<Artwork> {
         return await this.find({
             where: { exhibitionId: exhibitonId },
         });
+    }
+
+    async bulkUpdateArtworkState(artworkIds: number[]) {
+        this.createQueryBuilder('artworks')
+            .update()
+            .set({ status: ArtworkStatus.BidCompleted })
+            .where({ id: In(artworkIds) })
+            .execute();
     }
 }

@@ -40,4 +40,8 @@ export default class AuctionService {
         auction.endAt = newEndAt;
         this.auctionRepository.save(auction);
     }
+
+    async getAuctions(): Promise<Auction[]> {
+        return this.auctionRepository.find({ relations: ['artwork'] });
+    }
 }
