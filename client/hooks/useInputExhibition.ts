@@ -12,14 +12,9 @@ const useInputExhibition = () => {
     // const [category, setCategory] = useState('');
     const [collaborator, setCollaborator] = useState('');
     const [description, setDescription] = useState('');
-    const [contents, setContents] = useState('');
     const [thumbnail, setThumbnail] = useState<File | null>(null);
 
-    const onClickHold = async () => {
-        if(!contents) {
-            return;
-        }
-
+    const onClickHold = async (contents: string) => {
         const formData = new FormData();
         formData.append('title', titleInput);
         formData.append('collaborator', collaborator);
@@ -60,10 +55,6 @@ const useInputExhibition = () => {
         setDescription((e.target as HTMLInputElement).value);
     };
 
-    const onChangeContents = async (contents: string): Promise<void> => {
-        await setContents(contents);
-    };
-
     const onChangeThumbnail = (current: HTMLInputElement | null) => {
         current!.files && setThumbnail(current!.files[0]);
     };
@@ -85,8 +76,6 @@ const useInputExhibition = () => {
             onChangeDescription,
             onChangeThumbnail,
         },
-        onChangeContents,
-        contents,
         onClickHold,
     };
 };

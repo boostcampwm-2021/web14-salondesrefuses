@@ -9,7 +9,7 @@ import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/type
 interface EditorProp {
     backButtonHandler: () => void;
     onChangeContents: (contents: string) => Promise<void>;
-    holdExhibition: () => void;
+    holdExhibition: (content: string) => void;
 }
 interface ExhibitionElement {
     tagName: string;
@@ -28,7 +28,7 @@ const index = ({ backButtonHandler, onChangeContents, holdExhibition }: EditorPr
         setElements(elementList);
     }
 
-    const saveButtonHandler = () => {
+    const saveButtonHandler = async () => {
         const exhibitionElements: Array<ExhibitionElement> = [];
         [ ...editorRef.current?.childNodes! ]
             .forEach((el: ChildNode) => {
@@ -60,8 +60,7 @@ const index = ({ backButtonHandler, onChangeContents, holdExhibition }: EditorPr
                 });
             });
 
-        onChangeContents(JSON.stringify(exhibitionElements))
-            .then(() => holdExhibition());
+        holdExhibition(JSON.stringify(exhibitionElements));
     };
 
     return (
