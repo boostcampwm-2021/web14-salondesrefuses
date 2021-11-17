@@ -10,32 +10,31 @@ import Layout from '@components/common/Layout';
 import { getSingleArtwork } from '@utils/networking';
 import { Center } from '@styles/common';
 import ResultDetail from '@components/Artwork/ResultDetail';
+import useContractState from '@store/contractState';
+
 import ABI from '@public/ethereum/abi.json';
 import contractAddress from '@public/ethereum/address.json';
 
 let account: string | null;
+const ETHEREUM_HOST = process.env.ETHEREUM_HOST;
+const GAS_LIMIT = 3000000;
 
 const ResultPage = () => {
     const { id } = useRouter().query;
     const [artwork, setArtwork] = useState<Artwork | null>();
-    const web3 = new Web3(
-        new Web3.providers.HttpProvider('http://118.67.132.119:8545'),
-    );
+    const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
+    const [contract, setContract] = useContractState();
 
     const onClickConfirm = async () => {
-        if (!window.ethereum) return;
+        if (!window.ethereum || !contract) return;
         await window.ethereum.enable();
         [account] = await window.ethereum.request({
             method: 'eth_requestAccounts',
         });
 
-        const contract = new web3.eth.Contract(
-            ABI.abi as AbiItem[],
-            contractAddress.address,
-        );
         const result = await contract.methods
             .createNFT(account, artwork!.nftToken)
-            .send({ from: account, gas: 3000000 })
+            .send({ from: account, gas: GAS_LIMIT })
             .once('receipt', console.log)
             .on('error', console.log);
         console.log(result);
@@ -47,6 +46,12 @@ const ResultPage = () => {
         window.ethereum.on('accountsChanged', (accounts: string[]) => {
             account = accounts[0];
         });
+        setContract(
+            new web3.eth.Contract(
+                ABI.abi as AbiItem[],
+                contractAddress.address,
+            ),
+        );
         document.documentElement.style.overflow = 'hidden';
 
         return () => {
