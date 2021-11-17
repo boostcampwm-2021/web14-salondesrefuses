@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -10,7 +10,7 @@ import Layout from '@components/common/Layout';
 import { getSingleArtwork } from '@utils/networking';
 import { Center } from '@styles/common';
 import ResultDetail from '@components/Artwork/ResultDetail';
-import useContractState from '@store/contractState';
+import { Contract } from 'web3-eth-contract';
 
 import ABI from '@public/ethereum/abi.json';
 import contractAddress from '@public/ethereum/address.json';
@@ -21,9 +21,9 @@ const GAS_LIMIT = 3000000;
 
 const ResultPage = () => {
     const { id } = useRouter().query;
-    const [artwork, setArtwork] = useState<Artwork | null>();
+    const [artwork, setArtwork] = useState<Artwork>();
     const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
-    const [contract, setContract] = useContractState();
+    const [contract, setContract] = useState<Contract>();
 
     const onClickConfirm = async () => {
         if (!window.ethereum || !contract) return;
