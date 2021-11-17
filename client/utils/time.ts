@@ -1,3 +1,5 @@
+const MINUTE = 60000;
+
 export const getRemainingTime = (currentTime: number, deadline: number) => {
     const gap = (deadline - currentTime) / 1000;
 
@@ -47,6 +49,6 @@ export const calcBidDate = (bidDate: number) => {
 
 export const checkTimeDeltaUnderOneMinute = (endDate: Date, bid: number) => {
     const endTimestamp = new Date(endDate).valueOf();
-    if (endTimestamp - bid < 1000) return true;
+    if (endTimestamp - bid < MINUTE) return true;
     return false;
 };

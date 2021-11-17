@@ -18,9 +18,9 @@ const BidTable = ({
     auction: Auction;
     currentPrice: number;
 }) => {
-    const { id, artwork, endAt } = auction;
+    const { id, artwork } = auction;
+    let { endAt } = auction;
     const [socket] = useAuctionSocketState();
-
     const [price, setPrice] = useState<number>(
         currentPrice ? Number((currentPrice + 0.01).toFixed(2)) : artwork.price,
     );
@@ -44,15 +44,12 @@ const BidTable = ({
 
     const bidArtwork = async () => {
         const biddable = await checkBiddable(price + 100);
-
+        if (!biddable) return;
         socket.emit('@auction/bid', {
             id,
             bidderName: 'userId',
             price,
             biddedAt: Date.now(),
-            reset: checkTimeDeltaUnderOneMinute(endAt, Date.now())
-                ? true
-                : false,
         });
     };
 
@@ -61,6 +58,13 @@ const BidTable = ({
             const currentBidPrice = Number(data.price);
             setPrice(Number((currentBidPrice + 0.01).toFixed(2)));
         });
+
+        socket.on(
+            '@auction/time_update',
+            (data: { id: number; endAt: string }) => {
+                endAt = new Date(data.endAt);
+            },
+        );
 
         eventSource = new EventSource(`${process.env.API_SERVER_URL}/sse`);
 
