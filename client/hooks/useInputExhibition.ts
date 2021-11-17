@@ -27,7 +27,7 @@ const useInputExhibition = () => {
 
         const result = await holdExhibition(formData);
         if (onResponseSuccess(result.status)) {
-            router.push(`/exhibitions/${result.data.id}`);
+            router.push(`/exhibition/${result.data.id}`);
         } else alert('작품 등록에 실패했습니다.');
     };
 

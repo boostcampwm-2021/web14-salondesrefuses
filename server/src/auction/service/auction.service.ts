@@ -27,7 +27,7 @@ export default class AuctionService {
         const auction = await this.auctionRepository.findByAuctionWithAuctionHistoryAndArtwork(auctionId);
         return AuctionDetailDTO.from(auction);
     }
-
+    
     async closeAuction(auctionId: number): Promise<Auction> {
         return this.auctionRepository.deleteAuction(auctionId);
     }

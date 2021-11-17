@@ -83,6 +83,14 @@ export class ExhibitionController {
         return this.exhibitionService.getExhibitionsSortedByInterest(page);
     }
 
+    @Get('/:exhibitionId')
+    @ApiOperation(getSpecificExhibitionApiOperation)
+    @ApiParam({ name: 'exhibitionId', type: Number })
+    @ApiResponse({ type: HoldExhibitionDTO })
+    getSpecificExhibition(@Param('exhibitionId', ParseIntPipe) id: number): Promise<HoldExhibitionDTO> {
+        return this.exhibitionService.getSpecificExhibition(id);
+    }
+
     @Post('/post')
     @UseGuards(CustomAuthGuard)
     @UsePipes(ValidationPipe)
