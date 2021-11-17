@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Auction } from '../auction.entity';
 import { AuctionRepository } from '../auction.repository';
 import { AuctionDetailDTO, AuctionListItemDTO } from '../dto/auctionDTOs';
 import { Auction } from '../auction.entity';
@@ -26,9 +27,18 @@ export default class AuctionService {
         const auction = await this.auctionRepository.findByAuctionWithAuctionHistoryAndArtwork(auctionId);
         return AuctionDetailDTO.from(auction);
     }
-
-    closeAuction(auctionId: number): Promise<Auction> {
+    
+    async closeAuction(auctionId: number): Promise<Auction> {
         return this.auctionRepository.deleteAuction(auctionId);
     }
 
+    async getAuctionInfo(auctionId: number): Promise<Auction> {
+        return this.auctionRepository.findOne(auctionId);
+    }
+
+    async updateAuctionEndAt(auctionId: number, newEndAt: Date): Promise<void> {
+        const auction = await this.auctionRepository.findOne(auctionId);
+        auction.endAt = newEndAt;
+        this.auctionRepository.save(auction);
+    }
 }
