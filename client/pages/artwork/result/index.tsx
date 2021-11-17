@@ -22,7 +22,10 @@ const GAS_LIMIT = 3000000;
 const ResultPage = () => {
     const { id } = useRouter().query;
     const [artwork, setArtwork] = useState<Artwork>();
-    const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
+    const [token, setToken] = useState<string>();
+    const web3 = new Web3(
+        new Web3.providers.HttpProvider('http://localhost:8545'),
+    );
     const [contract, setContract] = useState<Contract>();
 
     const onClickConfirm = async () => {
@@ -34,10 +37,12 @@ const ResultPage = () => {
 
         const result = await contract.methods
             .createNFT(account, artwork!.nftToken)
-            .send({ from: account, gas: GAS_LIMIT })
-            .once('receipt', console.log)
-            .on('error', console.log);
-        console.log(result);
+            .send({ from: account, gas: GAS_LIMIT });
+        const tokenId = result.events.Transfer.returnValues.tokenId;
+
+        const balanceOf = await contract.methods.balanceOf(account!).call();
+        console.log('balance : ', balanceOf);
+        if (tokenId) setToken(tokenId);
     };
 
     useEffect(() => {
@@ -50,7 +55,6 @@ const ResultPage = () => {
             ABI.abi as AbiItem[],
             contractAddress.address,
         );
-        console.log(contract);
         setContract(contract);
         document.documentElement.style.overflow = 'hidden';
 
@@ -58,6 +62,10 @@ const ResultPage = () => {
             document.documentElement.style.overflow = 'visible';
         };
     }, [id]);
+
+    useEffect(() => {
+        //TODO : api 만들어주면 토큰 쏘기
+    }, [token]);
 
     return (
         <>
