@@ -16,6 +16,8 @@ interface Prop {
     idx: number;
     currentElements: Array<HTMLElement | null>;
     keyToCurrentElements: (arr: Array<HTMLElement | null>) => void;
+    isDoubleClicked: boolean;
+    setIsDoubleClickedFunc: (check: boolean) => void;
 }
 
 const EditorElement = ({
@@ -28,6 +30,8 @@ const EditorElement = ({
     idx,
     currentElements = [],
     keyToCurrentElements,
+    isDoubleClicked,
+    setIsDoubleClickedFunc,
 }: Prop) => {
     const elementRef = useRef<HTMLElement | null>(null);
     const positionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -39,23 +43,51 @@ const EditorElement = ({
     const [LT, LB, RT, RB] = getPositions(element);
 
     const calculateStyle = () => {
+        let imageHeight;
+        let imageWidth;
+        if (type === 'IMAGE') {
+            if (!image) return;
+            const tmpImg = new Image();
+            tmpImg.src = image.originalImage;
+            imageHeight = tmpImg.height;
+            imageWidth = tmpImg.width;
+        }
         return {
             transform: `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`,
-            width: `${currentStyle.size.width}px`,
-            height: `${currentStyle.size.height}px`,
+            width: `${imageWidth || currentStyle.size.width}px`,
+            height: `${imageHeight || currentStyle.size.height}px`,
             backgroundColor: currentStyle.backgroundColor,
             position: 'absolute' as 'absolute',
             border: isSelected ? '1px solid #3A8FD6' : '0px',
         };
     };
 
-    const getBorderController = () => {
-        return <>{getDots()}</>;
+    const getBorderController = (type: EditorElementType) => {
+        return <>{getDots(type)}</>;
     };
 
-    const getDots = () => {
-        return (
-            <div>
+    const getDots = (type: EditorElementType) => {
+        return type === 'IMAGE' ? (
+            <>
+                <div
+                    style={getDotStyle('NW')}
+                    onMouseDown={(e) => onResize('NW', element, e)}
+                ></div>
+                <div
+                    style={getDotStyle('NE')}
+                    onMouseDown={(e) => onResize('NE', element, e)}
+                ></div>
+                <div
+                    style={getDotStyle('SE')}
+                    onMouseDown={(e) => onResize('SE', element, e)}
+                ></div>
+                <div
+                    style={getDotStyle('SW')}
+                    onMouseDown={(e) => onResize('SW', element, e)}
+                ></div>
+            </>
+        ) : (
+            <>
                 <div
                     style={getDotStyle('NW')}
                     onMouseDown={(e) => onResize('NW', element, e)}
@@ -88,7 +120,7 @@ const EditorElement = ({
                     style={getDotStyle('W')}
                     onMouseDown={(e) => onResize('W', element, e)}
                 ></div>
-            </div>
+            </>
         );
     };
 
@@ -114,7 +146,7 @@ const EditorElement = ({
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
                 >
-                    {isSelected && getBorderController()}
+                    {isSelected && getBorderController(type)}
                 </div>
             ) : type === 'TEXT' ? (
                 <div
@@ -123,34 +155,44 @@ const EditorElement = ({
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
+                    onDoubleClick={() => setIsDoubleClickedFunc(true)}
                 >
-                    <InputDiv contentEditable={true}></InputDiv>
-                    {isSelected && getBorderController()}
+                    <InputDiv
+                        contentEditable={true}
+                        isDoubleClicked={isDoubleClicked}
+                        spellCheck={false}
+                    ></InputDiv>
+                    {isSelected && getBorderController(type)}
                 </div>
             ) : (
-                <div
+                <ImgDiv
                     className="editorElement IMAGE"
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     style={calculateStyle()}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
                     draggable={false}
+                    imgSrc={image!.originalImage}
                 >
-                    <img
-                        src={image!.originalImage}
-                        draggable={false}
-                        style={{ width: 'auto', height: 'auto' }}
-                    />
-                    {isSelected && getBorderController()}
-                </div>
+                    {isSelected && getBorderController(type)}
+                </ImgDiv>
             )}
         </>
     );
 };
-const InputDivWrapper = styled.div`
-    ${Center}
+interface ImgDivProps {
+    imgSrc: string;
+}
+const ImgDiv = styled.div<ImgDivProps>`
+    background-image: url(${(props) => props.imgSrc});
+    background-size: contain;
+    background-repeat: no-repeat;
+}
 `;
-const InputDiv = styled.div`
+interface InputDivProps {
+    isDoubleClicked: boolean;
+}
+const InputDiv = styled.div<InputDivProps>`
     background-color: transparent;
     overflow: hidden;
     width: 100%;
@@ -158,6 +200,7 @@ const InputDiv = styled.div`
     &:focus {
         outline: 0px;
     }
+    pointer-events: ${(props) => (props.isDoubleClicked ? 'auto' : 'none')};
 `;
 
 export default EditorElement;
