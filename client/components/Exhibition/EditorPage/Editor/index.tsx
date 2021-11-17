@@ -28,6 +28,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
         Array<HTMLElement | null>
     >([]);
     const [showColorPicker, setShowColorPicker] = useState(false);
+    const [isDoubleClicked, setIsDoubleClicked] = useState(false);
     const [color, setColor] = useState('#000');
 
     const [editorImageState, setEditorImageState] = useEditorImageState();
@@ -90,6 +91,10 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
 
     const keyToCurrentElements = (keyArr: Array<HTMLElement | null>) => {
         setCurrentElements(keyArr);
+        setIsDoubleClicked(false);
+    };
+    const setIsDoubleClickedFunc = (check: boolean) => {
+        setIsDoubleClicked(check);
     };
 
     const onClickZIndexButton = (direction: string) => {
@@ -124,6 +129,8 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
                 keyToCurrentElements={keyToCurrentElements}
                 type={element.type}
                 image={element.image}
+                isDoubleClicked={isDoubleClicked}
+                setIsDoubleClickedFunc={setIsDoubleClickedFunc}
             ></EditorElement>
         ));
     };

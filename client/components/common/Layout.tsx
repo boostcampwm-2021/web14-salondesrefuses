@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 
 import Header from '@components/Header';
 import Footer from '@components/Footer';
+import Toast from './Toast';
+import useToastState from '@store/toastState';
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -13,7 +15,10 @@ const Layout = ({ children, horizontal }: LayoutProps) => {
     return (
         <div>
             <Header />
-            <Body horizontal={horizontal}>{children}</Body>
+            <Body horizontal={horizontal}>
+                {children}
+                <Toast />
+            </Body>
             <Footer />
         </div>
     );

@@ -4,9 +4,10 @@ import { Artwork } from 'interfaces';
 
 interface IResultDetail {
     artwork: Artwork;
+    token: string | undefined;
 }
 
-const ResultDetail = ({ artwork }: IResultDetail) => {
+const ResultDetail = ({ artwork, token }: IResultDetail) => {
     return (
         <Container>
             <Box>
@@ -23,13 +24,15 @@ const ResultDetail = ({ artwork }: IResultDetail) => {
             </Box>
             <Box>
                 <span>NFT Token</span>
-                <div>{artwork.nftToken}</div>
+                <div>{token && token}</div>
             </Box>
         </Container>
     );
 };
 
 const Container = styled.div`
+    width: 100%;
+    min-width: 300px;
     backgrond: black;
     z-index: 200;
     overflow-y: scroll;
