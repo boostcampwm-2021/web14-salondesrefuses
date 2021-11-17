@@ -34,7 +34,7 @@ export default class AuctionService {
         return this.auctionRepository.findOne(auctionId);
     }
 
-    async updateAuctionEndAt(auctionId: number, newEndAt: Date) {
+    async updateAuctionEndAt(auctionId: number, newEndAt: Date): Promise<void> {
         const auction = await this.auctionRepository.findOne(auctionId);
         auction.endAt = newEndAt;
         this.auctionRepository.save(auction);
