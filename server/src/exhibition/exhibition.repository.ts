@@ -7,6 +7,11 @@ import { HoldExhibitionDTO } from './dto/exhibitionDTO';
 
 @EntityRepository(Exhibition)
 export class ExhibitionRepository extends Repository<Exhibition> {
+
+    async getSpecificExhibition(id: number): Promise<Exhibition> {
+        return await this.findOne({ id });
+    }
+
     async getRandomExhibitions(): Promise<Exhibition[]> {
         return await this.createQueryBuilder('exhibition')
             .innerJoinAndSelect('exhibition.artist', 'artist')
