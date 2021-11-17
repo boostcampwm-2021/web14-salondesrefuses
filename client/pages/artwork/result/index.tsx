@@ -46,12 +46,12 @@ const ResultPage = () => {
         window.ethereum.on('accountsChanged', (accounts: string[]) => {
             account = accounts[0];
         });
-        setContract(
-            new web3.eth.Contract(
-                ABI.abi as AbiItem[],
-                contractAddress.address,
-            ),
+        let contract = new web3.eth.Contract(
+            ABI.abi as AbiItem[],
+            contractAddress.address,
         );
+        console.log(contract);
+        setContract(contract);
         document.documentElement.style.overflow = 'hidden';
 
         return () => {
