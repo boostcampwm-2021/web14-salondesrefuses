@@ -1,7 +1,8 @@
 import {
     ConnectedSocket,
     MessageBody,
-    OnGatewayInit, SubscribeMessage,
+    OnGatewayInit,
+    SubscribeMessage,
     WebSocketGateway,
     WebSocketServer,
 } from '@nestjs/websockets';
@@ -10,10 +11,9 @@ import { AuctionHistoryService } from '../auctionHistory/auctionHistory.service'
 
 @WebSocketGateway({
     namespace: '/auction',
-    cors: '*'
+    cors: '*',
 })
 export class AuctionGateway implements OnGatewayInit {
-
     @WebSocketServer()
     private server: Server;
 
@@ -23,34 +23,26 @@ export class AuctionGateway implements OnGatewayInit {
         console.log('socket init');
     }
 
-    @SubscribeMessage('enter')
-    handleEnterAuctionRoom(
-        @MessageBody() auctionId: string,
-        @ConnectedSocket() client: Socket
-    ) {
+    @SubscribeMessage('@auction/enter')
+    handleEnterAuctionRoom(@MessageBody() auctionId: string, @ConnectedSocket() client: Socket) {
         client.join(auctionId);
     }
 
-    @SubscribeMessage('leave')
-    handleLeaveAuctionRoom(
-        @MessageBody() auctionId: string,
-        @ConnectedSocket() client: Socket
-    ) {
+    @SubscribeMessage('@auction/leave')
+    handleLeaveAuctionRoom(@MessageBody() auctionId: string, @ConnectedSocket() client: Socket) {
         client.leave(auctionId);
     }
 
-    @SubscribeMessage('bid')
-    handleBidAuction(
-        @MessageBody() bidInfo: string,
-        @ConnectedSocket() client: Socket
-    ) {
-        const { id, bidderName, price, biddedAt } = JSON.parse(JSON.stringify(bidInfo));
-        this.server.to(id).emit('bid', {
+    @SubscribeMessage('@auction/bid')
+    handleBidAuction(@MessageBody() bidInfo: string, @ConnectedSocket() client: Socket) {
+        const { id, bidderName, price, biddedAt, reset } = JSON.parse(JSON.stringify(bidInfo));
+        console.log(reset);
+        this.server.to(id).emit('@auction/bid', {
             bidderName,
             price,
             biddedAt,
+            reset,
         });
         this.auctionHistoryService.saveAuctionHistory(id, bidderName, price, biddedAt);
     }
-
 }

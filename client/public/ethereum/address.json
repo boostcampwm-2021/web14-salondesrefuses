@@ -1,4 +1,8 @@
 {
     "name": "SalonDesRefusesAddress",
+<<<<<<< HEAD
     "address": "0x0550d2D19AffAdDd37B0BE4613Af18Af259c960a"
+=======
+    "address": "0x5264ad90786A76C7a3A7eDfe061b7938B04F9DA4"
+>>>>>>> 71e8607 (feat: 입찰 시 잔액을 보고 토스트 띄우도록 구현)
 }
