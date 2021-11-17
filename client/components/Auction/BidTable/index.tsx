@@ -29,7 +29,7 @@ const BidTable = ({
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
 
     const web3 = new Web3(
-        new Web3.providers.HttpProvider('http://localhost:8545'),
+        new Web3.providers.HttpProvider(process.env.ETHEREUM_HOST!),
     );
 
     const checkBiddable = async (price: number) => {
