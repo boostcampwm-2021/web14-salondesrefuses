@@ -78,7 +78,9 @@ const ResultPage = () => {
                     />
                     <Body>
                         <img src={artwork?.originalImage} alt="" />
-                        {artwork && <ResultDetail artwork={artwork} />}
+                        {artwork && (
+                            <ResultDetail artwork={artwork} token={token} />
+                        )}
                     </Body>
                     <Buttons>
                         <button onClick={onClickConfirm}>Confirm</button>

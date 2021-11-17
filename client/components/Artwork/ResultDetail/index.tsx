@@ -4,9 +4,10 @@ import { Artwork } from 'interfaces';
 
 interface IResultDetail {
     artwork: Artwork;
+    token: string;
 }
 
-const ResultDetail = ({ artwork }: IResultDetail) => {
+const ResultDetail = ({ artwork, token }: IResultDetail) => {
     return (
         <Container>
             <Box>
@@ -23,7 +24,7 @@ const ResultDetail = ({ artwork }: IResultDetail) => {
             </Box>
             <Box>
                 <span>NFT Token</span>
-                <div>{artwork.nftToken}</div>
+                <div>{token && token}</div>
             </Box>
         </Container>
     );
