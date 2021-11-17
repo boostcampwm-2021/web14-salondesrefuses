@@ -27,10 +27,9 @@ const BidTable = ({
         currentPrice ? Number((currentPrice + 0.01).toFixed(2)) : artwork.price,
     );
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
-    console.log(toast);
 
     const web3 = new Web3(
-        new Web3.providers.HttpProvider('http://118.67.132.119:8545'),
+        new Web3.providers.HttpProvider('http://localhost:8545'),
     );
 
     const checkBiddable = async (price: number) => {
@@ -40,15 +39,13 @@ const BidTable = ({
         });
         if (!account) return false;
         const balance = await web3.eth.getBalance(account);
-
         if (price > +balance / WEI) return false;
         return true;
     };
 
     const bidArtwork = async () => {
-        const biddable = await checkBiddable(price + 100);
+        const biddable = await checkBiddable(price);
         if (!biddable) {
-            console.log('hihi');
             showToast();
             return;
         }
@@ -63,6 +60,7 @@ const BidTable = ({
     useEffect(() => {
         socket.on('@auction/bid', (data: trendHistory) => {
             const currentBidPrice = Number(data.price);
+            console.log(Number((currentBidPrice + 0.01).toFixed(2)));
             setPrice(Number((currentBidPrice + 0.01).toFixed(2)));
         });
 

@@ -8,7 +8,7 @@ import useToastState from '@store/toastState';
 const Toast = () => {
     const [toast] = useToastState();
     return (
-        <Container show={toast.show} success={toast.success}>
+        <Container show={toast.show}>
             <img
                 src={toast.success ? checkedIcon.src : failureIcon.src}
                 alt=""
