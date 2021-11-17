@@ -4,9 +4,10 @@ import styled from '@emotion/styled';
 import { Auction } from 'interfaces';
 import useAuctionSocketState from '@store/auctionSocketState';
 import { trendHistory } from '@components/Auction/ItemDetail';
-import { getRemainingTime, checkTimeDeltaUnderOneMinute } from '@utils/time';
+import { getRemainingTime } from '@utils/time';
 import Web3 from 'web3';
 import { WEI } from '@constants/eth';
+import useToastState from '@store/toastState';
 
 let eventSource: EventSource | null;
 let account: string | null;
@@ -21,6 +22,7 @@ const BidTable = ({
     const { id, artwork } = auction;
     let { endAt } = auction;
     const [socket] = useAuctionSocketState();
+    const [toast, setToast] = useToastState();
     const [price, setPrice] = useState<number>(
         currentPrice ? Number((currentPrice + 0.01).toFixed(2)) : artwork.price,
     );
@@ -44,7 +46,10 @@ const BidTable = ({
 
     const bidArtwork = async () => {
         const biddable = await checkBiddable(price + 100);
-        if (!biddable) return;
+        if (!biddable) {
+            showToast();
+            return;
+        }
         socket.emit('@auction/bid', {
             id,
             bidderName: 'userId',
@@ -61,7 +66,7 @@ const BidTable = ({
 
         socket.on(
             '@auction/time_update',
-            (data: { id: number; endAt: string }) => {
+            (data: { id: number; endAt: Date }) => {
                 endAt = new Date(data.endAt);
             },
         );
@@ -75,20 +80,31 @@ const BidTable = ({
         };
     }, []);
 
+    const showToast = () => {
+        setToast({ ...toast, show: true });
+        setTimeout(() => {
+            setToast({ ...toast, show: false });
+        }, 2000);
+    };
+
     return (
-        <Container>
-            <Timer>
-                <span>경매 마감 기한</span>
-                <b>{auctionDeadline}</b>
-            </Timer>
-            <Bid>
-                <div>
-                    <span>현재가격</span>
-                    <b>{price} ETH</b>
-                </div>
-                <Button onClick={() => bidArtwork()}>입찰 {price} ETH</Button>
-            </Bid>
-        </Container>
+        <>
+            <Container>
+                <Timer>
+                    <span>경매 마감 기한</span>
+                    <b>{auctionDeadline}</b>
+                </Timer>
+                <Bid>
+                    <div>
+                        <span>현재가격</span>
+                        <b>{price} ETH</b>
+                    </div>
+                    <Button onClick={() => bidArtwork()}>
+                        입찰 {price} ETH
+                    </Button>
+                </Bid>
+            </Container>
+        </>
     );
 };
 
