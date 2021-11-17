@@ -8,7 +8,6 @@ import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/type
 
 interface EditorProp {
     backButtonHandler: () => void;
-    onChangeContents: (contents: string) => Promise<void>;
     holdExhibition: (content: string) => void;
 }
 interface ExhibitionElement {
@@ -20,7 +19,7 @@ interface ExhibitionElement {
     }
 }
 
-const index = ({ backButtonHandler, onChangeContents, holdExhibition }: EditorProp) => {
+const index = ({ backButtonHandler, holdExhibition }: EditorProp) => {
     const [elements, setElements] = useState<EditorElementProp[]>([]);
     const editorRef = useRef<HTMLDivElement | null>(null);
 
