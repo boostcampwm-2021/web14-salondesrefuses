@@ -58,7 +58,6 @@ export class AuctionGateway implements OnGatewayInit {
             bidderName,
             price,
             biddedAt,
-            reset,
         });
         this.auctionHistoryService.saveAuctionHistory(id, bidderName, price, biddedAt);
     }

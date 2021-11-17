@@ -1,8 +1,10 @@
 import {
     Body,
     Controller,
-    Get, Param,
-    ParseIntPipe, Patch,
+    Get,
+    Param,
+    ParseIntPipe,
+    Patch,
     Post,
     Query,
     Req,
@@ -42,14 +44,6 @@ import { UpdateResult } from 'typeorm';
 @ApiTags('전시회 컨트롤러')
 export class ExhibitionController {
     constructor(private exhibitionService: ExhibitionService) {}
-
-    @Get('/:exhibitionId')
-    @ApiOperation(getSpecificExhibitionApiOperation)
-    @ApiParam({ name: 'exhibitionId', type: Number })
-    @ApiResponse({ type: HoldExhibitionDTO })
-    getSpecificExhibition(@Param('exhibitionId', ParseIntPipe) id: number): Promise<HoldExhibitionDTO> {
-        return this.exhibitionService.getSpecificExhibition(id);
-    }
 
     @Get('/random')
     @ApiOperation(getRandomExhibitionsAPiOperation)
@@ -113,5 +107,4 @@ export class ExhibitionController {
     updateExhibition(@Body() updateExhibitionDTO: UpdateExhibitionDTO): Promise<UpdateResult> {
         return this.exhibitionService.updateExhibition(updateExhibitionDTO);
     }
-
 }
