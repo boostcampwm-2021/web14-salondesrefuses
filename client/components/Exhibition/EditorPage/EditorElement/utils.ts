@@ -20,7 +20,6 @@ export const onDraggable = (
     const dom = element?.getBoundingClientRect();
     if (!dom || !element) return;
     const onMouseMove = (ev: MouseEvent) => {
-        // console.log(ev.clientY);
         const { left, top } = (
             e.target as HTMLElement
         ).parentElement?.getBoundingClientRect()!;
@@ -69,7 +68,8 @@ const getDotsPosition = {
     W: ['0%', '50%'],
 };
 export type directionNames = 'NW' | 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W';
-export const getDotStyle = (name: directionNames) => {
+export type imageDirectionNames = 'NW' | 'NE' | 'SE' | 'SW';
+export const getDotStyle = (name: directionNames | imageDirectionNames) => {
     return {
         position: 'absolute' as 'absolute',
         top: `calc(${getDotsPosition[name][1]} - 5px)`,

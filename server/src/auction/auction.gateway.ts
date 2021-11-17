@@ -27,17 +27,17 @@ export class AuctionGateway implements OnGatewayInit {
         console.log('socket init');
     }
 
-    @SubscribeMessage('enter')
+    @SubscribeMessage('@auction/enter')
     handleEnterAuctionRoom(@MessageBody() auctionId: string, @ConnectedSocket() client: Socket) {
         client.join(auctionId);
     }
 
-    @SubscribeMessage('leave')
+    @SubscribeMessage('@auction/leave')
     handleLeaveAuctionRoom(@MessageBody() auctionId: string, @ConnectedSocket() client: Socket) {
         client.leave(auctionId);
     }
 
-    @SubscribeMessage('bid')
+    @SubscribeMessage('@auction/bid')
     async handleBidAuction(@MessageBody() bidInfo: string, @ConnectedSocket() client: Socket) {
         const { id, bidderName, price, biddedAt } = JSON.parse(JSON.stringify(bidInfo));
         const auction = await this.auctionService.getAuctionInfo(id);
@@ -58,6 +58,7 @@ export class AuctionGateway implements OnGatewayInit {
             bidderName,
             price,
             biddedAt,
+            reset,
         });
         this.auctionHistoryService.saveAuctionHistory(id, bidderName, price, biddedAt);
     }

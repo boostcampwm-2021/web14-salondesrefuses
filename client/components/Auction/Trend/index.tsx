@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
-import { GlobalContext } from '@store/GlobalStore';
+import useAuctionSocketState from '@store/auctionSocketState';
 import { trendHistory } from '@components/Auction/ItemDetail';
 import TrendHistory from '@components/Auction/TrendHistory';
 
@@ -10,14 +10,13 @@ const Trend = ({
 }: {
     trendHistoryList: Array<trendHistory>;
 }) => {
-    const globalContext = useContext(GlobalContext);
-    const { auctionSocket } = globalContext!;
+    const [socket] = useAuctionSocketState();
 
     const [trendHistory, setTrendHistory] =
         useState<Array<trendHistory>>(trendHistoryList);
 
     useEffect(() => {
-        auctionSocket.on('bid', (data: trendHistory) => {
+        socket.on('@auction/bid', (data: trendHistory) => {
             setTrendHistory((prev) => [data, ...prev].slice(0, 6));
         });
     }, []);
