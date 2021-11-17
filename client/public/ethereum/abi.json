@@ -20140,6 +20140,7 @@
     },
     "networks": {
         "5777": {
+<<<<<<< HEAD
             "events": {
                 "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": {
                     "anonymous": false,
@@ -20239,6 +20240,12 @@
             "links": {},
             "address": "0x0550d2D19AffAdDd37B0BE4613Af18Af259c960a",
             "transactionHash": "0xffad952284b4179a1c66d71bb257ebc33ad951325e0bedb8018a087ff98f6683"
+=======
+            "events": {},
+            "links": {},
+            "address": "0x5264ad90786A76C7a3A7eDfe061b7938B04F9DA4",
+            "transactionHash": "0xd204c2772af2fd783e54bd91545088a3089c2cccf870b17d9b7a83ba2f100ca7"
+>>>>>>> 71e8607 (feat: 입찰 시 잔액을 보고 토스트 띄우도록 구현)
         },
         "1637125239473": {
             "events": {},
@@ -20248,7 +20255,11 @@
         }
     },
     "schemaVersion": "3.4.3",
+<<<<<<< HEAD
     "updatedAt": "2021-11-17T12:46:17.647Z",
+=======
+    "updatedAt": "2021-11-17T07:02:04.219Z",
+>>>>>>> 71e8607 (feat: 입찰 시 잔액을 보고 토스트 띄우도록 구현)
     "networkType": "ethereum",
     "devdoc": {
         "kind": "dev",

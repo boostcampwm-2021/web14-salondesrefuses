@@ -2,7 +2,7 @@ import { atom, useRecoilState } from 'recoil';
 
 interface IToastState {
     show: boolean;
-    success: true;
+    success: boolean;
     content: string;
 }
 

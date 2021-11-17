@@ -15,8 +15,10 @@ const Layout = ({ children, horizontal }: LayoutProps) => {
     return (
         <div>
             <Header />
-            <Body horizontal={horizontal}>{children}</Body>
-            <Toast />
+            <Body horizontal={horizontal}>
+                {children}
+                <Toast />
+            </Body>
             <Footer />
         </div>
     );

@@ -27,6 +27,7 @@ const BidTable = ({
         currentPrice ? Number((currentPrice + 0.01).toFixed(2)) : artwork.price,
     );
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
+    console.log(toast);
 
     const web3 = new Web3(
         new Web3.providers.HttpProvider('http://118.67.132.119:8545'),
@@ -47,6 +48,7 @@ const BidTable = ({
     const bidArtwork = async () => {
         const biddable = await checkBiddable(price + 100);
         if (!biddable) {
+            console.log('hihi');
             showToast();
             return;
         }
@@ -81,30 +83,35 @@ const BidTable = ({
     }, []);
 
     const showToast = () => {
-        setToast({ ...toast, show: true });
+        setToast({
+            ...toast,
+            show: true,
+            content: '지갑에 ETH가 부족합니다.',
+            success: false,
+        });
         setTimeout(() => {
-            setToast({ ...toast, show: false });
-        }, 2000);
+            setToast({
+                show: false,
+                content: '지갑에 ETH가 부족합니다.',
+                success: false,
+            });
+        }, 5000);
     };
 
     return (
-        <>
-            <Container>
-                <Timer>
-                    <span>경매 마감 기한</span>
-                    <b>{auctionDeadline}</b>
-                </Timer>
-                <Bid>
-                    <div>
-                        <span>현재가격</span>
-                        <b>{price} ETH</b>
-                    </div>
-                    <Button onClick={() => bidArtwork()}>
-                        입찰 {price} ETH
-                    </Button>
-                </Bid>
-            </Container>
-        </>
+        <Container>
+            <Timer>
+                <span>경매 마감 기한</span>
+                <b>{auctionDeadline}</b>
+            </Timer>
+            <Bid>
+                <div>
+                    <span>현재가격</span>
+                    <b>{price} ETH</b>
+                </div>
+                <Button onClick={bidArtwork}>입찰 {price} ETH</Button>
+            </Bid>
+        </Container>
     );
 };
 
