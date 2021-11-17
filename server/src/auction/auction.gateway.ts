@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import {
     ConnectedSocket,
     MessageBody,
@@ -15,6 +16,8 @@ import AuctionService from './service/auction.service';
     cors: '*',
 })
 export class AuctionGateway implements OnGatewayInit {
+    private readonly logger = new Logger(AuctionGateway.name);
+
     @WebSocketServer()
     private server: Server;
 
@@ -24,7 +27,7 @@ export class AuctionGateway implements OnGatewayInit {
     ) {}
 
     afterInit(server: Server): void {
-        console.log('socket init');
+        this.logger.log('socket init');
     }
 
     @SubscribeMessage('@auction/enter')
@@ -48,13 +51,13 @@ export class AuctionGateway implements OnGatewayInit {
 
             this.auctionService.updateAuctionEndAt(id, newEndAt);
 
-            this.server.to(id).emit('time_update', {
+            this.server.to(id).emit('@auction/time_update', {
                 id,
                 endAt: newEndAt.valueOf(),
             });
         }
 
-        this.server.to(id).emit('bid', {
+        this.server.to(id).emit('@auction/bid', {
             bidderName,
             price,
             biddedAt,
