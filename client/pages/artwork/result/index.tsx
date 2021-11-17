@@ -23,9 +23,7 @@ const ResultPage = () => {
     const { id } = useRouter().query;
     const [artwork, setArtwork] = useState<Artwork>();
     const [token, setToken] = useState<string>();
-    const web3 = new Web3(
-        new Web3.providers.HttpProvider('http://localhost:8545'),
-    );
+    const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
     const [contract, setContract] = useState<Contract>();
 
     const onClickConfirm = async () => {
