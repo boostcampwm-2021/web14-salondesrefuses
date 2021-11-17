@@ -13,28 +13,11 @@ import ResultDetail from '@components/Artwork/ResultDetail';
 import ABI from '@public/ethereum/abi.json';
 import contractAddress from '@public/ethereum/address.json';
 
-const DUMMY_DATA: Artwork = {
-    id: 1,
-    title: 'placeat',
-    type: '사진',
-    price: 0.91,
-    description: 'Id temporibus reiciendis molestias.',
-    status: 'InBid',
-    nftToken: 'Qui nisi aut.',
-    originalImage:
-        'https://storage.opensea.io/static/promocards/1989sisters_promo_card.jpeg',
-    croppedImage:
-        'https://storage.opensea.io/static/promocards/1989sisters_promo_card.jpeg',
-    exhibitionId: 1,
-    artistId: 2,
-    ownerId: 2,
-};
-
 let account: string | null;
 
 const ResultPage = () => {
     const { id } = useRouter().query;
-    const [artwork, setArtwork] = useState<Artwork>(DUMMY_DATA);
+    const [artwork, setArtwork] = useState<Artwork | null>();
     const web3 = new Web3(
         new Web3.providers.HttpProvider('http://118.67.132.119:8545'),
     );
@@ -45,14 +28,13 @@ const ResultPage = () => {
         [account] = await window.ethereum.request({
             method: 'eth_requestAccounts',
         });
-        console.log(account);
 
         const contract = new web3.eth.Contract(
             ABI.abi as AbiItem[],
             contractAddress.address,
         );
         const result = await contract.methods
-            .createNFT(account, artwork.nftToken)
+            .createNFT(account, artwork!.nftToken)
             .send({ from: account, gas: 3000000 })
             .once('receipt', console.log)
             .on('error', console.log);
@@ -70,7 +52,7 @@ const ResultPage = () => {
         return () => {
             document.documentElement.style.overflow = 'visible';
         };
-    }, []);
+    }, [id]);
 
     return (
         <>
@@ -80,12 +62,12 @@ const ResultPage = () => {
             <Layout>
                 <Container>
                     <Background
-                        src={artwork.originalImage}
-                        alt={artwork.title}
+                        src={artwork?.originalImage}
+                        alt={artwork?.title}
                     />
                     <Body>
-                        <img src={artwork.originalImage} alt="" />
-                        <ResultDetail artwork={artwork} />
+                        <img src={artwork?.originalImage} alt="" />
+                        {artwork && <ResultDetail artwork={artwork} />}
                     </Body>
                     <Buttons>
                         <button onClick={onClickConfirm}>Confirm</button>
