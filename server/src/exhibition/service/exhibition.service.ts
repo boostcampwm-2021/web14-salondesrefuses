@@ -17,6 +17,11 @@ export class ExhibitionService {
         private readonly imageService: ImageService,
     ) {}
 
+    async getSpecificExhibition(id: number): Promise<HoldExhibitionDTO> {
+        const exhibition = await this.exhibitionRepository.getSpecificExhibition(id);
+        return HoldExhibitionDTO.from(exhibition);
+    }
+
     async getRandomExhibitions(): Promise<ExhibitionDTO[]> {
         const exhibitions = await this.exhibitionRepository.getRandomExhibitions();
         return Promise.all(

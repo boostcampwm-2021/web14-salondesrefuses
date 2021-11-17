@@ -64,4 +64,16 @@ export class AuctionRepository extends Repository<Auction> {
             .innerJoinAndSelect('artwork.artist', 'artist')
             .getOne();
     }
+
+    async deleteAuction(id: number): Promise<Auction> {
+        const auction = await this.createQueryBuilder('auction')
+            .innerJoinAndSelect('auction.artwork', 'artwork')
+            .innerJoinAndSelect('auction.seller', 'seller')
+            .where('auction.id = :id', { id })
+            .getOne();
+
+        this.delete({ id });
+        return auction;
+    }
+
 }

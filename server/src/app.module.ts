@@ -10,6 +10,7 @@ import { SseModule } from './utils/sse/sse.module';
 import { InterestArtworkModule } from './interestArtwork/interestArtwork.module';
 import { CategoryModule } from './category/category.module';
 import { AuctionHistoryModule } from './auctionHistory/auctionHistory.module';
+import { CompletedAuctionModule } from './completedAuction/completedAuction.module';
 
 @Module({
     imports: [
@@ -23,6 +24,7 @@ import { AuctionHistoryModule } from './auctionHistory/auctionHistory.module';
         SseModule,
         CategoryModule,
         AuctionHistoryModule,
+        CompletedAuctionModule,
     ],
 })
 export class AppModule {}

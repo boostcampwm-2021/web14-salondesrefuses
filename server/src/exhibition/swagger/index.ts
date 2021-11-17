@@ -43,3 +43,8 @@ export const updateExhibitionApiOperation = {
     summary: '전시회 수정 API',
     description: '전시회의 contents를 수정한다.'
 }
+
+export const getSpecificExhibitionApiOperation = {
+    summary: '특정 전시회 조회 API',
+    description: '전시회의 고유 id로 전시회를 조회한다.'
+}

@@ -1,7 +1,7 @@
 import {
     Body,
     Controller,
-    Get,
+    Get, Param,
     ParseIntPipe, Patch,
     Post,
     Query,
@@ -14,12 +14,22 @@ import {
 } from '@nestjs/common';
 import { ExhibitionService } from '../service/exhibition.service';
 import { ExhibitionDTO, HoldExhibitionDTO, UpdateExhibitionDTO } from '../dto/exhibitionDTO';
-import { ApiBody, ApiConsumes, ApiOperation, ApiProperty, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+    ApiBody,
+    ApiConsumes,
+    ApiOperation,
+    ApiParam,
+    ApiProperty,
+    ApiQuery,
+    ApiResponse,
+    ApiTags,
+} from '@nestjs/swagger';
 import {
     getExhibitionsSortedByDeadlineApiOperation,
     getExhibitionsSortedByInterestApiOperation,
     getNewestExhibitionApiOperation,
     getRandomExhibitionsAPiOperation,
+    getSpecificExhibitionApiOperation,
     holdExhibitionApiBody,
     updateExhibitionApiOperation,
 } from '../swagger';
@@ -32,6 +42,14 @@ import { UpdateResult } from 'typeorm';
 @ApiTags('전시회 컨트롤러')
 export class ExhibitionController {
     constructor(private exhibitionService: ExhibitionService) {}
+
+    @Get('/:exhibitionId')
+    @ApiOperation(getSpecificExhibitionApiOperation)
+    @ApiParam({ name: 'exhibitionId', type: Number })
+    @ApiResponse({ type: HoldExhibitionDTO })
+    getSpecificExhibition(@Param('exhibitionId', ParseIntPipe) id: number): Promise<HoldExhibitionDTO> {
+        return this.exhibitionService.getSpecificExhibition(id);
+    }
 
     @Get('/random')
     @ApiOperation(getRandomExhibitionsAPiOperation)
@@ -80,11 +98,12 @@ export class ExhibitionController {
         return this.exhibitionService.holdExhibition(image, holdExhibitionDTO, user);
     }
 
-    @Patch('/post')
+    @Patch('/update')
     @UseGuards(CustomAuthGuard)
     @UsePipes(ValidationPipe)
     @ApiOperation(updateExhibitionApiOperation)
     updateExhibition(@Body() updateExhibitionDTO: UpdateExhibitionDTO): Promise<UpdateResult> {
         return this.exhibitionService.updateExhibition(updateExhibitionDTO);
     }
+
 }
