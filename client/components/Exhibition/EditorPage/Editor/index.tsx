@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef } from 'react';
 
 import ColorPicker from '../ColorPicker';
 import EditorElement from '../EditorElement';
@@ -13,19 +13,26 @@ import colorButtonIcon from '@assets/images/editor-color.png';
 import textButtonIcon from '@assets/images/editor-text.png';
 import forwardButtonIcon from '@assets/images/editor-forward.png';
 import backwardButtonIcon from '@assets/images/editor-backward.png';
+import increaseEditorIcon from '@assets/images/increase-editor.png';
+import decreaseEditorIcon from '@assets/images/decrease-editor.png';
 import { useEditorImageState } from '@store/editorImageState';
 import { EditorContainer, ToolBar, Button, EditArea } from './style';
 
-const Editor = () => {
-    const [elements, setElements] = useState<EditorElementProp[]>([]);
+type Props = {
+    elements: EditorElementProp[];
+    setElements: Function;
+};
+
+const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     const [currentElements, setCurrentElements] = useState<
         Array<HTMLElement | null>
     >([]);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [color, setColor] = useState('#000');
-    const editorRef = useRef<HTMLDivElement | null>(null);
 
     const [editorImageState, setEditorImageState] = useEditorImageState();
+    const [height, setHeight] = useState<number>(1000);
+    const initialHeightValue = 1000;
 
     useEffect(() => {
         currentElements.forEach((elem) => {
@@ -50,7 +57,7 @@ const Editor = () => {
 
     useEffect(() => {
         if (!editorRef.current) return;
-        editorRef.current.addEventListener('click', (e) => {
+        editorRef.current.addEventListener('click', (e: any) => {
             if (
                 !(e.target as HTMLDivElement).classList.contains(
                     'editorElement',
@@ -96,6 +103,17 @@ const Editor = () => {
         };
     };
 
+    const onClickIncreaseEditorButton = () => {
+        setHeight(prev => prev + 300);
+    };
+
+    const onClickDecreaseEditorButton = () => {
+        if(height <= initialHeightValue) {
+            return;
+        }
+        setHeight(prev => prev - 300);
+    };
+
     const renderElements = () => {
         return elements.map((element, idx) => (
             <EditorElement
@@ -111,7 +129,7 @@ const Editor = () => {
     };
 
     return (
-        <EditorContainer>
+        <EditorContainer height={height}>
             <ToolBar>
                 <Button onClick={createRectangular} bg={rectButtonIcon.src} />
                 <Button onClick={onClickColorButton} bg={colorButtonIcon.src} />
@@ -124,6 +142,8 @@ const Editor = () => {
                     onClick={onClickZIndexButton('BACKWARD')}
                     bg={backwardButtonIcon.src}
                 />
+                <Button onClick={() => onClickIncreaseEditorButton()} bg={increaseEditorIcon.src} />
+                <Button onClick={() => onClickDecreaseEditorButton()} bg={decreaseEditorIcon.src} />
                 {showColorPicker && (
                     <ColorPicker
                         color={color}
@@ -133,9 +153,9 @@ const Editor = () => {
                     />
                 )}
             </ToolBar>
-            <EditArea ref={editorRef}>{renderElements()}</EditArea>
+            <EditArea height={height} ref={editorRef}>{renderElements()}</EditArea>
         </EditorContainer>
     );
 };
 
-export default Editor;
+export default forwardRef(Editor);

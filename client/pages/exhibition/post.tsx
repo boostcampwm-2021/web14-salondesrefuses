@@ -11,9 +11,8 @@ import useInputExhibition from '@hooks/useInputExhibition';
 
 const ExhibitionPostPage = () => {
     const [currentPage, setCurrentPage] = useState<'FORM' | 'EDITOR'>('FORM');
-    const { formInput, onChangeContents, contents, onClickHold } =
+    const { formInput, onChangeContents, onClickHold } =
         useInputExhibition();
-    const [thumbnail, setThumbnail] = useState<File | null>(null);
 
     const onClickNextButton = () => {
         setCurrentPage('EDITOR');
@@ -21,10 +20,6 @@ const ExhibitionPostPage = () => {
 
     const handleBackButton = () => {
         setCurrentPage('FORM');
-    };
-
-    const onChangeThumbnail = (current: HTMLInputElement | null) => {
-        current!.files && setThumbnail(current!.files[0]);
     };
 
     return (
@@ -42,11 +37,7 @@ const ExhibitionPostPage = () => {
                             </Description>
                         </Title>
                         <Container>
-                            <Form
-                                formInput={formInput}
-                                thumbnail={thumbnail}
-                                onChangeThumbnail={onChangeThumbnail}
-                            />
+                            <Form formInput={formInput} />
                             <ArtworkSelector />
                             <NextButton onClick={onClickNextButton}>
                                 Next
@@ -54,7 +45,7 @@ const ExhibitionPostPage = () => {
                         </Container>
                     </>
                 ) : (
-                    <Editor backbuttonHandler={handleBackButton} />
+                    <Editor backButtonHandler={handleBackButton} onChangeContents={onChangeContents} holdExhibition={onClickHold}/>
                 )}
             </Layout>
         </div>
