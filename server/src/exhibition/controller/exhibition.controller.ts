@@ -43,14 +43,6 @@ import { UpdateResult } from 'typeorm';
 export class ExhibitionController {
     constructor(private exhibitionService: ExhibitionService) {}
 
-    @Get('/:exhibitionId')
-    @ApiOperation(getSpecificExhibitionApiOperation)
-    @ApiParam({ name: 'exhibitionId', type: Number })
-    @ApiResponse({ type: HoldExhibitionDTO })
-    getSpecificExhibition(@Param('exhibitionId', ParseIntPipe) id: number): Promise<HoldExhibitionDTO> {
-        return this.exhibitionService.getSpecificExhibition(id);
-    }
-
     @Get('/random')
     @ApiOperation(getRandomExhibitionsAPiOperation)
     @ApiResponse({ type: ExhibitionDTO })
@@ -81,6 +73,14 @@ export class ExhibitionController {
     @ApiQuery({ name: 'page', type: Number })
     getExhibitionsSortedByInterest(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDTO[]> {
         return this.exhibitionService.getExhibitionsSortedByInterest(page);
+    }
+
+    @Get('/:exhibitionId')
+    @ApiOperation(getSpecificExhibitionApiOperation)
+    @ApiParam({ name: 'exhibitionId', type: Number })
+    @ApiResponse({ type: HoldExhibitionDTO })
+    getSpecificExhibition(@Param('exhibitionId', ParseIntPipe) id: number): Promise<HoldExhibitionDTO> {
+        return this.exhibitionService.getSpecificExhibition(id);
     }
 
     @Post('/post')

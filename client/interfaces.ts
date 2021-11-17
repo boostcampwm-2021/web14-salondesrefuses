@@ -33,3 +33,16 @@ export interface Auction {
     artist: Artist;
     auctionHistories: string[],
 }
+
+export interface Exhibition {
+    id: number;
+    title: string;
+    collaborator: string;
+    theme: string;
+    description: string;
+    startAt: Date;
+    endAt: Date;
+    contents: string;
+    thumbnail: string;
+    categories: string;
+}

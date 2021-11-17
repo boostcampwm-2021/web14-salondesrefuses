@@ -35,11 +35,12 @@ const index = ({ backButtonHandler, holdExhibition }: EditorProp) => {
 
                 const { tagName, innerText } = element;
                 const { width, height, color, transform, backgroundColor } = element.style;
-                const { top, left, zIndex } = window.getComputedStyle(element);
+                const { top, left, zIndex, backgroundImage } = window.getComputedStyle(element);
                 let imageSrc = null;
 
                 if(element.classList.contains('IMAGE')) {
-                    imageSrc = (element.childNodes[0] as HTMLElement).getAttribute('src');
+                    imageSrc = backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2')
+                        .split(',')[0];
                 }
 
                 exhibitionElements.push({
