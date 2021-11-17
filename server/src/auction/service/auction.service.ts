@@ -44,4 +44,8 @@ export default class AuctionService {
     async getAuctions(): Promise<Auction[]> {
         return this.auctionRepository.find({ relations: ['artwork'] });
     }
+
+    async bulkUpdateIsComplete(auctionIds): Promise<void> {
+        this.auctionRepository.bulkUpdateIsComplete(auctionIds);
+    }
 }

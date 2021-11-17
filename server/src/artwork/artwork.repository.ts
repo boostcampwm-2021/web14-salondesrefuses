@@ -85,7 +85,7 @@ export class ArtworkRepository extends Repository<Artwork> {
         });
     }
 
-    async bulkUpdateArtworkState(artworkIds: number[]) {
+    async bulkUpdateArtworkState(artworkIds: number[]): Promise<void> {
         this.createQueryBuilder('artworks')
             .update()
             .set({ status: ArtworkStatus.BidCompleted })

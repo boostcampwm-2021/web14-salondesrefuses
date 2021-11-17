@@ -67,7 +67,7 @@ export class ArtworkService {
         return this.artworkRepository.getArtwork(artworkId);
     }
 
-    async bulkUpdateArtworkState(artworkIds: number[]) {
+    async bulkUpdateArtworkState(artworkIds: number[]): Promise<void> {
         this.artworkRepository.bulkUpdateArtworkState(artworkIds);
     }
 }

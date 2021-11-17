@@ -11,19 +11,18 @@ export class CronTaskService {
 
     constructor(private readonly auctionService: AuctionService, private readonly artworkService: ArtworkService) {}
 
-    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+    @Cron(CronExpression.EVERY_DAY_AT_4AM)
     async changeAuctionState() {
-        this.logger.debug('Called when the every day 00:00');
+        this.logger.debug('Called when the every day 04:00');
         const auctions = await this.auctionService.getAuctions();
 
         const now = new Date().valueOf();
         const midNight = now - (now % this.modular);
-        const artworkIds = auctions
-            .filter(
-                auction => auction.artwork.status === ArtworkStatus.InBid && midNight - auction.endAt.valueOf() <= 0,
-            )
-            .map(auction => auction.artwork.id);
+        const filteredAuctions = auctions.filter(
+            auction => auction.artwork.status === ArtworkStatus.InBid && midNight - auction.endAt.valueOf() <= 0,
+        );
 
-        this.artworkService.bulkUpdateArtworkState(artworkIds);
+        this.auctionService.bulkUpdateIsComplete(filteredAuctions.map(auction => auction.id));
+        this.artworkService.bulkUpdateArtworkState(filteredAuctions.map(auction => auction.artwork.id));
     }
 }
