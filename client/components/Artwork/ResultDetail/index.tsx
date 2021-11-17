@@ -4,7 +4,7 @@ import { Artwork } from 'interfaces';
 
 interface IResultDetail {
     artwork: Artwork;
-    token: string;
+    token: string | undefined;
 }
 
 const ResultDetail = ({ artwork, token }: IResultDetail) => {

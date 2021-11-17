@@ -20,7 +20,10 @@ const ETHEREUM_HOST = process.env.ETHEREUM_HOST;
 const GAS_LIMIT = 3000000;
 
 const ResultPage = () => {
-    const { id } = useRouter().query;
+    const {
+        push,
+        query: { id },
+    } = useRouter();
     const [artwork, setArtwork] = useState<Artwork>();
     const [token, setToken] = useState<string>();
     const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
@@ -41,6 +44,11 @@ const ResultPage = () => {
         const balanceOf = await contract.methods.balanceOf(account!).call();
         console.log('balance : ', balanceOf);
         if (tokenId) setToken(tokenId);
+    };
+
+    const onClickDone = () => {
+        if (!contract) return;
+        push('/');
     };
 
     useEffect(() => {
@@ -83,8 +91,18 @@ const ResultPage = () => {
                         )}
                     </Body>
                     <Buttons>
-                        <button onClick={onClickConfirm}>Confirm</button>
-                        <button>Reject</button>
+                        <Button
+                            onClick={onClickConfirm}
+                            active={token ? false : true}
+                        >
+                            Mint
+                        </Button>
+                        <Button
+                            active={token ? true : false}
+                            onClick={onClickDone}
+                        >
+                            Done
+                        </Button>
                     </Buttons>
                 </Container>
             </Layout>
@@ -133,24 +151,28 @@ const Buttons = styled.div`
     width: 30vw;
     position: absolute;
     bottom: 8%;
+`;
 
-    & > button {
-        height: 50px;
-        width: 40%;
-        border: none;
-        background: rgba(0, 0, 0, 0.4);
-        color: white;
-        box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
+const Button = styled.button<{ active: boolean }>`
+    height: 50px;
+    width: 40%;
+    border: none;
+    background: ${(props) =>
+        props.active ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.1)'};
+    color: white;
+    box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font: ${(props) => props.theme.font.textEnMd};
+
+    ${(props) =>
+        props.active
+            ? `&:hover {
+        background: white;
+        color: black;
         transition: all 0.3s ease;
-        font: ${(props) => props.theme.font.textEnMd};
-
-        &:hover {
-            background: white;
-            color: black;
-            transition: all 0.3s ease;
-        }
-    }
+    }`
+            : ''}
 `;
 
 export default ResultPage;
