@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract SalonDesRefuse is ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
-    address public contarctOwner;
+    address public contractOwner;
 
     mapping(uint => uint) tokenPrice;
     mapping(uint => Bid) lastBid;
@@ -19,7 +19,7 @@ contract SalonDesRefuse is ERC721URIStorage, Ownable {
     }
 
     constructor() ERC721("SalonDesRefuse", "SDR") public {
-        contarctOwner = msg.sender;
+        contractOwner = msg.sender;
     }
 
     function createNFT(address receiver, string memory tokenURI) public returns (uint256){
@@ -33,7 +33,7 @@ contract SalonDesRefuse is ERC721URIStorage, Ownable {
     }
 
     function registerAuction(uint _tokenId) public {
-        approve(contarctOwner, _tokenId);
+        approve(contractOwner, _tokenId);
     }
 
     function bid(uint _tokenId) public payable returns (bool) {
@@ -50,7 +50,7 @@ contract SalonDesRefuse is ERC721URIStorage, Ownable {
     function complete(uint _tokenId) public onlyOwner {
         address tokenOwner = ownerOf(_tokenId);
 
-        require(getApproved(_tokenId) == contarctOwner);
+        require(getApproved(_tokenId) == contractOwner);
 
         payable(tokenOwner).transfer(lastBid[_tokenId].price);
         safeTransferFrom(tokenOwner, lastBid[_tokenId].bidder, _tokenId);
