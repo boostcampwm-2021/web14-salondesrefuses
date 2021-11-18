@@ -33,7 +33,7 @@ const ProfilePage = ({ user }: IPRofilePage) => {
         setDescription((e.target as HTMLTextAreaElement).value);
     };
 
-    const onClickSave = (e: MouseEvent) => {
+    const onClickSave = (e: React.MouseEvent) => {
         // TODO: api 명세 확인해서 formdata 쏘기
         //! 폼데이터 키값 임의로 작성한 것. 정확하지 않음.
         const formData = new FormData();
@@ -46,6 +46,10 @@ const ProfilePage = ({ user }: IPRofilePage) => {
             show: true,
             content: '프로필이 업데이트되었습니다.',
         });
+
+        setTimeout(() => {
+            setToast({ show: false, content: '프로필이 업데이트되었습니다.' });
+        }, 3000);
     };
 
     return (
@@ -65,7 +69,7 @@ const ProfilePage = ({ user }: IPRofilePage) => {
                     <textarea name="" id="" cols={50} rows={10} value={description} onChange={onChangeDescription} />
                 </div>
             </Form>
-            <BlackButton>Save</BlackButton>
+            <BlackButton onClick={onClickSave}>Save</BlackButton>
         </Container>
     );
 };

@@ -76,7 +76,7 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
                 show: false,
                 content: '지갑에 ETH가 부족합니다.',
             });
-        }, 5000);
+        }, 3000);
     };
 
     return (

@@ -22,7 +22,7 @@ const Container = styled.div<{ show: boolean }>`
     gap: 20px;
     align-items: center;
     border-radius: 35px;
-    backdrop-filter: 3px 5px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
     font: ${(props) => props.theme.font.textMd};
     font-size: 1rem;
 
