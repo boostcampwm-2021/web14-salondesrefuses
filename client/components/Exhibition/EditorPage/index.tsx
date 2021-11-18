@@ -30,7 +30,7 @@ const index = ({ backButtonHandler, holdExhibition }: EditorProp) => {
     const saveButtonHandler = async () => {
         const exhibitionElements: Array<ExhibitionElement> = [];
         if (!editorRef.current) return;
-        const editorSize = editorRef.current.style.height;
+        const editorSize = window.getComputedStyle(editorRef.current!).height;
 
         [...editorRef.current.childNodes].forEach((el: ChildNode) => {
             const element = el as HTMLElement;
@@ -39,7 +39,6 @@ const index = ({ backButtonHandler, holdExhibition }: EditorProp) => {
             const { width, height, color, transform, backgroundColor } = element.style;
             const { top, left, zIndex, backgroundImage } = window.getComputedStyle(element);
             let imageSrc = null;
-
             if (element.classList.contains('IMAGE')) {
                 imageSrc = backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
             }

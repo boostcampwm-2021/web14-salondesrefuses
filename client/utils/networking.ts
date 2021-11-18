@@ -72,10 +72,6 @@ export const getAuction = (auctionId: number) => {
 };
 
 export const getExhibition = (exhibitionId: string) => {
-<<<<<<< HEAD
-    return axios.get<Exhibition>(
-        `${API_SERVER_URL}/exhibitions/${exhibitionId}`,
-=======
     return axios.get<Exhibition>(`${API_SERVER_URL}/exhibitions/${exhibitionId}`);
 };
 
@@ -109,15 +105,10 @@ export const getUserExhibitions = () => {
             withCredentials: true,
         })
         .then((res) => res.data);
-}
+};
 
 export const setNFTToken = (artworkId: number, nftToken?: string) => {
-    return axios.patch(
-        `${API_SERVER_URL}/artworks/${artworkId}/nft`,
-        nftToken,
-        {
-            withCredentials: true,
-        }
->>>>>>> 4e8603a2be3308a4d902f06b3911c0be51fee35e
-    );
+    return axios.patch(`${API_SERVER_URL}/artworks/${artworkId}/nft`, nftToken, {
+        withCredentials: true,
+    });
 };
