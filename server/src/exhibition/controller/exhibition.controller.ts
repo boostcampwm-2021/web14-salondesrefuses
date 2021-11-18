@@ -15,7 +15,7 @@ import {
     ValidationPipe,
 } from '@nestjs/common';
 import { ExhibitionService } from '../service/exhibition.service';
-import { ExhibitionDTO, HoldExhibitionDTO, UpdateExhibitionDTO } from '../dto/exhibitionDTO';
+import { ExhibitionDetailDTO, ExhibitionDTO, HoldExhibitionDTO, UpdateExhibitionDTO } from '../dto/exhibitionDTO';
 import {
     ApiBody,
     ApiConsumes,
@@ -80,8 +80,8 @@ export class ExhibitionController {
     @Get('/:exhibitionId')
     @ApiOperation(getSpecificExhibitionApiOperation)
     @ApiParam({ name: 'exhibitionId', type: Number })
-    @ApiResponse({ type: HoldExhibitionDTO })
-    getSpecificExhibition(@Param('exhibitionId', ParseIntPipe) id: number): Promise<HoldExhibitionDTO> {
+    @ApiResponse({ type: ExhibitionDetailDTO })
+    getSpecificExhibition(@Param('exhibitionId', ParseIntPipe) id: number): Promise<ExhibitionDetailDTO> {
         return this.exhibitionService.getSpecificExhibition(id);
     }
 
