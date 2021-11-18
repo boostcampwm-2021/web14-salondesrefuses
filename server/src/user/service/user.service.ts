@@ -9,6 +9,7 @@ import { UpdateResult } from 'typeorm';
 import { RequestUserDTO } from '../dto/userDTO';
 import { ExhibitionRepository } from '../../exhibition/exhibition.repository';
 import { Exhibition } from '../../exhibition/exhibition.entity';
+import { AuctionHistoryRepository } from '../../auctionHistory/auctionHistory.repository';
 
 @Injectable()
 export class UserService {
@@ -20,6 +21,8 @@ export class UserService {
         private artworkRepository: ArtworkRepository,
         @InjectRepository(ExhibitionRepository)
         private exhibitionRepository: ExhibitionRepository,
+        @InjectRepository(AuctionHistoryRepository)
+        private auctionHistoryRepository: AuctionHistoryRepository
     ) {}
 
     async checkRegisteredUser(userId: string, name: string, avatar: string, loginStrategy: string): Promise<User> {
@@ -65,12 +68,13 @@ export class UserService {
         return this.artworkRepository.getInterestArtworks(id);
     }
 
-    getBiddingArtworks({ id }: User): Promise<Artwork[]> {
-        return this.artworkRepository.getBiddingArtworks(id);
+    async getBiddingArtworks({ id }: User): Promise<Artwork[]> {
+        const auctionHistories = await this.auctionHistoryRepository.getBiddingAuctions(id);
+        return auctionHistories.map(el => el.auction.artwork);
     }
 
-    getBiddedArtworks({ id }: User): Promise<Artwork[]> {
-        return this.artworkRepository.getBiddedArtworks(id);
+    getBiddedArtworks(nftTokens: string): Promise<Artwork[]> {
+        return this.artworkRepository.getBiddedArtworks(JSON.parse(JSON.stringify(nftTokens)));
     }
 
     getUsersExhibitions(user: User): Promise<Exhibition[]> {

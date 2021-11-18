@@ -12,6 +12,7 @@ import { AbiItem } from 'web3-utils';
 import { Contract } from 'web3-eth-contract';
 import ABI from '@public/ethereum/abi.json';
 import contractAddress from '@public/ethereum/address.json';
+import useSessionState from '@store/sessionState';
 
 let eventSource: EventSource | null;
 let account: string | null;
@@ -24,6 +25,7 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
     const [price, setPrice] = useState<number>(currentPrice ? Number((currentPrice + 0.01).toFixed(2)) : artwork.price);
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
     const [contract, setContract] = useState<Contract>();
+    const user = useSessionState().getValue(); // 유저 객체
 
     const web3 = new Web3(new Web3.providers.HttpProvider(process.env.ETHEREUM_HOST!));
 
@@ -65,9 +67,11 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
             showToast();
             return;
         }
+
         socket.emit('@auction/bid', {
-            id,
-            bidderName: 'userId',
+            auctionId: id,
+            bidderId: user!.id,
+            bidderName: user!.name,
             price,
             biddedAt: Date.now(),
         });

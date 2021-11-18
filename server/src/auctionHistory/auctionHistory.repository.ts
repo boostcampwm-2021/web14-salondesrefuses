@@ -11,4 +11,13 @@ export class AuctionHistoryRepository extends Repository<AuctionHistory> {
             .getOne();
     }
 
+    async getBiddingAuctions(bidderId: number): Promise<AuctionHistory[]> {
+        return await this.createQueryBuilder('auctionHistory')
+            .where('auctionHistory.bidderId = :bidderId', { bidderId })
+            .innerJoinAndSelect('auctionHistory.auction', 'auction')
+            .innerJoinAndSelect('auction.artwork', 'artwork')
+            .groupBy('artwork.id')
+            .getMany();
+    }
+
 }

@@ -15,7 +15,7 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
     const user = useSessionState(); // 유저 객체
 
     const { artwork, artist } = auction;
-    const { title, originalImage } = artwork;
+    const { title, originalImage, year } = artwork;
     const { name } = artist;
 
     useEffect(() => {
@@ -29,7 +29,7 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
         <>
             <Head>
                 <title>
-                    Auction - {title} ({name}, {'2018'})
+                    Auction - {title} ({name}, {year})
                 </title>
                 <meta name="경매" content="경매경매" />
             </Head>
