@@ -7,10 +7,7 @@ import AuctionController from './controller/auction.controller';
 import AuctionService from './service/auction.service';
 
 @Module({
-    imports: [
-        AuctionHistoryModule,
-        TypeOrmModule.forFeature([AuctionRepository]),
-    ],
+    imports: [AuctionHistoryModule, TypeOrmModule.forFeature([AuctionRepository])],
     controllers: [AuctionController],
     providers: [AuctionService, AuctionGateway],
     exports: [AuctionService],
