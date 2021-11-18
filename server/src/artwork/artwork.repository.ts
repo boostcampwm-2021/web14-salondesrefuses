@@ -12,7 +12,7 @@ export class ArtworkRepository extends Repository<Artwork> {
         createArtWorkDTO: CreateArtworkDTO,
         { Location: originalImagePath }: ObjectStorageData,
         { Location: croppedImagePath }: ObjectStorageData,
-        nftToken: string,
+        cid: string,
     ): Artwork {
         return this.create({
             title: createArtWorkDTO.title,
@@ -20,7 +20,7 @@ export class ArtworkRepository extends Repository<Artwork> {
             description: createArtWorkDTO.description,
             originalImage: originalImagePath,
             croppedImage: croppedImagePath,
-            nftToken: nftToken,
+            cid,
         });
     }
 

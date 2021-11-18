@@ -24,7 +24,7 @@ export class ArtworkService {
         this.ipfs = create({ url: process.env.IPFS_URL });
     }
 
-    async createNFTToken(image): Promise<string> {
+    async createCID(image): Promise<string> {
         const { cid } = await this.ipfs.add(image.buffer);
         return cid.toString();
     }
@@ -42,7 +42,7 @@ export class ArtworkService {
                     ...image,
                     buffer: croppedImageBuffer,
                 }),
-                this.createNFTToken(image),
+                this.createCID(image),
             ]);
 
             const newArtwork = this.artworkRepository.createArtwork(createArtworkDTO, originalImage, croppedImage, cid);

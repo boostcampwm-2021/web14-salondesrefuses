@@ -33,7 +33,7 @@ const ResultPage = () => {
         });
 
         const result = await contract.methods
-            .createNFT(account, artwork!.nftToken)
+            .createNFT(account, artwork!.cid)
             .send({ from: account, gas: GAS_LIMIT });
         const tokenId = result.events.Transfer.returnValues.tokenId;
 
