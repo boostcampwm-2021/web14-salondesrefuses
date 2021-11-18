@@ -78,7 +78,7 @@ export const getExhibition = (exhibitionId: string) => {
 export const setNFTToken = (artworkId: number, nftToken?: string) => {
     return axios.patch(
         `${API_SERVER_URL}/artworks/${artworkId}/nft`,
-        nftToken,
+        { nftToken },
         {
             withCredentials: true,
         }
