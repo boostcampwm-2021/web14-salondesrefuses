@@ -4,7 +4,7 @@ import {
     Get,
     HttpCode,
     Param,
-    ParseIntPipe,
+    ParseIntPipe, Patch,
     Post,
     Req,
     UploadedFile,
@@ -24,10 +24,12 @@ import {
     createArtworkApiBody,
     interestApiOperation,
     getArtworkApiOperation,
+    updateNFTTokenApiOperation,
 } from '../swagger';
 import { InterestArtwork } from 'src/interestArtwork/interestArtwork.entity';
 import { InterestArtworkService } from 'src/interestArtwork/interestArtwork.service';
 import { Artwork } from '../artwork.entity';
+import { UpdateResult } from 'typeorm';
 
 @Controller('artworks')
 @ApiTags('작품 컨트롤러')
@@ -72,5 +74,18 @@ export class ArtworkController {
         @Req() { user }: Express.Request & { user: User },
     ): Promise<boolean> {
         return this.interestArtworkService.insertInterestArtwork(user, interestRequestDTO);
+    }
+
+    @Patch('/:artworkId/nft')
+    @UseGuards(CustomAuthGuard)
+    @ApiOperation(updateNFTTokenApiOperation)
+    @ApiParam({ name: 'artworkId', type: Number })
+    @ApiBody({ type: String })
+    @ApiResponse({ type: UpdateResult })
+    updateNFTToken(
+        @Param('artworkId', ParseIntPipe) artworkId: number,
+        @Body('nftToken') nftToken: string
+    ): Promise<UpdateResult> {
+        return this.artworkService.updateNFTToken(artworkId, nftToken);
     }
 }

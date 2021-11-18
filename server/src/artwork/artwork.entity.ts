@@ -30,6 +30,9 @@ export class Artwork {
     status: string;
 
     @Column()
+    cid: string;
+
+    @Column({ nullable: true })
     nftToken: string;
 
     @Column({ type: 'text' })

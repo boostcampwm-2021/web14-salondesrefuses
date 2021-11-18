@@ -35,6 +35,7 @@ export const holdExhibitionApiBody = {
             artworkIds: { type: 'number[]', nullable: true },
             categoryIds: { type: 'number[]', nullable: true },
             contents: { type: 'string', nullable: false },
+            size: { type: 'string', nullable: true },
         },
     },
 };
