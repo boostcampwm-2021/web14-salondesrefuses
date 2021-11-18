@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { useState, Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import styled from '@emotion/styled';
 
 import useSessionState from '@store/sessionState';
 import Layout from '@components/common/Layout';
 import SideBar from '@components/MyPage/Sidebar';
-import { useState } from 'react';
+
+const ProfilePage = dynamic(() => import('@components/MyPage/ProfilePage'), {
+    ssr: false,
+});
+const AuctionPage = dynamic(() => import('@components/MyPage/AuctionPage'), {
+    ssr: false,
+});
+const ExhibitionPage = dynamic(() => import('@components/MyPage/Exhibition'), {
+    ssr: false,
+});
+const ArtworkPage = dynamic(() => import('@components/MyPage/ArtworkPage'), {
+    ssr: false,
+});
+const FavoritePage = dynamic(() => import('@components/MyPage/FavoritePage'), {
+    ssr: false,
+});
 
 export const DETAIL_PAGES = {
     profile: '내 프로필',
@@ -16,6 +32,14 @@ export const DETAIL_PAGES = {
 };
 
 export type PAGES = typeof DETAIL_PAGES[keyof typeof DETAIL_PAGES];
+
+const routerPath = (path: PAGES) => {
+    if (path === 'profile') return <ProfilePage />;
+    else if (path === 'auction') return <AuctionPage />;
+    else if (path === 'exhibition') return <ExhibitionPage />;
+    else if (path === 'artwork') return <ArtworkPage />;
+    else return <FavoritePage />;
+};
 
 const MyPage = () => {
     const user = useSessionState().contents;
@@ -35,6 +59,7 @@ const MyPage = () => {
                         current={currentPage}
                     />
                 </Container>
+                {routerPath(currentPage)}
             </Layout>
         </div>
     );

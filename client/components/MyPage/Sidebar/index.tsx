@@ -19,9 +19,10 @@ const SideBar = ({
     return (
         <Container>
             <div>
-                {Object.entries(DETAIL_PAGES).map(([key, value]) => {
+                {Object.entries(DETAIL_PAGES).map(([key, value], idx) => {
                     return (
                         <Route
+                            key={idx}
                             active={key === current}
                             onClick={onClickRoute(key)}
                         >
