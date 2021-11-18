@@ -42,26 +42,26 @@ export class AuctionGateway implements OnGatewayInit {
 
     @SubscribeMessage('@auction/bid')
     async handleBidAuction(@MessageBody() bidInfo: string, @ConnectedSocket() client: Socket) {
-        const { id, bidderName, price, biddedAt } = JSON.parse(JSON.stringify(bidInfo));
-        const auction = await this.auctionService.getAuctionInfo(id);
+        const { auctionId, bidderId, bidderName, price, biddedAt } = JSON.parse(JSON.stringify(bidInfo));
+        const auction = await this.auctionService.getAuctionInfo(auctionId);
 
         if (auction.endAt.valueOf() - new Date(biddedAt).valueOf() < 60000) {
             const newEndAt = new Date();
             newEndAt.setMinutes(newEndAt.getMinutes() + 1);
 
-            this.auctionService.updateAuctionEndAt(id, newEndAt);
+            this.auctionService.updateAuctionEndAt(auctionId, newEndAt);
 
-            this.server.to(id).emit('@auction/time_update', {
-                id,
+            this.server.to(auctionId).emit('@auction/time_update', {
+                auctionId,
                 endAt: newEndAt.valueOf(),
             });
         }
 
-        this.server.to(id).emit('@auction/bid', {
+        this.server.to(auctionId).emit('@auction/bid', {
             bidderName,
             price,
             biddedAt,
         });
-        this.auctionHistoryService.saveAuctionHistory(id, bidderName, price, biddedAt);
+        this.auctionHistoryService.saveAuctionHistory(auctionId, bidderId, price, biddedAt);
     }
 }

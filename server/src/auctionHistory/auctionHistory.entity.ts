@@ -6,11 +6,8 @@ export class AuctionHistory {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ nullable: true })
-    bidder: number;
-
     @Column()
-    bidderName: string;
+    bidderId: string;
 
     @Column()
     price: string;

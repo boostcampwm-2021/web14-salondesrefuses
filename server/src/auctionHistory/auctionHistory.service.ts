@@ -13,12 +13,12 @@ export class AuctionHistoryService {
         private readonly auctionRepository: AuctionRepository
     ) {}
 
-    async saveAuctionHistory(id: string, bidderName: string, price: string, biddedAt: string): Promise<AuctionHistory> {
+    async saveAuctionHistory(id: string, bidderId: string, price: string, biddedAt: string): Promise<AuctionHistory> {
         const auction = await this.auctionRepository.findOne({ id: Number(id) });
 
         return await this.auctionHistoryRepository.save({
             auction,
-            bidderName,
+            bidderId,
             price,
             biddedAt: new Date(biddedAt),
         });
