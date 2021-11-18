@@ -32,7 +32,7 @@ contract SalonDesRefuse is ERC721URIStorage, Ownable {
         return newItemId;
     }
 
-    function registerArtwork(uint _tokenId) public {
+    function registerAuction(uint _tokenId) public {
         approve(contarctOwner, _tokenId);
     }
 
