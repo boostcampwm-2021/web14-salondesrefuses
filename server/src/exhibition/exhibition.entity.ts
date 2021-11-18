@@ -37,7 +37,7 @@ export class Exhibition {
     contents: string;
 
     @Column()
-    size: number;
+    size: string;
 
     @ManyToOne(type => User, user => user.exhibitionList)
     artist: User;

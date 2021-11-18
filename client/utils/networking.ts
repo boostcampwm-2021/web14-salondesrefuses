@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Artwork, Auction, Exhibition, PostArtworkResponse } from 'interfaces';
+import { Artwork, Auction, Exhibition, PostArtworkResponse, Session } from 'interfaces';
 import { AuctionCardProps, ExhibitionCardProps } from '@const/card-type';
 
 const API_SERVER_URL = process.env.API_SERVER_URL;
@@ -7,6 +7,16 @@ const API_SERVER_URL = process.env.API_SERVER_URL;
 export const onResponseSuccess = (statusCode: number) => {
     if (200 <= statusCode && statusCode < 400) return true;
     return false;
+};
+
+export const signOut = (userId: string) => {
+    return axios.post(`${API_SERVER_URL}/auth/signOut`, {
+        userId,
+    });
+};
+
+export const getUser = () => {
+    return axios.get<Session>(`${API_SERVER_URL}/users`, { withCredentials: true }).then((data) => data.data);
 };
 
 export const getAllArtworks = () => {
@@ -29,14 +39,10 @@ export const postArtwork = (data: FormData) => {
 };
 
 export const signIn = (code: string, strategy: string) => {
-    return axios.post(
-        `${API_SERVER_URL}/auth/signIn`,
-        JSON.stringify({ code, strategy }),
-        {
-            headers: { 'Content-Type': 'Application/JSON' },
-            withCredentials: true,
-        },
-    );
+    return axios.post(`${API_SERVER_URL}/auth/signIn`, JSON.stringify({ code, strategy }), {
+        headers: { 'Content-Type': 'Application/JSON' },
+        withCredentials: true,
+    });
 };
 export const getRandomExhibitions = () => {
     return axios.get(`${API_SERVER_URL}/exhibitions/random`);
@@ -47,14 +53,10 @@ export const getExhibitions = (filter: string, page: number) => {
 };
 
 export const holdExhibition = (data: FormData) => {
-    return axios.post<PostArtworkResponse>(
-        `${API_SERVER_URL}/exhibitions/post`,
-        data,
-        {
-            withCredentials: true,
-            headers: { 'Content-Type': 'multipart/form-data' },
-        },
-    );
+    return axios.post<PostArtworkResponse>(`${API_SERVER_URL}/exhibitions/post`, data, {
+        withCredentials: true,
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
 };
 
 export const getRandomAuctions = () => {
@@ -62,9 +64,7 @@ export const getRandomAuctions = () => {
 };
 
 export const getAuctions = (filter: string, page: number) => {
-    return axios.get<AuctionCardProps[]>(
-        `${API_SERVER_URL}/auctions/${filter}?page=${page}`,
-    );
+    return axios.get<AuctionCardProps[]>(`${API_SERVER_URL}/auctions/${filter}?page=${page}`);
 };
 
 export const getAuction = (auctionId: number) => {
@@ -72,7 +72,52 @@ export const getAuction = (auctionId: number) => {
 };
 
 export const getExhibition = (exhibitionId: string) => {
+<<<<<<< HEAD
     return axios.get<Exhibition>(
         `${API_SERVER_URL}/exhibitions/${exhibitionId}`,
+=======
+    return axios.get<Exhibition>(`${API_SERVER_URL}/exhibitions/${exhibitionId}`);
+};
+
+export const getUserArtwork = () => {
+    return axios
+        .get(`${API_SERVER_URL}/users/artworks`, {
+            withCredentials: true,
+        })
+        .then((res) => res.data);
+};
+
+export const getUserArtworkInterest = () => {
+    return axios
+        .get(`${API_SERVER_URL}/users/artworks/interest`, {
+            withCredentials: true,
+        })
+        .then((res) => res.data);
+};
+
+export const getUserArtworkTrades = (filter: string) => {
+    return axios
+        .get(`${API_SERVER_URL}/users/artworks/${filter === '입찰' ? 'bid' : 'transaction'}`, {
+            withCredentials: true,
+        })
+        .then((res) => res.data);
+};
+
+export const getUserExhibitions = () => {
+    return axios
+        .get(`${API_SERVER_URL}/users/exhibitions`, {
+            withCredentials: true,
+        })
+        .then((res) => res.data);
+}
+
+export const setNFTToken = (artworkId: number, nftToken?: string) => {
+    return axios.patch(
+        `${API_SERVER_URL}/artworks/${artworkId}/nft`,
+        nftToken,
+        {
+            withCredentials: true,
+        }
+>>>>>>> 4e8603a2be3308a4d902f06b3911c0be51fee35e
     );
 };

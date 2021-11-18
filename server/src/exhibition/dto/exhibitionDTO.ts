@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { Artwork } from 'src/artwork/artwork.entity';
 import { ArtworkStatus } from 'src/artwork/artwork.status.enum';
+import { ArtworkDTO } from 'src/artwork/dto/artworkDTOs';
 import { Exhibition } from '../exhibition.entity';
 
 export class ExhibitionDTO {
@@ -96,7 +97,6 @@ export class HoldExhibitionDTO {
         dto.size = `${size}`;
         return dto;
     }
-
 }
 
 export class UpdateExhibitionDTO {
@@ -105,4 +105,56 @@ export class UpdateExhibitionDTO {
 
     @IsNotEmpty()
     contents: string;
+}
+
+export class ExhibitionDetailDTO {
+    @ApiProperty()
+    id: number;
+
+    @ApiProperty()
+    title: string;
+
+    @ApiProperty()
+    collaborator: string;
+
+    @ApiProperty()
+    theme: string;
+
+    @ApiProperty()
+    description: string;
+
+    @ApiProperty()
+    startAt: Date;
+
+    @ApiProperty()
+    endAt: Date;
+
+    @ApiProperty()
+    contents: string;
+
+    @ApiProperty()
+    categories: string;
+
+    @ApiProperty()
+    artworks: ArtworkDTO[];
+
+    @ApiProperty()
+    size: string;
+
+    static from(exhibition: Exhibition, artworks: Artwork[]): ExhibitionDetailDTO {
+        const { id, title, collaborator, theme, description, startAt, endAt, contents, categories, size } = exhibition;
+
+        const exhibitionDetailDTO = new ExhibitionDetailDTO();
+        exhibitionDetailDTO.id = id;
+        exhibitionDetailDTO.title = title;
+        exhibitionDetailDTO.collaborator = collaborator;
+        exhibitionDetailDTO.theme = theme;
+        exhibitionDetailDTO.startAt = startAt;
+        exhibitionDetailDTO.endAt = endAt;
+        exhibitionDetailDTO.contents = contents;
+        exhibitionDetailDTO.categories = categories;
+        exhibitionDetailDTO.size = size;
+        exhibitionDetailDTO.artworks = artworks.map(artwork => ArtworkDTO.from(artwork));
+        return exhibitionDetailDTO;
+    }
 }

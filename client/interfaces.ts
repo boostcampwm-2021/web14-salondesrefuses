@@ -1,3 +1,13 @@
+export interface Session {
+    id: number;
+    userId: string;
+    name: string;
+    snsId: any;
+    description: string | null;
+    avatar: string;
+    loginStrategy: string;
+}
+
 export interface Artwork {
     id: number;
     croppedImage: string;

@@ -79,9 +79,10 @@ export class ArtworkRepository extends Repository<Artwork> {
             .getMany();
     }
 
-    async findAllByExhibitionId(exhibitonId: number): Promise<Artwork[]> {
+    async findAllByExhibitionId(exhibitonId: number, relations?: string[]): Promise<Artwork[]> {
         return await this.find({
             where: { exhibitionId: exhibitonId },
+            relations: relations,
         });
     }
 
@@ -96,5 +97,4 @@ export class ArtworkRepository extends Repository<Artwork> {
     async updateNFTToken(id: number, nftToken: string): Promise<UpdateResult> {
         return await this.update(id, { nftToken });
     }
-
 }
