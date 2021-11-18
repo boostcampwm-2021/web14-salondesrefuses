@@ -10,12 +10,10 @@ import { getAuctions } from '@utils/networking';
 import RequireLoginModal from '@components/common/RequireLoginModal';
 import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
 import useInfiniteScroll from '@hooks/useInfiniteScroll';
-import parseCookie from '@utils/parseCookie';
-import { useRef } from 'react';
-
-let accessToken: string | undefined;
+import useSessionState from '@store/sessionState';
 
 const AuctionList = () => {
+    const session = useSessionState().contents;
     const [onSelect, setOnSelect] = useState('Popular');
     const [auctionItems, setAuctionItems] = useState<AuctionCardProps[]>([]);
     const [page, setPage] = useState(0);
@@ -24,10 +22,6 @@ const AuctionList = () => {
     const gridRef = useInfiniteScroll(() => {
         setPage((page) => page + 1);
     }, auctionItems);
-
-    useEffect(() => {
-        accessToken = parseCookie()('accessToken');
-    }, []);
 
     useEffect(() => {
         getAuctions(onSelect.toLowerCase(), page).then((res) =>
@@ -73,7 +67,7 @@ const AuctionList = () => {
             <Container>
                 <Title>
                     {buildFilterWrapper()}
-                    {accessToken ? (
+                    {session ? (
                         <Link href="artwork/post">
                             <BlackButton>Post Artwork</BlackButton>
                         </Link>

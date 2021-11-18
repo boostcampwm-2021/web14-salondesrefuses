@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import parseCookie from '@utils/parseCookie';
 
 const useHandleRequireLoginModal = () => {
     const [requireLoginModal, setRequireLoginModal] = useState(false);

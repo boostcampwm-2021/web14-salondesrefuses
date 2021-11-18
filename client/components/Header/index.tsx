@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import Logo from '@assets/images/logo.png';
 import { HeaderContainer, LeftContainer, Hr, ImageContainer } from './style';
 import { withSearchBar, defaultHeader } from './headerStyles';
+import useSessionState from '@store/sessionState';
 
 const pathToObj = {
     '': { title: 'Main', cb: defaultHeader },
@@ -17,6 +18,8 @@ const pathToObj = {
 type mainPathInterface = '' | 'artwork' | 'exhibition' | 'auction' | 'mypage';
 const Header = () => {
     const mainPath = useRouter().pathname.split('/')[1] as mainPathInterface;
+    const session = useSessionState().contents;
+
     return (
         <HeaderContainer>
             <LeftContainer>
@@ -28,7 +31,7 @@ const Header = () => {
                 <Hr />
                 <p>{pathToObj[mainPath].title}</p>
             </LeftContainer>
-            {pathToObj[mainPath].cb(mainPath === 'exhibition')}
+            {pathToObj[mainPath].cb(session, mainPath === 'exhibition')}
         </HeaderContainer>
     );
 };

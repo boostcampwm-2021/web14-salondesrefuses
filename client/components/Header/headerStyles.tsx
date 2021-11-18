@@ -2,15 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { NavButton, RightContainer, SearchBarContainer } from './style';
 import ProfilePic from '@assets/images/profile.png';
-import parseCookie from '@utils/parseCookie';
+import { Session } from 'interfaces';
 
-export const defaultHeader = () => {
-    const [session, setSession] = useState(false);
-    useEffect(() => {
-        const isLoggedIn = parseCookie()('accessToken') ? true : false;
-        setSession(isLoggedIn);
-    }, []);
-
+export const defaultHeader = (session: any) => {
     return (
         <RightContainer>
             <Link href="/exhibition">
@@ -32,14 +26,8 @@ export const defaultHeader = () => {
     );
 };
 
-export const withSearchBar = (isExhibition: boolean) => {
-    const [session, setSession] = useState(false);
+export const withSearchBar = (session: any, isExhibition: boolean) => {
     const [search, setSearch] = useState('');
-
-    useEffect(() => {
-        const isLoggedIn = parseCookie()('accessToken') ? true : false;
-        setSession(isLoggedIn);
-    }, []);
 
     return (
         <>

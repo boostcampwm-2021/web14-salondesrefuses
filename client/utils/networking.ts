@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { Artwork, Auction, Exhibition, PostArtworkResponse } from 'interfaces';
+import {
+    Artwork,
+    Auction,
+    Exhibition,
+    PostArtworkResponse,
+    Session,
+} from 'interfaces';
 import { AuctionCardProps, ExhibitionCardProps } from '@const/card-type';
 
 const API_SERVER_URL = process.env.API_SERVER_URL;
@@ -7,6 +13,12 @@ const API_SERVER_URL = process.env.API_SERVER_URL;
 export const onResponseSuccess = (statusCode: number) => {
     if (200 <= statusCode && statusCode < 400) return true;
     return false;
+};
+
+export const getUser = () => {
+    return axios
+        .get<Session>(`${API_SERVER_URL}/users`, { withCredentials: true })
+        .then((data) => data.data);
 };
 
 export const getAllArtworks = () => {
@@ -72,5 +84,7 @@ export const getAuction = (auctionId: number) => {
 };
 
 export const getExhibition = (exhibitionId: string) => {
-    return axios.get<Exhibition>(`${API_SERVER_URL}/exhibitions/${exhibitionId}`);
-}
+    return axios.get<Exhibition>(
+        `${API_SERVER_URL}/exhibitions/${exhibitionId}`,
+    );
+};
