@@ -46,6 +46,7 @@ const Container = styled.section`
 const Route = styled.a<{ active: boolean }>`
     font: ${(props) => props.theme.font.textMd};
     color: ${(props) => (props.active ? props.theme.color.primary : props.theme.color.placeholder)};
+    cursor: pointer;
 `;
 
 export default SideBar;
