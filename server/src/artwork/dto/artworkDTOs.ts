@@ -38,8 +38,48 @@ export class InterestRequestDTO {
 
     @IsNotEmpty()
     @Matches(/^true$|^false$/, {
-        message: 'Only true or false is allowed for isInterest field.'
+        message: 'Only true or false is allowed for isInterest field.',
     })
     @ApiProperty()
-    isInterest: "true" | "false";
+    isInterest: 'true' | 'false';
+}
+
+export class ArtworkDTO {
+    @ApiProperty()
+    id: number;
+
+    @ApiProperty()
+    title: string;
+
+    @ApiProperty()
+    type: string;
+
+    @ApiProperty()
+    description: string;
+
+    @ApiProperty()
+    originalImage: string;
+
+    @ApiProperty()
+    croppedImage: string;
+
+    @ApiProperty()
+    artist: string;
+
+    @ApiProperty()
+    auctionId?: number;
+
+    static from(artwork: Artwork): ArtworkDTO {
+        const { id, title, type, description, originalImage, croppedImage, artist, auction } = artwork;
+        const artworkDTO = new ArtworkDTO();
+        artworkDTO.id = id;
+        artworkDTO.title = title;
+        artworkDTO.type = type;
+        artworkDTO.description = description;
+        artworkDTO.originalImage = originalImage;
+        artworkDTO.croppedImage = croppedImage;
+        artworkDTO.artist = artist.name;
+        artworkDTO.auctionId = auction && auction.id;
+        return artworkDTO;
+    }
 }
