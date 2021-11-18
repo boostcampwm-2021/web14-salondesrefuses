@@ -4,6 +4,11 @@ import { NavButton, RightContainer, SearchBarContainer } from './style';
 import ProfilePic from '@assets/images/profile.png';
 import { Session } from 'interfaces';
 
+const getAvatar = (avatar: string | null) => {
+    if (!avatar || avatar.length === 0) return ProfilePic.src;
+    return avatar;
+};
+
 export const defaultHeader = (session: any) => {
     return (
         <RightContainer>
@@ -16,7 +21,7 @@ export const defaultHeader = (session: any) => {
             <Link href={session ? '/mypage' : '/login'}>
                 <NavButton>
                     {session ? (
-                        <img src={ProfilePic.src} alt="profile" />
+                        <img src={getAvatar(session.avatar)} alt="profile" />
                     ) : (
                         'LogIn'
                     )}
@@ -47,7 +52,10 @@ export const withSearchBar = (session: any, isExhibition: boolean) => {
                 <Link href={session ? '/mypage' : '/login'}>
                     <NavButton>
                         {session ? (
-                            <img src={ProfilePic.src} alt="profile" />
+                            <img
+                                src={getAvatar(session.avatar)}
+                                alt="profile"
+                            />
                         ) : (
                             'LogIn'
                         )}
