@@ -8,6 +8,8 @@ export class CreateArtworkDTO {
     @IsNotEmpty()
     type: string;
 
+    year: string;
+
     price: string;
 
     description: string;

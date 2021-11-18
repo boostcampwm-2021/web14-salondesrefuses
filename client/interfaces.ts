@@ -12,6 +12,7 @@ export interface Artwork {
     type: string;
     artistId: number;
     ownerId: number;
+    year: string;
 }
 
 export interface PostArtworkResponse {
