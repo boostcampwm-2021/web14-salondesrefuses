@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
+
 import { Artwork } from 'interfaces';
 import { getUserArtworkInterest } from '@utils/networking';
 import Card from '@components/common/Card';
