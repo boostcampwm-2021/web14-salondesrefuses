@@ -6,11 +6,8 @@ import { AuctionModule } from '../auction/auction.module';
 import { AuctionHistoryModule } from '../auctionHistory/auctionHistory.module';
 
 @Module({
-    imports: [
-        AuctionModule,
-        AuctionHistoryModule,
-        TypeOrmModule.forFeature([ CompletedAuctionRepository ]),
-    ],
-    providers: [ CompletedAuctionService ],
+    imports: [AuctionModule, AuctionHistoryModule, TypeOrmModule.forFeature([CompletedAuctionRepository])],
+    providers: [CompletedAuctionService],
+    exports: [CompletedAuctionService],
 })
 export class CompletedAuctionModule {}

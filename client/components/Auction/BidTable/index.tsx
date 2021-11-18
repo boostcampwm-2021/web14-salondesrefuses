@@ -8,6 +8,10 @@ import { getRemainingTime } from '@utils/time';
 import Web3 from 'web3';
 import { WEI } from '@constants/eth';
 import useToastState from '@store/toastState';
+import { AbiItem } from 'web3-utils';
+import { Contract } from 'web3-eth-contract';
+import ABI from '@public/ethereum/abi.json';
+import contractAddress from '@public/ethereum/address.json';
 
 let eventSource: EventSource | null;
 let account: string | null;
@@ -27,6 +31,7 @@ const BidTable = ({
         currentPrice ? Number((currentPrice + 0.01).toFixed(2)) : artwork.price,
     );
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
+    const [contract, setContract] = useState<Contract>();
 
     const web3 = new Web3(
         new Web3.providers.HttpProvider(process.env.ETHEREUM_HOST!),
@@ -43,8 +48,29 @@ const BidTable = ({
         return true;
     };
 
+    const bidBlockChain = async (price: number) => {
+        if (!window.ethereum || !contract) return;
+
+        [account] = await window.ethereum.request({
+            method: 'eth_requestAccounts',
+        });
+
+        if (!account) return false;
+        try {
+            const result = await contract.methods.bid(artwork.nftToken).send({
+                from: account,
+                value: Web3.utils.toWei(price.toString(), 'ether'),
+                gas: GAS_LIMIT,
+            });
+            console.log(result);
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
     const bidArtwork = async () => {
         const biddable = await checkBiddable(price);
+        await bidBlockChain(price);
         if (!biddable) {
             showToast();
             return;
@@ -78,6 +104,13 @@ const BidTable = ({
                 getRemainingTime(Number(data), new Date(endAt).getTime()),
             );
         };
+
+        setContract(
+            new web3.eth.Contract(
+                ABI.abi as AbiItem[],
+                contractAddress.address,
+            ),
+        );
     }, []);
 
     const showToast = () => {
@@ -112,6 +145,9 @@ const BidTable = ({
         </Container>
     );
 };
+
+const ETHEREUM_HOST = process.env.ETHEREUM_HOST;
+const GAS_LIMIT = 3000000;
 
 const Container = styled.div`
     width: 90%;

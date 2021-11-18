@@ -55,8 +55,4 @@ export default class AuctionService {
             ],
         });
     }
-
-    async bulkUpdateIsComplete(auctionIds): Promise<void> {
-        this.auctionRepository.bulkUpdateIsComplete(auctionIds);
-    }
 }
