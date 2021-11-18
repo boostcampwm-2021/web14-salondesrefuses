@@ -47,13 +47,12 @@ const ProfileImage = ({ profile, handler, image }: IProfileImage) => {
 const Container = styled.div`
     flex-direction: column;
     ${Center};
-    width: 150px;
-    height 150px;
-    
+
     & > img {
-        width: 100%;
-        height: 100%;
+        width: 150px;
+        height: 150px;
         border-radius: 75px;
+        object-fit: cover;
     }
 
     & > span {
