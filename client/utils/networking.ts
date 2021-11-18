@@ -72,5 +72,7 @@ export const getAuction = (auctionId: number) => {
 };
 
 export const getExhibition = (exhibitionId: string) => {
-    return axios.get<Exhibition>(`${API_SERVER_URL}/exhibitions/${exhibitionId}`);
-}
+    return axios.get<Exhibition>(
+        `${API_SERVER_URL}/exhibitions/${exhibitionId}`,
+    );
+};

@@ -2,11 +2,7 @@ import React, { useState, useEffect, useRef, forwardRef } from 'react';
 
 import ColorPicker from '../ColorPicker';
 import EditorElement from '../EditorElement';
-import {
-    initialImageStyle,
-    initialRectStyle,
-    initialTextStyle,
-} from '@const/editor-initial-state';
+import { initialImageStyle, initialRectStyle, initialTextStyle } from '@const/editor-initial-state';
 import { EditorElementName, EditorElementProp } from './types';
 import rectButtonIcon from '@assets/images/editor-rectangular.png';
 import colorButtonIcon from '@assets/images/editor-color.png';
@@ -24,9 +20,7 @@ type Props = {
 };
 
 const Editor = ({ elements, setElements }: Props, editorRef: any) => {
-    const [currentElements, setCurrentElements] = useState<
-        Array<HTMLElement | null>
-    >([]);
+    const [currentElements, setCurrentElements] = useState<Array<HTMLElement | null>>([]);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [isDoubleClicked, setIsDoubleClicked] = useState(false);
     const [color, setColor] = useState('#000');
@@ -38,8 +32,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     useEffect(() => {
         currentElements.forEach((elem) => {
             if (!elem) return;
-            if (elem.classList.contains('RECTANGULAR'))
-                elem.style.backgroundColor = color;
+            if (elem.classList.contains('RECTANGULAR')) elem.style.backgroundColor = color;
             if (elem.classList.contains('TEXT')) elem.style.color = color;
         });
     }, [color]);
@@ -59,11 +52,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     useEffect(() => {
         if (!editorRef.current) return;
         editorRef.current.addEventListener('click', (e: any) => {
-            if (
-                !(e.target as HTMLDivElement).classList.contains(
-                    'editorElement',
-                )
-            ) {
+            if (!(e.target as HTMLDivElement).classList.contains('editorElement')) {
                 keyToCurrentElements([]);
             }
         });
@@ -109,14 +98,14 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     };
 
     const onClickIncreaseEditorButton = () => {
-        setHeight(prev => prev + 300);
+        setHeight((prev) => prev + 300);
     };
 
     const onClickDecreaseEditorButton = () => {
-        if(height <= initialHeightValue) {
+        if (height <= initialHeightValue) {
             return;
         }
-        setHeight(prev => prev - 300);
+        setHeight((prev) => prev - 300);
     };
 
     const renderElements = () => {
@@ -141,14 +130,8 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
                 <Button onClick={createRectangular} bg={rectButtonIcon.src} />
                 <Button onClick={onClickColorButton} bg={colorButtonIcon.src} />
                 <Button onClick={createText} bg={textButtonIcon.src} />
-                <Button
-                    onClick={onClickZIndexButton('FORWARD')}
-                    bg={forwardButtonIcon.src}
-                />
-                <Button
-                    onClick={onClickZIndexButton('BACKWARD')}
-                    bg={backwardButtonIcon.src}
-                />
+                <Button onClick={onClickZIndexButton('FORWARD')} bg={forwardButtonIcon.src} />
+                <Button onClick={onClickZIndexButton('BACKWARD')} bg={backwardButtonIcon.src} />
                 <Button onClick={() => onClickIncreaseEditorButton()} bg={increaseEditorIcon.src} />
                 <Button onClick={() => onClickDecreaseEditorButton()} bg={decreaseEditorIcon.src} />
                 {showColorPicker && (
@@ -160,7 +143,9 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
                     />
                 )}
             </ToolBar>
-            <EditArea height={height} ref={editorRef}>{renderElements()}</EditArea>
+            <EditArea height={height} ref={editorRef}>
+                {renderElements()}
+            </EditArea>
         </EditorContainer>
     );
 };

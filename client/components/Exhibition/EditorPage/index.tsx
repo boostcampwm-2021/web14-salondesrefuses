@@ -36,16 +36,12 @@ const index = ({ backButtonHandler, holdExhibition }: EditorProp) => {
             const element = el as HTMLElement;
 
             const { tagName, innerText } = element;
-            const { width, height, color, transform, backgroundColor } =
-                element.style;
-            const { top, left, zIndex, backgroundImage } =
-                window.getComputedStyle(element);
+            const { width, height, color, transform, backgroundColor } = element.style;
+            const { top, left, zIndex, backgroundImage } = window.getComputedStyle(element);
             let imageSrc = null;
 
             if (element.classList.contains('IMAGE')) {
-                imageSrc = backgroundImage
-                    .replace(/url\((['"])?(.*?)\1\)/gi, '$2')
-                    .split(',')[0];
+                imageSrc = backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
             }
 
             exhibitionElements.push({
@@ -76,18 +72,10 @@ const index = ({ backButtonHandler, holdExhibition }: EditorProp) => {
             </Title>
             <Container>
                 <ImageSlider />
-                <Editor
-                    elements={elements}
-                    setElements={setElementList}
-                    ref={editorRef}
-                />
+                <Editor elements={elements} setElements={setElementList} ref={editorRef} />
                 <ButtonContainer>
-                    <EditorButton onClick={backButtonHandler}>
-                        Back
-                    </EditorButton>
-                    <EditorButton onClick={saveButtonHandler}>
-                        Save
-                    </EditorButton>
+                    <EditorButton onClick={backButtonHandler}>Back</EditorButton>
+                    <EditorButton onClick={saveButtonHandler}>Save</EditorButton>
                 </ButtonContainer>
             </Container>
         </>
