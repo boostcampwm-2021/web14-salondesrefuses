@@ -1,3 +1,13 @@
+export interface Session {
+    id: number;
+    userId: string;
+    name: string;
+    snsId: any;
+    description: string | null;
+    avatar: string;
+    loginStrategy: string;
+}
+
 export interface Artwork {
     id: number;
     croppedImage: string;
@@ -33,7 +43,7 @@ export interface Auction {
     endAt: Date;
     artwork: Artwork;
     artist: Artist;
-    auctionHistories: string[],
+    auctionHistories: string[];
 }
 
 export interface Exhibition {

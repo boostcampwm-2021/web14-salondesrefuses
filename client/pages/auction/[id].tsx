@@ -3,14 +3,16 @@ import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
-import { Auction } from 'interfaces';
+import { Auction, Session } from 'interfaces';
 import Layout from '@components/common/Layout';
 import ItemDetail from '@components/Auction/ItemDetail';
 import { getAuction } from '@utils/networking';
 import useMagnifier from '@hooks/useMagnifier';
+import useSessionState from '@store/sessionState';
 
 const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
     const { imageRef, magnifierRef, showMagnify } = useMagnifier();
+    const user = useSessionState(); // 유저 객체
 
     const { artwork, artist } = auction;
     const { title, originalImage, year } = artwork;
@@ -37,16 +39,8 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
                     <Grid>
                         <section>
                             <ImageWrapper>
-                                <Magnifier
-                                    imagePath={originalImage}
-                                    onClick={() => showMagnify()}
-                                    ref={magnifierRef}
-                                />
-                                <Image
-                                    src={originalImage}
-                                    onClick={() => showMagnify()}
-                                    ref={imageRef}
-                                />
+                                <Magnifier imagePath={originalImage} onClick={() => showMagnify()} ref={magnifierRef} />
+                                <Image src={originalImage} onClick={() => showMagnify()} ref={imageRef} />
                             </ImageWrapper>
                         </section>
                         <ItemDetail auction={auction} />

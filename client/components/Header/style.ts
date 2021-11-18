@@ -51,6 +51,7 @@ export const NavButton = styled.div`
     img {
         width: 40px;
         height: auto;
+        border-radius: 20px;
     }
     cursor: pointer;
 `;

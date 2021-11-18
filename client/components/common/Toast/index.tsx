@@ -1,21 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import checkedIcon from '@assets/images/checked.png';
-import failureIcon from '@assets/images/failed.png';
 import useToastState from '@store/toastState';
 
 const Toast = () => {
     const [toast] = useToastState();
-    return (
-        <Container show={toast.show}>
-            <img
-                src={toast.success ? checkedIcon.src : failureIcon.src}
-                alt=""
-            />
-            {toast.content}
-        </Container>
-    );
+    return <Container show={toast.show}>{toast.content}</Container>;
 };
 
 const Container = styled.div<{ show: boolean }>`
@@ -32,7 +22,7 @@ const Container = styled.div<{ show: boolean }>`
     gap: 20px;
     align-items: center;
     border-radius: 35px;
-    backdrop-filter: 3px 5px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
     font: ${(props) => props.theme.font.textMd};
     font-size: 1rem;
 

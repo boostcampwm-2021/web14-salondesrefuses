@@ -10,35 +10,24 @@ import { getAuctions } from '@utils/networking';
 import RequireLoginModal from '@components/common/RequireLoginModal';
 import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
 import useInfiniteScroll from '@hooks/useInfiniteScroll';
-import parseCookie from '@utils/parseCookie';
-import { useRef } from 'react';
-
-let accessToken: string | undefined;
+import useSessionState from '@store/sessionState';
 
 const AuctionList = () => {
+    const session = useSessionState().contents;
     const [onSelect, setOnSelect] = useState('Popular');
     const [auctionItems, setAuctionItems] = useState<AuctionCardProps[]>([]);
     const [page, setPage] = useState(0);
-    const { requireLoginModal, onClickPostArtworkWithoutLogin, closeModal } =
-        useHandleRequireLoginModal();
+    const { requireLoginModal, onClickPostArtworkWithoutLogin, closeModal } = useHandleRequireLoginModal();
     const gridRef = useInfiniteScroll(() => {
         setPage((page) => page + 1);
     }, auctionItems);
 
     useEffect(() => {
-        accessToken = parseCookie()('accessToken');
-    }, []);
-
-    useEffect(() => {
-        getAuctions(onSelect.toLowerCase(), page).then((res) =>
-            setAuctionItems([...auctionItems, ...res.data]),
-        );
+        getAuctions(onSelect.toLowerCase(), page).then((res) => setAuctionItems([...auctionItems, ...res.data]));
     }, [page]);
 
     useEffect(() => {
-        getAuctions(onSelect.toLowerCase(), page).then((res) =>
-            setAuctionItems(res.data),
-        );
+        getAuctions(onSelect.toLowerCase(), page).then((res) => setAuctionItems(res.data));
     }, [onSelect]);
 
     const onClickFilter = ({ currentTarget }: React.MouseEvent) => {
@@ -49,18 +38,12 @@ const AuctionList = () => {
         return (
             <FilterWrapper>
                 <div>
-                    <Filter
-                        onClick={onClickFilter}
-                        select={onSelect === 'Popular'}
-                    >
+                    <Filter onClick={onClickFilter} select={onSelect === 'Popular'}>
                         Popular
                     </Filter>
                 </div>
                 <div>
-                    <Filter
-                        onClick={onClickFilter}
-                        select={onSelect === 'Newest'}
-                    >
+                    <Filter onClick={onClickFilter} select={onSelect === 'Newest'}>
                         Newest
                     </Filter>
                 </div>
@@ -73,14 +56,12 @@ const AuctionList = () => {
             <Container>
                 <Title>
                     {buildFilterWrapper()}
-                    {accessToken ? (
+                    {session ? (
                         <Link href="artwork/post">
                             <BlackButton>Post Artwork</BlackButton>
                         </Link>
                     ) : (
-                        <BlackButton onClick={onClickPostArtworkWithoutLogin}>
-                            Post Artwork
-                        </BlackButton>
+                        <BlackButton onClick={onClickPostArtworkWithoutLogin}>Post Artwork</BlackButton>
                     )}
                 </Title>
                 <Grid ref={gridRef}>
@@ -114,7 +95,7 @@ const Title = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    width: 105%;
     margin-bottom: 45px;
 `;
 

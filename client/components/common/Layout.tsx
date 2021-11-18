@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
 import Toast from './Toast';
-import useToastState from '@store/toastState';
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -29,8 +28,7 @@ const Body = styled.div<{ horizontal?: boolean }>`
     justify-content: flex-start;
     align-items: center;
     padding-top: 70px;
-    ${(props) =>
-        props.horizontal ? 'flex-direction: row;' : 'flex-direction: column;'}
+    ${(props) => (props.horizontal ? 'flex-direction: row;' : 'flex-direction: column;')}
     min-height: calc(100vh - 270px);
     overflow-x: hidden;
 `;
