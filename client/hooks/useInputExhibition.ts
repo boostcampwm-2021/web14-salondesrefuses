@@ -14,7 +14,7 @@ const useInputExhibition = () => {
     const [description, setDescription] = useState('');
     const [thumbnail, setThumbnail] = useState<File | null>(null);
 
-    const onClickHold = async (contents: string) => {
+    const onClickHold = async (contents: string, editorSize: string) => {
         const formData = new FormData();
         formData.append('title', titleInput);
         formData.append('collaborator', collaborator);
@@ -23,6 +23,7 @@ const useInputExhibition = () => {
         formData.append('startAt', startAt);
         formData.append('endAt', endAt);
         formData.append('contents', contents);
+        formData.append('size', editorSize);
         formData.append('thumbnail', thumbnail!);
 
         const result = await holdExhibition(formData);

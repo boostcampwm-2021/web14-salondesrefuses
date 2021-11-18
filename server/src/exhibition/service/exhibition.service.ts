@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExhibitionRepository } from '../exhibition.repository';
-import { ExhibitionDTO, HoldExhibitionDTO, UpdateExhibitionDTO } from '../dto/exhibitionDTO';
+import { ExhibitionDetailDTO, ExhibitionDTO, HoldExhibitionDTO, UpdateExhibitionDTO } from '../dto/exhibitionDTO';
 import { User } from 'src/user/user.entity';
 import { ImageService } from 'src/image/service/image.service';
 import { ArtworkRepository } from 'src/artwork/artwork.repository';
@@ -17,9 +17,10 @@ export class ExhibitionService {
         private readonly imageService: ImageService,
     ) {}
 
-    async getSpecificExhibition(id: number): Promise<HoldExhibitionDTO> {
+    async getSpecificExhibition(id: number): Promise<ExhibitionDetailDTO> {
         const exhibition = await this.exhibitionRepository.getSpecificExhibition(id);
-        return HoldExhibitionDTO.from(exhibition);
+        const artworks = await this.artworkRepository.findAllByExhibitionId(id, ['auction', 'artist']);
+        return ExhibitionDetailDTO.from(exhibition, artworks);
     }
 
     async getRandomExhibitions(): Promise<ExhibitionDTO[]> {

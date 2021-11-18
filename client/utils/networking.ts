@@ -105,7 +105,7 @@ export const getUserExhibitions = () => {
             withCredentials: true,
         })
         .then((res) => res.data);
-}
+};
 
 export const setNFTToken = (artworkId: number, nftToken?: string) => {
     return axios.patch(

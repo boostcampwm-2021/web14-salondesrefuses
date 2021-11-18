@@ -36,9 +36,7 @@ const EditorElement = ({
     const elementRef = useRef<HTMLElement | null>(null);
     const positionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const [currentStyle, setCurrentStyle] = useState(style);
-    let isSelected = currentElements.some(
-        (element) => element === elementRef.current,
-    );
+    let isSelected = currentElements.some((element) => element === elementRef.current);
     const element = elementRef?.current;
     const [LT, LB, RT, RB] = getPositions(element);
 
@@ -69,65 +67,27 @@ const EditorElement = ({
     const getDots = (type: EditorElementType) => {
         return type === 'IMAGE' ? (
             <>
-                <div
-                    style={getDotStyle('NW')}
-                    onMouseDown={(e) => onResize('NW', element, e)}
-                ></div>
-                <div
-                    style={getDotStyle('NE')}
-                    onMouseDown={(e) => onResize('NE', element, e)}
-                ></div>
-                <div
-                    style={getDotStyle('SE')}
-                    onMouseDown={(e) => onResize('SE', element, e)}
-                ></div>
-                <div
-                    style={getDotStyle('SW')}
-                    onMouseDown={(e) => onResize('SW', element, e)}
-                ></div>
+                <div style={getDotStyle('NW')} onMouseDown={(e) => onResize('NW', element, e)}></div>
+                <div style={getDotStyle('NE')} onMouseDown={(e) => onResize('NE', element, e)}></div>
+                <div style={getDotStyle('SE')} onMouseDown={(e) => onResize('SE', element, e)}></div>
+                <div style={getDotStyle('SW')} onMouseDown={(e) => onResize('SW', element, e)}></div>
             </>
         ) : (
             <>
-                <div
-                    style={getDotStyle('NW')}
-                    onMouseDown={(e) => onResize('NW', element, e)}
-                ></div>
-                <div
-                    style={getDotStyle('N')}
-                    onMouseDown={(e) => onResize('N', element, e)}
-                ></div>
-                <div
-                    style={getDotStyle('NE')}
-                    onMouseDown={(e) => onResize('NE', element, e)}
-                ></div>
-                <div
-                    style={getDotStyle('E')}
-                    onMouseDown={(e) => onResize('E', element, e)}
-                ></div>
-                <div
-                    style={getDotStyle('SE')}
-                    onMouseDown={(e) => onResize('SE', element, e)}
-                ></div>
-                <div
-                    style={getDotStyle('S')}
-                    onMouseDown={(e) => onResize('S', element, e)}
-                ></div>
-                <div
-                    style={getDotStyle('SW')}
-                    onMouseDown={(e) => onResize('SW', element, e)}
-                ></div>
-                <div
-                    style={getDotStyle('W')}
-                    onMouseDown={(e) => onResize('W', element, e)}
-                ></div>
+                <div style={getDotStyle('NW')} onMouseDown={(e) => onResize('NW', element, e)}></div>
+                <div style={getDotStyle('N')} onMouseDown={(e) => onResize('N', element, e)}></div>
+                <div style={getDotStyle('NE')} onMouseDown={(e) => onResize('NE', element, e)}></div>
+                <div style={getDotStyle('E')} onMouseDown={(e) => onResize('E', element, e)}></div>
+                <div style={getDotStyle('SE')} onMouseDown={(e) => onResize('SE', element, e)}></div>
+                <div style={getDotStyle('S')} onMouseDown={(e) => onResize('S', element, e)}></div>
+                <div style={getDotStyle('SW')} onMouseDown={(e) => onResize('SW', element, e)}></div>
+                <div style={getDotStyle('W')} onMouseDown={(e) => onResize('W', element, e)}></div>
             </>
         );
     };
 
     useEffect(() => {
-        isSelected = currentElements.some(
-            (element) => element === elementRef.current,
-        );
+        isSelected = currentElements.some((element) => element === elementRef.current);
     }, [currentElements]);
 
     useEffect(() => {
@@ -157,11 +117,7 @@ const EditorElement = ({
                     ref={elementRef as RefObject<HTMLDivElement>}
                     onDoubleClick={() => setIsDoubleClickedFunc(true)}
                 >
-                    <InputDiv
-                        contentEditable={true}
-                        isDoubleClicked={isDoubleClicked}
-                        spellCheck={false}
-                    ></InputDiv>
+                    <InputDiv contentEditable={true} isDoubleClicked={isDoubleClicked} spellCheck={false}></InputDiv>
                     {isSelected && getBorderController(type)}
                 </div>
             ) : (
@@ -173,6 +129,7 @@ const EditorElement = ({
                     ref={elementRef as RefObject<HTMLDivElement>}
                     draggable={false}
                     imgSrc={image!.originalImage}
+                    data-artwork={image!.id}
                 >
                     {isSelected && getBorderController(type)}
                 </ImgDiv>

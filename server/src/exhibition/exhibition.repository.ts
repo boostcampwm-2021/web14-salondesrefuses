@@ -7,7 +7,6 @@ import { HoldExhibitionDTO } from './dto/exhibitionDTO';
 
 @EntityRepository(Exhibition)
 export class ExhibitionRepository extends Repository<Exhibition> {
-
     async getSpecificExhibition(id: number): Promise<Exhibition> {
         return await this.findOne({ id });
     }
@@ -65,7 +64,8 @@ export class ExhibitionRepository extends Repository<Exhibition> {
     }
 
     createExhibition(thumbnailPath: string, holdExhibitionDTO: HoldExhibitionDTO, user: User): Exhibition {
-        const { title, collaborator, description, startAt, endAt, contents, theme, categories, size } = holdExhibitionDTO;
+        const { title, collaborator, description, startAt, endAt, contents, theme, categories, size } =
+            holdExhibitionDTO;
 
         return this.create({
             title,
@@ -78,7 +78,7 @@ export class ExhibitionRepository extends Repository<Exhibition> {
             theme,
             artist: user,
             categories: JSON.stringify(categories),
-            size: Number(size),
+            size,
         });
     }
 }
