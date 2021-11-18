@@ -2,13 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { PAGES, DETAIL_PAGES } from 'pages/mypage';
 
-const SideBar = ({
-    router,
-    current,
-}: {
-    router: (route: PAGES) => void;
-    current: string;
-}) => {
+const SideBar = ({ router, current }: { router: (route: PAGES) => void; current: string }) => {
     const onClickRoute = (path: string) => {
         return (e: React.MouseEvent) => {
             e.preventDefault();
@@ -21,11 +15,7 @@ const SideBar = ({
             <div>
                 {Object.entries(DETAIL_PAGES).map(([key, value], idx) => {
                     return (
-                        <Route
-                            key={idx}
-                            active={key === current}
-                            onClick={onClickRoute(key)}
-                        >
+                        <Route key={idx} active={key === current} onClick={onClickRoute(key)}>
                             {value}
                         </Route>
                     );
@@ -35,7 +25,7 @@ const SideBar = ({
     );
 };
 
-const Container = styled.div`
+const Container = styled.section`
     position: fixed;
     top: 70px;
     left: 0px;
@@ -55,10 +45,7 @@ const Container = styled.div`
 
 const Route = styled.a<{ active: boolean }>`
     font: ${(props) => props.theme.font.textMd};
-    color: ${(props) =>
-        props.active
-            ? props.theme.color.primary
-            : props.theme.color.placeholder};
+    color: ${(props) => (props.active ? props.theme.color.primary : props.theme.color.placeholder)};
 `;
 
 export default SideBar;

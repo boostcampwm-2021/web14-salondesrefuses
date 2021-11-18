@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import styled from '@emotion/styled';
@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 import useSessionState from '@store/sessionState';
 import Layout from '@components/common/Layout';
 import SideBar from '@components/MyPage/Sidebar';
+import { Session } from 'interfaces';
 
 const ProfilePage = dynamic(() => import('@components/MyPage/ProfilePage'), {
     ssr: false,
@@ -33,8 +34,8 @@ export const DETAIL_PAGES = {
 
 export type PAGES = typeof DETAIL_PAGES[keyof typeof DETAIL_PAGES];
 
-const routerPath = (path: PAGES) => {
-    if (path === 'profile') return <ProfilePage />;
+const routerPath = (path: PAGES, user: Session) => {
+    if (path === 'profile') return <ProfilePage user={user} />;
     else if (path === 'auction') return <AuctionPage />;
     else if (path === 'exhibition') return <ExhibitionPage />;
     else if (path === 'artwork') return <ArtworkPage />;
@@ -58,8 +59,8 @@ const MyPage = () => {
                         }}
                         current={currentPage}
                     />
+                    {routerPath(currentPage, user)}
                 </Container>
-                {routerPath(currentPage)}
             </Layout>
         </div>
     );
@@ -67,6 +68,15 @@ const MyPage = () => {
 
 const Container = styled.div`
     width: 100%;
+    height: calc(100vh);
+    postion: relative;
+
+    & > div {
+        width: calc(90vw - 350px);
+        position: absolute;
+        left: 350px;
+        top: 120px;
+    }
 `;
 
 export default MyPage;

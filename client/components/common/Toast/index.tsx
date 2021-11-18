@@ -1,21 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import checkedIcon from '@assets/images/checked.png';
-import failureIcon from '@assets/images/failed.png';
 import useToastState from '@store/toastState';
 
 const Toast = () => {
     const [toast] = useToastState();
-    return (
-        <Container show={toast.show}>
-            <img
-                src={toast.success ? checkedIcon.src : failureIcon.src}
-                alt=""
-            />
-            {toast.content}
-        </Container>
-    );
+    return <Container show={toast.show}>{toast.content}</Container>;
 };
 
 const Container = styled.div<{ show: boolean }>`

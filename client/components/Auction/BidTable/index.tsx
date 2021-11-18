@@ -12,25 +12,15 @@ import useToastState from '@store/toastState';
 let eventSource: EventSource | null;
 let account: string | null;
 
-const BidTable = ({
-    auction,
-    currentPrice,
-}: {
-    auction: Auction;
-    currentPrice: number;
-}) => {
+const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: number }) => {
     const { id, artwork } = auction;
     let { endAt } = auction;
     const [socket] = useAuctionSocketState();
     const [toast, setToast] = useToastState();
-    const [price, setPrice] = useState<number>(
-        currentPrice ? Number((currentPrice + 0.01).toFixed(2)) : artwork.price,
-    );
+    const [price, setPrice] = useState<number>(currentPrice ? Number((currentPrice + 0.01).toFixed(2)) : artwork.price);
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
 
-    const web3 = new Web3(
-        new Web3.providers.HttpProvider(process.env.ETHEREUM_HOST!),
-    );
+    const web3 = new Web3(new Web3.providers.HttpProvider(process.env.ETHEREUM_HOST!));
 
     const checkBiddable = async (price: number) => {
         if (!window.ethereum) return false;
@@ -64,19 +54,14 @@ const BidTable = ({
             setPrice(Number((currentBidPrice + 0.01).toFixed(2)));
         });
 
-        socket.on(
-            '@auction/time_update',
-            (data: { id: number; endAt: Date }) => {
-                endAt = new Date(data.endAt);
-            },
-        );
+        socket.on('@auction/time_update', (data: { id: number; endAt: Date }) => {
+            endAt = new Date(data.endAt);
+        });
 
         eventSource = new EventSource(`${process.env.API_SERVER_URL}/sse`);
 
         eventSource.onmessage = ({ data }) => {
-            setAuctionDeadline(
-                getRemainingTime(Number(data), new Date(endAt).getTime()),
-            );
+            setAuctionDeadline(getRemainingTime(Number(data), new Date(endAt).getTime()));
         };
     }, []);
 
@@ -85,13 +70,11 @@ const BidTable = ({
             ...toast,
             show: true,
             content: '지갑에 ETH가 부족합니다.',
-            success: false,
         });
         setTimeout(() => {
             setToast({
                 show: false,
                 content: '지갑에 ETH가 부족합니다.',
-                success: false,
             });
         }, 5000);
     };
