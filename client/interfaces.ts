@@ -13,6 +13,7 @@ export interface Artwork {
     croppedImage: string;
     originalImage: string;
     exhibitionId: number;
+    cid: string;
     nftToken: string;
     description?: string;
     price: number;

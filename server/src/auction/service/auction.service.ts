@@ -35,7 +35,7 @@ export default class AuctionService {
     }
 
     async getAuctionInfo(auctionId: number): Promise<Auction> {
-        return this.auctionRepository.findOne(auctionId);
+        return this.auctionRepository.findOne({ relations: ['artwork'], where: { id: auctionId } });
     }
 
     async updateAuctionEndAt(auctionId: number, newEndAt: Date): Promise<void> {
@@ -54,9 +54,5 @@ export default class AuctionService {
                 { artwork: { status: ArtworkStatus.InBid } },
             ],
         });
-    }
-
-    async bulkUpdateIsComplete(auctionIds): Promise<void> {
-        this.auctionRepository.bulkUpdateIsComplete(auctionIds);
     }
 }

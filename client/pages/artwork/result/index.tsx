@@ -8,7 +8,7 @@ import { Contract } from 'web3-eth-contract';
 
 import { Artwork } from 'interfaces';
 import Layout from '@components/common/Layout';
-import { getSingleArtwork } from '@utils/networking';
+import { getSingleArtwork, setNFTToken } from '@utils/networking';
 import { Center } from '@styles/common';
 import ResultDetail from '@components/Artwork/ResultDetail';
 
@@ -33,9 +33,13 @@ const ResultPage = () => {
         });
 
         const result = await contract.methods
-            .createNFT(account, artwork!.nftToken)
+            .createNFT(account, artwork!.cid)
             .send({ from: account, gas: GAS_LIMIT });
         const tokenId = result.events.Transfer.returnValues.tokenId;
+
+        await contract.methods
+            .registerAuction(tokenId)
+            .send({ from: account, gas: GAS_LIMIT });
 
         // const balanceOf = await contract.methods.balanceOf(account!).call();
         // console.log('balance : ', balanceOf);
@@ -47,8 +51,10 @@ const ResultPage = () => {
         if (tokenId) setToken(tokenId);
     };
 
-    const onClickDone = () => {
+    const onClickDone = async () => {
         if (!contract) return;
+
+        await setNFTToken(artwork!.id, token);
         push('/');
     };
 

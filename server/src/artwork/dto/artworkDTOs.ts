@@ -21,12 +21,12 @@ export class NewArtworkDTO {
     id: number;
 
     @ApiProperty()
-    nftToken: string;
+    cid: string;
 
     static from(artwork: Artwork): NewArtworkDTO {
         const newArtworkDTO = new NewArtworkDTO();
         newArtworkDTO.id = artwork.id;
-        newArtworkDTO.nftToken = artwork.nftToken;
+        newArtworkDTO.cid = artwork.cid;
         return newArtworkDTO;
     }
 }
