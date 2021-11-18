@@ -1,22 +1,25 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract SalonDesRefuse is ERC721, Ownable {
+contract SalonDesRefuse is ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
+    address public contarctOwner;
 
-    mapping(uint => string) tokenURIMap;
     mapping(uint => uint) tokenPrice;
+    mapping(uint => Bid) lastBid;
 
-    constructor() ERC721("SalonDesRefuse", "SDR") public {
+    struct Bid {
+        uint price;
+        address bidder;
     }
 
-    function _setTokenURI(uint newItemId, string memory tokenURI) private {
-        tokenURIMap[newItemId] = tokenURI;
+    constructor() ERC721("SalonDesRefuse", "SDR") public {
+        contarctOwner = msg.sender;
     }
 
     function createNFT(address receiver, string memory tokenURI) public returns (uint256){
@@ -28,24 +31,29 @@ contract SalonDesRefuse is ERC721, Ownable {
 
         return newItemId;
     }
-    
-    function getTokenURI(uint _tokenId) public view returns (string memory) {
-        return tokenURIMap[_tokenId];
-    }
-    
-    // 경매 로직 어떻게 할건지 생각해야겠다.
-    function buyToken(uint _tokenId) external payable {
-        tokenPrice[_tokenId] = msg.value;
+
+    function registerArtwork(uint _tokenId) public {
+        approve(contarctOwner, _tokenId);
     }
 
-    function getPrice(uint _tokenId) external view returns(uint){
-        require(ownerOf(_tokenId) == msg.sender);
-        return tokenPrice[_tokenId];
+    function bid(uint _tokenId) public payable returns (bool) {
+        require(ownerOf(_tokenId) != msg.sender);
+        require(lastBid[_tokenId].price < msg.value);
+
+        address prevBidder = lastBid[_tokenId].bidder;
+        payable(prevBidder).transfer(lastBid[_tokenId].price);
+        lastBid[_tokenId] = Bid(msg.value, msg.sender);
+
+        return true;
     }
 
-    function transferToken(address payable from, address to, uint _tokenId) public {
-        require(ownerOf(_tokenId) == msg.sender);
-        from.transfer(tokenPrice[_tokenId]);
-        safeTransferFrom(msg.sender, to, _tokenId);
+    function complete(uint _tokenId) public onlyOwner {
+        address tokenOwner = ownerOf(_tokenId);
+
+        require(getApproved(_tokenId) == contarctOwner);
+
+        payable(tokenOwner).transfer(lastBid[_tokenId].price);
+        safeTransferFrom(tokenOwner, lastBid[_tokenId].bidder, _tokenId);
+        delete lastBid[_tokenId];
     }
 }
