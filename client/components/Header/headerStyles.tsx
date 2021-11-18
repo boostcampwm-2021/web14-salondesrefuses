@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { NavButton, RightContainer, SearchBarContainer } from './style';
 import ProfilePic from '@assets/images/profile.png';
-import { Session } from 'interfaces';
 
 const getAvatar = (avatar: string | null) => {
     if (!avatar || avatar.length === 0) return ProfilePic.src;
