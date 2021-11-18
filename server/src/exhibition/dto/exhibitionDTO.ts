@@ -139,7 +139,7 @@ export class ExhibitionDetailDTO {
     artworks: ArtworkDTO[];
 
     @ApiProperty()
-    size: number;
+    size: string;
 
     static from(exhibition: Exhibition, artworks: Artwork[]): ExhibitionDetailDTO {
         const { id, title, collaborator, theme, description, startAt, endAt, contents, categories, size } = exhibition;
