@@ -74,3 +74,13 @@ export const getAuction = (auctionId: number) => {
 export const getExhibition = (exhibitionId: string) => {
     return axios.get<Exhibition>(`${API_SERVER_URL}/exhibitions/${exhibitionId}`);
 }
+
+export const setNFTToken = (artworkId: number, nftToken?: string) => {
+    return axios.patch(
+        `${API_SERVER_URL}/artworks/${artworkId}/nft`,
+        nftToken,
+        {
+            withCredentials: true,
+        }
+    );
+};

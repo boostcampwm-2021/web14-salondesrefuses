@@ -8,7 +8,7 @@ import { Contract } from 'web3-eth-contract';
 
 import { Artwork } from 'interfaces';
 import Layout from '@components/common/Layout';
-import { getSingleArtwork } from '@utils/networking';
+import { getSingleArtwork, setNFTToken } from '@utils/networking';
 import { Center } from '@styles/common';
 import ResultDetail from '@components/Artwork/ResultDetail';
 
@@ -51,8 +51,10 @@ const ResultPage = () => {
         if (tokenId) setToken(tokenId);
     };
 
-    const onClickDone = () => {
+    const onClickDone = async () => {
         if (!contract) return;
+
+        await setNFTToken(artwork!.id, token);
         push('/');
     };
 
