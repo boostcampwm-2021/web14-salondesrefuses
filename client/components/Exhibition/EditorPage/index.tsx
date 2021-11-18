@@ -34,8 +34,8 @@ const index = ({ backButtonHandler, holdExhibition }: EditorProp) => {
 
         [...editorRef.current.childNodes].forEach((el: ChildNode) => {
             const element = el as HTMLElement;
-
-            const { tagName, innerText } = element;
+            const { innerText } = element;
+            const tagName = element.classList[1];
             const { width, height, color, transform, backgroundColor } = element.style;
             const { top, left, zIndex, backgroundImage } = window.getComputedStyle(element);
             let imageSrc = null;
