@@ -74,11 +74,8 @@ export class ArtworkRepository extends Repository<Artwork> {
             .getMany();
     }
 
-    async getBiddedArtworks(userId: number): Promise<Artwork[]> {
-        return await this.createQueryBuilder('artwork')
-            .where('artwork.status = :status', { status: ArtworkStatus.BidCompleted })
-            .andWhere('artwork.owner_id = :userId', { userId })
-            .getMany();
+    async getBiddedArtworks(nftTokens: string[]): Promise<Artwork[]> {
+        return await this.find({ where: [ { nftToken: In(nftTokens) } ] });
     }
 
     async findAllByExhibitionId(exhibitonId: number): Promise<Artwork[]> {

@@ -69,8 +69,8 @@ export class UserService {
         return this.artworkRepository.getBiddingArtworks(id);
     }
 
-    getBiddedArtworks({ id }: User): Promise<Artwork[]> {
-        return this.artworkRepository.getBiddedArtworks(id);
+    getBiddedArtworks(nftTokens: string): Promise<Artwork[]> {
+        return this.artworkRepository.getBiddedArtworks(JSON.parse(JSON.stringify(nftTokens)));
     }
 
     getUsersExhibitions(user: User): Promise<Exhibition[]> {
