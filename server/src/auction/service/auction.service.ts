@@ -1,4 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import moment = require('moment');
+import { ArtworkStatus } from 'src/artwork/artwork.status.enum';
+import { Raw } from 'typeorm';
 import { Auction } from '../auction.entity';
 import { AuctionRepository } from '../auction.repository';
 import { AuctionDetailDTO, AuctionListItemDTO } from '../dto/auctionDTOs';
@@ -39,5 +42,21 @@ export default class AuctionService {
         const auction = await this.auctionRepository.findOne(auctionId);
         auction.endAt = newEndAt;
         this.auctionRepository.save(auction);
+    }
+
+    async getEndedAuctions(): Promise<Auction[]> {
+        const dateWithoutTime = moment().format('yyyy-MM-DD');
+
+        return this.auctionRepository.find({
+            relations: ['artwork'],
+            where: [
+                { endAt: Raw(alias => `${alias} <= '${dateWithoutTime}'`) },
+                { artwork: { status: ArtworkStatus.InBid } },
+            ],
+        });
+    }
+
+    async bulkUpdateIsComplete(auctionIds): Promise<void> {
+        this.auctionRepository.bulkUpdateIsComplete(auctionIds);
     }
 }

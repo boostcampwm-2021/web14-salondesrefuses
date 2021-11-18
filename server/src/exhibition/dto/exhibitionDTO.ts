@@ -74,15 +74,15 @@ export class HoldExhibitionDTO {
     @IsNotEmpty()
     contents: string;
 
-    thumbnail: string;
-
     categories: string;
 
     artworkIds: number[];
 
+    size: string;
+
     static from(exhibition: Exhibition): HoldExhibitionDTO {
         const dto = new HoldExhibitionDTO();
-        const { id, title, collaborator, theme, description, startAt, endAt, contents, categories } = exhibition;
+        const { id, title, collaborator, theme, description, startAt, endAt, contents, categories, size } = exhibition;
 
         dto.id = id;
         dto.title = title;
@@ -93,6 +93,7 @@ export class HoldExhibitionDTO {
         dto.endAt = endAt;
         dto.contents = contents;
         dto.categories = categories;
+        dto.size = `${size}`;
         return dto;
     }
 

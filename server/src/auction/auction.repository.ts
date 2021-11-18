@@ -1,7 +1,7 @@
 import { Artwork } from 'src/artwork/artwork.entity';
 import { CreateArtworkDTO } from 'src/artwork/dto/artworkDTOs';
 import { InterestArtwork } from 'src/interestArtwork/interestArtwork.entity';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, In, Repository } from 'typeorm';
 import { Auction } from './auction.entity';
 import { User } from '../user/user.entity';
 
@@ -76,4 +76,11 @@ export class AuctionRepository extends Repository<Auction> {
         return auction;
     }
 
+    async bulkUpdateIsComplete(auctionIds: number[]): Promise<void> {
+        this.createQueryBuilder()
+            .update()
+            .set({ isComplete: false })
+            .where({ id: In(auctionIds) })
+            .execute();
+    }
 }

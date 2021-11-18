@@ -1,17 +1,9 @@
-import {
-    Column,
-    Entity,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Auction } from '../auction/auction.entity';
 import { ArtworkStatus } from './artwork.status.enum';
 import { InterestArtwork } from '../interestArtwork/interestArtwork.entity';
 import { ArtworkInBid } from '../artworkInBid/artworkInBid.entity';
-import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Artwork {
@@ -38,6 +30,9 @@ export class Artwork {
     status: string;
 
     @Column()
+    cid: string;
+
+    @Column({ nullable: true })
     nftToken: string;
 
     @Column({ type: 'text' })
@@ -55,10 +50,7 @@ export class Artwork {
     @ManyToOne(type => User, user => user.biddedArtworks)
     owner: User;
 
-    @OneToMany(
-        type => InterestArtwork,
-        interestArtwork => interestArtwork.artwork,
-    )
+    @OneToMany(type => InterestArtwork, interestArtwork => interestArtwork.artwork)
     interestedUsers: InterestArtwork[];
 
     @OneToMany(type => ArtworkInBid, artworkInBid => artworkInBid.artwork)

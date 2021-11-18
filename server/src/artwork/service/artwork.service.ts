@@ -8,6 +8,7 @@ import { AuctionRepository } from 'src/auction/auction.repository';
 import { User } from 'src/user/user.entity';
 import { ArtworkStatus } from '../artwork.status.enum';
 import { Artwork } from '../artwork.entity';
+import { UpdateResult } from 'typeorm';
 
 @Injectable()
 export class ArtworkService {
@@ -23,7 +24,7 @@ export class ArtworkService {
         this.ipfs = create({ url: process.env.IPFS_URL });
     }
 
-    async createNFTToken(image): Promise<string> {
+    async createCID(image): Promise<string> {
         const { cid } = await this.ipfs.add(image.buffer);
         return cid.toString();
     }
@@ -41,7 +42,7 @@ export class ArtworkService {
                     ...image,
                     buffer: croppedImageBuffer,
                 }),
-                this.createNFTToken(image),
+                this.createCID(image),
             ]);
 
             const newArtwork = this.artworkRepository.createArtwork(createArtworkDTO, originalImage, croppedImage, cid);
@@ -63,8 +64,16 @@ export class ArtworkService {
         }
     }
 
-    getArtwork(artworkId: number): Promise<Artwork> {
+    async getArtwork(artworkId: number): Promise<Artwork> {
         return this.artworkRepository.getArtwork(artworkId);
+    }
+
+    async bulkUpdateArtworkState(artworkIds: number[]): Promise<void> {
+        this.artworkRepository.bulkUpdateArtworkState(artworkIds);
+    }
+
+    updateNFTToken(artworkId: number, nftToken: string): Promise<UpdateResult> {
+        return this.artworkRepository.updateNFTToken(artworkId, nftToken);
     }
 
 }

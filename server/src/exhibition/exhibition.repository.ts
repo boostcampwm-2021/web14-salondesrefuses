@@ -65,17 +65,20 @@ export class ExhibitionRepository extends Repository<Exhibition> {
     }
 
     createExhibition(thumbnailPath: string, holdExhibitionDTO: HoldExhibitionDTO, user: User): Exhibition {
+        const { title, collaborator, description, startAt, endAt, contents, theme, categories, size } = holdExhibitionDTO;
+
         return this.create({
-            title: holdExhibitionDTO.title,
-            collaborator: holdExhibitionDTO.collaborator,
-            description: holdExhibitionDTO.description,
-            startAt: holdExhibitionDTO.startAt,
-            endAt: holdExhibitionDTO.endAt,
+            title,
+            collaborator,
+            description,
+            startAt,
+            endAt,
             thumbnailImage: thumbnailPath,
-            contents: holdExhibitionDTO.contents,
-            theme: holdExhibitionDTO.theme,
+            contents,
+            theme,
             artist: user,
-            categories: JSON.stringify(holdExhibitionDTO.categories),
+            categories: JSON.stringify(categories),
+            size: Number(size),
         });
     }
 }
