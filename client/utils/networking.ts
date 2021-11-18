@@ -77,14 +77,6 @@ export const getUserArtwork = () => {
         .then((res) => res.data);
 };
 
-export const getUserArtworkTransaction = () => {
-    return axios
-        .get(`${API_SERVER_URL}/users/artworks/transaction`, {
-            withCredentials: true,
-        })
-        .then((res) => res.data);
-};
-
 export const getUserArtworkInterest = () => {
     return axios
         .get(`${API_SERVER_URL}/users/artworks/interest`, {
@@ -93,9 +85,9 @@ export const getUserArtworkInterest = () => {
         .then((res) => res.data);
 };
 
-export const getUserArtworkBid = () => {
+export const getUserArtworkTrades = (filter: string) => {
     return axios
-        .get(`${API_SERVER_URL}/users/artworks/bid`, {
+        .get(`${API_SERVER_URL}/users/artworks/${filter === '입찰' ? 'bid' : 'transaction'}`, {
             withCredentials: true,
         })
         .then((res) => res.data);
