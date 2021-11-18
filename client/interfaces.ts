@@ -56,4 +56,5 @@ export interface Exhibition {
     contents: string;
     thumbnail: string;
     categories: string;
+    size: string;
 }
