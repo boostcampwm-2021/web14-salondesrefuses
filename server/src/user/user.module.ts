@@ -7,11 +7,12 @@ import { ArtworkRepository } from '../artwork/artwork.repository';
 import { ExhibitionRepository } from '../exhibition/exhibition.repository';
 import { UserController } from './controller/user.controller';
 import { UserService } from './service/user.service';
+import { AuctionHistoryRepository } from '../auctionHistory/auctionHistory.repository';
 
 @Module({
     imports: [
         ImageModule,
-        TypeOrmModule.forFeature([ UserRepository, ArtworkRepository, ExhibitionRepository ]),
+        TypeOrmModule.forFeature([ UserRepository, ArtworkRepository, ExhibitionRepository, AuctionHistoryRepository ]),
         JwtModule.register({
             secret: process.env.JWT_SECRET_KEY,
         }),

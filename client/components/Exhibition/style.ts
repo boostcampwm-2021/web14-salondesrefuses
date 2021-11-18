@@ -7,6 +7,7 @@ export const TopContainer = styled.div`
     width: 100%;
     max-width: 1180px;
     margin: 45px 0;
+    height: 40px;
 `;
 export const FilterWrapper = styled.div`
     ${SpaceBetween}
@@ -26,12 +27,8 @@ export const Filter = styled.button<FilterProps>`
     background: none;
 
     font: ${(props) => props.theme.font.textEnMd};
-    border-bottom: ${(props) =>
-        props.select ? `1px solid ${props.theme.color.primary}` : ''};
-    color: ${(props) =>
-        props.select
-            ? props.theme.color.primary
-            : props.theme.color.placeholder};
+    border-bottom: ${(props) => (props.select ? `1px solid ${props.theme.color.primary}` : '')};
+    color: ${(props) => (props.select ? props.theme.color.primary : props.theme.color.placeholder)};
     &:hover {
         color: ${(props) => props.theme.color.primary};
     }
@@ -48,16 +45,7 @@ export const BlackButton = styled(Button)`
         margin-right: 25px;
     }
 `;
-export const ExhibitionList = styled.div`
-    ${SpaceBetween}
-    flex-wrap: wrap;
 
-    width: 1180px;
-
-    & > div {
-        margin-bottom: 45px;
-    }
-`;
 export const Input = styled.input`
     width: 100%;
     padding: 4px 12px;

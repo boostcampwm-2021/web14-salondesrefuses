@@ -2,18 +2,17 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import Head from 'next/head';
 
-import Form from '@components/Exhibition/Form';
-import ArtworkSelector from '@components/Exhibition/ArtworkSelector';
+import Form from '@components/Exhibition/FormPage';
+import ArtworkSelector from '@components/Exhibition/ArtworkSelectorWrapper';
 import Layout from '@components/common/Layout';
 import { Description, NextButton, Title } from '@components/Exhibition/style';
-import Editor from '@components/Exhibition/Editor';
+import Editor from '@components/Exhibition/EditorPage';
 import useInputExhibition from '@hooks/useInputExhibition';
 
 const ExhibitionPostPage = () => {
     const [currentPage, setCurrentPage] = useState<'FORM' | 'EDITOR'>('FORM');
-    const { formInput, onChangeContents, contents, onClickHold } =
+    const { formInput, onClickHold } =
         useInputExhibition();
-    const [thumbnail, setThumbnail] = useState<File | null>(null);
 
     const onClickNextButton = () => {
         setCurrentPage('EDITOR');
@@ -21,10 +20,6 @@ const ExhibitionPostPage = () => {
 
     const handleBackButton = () => {
         setCurrentPage('FORM');
-    };
-
-    const onChangeThumbnail = (current: HTMLInputElement | null) => {
-        current!.files && setThumbnail(current!.files[0]);
     };
 
     return (
@@ -42,11 +37,7 @@ const ExhibitionPostPage = () => {
                             </Description>
                         </Title>
                         <Container>
-                            <Form
-                                formInput={formInput}
-                                thumbnail={thumbnail}
-                                onChangeThumbnail={onChangeThumbnail}
-                            />
+                            <Form formInput={formInput} />
                             <ArtworkSelector />
                             <NextButton onClick={onClickNextButton}>
                                 Next
@@ -54,7 +45,7 @@ const ExhibitionPostPage = () => {
                         </Container>
                     </>
                 ) : (
-                    <Editor backbuttonHandler={handleBackButton} />
+                    <Editor backButtonHandler={handleBackButton} holdExhibition={onClickHold}/>
                 )}
             </Layout>
         </div>

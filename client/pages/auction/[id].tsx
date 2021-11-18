@@ -1,19 +1,21 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
-import { Auction } from 'interfaces';
+import { Auction, Session } from 'interfaces';
 import Layout from '@components/common/Layout';
 import ItemDetail from '@components/Auction/ItemDetail';
-import { GlobalStore } from '@store/GlobalStore';
 import { getAuction } from '@utils/networking';
+import useMagnifier from '@hooks/useMagnifier';
+import useSessionState from '@store/sessionState';
 
 const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
-    const [zoom, setZoom] = useState(false);
-    const magnifierRef = useRef<HTMLImageElement | null>(null);
+    const { imageRef, magnifierRef, showMagnify } = useMagnifier();
+    const user = useSessionState(); // 유저 객체
+
     const { artwork, artist } = auction;
-    const { title } = artwork;
+    const { title, originalImage, year } = artwork;
     const { name } = artist;
 
     useEffect(() => {
@@ -23,53 +25,28 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
         };
     }, []);
 
-    const onHoverImage = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!zoom || !magnifierRef.current) return;
-        const { offsetX, offsetY } = e.nativeEvent;
-        magnifierRef.current.style.objectPosition = `${-(offsetX * 2)}px ${-(
-            offsetY * 2
-        )}px`;
-
-        magnifierRef.current.parentElement!.style.top = `${offsetY + 100}px`;
-        magnifierRef.current.parentElement!.style.left = `${offsetX + 90}px`;
-    };
-
     return (
         <>
-            <GlobalStore>
-                <Head>
-                    <title>
-                        Auction - {title} ({name}, {'2018'})
-                    </title>
-                    <meta name="경매" content="경매경매" />
-                </Head>
-                <Layout>
-                    <Container>
-                        <Background src={artwork.originalImage} />
-                        <Grid>
-                            <section>
-                                <Image
-                                    src={artwork.originalImage}
-                                    onClick={() => {
-                                        setZoom(!zoom);
-                                    }}
-                                    onMouseMove={onHoverImage}
-                                />
-                                {zoom && (
-                                    <Magnifier>
-                                        <img
-                                            src={artwork.originalImage}
-                                            alt=""
-                                            ref={magnifierRef}
-                                        />
-                                    </Magnifier>
-                                )}
-                            </section>
-                            <ItemDetail auction={auction}/>
-                        </Grid>
-                    </Container>
-                </Layout>
-            </GlobalStore>
+            <Head>
+                <title>
+                    Auction - {title} ({name}, {year})
+                </title>
+                <meta name="경매" content="경매경매" />
+            </Head>
+            <Layout>
+                <Container>
+                    <Background src={originalImage} />
+                    <Grid>
+                        <section>
+                            <ImageWrapper>
+                                <Magnifier imagePath={originalImage} onClick={() => showMagnify()} ref={magnifierRef} />
+                                <Image src={originalImage} onClick={() => showMagnify()} ref={imageRef} />
+                            </ImageWrapper>
+                        </section>
+                        <ItemDetail auction={auction} />
+                    </Grid>
+                </Container>
+            </Layout>
         </>
     );
 };
@@ -122,23 +99,33 @@ const Grid = styled.div`
     }
 `;
 
+const ImageWrapper = styled.div`
+    display: flex;
+    position: relative;
+`;
+
 const Image = styled.img`
     max-width: 45vh;
     border: 5px solid ${(props) => props.theme.color.white};
     box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.3);
 `;
 
-const Magnifier = styled.div`
+interface MagnifierProps {
+    imagePath: string;
+}
+
+const Magnifier = styled.div<MagnifierProps>`
     width: 100px;
     height: 100px;
     position: absolute;
     z-index: 200;
-    background-color: black;
-    overflow: hidden;
     border: 2px solid rgba(255, 255, 255, 0.9);
+    background-image: url('${(props) => props.imagePath}');
+    background-repeat: no-repeat;
+    visibility: hidden;
 
-    & > img {
-        object-fit: none;
+    &.setVisible {
+        visibility: visible;
     }
 `;
 

@@ -2,7 +2,9 @@ import {
     Body,
     Controller,
     Get,
+    Param,
     ParseIntPipe,
+    Patch,
     Post,
     Query,
     Req,
@@ -13,18 +15,30 @@ import {
     ValidationPipe,
 } from '@nestjs/common';
 import { ExhibitionService } from '../service/exhibition.service';
-import { ExhibitionDTO, HoldExhibitionDTO } from '../dto/exhibitionDTO';
-import { ApiBody, ApiConsumes, ApiOperation, ApiProperty, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ExhibitionDetailDTO, ExhibitionDTO, HoldExhibitionDTO, UpdateExhibitionDTO } from '../dto/exhibitionDTO';
+import {
+    ApiBody,
+    ApiConsumes,
+    ApiOperation,
+    ApiParam,
+    ApiProperty,
+    ApiQuery,
+    ApiResponse,
+    ApiTags,
+} from '@nestjs/swagger';
 import {
     getExhibitionsSortedByDeadlineApiOperation,
     getExhibitionsSortedByInterestApiOperation,
     getNewestExhibitionApiOperation,
     getRandomExhibitionsAPiOperation,
+    getSpecificExhibitionApiOperation,
     holdExhibitionApiBody,
+    updateExhibitionApiOperation,
 } from '../swagger';
 import { User } from 'src/user/user.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CustomAuthGuard } from 'src/auth/guard/CustomAuthGuard';
+import { UpdateResult } from 'typeorm';
 
 @Controller('/exhibitions')
 @ApiTags('전시회 컨트롤러')
@@ -63,6 +77,14 @@ export class ExhibitionController {
         return this.exhibitionService.getExhibitionsSortedByInterest(page);
     }
 
+    @Get('/:exhibitionId')
+    @ApiOperation(getSpecificExhibitionApiOperation)
+    @ApiParam({ name: 'exhibitionId', type: Number })
+    @ApiResponse({ type: ExhibitionDetailDTO })
+    getSpecificExhibition(@Param('exhibitionId', ParseIntPipe) id: number): Promise<ExhibitionDetailDTO> {
+        return this.exhibitionService.getSpecificExhibition(id);
+    }
+
     @Post('/post')
     @UseGuards(CustomAuthGuard)
     @UsePipes(ValidationPipe)
@@ -74,7 +96,15 @@ export class ExhibitionController {
         @UploadedFile() image: Express.Multer.File,
         @Body() holdExhibitionDTO: HoldExhibitionDTO,
         @Req() { user }: Request & { user: User },
-    ): Promise<ExhibitionDTO> {
+    ): Promise<HoldExhibitionDTO> {
         return this.exhibitionService.holdExhibition(image, holdExhibitionDTO, user);
+    }
+
+    @Patch('/update')
+    @UseGuards(CustomAuthGuard)
+    @UsePipes(ValidationPipe)
+    @ApiOperation(updateExhibitionApiOperation)
+    updateExhibition(@Body() updateExhibitionDTO: UpdateExhibitionDTO): Promise<UpdateResult> {
+        return this.exhibitionService.updateExhibition(updateExhibitionDTO);
     }
 }

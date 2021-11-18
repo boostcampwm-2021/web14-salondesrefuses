@@ -30,8 +30,14 @@ export class Exhibition {
     @Column()
     thumbnailImage: string;
 
-    @Column()
+    @Column({
+        type: 'text',
+        nullable: true,
+    })
     contents: string;
+
+    @Column()
+    size: string;
 
     @ManyToOne(type => User, user => user.exhibitionList)
     artist: User;

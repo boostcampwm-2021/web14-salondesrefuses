@@ -3,3 +3,8 @@ node_modules
 client/.next
 
 output.sql
+
+.DS_Store
+.env
+
+nft/build

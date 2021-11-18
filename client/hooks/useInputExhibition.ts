@@ -12,21 +12,23 @@ const useInputExhibition = () => {
     // const [category, setCategory] = useState('');
     const [collaborator, setCollaborator] = useState('');
     const [description, setDescription] = useState('');
-    const [contents, setContents] = useState('');
+    const [thumbnail, setThumbnail] = useState<File | null>(null);
 
-    const onClickHold = async (image: File) => {
+    const onClickHold = async (contents: string, editorSize: string) => {
         const formData = new FormData();
         formData.append('title', titleInput);
+        formData.append('collaborator', collaborator);
+        formData.append('theme', theme);
+        formData.append('description', description);
         formData.append('startAt', startAt);
         formData.append('endAt', endAt);
-        formData.append('year', collaborator);
-        formData.append('description', description);
         formData.append('contents', contents);
-        formData.append('thumbnail', image);
+        formData.append('size', editorSize);
+        formData.append('thumbnail', thumbnail!);
 
         const result = await holdExhibition(formData);
         if (onResponseSuccess(result.status)) {
-            router.push(`/exhibitions/${result.data.id}`);
+            router.push(`/exhibition/${result.data.id}`);
         } else alert('작품 등록에 실패했습니다.');
     };
 
@@ -54,8 +56,8 @@ const useInputExhibition = () => {
         setDescription((e.target as HTMLInputElement).value);
     };
 
-    const onChangeContents = (e: React.FormEvent) => {
-        setContents((e.target as HTMLInputElement).value);
+    const onChangeThumbnail = (current: HTMLInputElement | null) => {
+        current!.files && setThumbnail(current!.files[0]);
     };
 
     return {
@@ -66,15 +68,15 @@ const useInputExhibition = () => {
             theme,
             collaborator,
             description,
+            thumbnail,
             onChangeTitleInput,
             onChangeStartAt,
             onChangeEndAt,
             onChangeTheme,
             onChangeCollaborator,
             onChangeDescription,
+            onChangeThumbnail,
         },
-        onChangeContents,
-        contents,
         onClickHold,
     };
 };

@@ -1,8 +1,19 @@
+export interface Session {
+    id: number;
+    userId: string;
+    name: string;
+    snsId: any;
+    description: string | null;
+    avatar: string;
+    loginStrategy: string;
+}
+
 export interface Artwork {
     id: number;
     croppedImage: string;
     originalImage: string;
     exhibitionId: number;
+    cid: string;
     nftToken: string;
     description?: string;
     price: number;
@@ -11,6 +22,7 @@ export interface Artwork {
     type: string;
     artistId: number;
     ownerId: number;
+    year: string;
 }
 
 export interface PostArtworkResponse {
@@ -31,5 +43,19 @@ export interface Auction {
     endAt: Date;
     artwork: Artwork;
     artist: Artist;
-    auctionHistories: string[],
+    auctionHistories: string[];
+}
+
+export interface Exhibition {
+    id: number;
+    title: string;
+    collaborator: string;
+    theme: string;
+    description: string;
+    startAt: Date;
+    endAt: Date;
+    contents: string;
+    thumbnail: string;
+    categories: string;
+    size: string;
 }

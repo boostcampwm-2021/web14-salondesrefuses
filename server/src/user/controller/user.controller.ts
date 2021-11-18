@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Put, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Put, Query, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 import { User } from '../user.entity';
 import { Artwork } from '../../artwork/artwork.entity';
@@ -67,8 +67,10 @@ export class UserController {
     @Get('/artworks/bid')
     @ApiOperation(getBiddedArtworksApiOperation)
     @ApiResponse({ type: Artwork })
-    getBiddedArtworks(@Req() { user }: Express.Request & { user: User }): Promise<Artwork[]> {
-        return this.userService.getBiddedArtworks(user);
+    getBiddedArtworks(
+        @Query('nftTokens') nftTokens: string
+    ): Promise<Artwork[]> {
+        return this.userService.getBiddedArtworks(nftTokens);
     }
 
     @Get('/exhibitions')

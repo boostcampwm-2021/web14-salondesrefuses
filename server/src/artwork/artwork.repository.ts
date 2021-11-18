@@ -1,5 +1,5 @@
 import { ObjectStorageData } from 'src/image/dto/ImageDTOs';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, In, Repository, UpdateResult } from 'typeorm';
 import { Artwork } from './artwork.entity';
 import { ArtworkStatus } from './artwork.status.enum';
 import { CreateArtworkDTO } from './dto/artworkDTOs';
@@ -12,15 +12,17 @@ export class ArtworkRepository extends Repository<Artwork> {
         createArtWorkDTO: CreateArtworkDTO,
         { Location: originalImagePath }: ObjectStorageData,
         { Location: croppedImagePath }: ObjectStorageData,
-        nftToken: string,
+        cid: string,
     ): Artwork {
         return this.create({
             title: createArtWorkDTO.title,
             type: createArtWorkDTO.type,
+            year: createArtWorkDTO.year,
+            price: createArtWorkDTO.price,
             description: createArtWorkDTO.description,
             originalImage: originalImagePath,
             croppedImage: croppedImagePath,
-            nftToken: nftToken,
+            cid,
         });
     }
 
@@ -72,16 +74,26 @@ export class ArtworkRepository extends Repository<Artwork> {
             .getMany();
     }
 
-    async getBiddedArtworks(userId: number): Promise<Artwork[]> {
-        return await this.createQueryBuilder('artwork')
-            .where('artwork.status = :status', { status: ArtworkStatus.BidCompleted })
-            .andWhere('artwork.owner_id = :userId', { userId })
-            .getMany();
+    async getBiddedArtworks(nftTokens: string[]): Promise<Artwork[]> {
+        return await this.find({ where: [ { nftToken: In(nftTokens) } ] });
     }
 
-    async findAllByExhibitionId(exhibitonId: number): Promise<Artwork[]> {
+    async findAllByExhibitionId(exhibitonId: number, relations?: string[]): Promise<Artwork[]> {
         return await this.find({
             where: { exhibitionId: exhibitonId },
+            relations: relations,
         });
+    }
+
+    async bulkUpdateArtworkState(artworkIds: number[]): Promise<void> {
+        this.createQueryBuilder('artworks')
+            .update()
+            .set({ status: ArtworkStatus.BidCompleted })
+            .where({ id: In(artworkIds) })
+            .execute();
+    }
+
+    async updateNFTToken(id: number, nftToken: string): Promise<UpdateResult> {
+        return await this.update(id, { nftToken });
     }
 }
