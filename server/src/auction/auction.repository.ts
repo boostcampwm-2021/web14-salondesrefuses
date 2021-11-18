@@ -80,6 +80,7 @@ export class AuctionRepository extends Repository<Auction> {
         this.createQueryBuilder()
             .update()
             .set({ isComplete: false })
-            .where({ id: In(auctionIds) });
+            .where({ id: In(auctionIds) })
+            .execute();
     }
 }
