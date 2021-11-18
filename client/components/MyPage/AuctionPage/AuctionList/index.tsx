@@ -7,9 +7,10 @@ import Card from '@components/common/Card';
 const AuctionList = ({ items }: { items: AuctionCardProps[] }) => {
     return (
         <Container>
-            {items.map((card) => {
-                <Card width={'md'} content={card} key={card.id} />;
-            })}
+            {items &&
+                items.map((card) => {
+                    <Card width={'md'} content={card} key={card.id} />;
+                })}
         </Container>
     );
 };
