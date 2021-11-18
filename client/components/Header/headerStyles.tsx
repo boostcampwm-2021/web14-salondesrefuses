@@ -8,6 +8,13 @@ const getAvatar = (avatar: string | null) => {
     return avatar;
 };
 
+const routeMyPageOrLogin = (session: any) => {
+    return () => {
+        if (session) location.href = '/mypage';
+        else location.href = '/login';
+    };
+};
+
 export const defaultHeader = (session: any) => {
     return (
         <RightContainer>
@@ -17,15 +24,9 @@ export const defaultHeader = (session: any) => {
             <Link href="/auction">
                 <NavButton>Auctions</NavButton>
             </Link>
-            <Link href={session ? '/mypage' : '/login'}>
-                <NavButton>
-                    {session ? (
-                        <img src={getAvatar(session.avatar)} alt="profile" />
-                    ) : (
-                        'LogIn'
-                    )}
-                </NavButton>
-            </Link>
+            <a href="#" onClick={routeMyPageOrLogin(session)}>
+                <NavButton>{session ? <img src={getAvatar(session.avatar)} alt="profile" /> : 'LogIn'}</NavButton>
+            </a>
         </RightContainer>
     );
 };
@@ -44,22 +45,11 @@ export const withSearchBar = (session: any, isExhibition: boolean) => {
             </SearchBarContainer>
             <RightContainer>
                 <Link href={isExhibition ? '/auction' : '/exhibition'}>
-                    <NavButton>
-                        {isExhibition ? 'Auctions' : 'Exhibitions'}
-                    </NavButton>
+                    <NavButton>{isExhibition ? 'Auctions' : 'Exhibitions'}</NavButton>
                 </Link>
-                <Link href={session ? '/mypage' : '/login'}>
-                    <NavButton>
-                        {session ? (
-                            <img
-                                src={getAvatar(session.avatar)}
-                                alt="profile"
-                            />
-                        ) : (
-                            'LogIn'
-                        )}
-                    </NavButton>
-                </Link>
+                <a href="#" onClick={routeMyPageOrLogin(session)}>
+                    <NavButton>{session ? <img src={getAvatar(session.avatar)} alt="profile" /> : 'LogIn'}</NavButton>
+                </a>
             </RightContainer>
         </>
     );

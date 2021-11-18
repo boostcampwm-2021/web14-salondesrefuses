@@ -9,6 +9,12 @@ export const onResponseSuccess = (statusCode: number) => {
     return false;
 };
 
+export const signOut = (userId: string) => {
+    return axios.post(`${API_SERVER_URL}/auth/signOut`, {
+        userId,
+    });
+};
+
 export const getUser = () => {
     return axios.get<Session>(`${API_SERVER_URL}/users`, { withCredentials: true }).then((data) => data.data);
 };

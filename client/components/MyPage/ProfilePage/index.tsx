@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 
 import { Session } from 'interfaces';
 import ProfileImage from './ProfileImage';
-import { BlackButton, Button } from '@styles/common';
+import { BlackButton } from '@styles/common';
 import useToastState from '@store/toastState';
+import { onResponseSuccess, signOut } from '@utils/networking';
+import useSessionState from '@store/sessionState';
 
 interface IPRofilePage {
     user: Session;
@@ -16,6 +19,8 @@ const ProfilePage = ({ user }: IPRofilePage) => {
     const [socialId, setSocialId] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [toast, setToast] = useToastState();
+    const session = useSessionState();
+    const { push } = useRouter();
 
     const profileHandler = (file: File) => {
         setProfile(file);
@@ -31,6 +36,27 @@ const ProfilePage = ({ user }: IPRofilePage) => {
 
     const onChangeDescription = (e: React.FormEvent) => {
         setDescription((e.target as HTMLTextAreaElement).value);
+    };
+
+    const onClickLogout = async () => {
+        const res = await signOut(`${user.id}`);
+        if (onResponseSuccess(res.status)) {
+            const expire = new Date(0);
+            document.cookie = 'accessToken=; expires=' + expire.toString();
+            document.cookie = 'refreshToken=; expires=' + expire.toString();
+            console.log(document.cookie);
+            setToast({
+                show: true,
+                content: '로그아웃 되었습니다.',
+            });
+            setTimeout(() => {
+                setToast({
+                    show: false,
+                    content: '로그아웃 되었습니다.',
+                });
+            }, 3000);
+            window.location.href = '/';
+        }
     };
 
     const onClickSave = (e: React.MouseEvent) => {
@@ -69,7 +95,10 @@ const ProfilePage = ({ user }: IPRofilePage) => {
                     <textarea name="" id="" cols={50} rows={10} value={description} onChange={onChangeDescription} />
                 </div>
             </Form>
-            <BlackButton onClick={onClickSave}>Save</BlackButton>
+            <ButtonContainer>
+                <BlackButton onClick={onClickLogout}>Log out</BlackButton>
+                <BlackButton onClick={onClickSave}>Save</BlackButton>
+            </ButtonContainer>
         </Container>
     );
 };
@@ -84,10 +113,6 @@ const Container = styled.div`
     width: 70%;
     font: ${(props) => props.theme.font.textMd};
     font-size: 1em;
-
-    & > button {
-        align-self: self-end;
-    }
 `;
 
 const Form = styled.div`
@@ -122,6 +147,14 @@ const Form = styled.div`
             border-bottom: 1px solid black;
         }
     }
+`;
+
+const ButtonContainer = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    ailgn-items: center;
+    gap: 30px;
 `;
 
 export default ProfilePage;

@@ -17,6 +17,7 @@ const pathToObj = {
 };
 type mainPathInterface = '' | 'artwork' | 'exhibition' | 'auction' | 'mypage';
 const Header = () => {
+    console.log('hihi');
     const mainPath = useRouter().pathname.split('/')[1] as mainPathInterface;
     const session = useSessionState().contents;
 
