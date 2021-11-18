@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
+import Web3 from 'web3';
 
 import { Artwork } from 'interfaces';
 import { getUserArtwork } from '@utils/networking';
