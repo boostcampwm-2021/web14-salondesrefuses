@@ -8,6 +8,7 @@ import { AuctionRepository } from 'src/auction/auction.repository';
 import { User } from 'src/user/user.entity';
 import { ArtworkStatus } from '../artwork.status.enum';
 import { Artwork } from '../artwork.entity';
+import { UpdateResult } from 'typeorm';
 
 @Injectable()
 export class ArtworkService {
@@ -70,4 +71,9 @@ export class ArtworkService {
     async bulkUpdateArtworkState(artworkIds: number[]): Promise<void> {
         this.artworkRepository.bulkUpdateArtworkState(artworkIds);
     }
+
+    updateNFTToken(artworkId: number, nftToken: string): Promise<UpdateResult> {
+        return this.artworkRepository.updateNFTToken(artworkId, nftToken);
+    }
+
 }

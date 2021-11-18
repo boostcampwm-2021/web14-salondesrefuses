@@ -31,4 +31,7 @@ export const getArtworkApiOperation = {
     description: '작품 ID로 특정 작품을 조회한다.'
 };
 
-
+export const updateNFTTokenApiOperation = {
+    summary: '작품의 NFT TOKEN 수정 API',
+    description: '등록한 작품의 NFT 토큰을 발급 받고 저장한다.'
+};

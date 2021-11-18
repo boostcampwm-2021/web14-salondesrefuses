@@ -1,5 +1,5 @@
 import { ObjectStorageData } from 'src/image/dto/ImageDTOs';
-import { EntityRepository, In, Repository } from 'typeorm';
+import { EntityRepository, In, Repository, UpdateResult } from 'typeorm';
 import { Artwork } from './artwork.entity';
 import { ArtworkStatus } from './artwork.status.enum';
 import { CreateArtworkDTO } from './dto/artworkDTOs';
@@ -92,4 +92,9 @@ export class ArtworkRepository extends Repository<Artwork> {
             .where({ id: In(artworkIds) })
             .execute();
     }
+
+    async updateNFTToken(id: number, nftToken: string): Promise<UpdateResult> {
+        return await this.update(id, { nftToken });
+    }
+
 }
