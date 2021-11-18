@@ -12,7 +12,6 @@ const ExhibitionDetailPage = () => {
 
     useEffect(() => {
         getExhibition(id as string).then((res) => {
-            console.log(res);
             return setExhibition(res.data);
         });
     }, []);
@@ -22,9 +21,7 @@ const ExhibitionDetailPage = () => {
             <Head>
                 <title>벽전 - 전시회 탐색</title>
             </Head>
-            <Layout>
-                {exhibition && <ExhibitionDetail exhibition={exhibition} />}
-            </Layout>
+            <Layout>{exhibition && <ExhibitionDetail exhibition={exhibition} />}</Layout>
         </div>
     );
 };

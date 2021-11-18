@@ -5,7 +5,6 @@ import { Exhibition } from 'interfaces';
 import ExhibitionContents from './ExhibitionContents';
 
 const ExhbitionDetail = ({ exhibition }: { exhibition: Exhibition }) => {
-    console.log(exhibition.contents);
     return (
         <ExhibitionContainer>
             <div>
@@ -27,6 +26,7 @@ const ExhibitionContainer = styled.div`
     display: flex;
     padding: 50px 100px;
     justify-content: center;
+    margin-bottom: 200px;
 `;
 
 const ExhibitionDescription = styled.div`
@@ -43,10 +43,10 @@ const Title = styled.p`
     margin-bottom: 30px;
 `;
 const Artist = styled.p`
-    font: ${(props) => props.theme.font.textEnMd};
+    font: ${(props) => props.theme.font.textEnLg};
 `;
 const Description = styled.p`
-    font: ${(props) => props.theme.font.textEnBase};
+    font: ${(props) => props.theme.font.textEnMd};
     text-align: center;
     padding: 0 90px;
 `;
