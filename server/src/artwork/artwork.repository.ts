@@ -17,6 +17,7 @@ export class ArtworkRepository extends Repository<Artwork> {
         return this.create({
             title: createArtWorkDTO.title,
             type: createArtWorkDTO.type,
+            price: createArtWorkDTO.price,
             description: createArtWorkDTO.description,
             originalImage: originalImagePath,
             croppedImage: croppedImagePath,
