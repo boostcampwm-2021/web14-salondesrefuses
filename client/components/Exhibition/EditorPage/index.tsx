@@ -8,15 +8,15 @@ import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/type
 
 interface EditorProp {
     backButtonHandler: () => void;
-    holdExhibition: (content: string) => void;
+    holdExhibition: (content: string, size: string) => void;
 }
 interface ExhibitionElement {
     tagName: string;
     innerText: string;
     imageSrc: string | null;
     style: {
-        [key:string]: string
-    }
+        [key: string]: string;
+    };
 }
 
 const index = ({ backButtonHandler, holdExhibition }: EditorProp) => {
@@ -25,42 +25,47 @@ const index = ({ backButtonHandler, holdExhibition }: EditorProp) => {
 
     const setElementList = (elementList: EditorElementProp[]) => {
         setElements(elementList);
-    }
+    };
 
     const saveButtonHandler = async () => {
         const exhibitionElements: Array<ExhibitionElement> = [];
-        [ ...editorRef.current?.childNodes! ]
-            .forEach((el: ChildNode) => {
-                const element = (el as HTMLElement);
+        if (!editorRef.current) return;
+        const editorSize = editorRef.current.style.height;
 
-                const { tagName, innerText } = element;
-                const { width, height, color, transform, backgroundColor } = element.style;
-                const { top, left, zIndex, backgroundImage } = window.getComputedStyle(element);
-                let imageSrc = null;
+        [...editorRef.current.childNodes].forEach((el: ChildNode) => {
+            const element = el as HTMLElement;
 
-                if(element.classList.contains('IMAGE')) {
-                    imageSrc = backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2')
-                        .split(',')[0];
-                }
+            const { tagName, innerText } = element;
+            const { width, height, color, transform, backgroundColor } =
+                element.style;
+            const { top, left, zIndex, backgroundImage } =
+                window.getComputedStyle(element);
+            let imageSrc = null;
 
-                exhibitionElements.push({
-                    tagName,
-                    innerText,
-                    imageSrc,
-                    style: {
-                        top,
-                        left,
-                        width,
-                        height,
-                        color,
-                        backgroundColor,
-                        transform,
-                        zIndex,
-                    },
-                });
+            if (element.classList.contains('IMAGE')) {
+                imageSrc = backgroundImage
+                    .replace(/url\((['"])?(.*?)\1\)/gi, '$2')
+                    .split(',')[0];
+            }
+
+            exhibitionElements.push({
+                tagName,
+                innerText,
+                imageSrc,
+                style: {
+                    top,
+                    left,
+                    width,
+                    height,
+                    color,
+                    backgroundColor,
+                    transform,
+                    zIndex,
+                },
             });
+        });
 
-        holdExhibition(JSON.stringify(exhibitionElements));
+        holdExhibition(JSON.stringify(exhibitionElements), editorSize);
     };
 
     return (
@@ -71,10 +76,18 @@ const index = ({ backButtonHandler, holdExhibition }: EditorProp) => {
             </Title>
             <Container>
                 <ImageSlider />
-                <Editor elements={elements} setElements={setElementList} ref={editorRef}/>
+                <Editor
+                    elements={elements}
+                    setElements={setElementList}
+                    ref={editorRef}
+                />
                 <ButtonContainer>
-                    <EditorButton onClick={backButtonHandler}>Back</EditorButton>
-                    <EditorButton onClick={saveButtonHandler}>Save</EditorButton>
+                    <EditorButton onClick={backButtonHandler}>
+                        Back
+                    </EditorButton>
+                    <EditorButton onClick={saveButtonHandler}>
+                        Save
+                    </EditorButton>
                 </ButtonContainer>
             </Container>
         </>

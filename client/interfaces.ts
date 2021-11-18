@@ -31,7 +31,7 @@ export interface Auction {
     endAt: Date;
     artwork: Artwork;
     artist: Artist;
-    auctionHistories: string[],
+    auctionHistories: string[];
 }
 
 export interface Exhibition {
@@ -45,4 +45,5 @@ export interface Exhibition {
     contents: string;
     thumbnail: string;
     categories: string;
+    size: string;
 }
