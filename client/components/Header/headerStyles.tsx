@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { NavButton, RightContainer, SearchBarContainer } from './style';
 import ProfilePic from '@assets/images/profile.png';
-import parseCookie from '@utils/parseCookie';
 
-export const defaultHeader = () => {
-    const [session, setSession] = useState(false);
-    useEffect(() => {
-        const isLoggedIn = parseCookie()('accessToken') ? true : false;
-        setSession(isLoggedIn);
-    }, []);
+const getAvatar = (avatar: string | null) => {
+    if (!avatar || avatar.length === 0) return ProfilePic.src;
+    return avatar;
+};
 
+const routeMyPageOrLogin = (session: any) => {
+    return () => {
+        if (session) location.href = '/mypage';
+        else location.href = '/login';
+    };
+};
+
+export const defaultHeader = (session: any) => {
     return (
         <RightContainer>
             <Link href="/exhibition">
@@ -19,27 +24,15 @@ export const defaultHeader = () => {
             <Link href="/auction">
                 <NavButton>Auctions</NavButton>
             </Link>
-            <Link href={session ? '/mypage' : '/login'}>
-                <NavButton>
-                    {session ? (
-                        <img src={ProfilePic.src} alt="profile" />
-                    ) : (
-                        'LogIn'
-                    )}
-                </NavButton>
-            </Link>
+            <a href="#" onClick={routeMyPageOrLogin(session)}>
+                <NavButton>{session ? <img src={getAvatar(session.avatar)} alt="profile" /> : 'LogIn'}</NavButton>
+            </a>
         </RightContainer>
     );
 };
 
-export const withSearchBar = (isExhibition: boolean) => {
-    const [session, setSession] = useState(false);
+export const withSearchBar = (session: any, isExhibition: boolean) => {
     const [search, setSearch] = useState('');
-
-    useEffect(() => {
-        const isLoggedIn = parseCookie()('accessToken') ? true : false;
-        setSession(isLoggedIn);
-    }, []);
 
     return (
         <>
@@ -52,19 +45,11 @@ export const withSearchBar = (isExhibition: boolean) => {
             </SearchBarContainer>
             <RightContainer>
                 <Link href={isExhibition ? '/auction' : '/exhibition'}>
-                    <NavButton>
-                        {isExhibition ? 'Auctions' : 'Exhibitions'}
-                    </NavButton>
+                    <NavButton>{isExhibition ? 'Auctions' : 'Exhibitions'}</NavButton>
                 </Link>
-                <Link href={session ? '/mypage' : '/login'}>
-                    <NavButton>
-                        {session ? (
-                            <img src={ProfilePic.src} alt="profile" />
-                        ) : (
-                            'LogIn'
-                        )}
-                    </NavButton>
-                </Link>
+                <a href="#" onClick={routeMyPageOrLogin(session)}>
+                    <NavButton>{session ? <img src={getAvatar(session.avatar)} alt="profile" /> : 'LogIn'}</NavButton>
+                </a>
             </RightContainer>
         </>
     );

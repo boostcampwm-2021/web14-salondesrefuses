@@ -10,28 +10,23 @@ import {
 } from '../../components/Exhibition/style';
 import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
 import RequireLoginModal from '@components/common/RequireLoginModal';
-import parseCookie from '@utils/parseCookie';
 import ListFilter from '@components/Exhibition/ListFilter';
 import ExhibitionList from '@components/Exhibition/ExhibitionList';
-
-let accessToken: string | undefined;
+import useSessionState from '@store/sessionState';
 
 const ExhibitionPage: NextPage = () => {
     const [onSelect, setOnSelect] = useState<string>('Newest');
+    const session = useSessionState().contents;
 
     const { requireLoginModal, onClickPostArtworkWithoutLogin, closeModal } =
         useHandleRequireLoginModal();
-
-    useEffect(() => {
-        accessToken = parseCookie()('accessToken');
-    }, []);
 
     const handleFilter = ({ currentTarget }: React.MouseEvent) => {
         setOnSelect(currentTarget.textContent || 'Newest');
     };
 
     const buildButtons = () => {
-        return accessToken ? (
+        return session ? (
             <>
                 <Link href="/exhibition/post">
                     <BlackButton>Hold Exhibition</BlackButton>
