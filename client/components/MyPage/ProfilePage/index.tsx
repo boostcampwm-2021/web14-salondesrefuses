@@ -7,7 +7,7 @@ import { Session } from 'interfaces';
 import ProfileImage from './ProfileImage';
 import { BlackButton } from '@styles/common';
 import useToastState from '@store/toastState';
-import { onResponseSuccess, signOut } from '@utils/networking';
+import { onResponseSuccess, signOut, updateUserData } from '@utils/networking';
 import useSessionState from '@store/sessionState';
 
 interface IPRofilePage {
@@ -69,23 +69,31 @@ const ProfilePage = ({ user }: IPRofilePage) => {
         }
     };
 
-    const onClickSave = (e: React.MouseEvent) => {
-        // TODO: api 명세 확인해서 formdata 쏘기
-        //! 폼데이터 키값 임의로 작성한 것. 정확하지 않음.
+    const onClickSave = async (e: React.MouseEvent) => {
         const formData = new FormData();
-        formData.append('nickname', nickname);
-        formData.append('socialId', socialId);
+        formData.append('name', nickname);
+        formData.append('snsId', socialId);
         formData.append('description', description);
-        profile && formData.append('profile', profile);
+        profile && formData.append('image', profile);
 
-        setToast({
-            show: true,
-            content: '프로필이 업데이트되었습니다.',
-        });
-
-        setTimeout(() => {
-            setToast({ show: false, content: '프로필이 업데이트되었습니다.' });
-        }, 3000);
+        const res = await updateUserData(formData);
+        if (onResponseSuccess(res.status)) {
+            setToast({
+                show: true,
+                content: '프로필이 업데이트되었습니다.',
+            });
+            setTimeout(() => {
+                setToast({ ...toast, show: false });
+            }, 3000);
+        } else {
+            setToast({
+                show: true,
+                content: '프로필 업데이트에 실패했습니다.',
+            });
+            setTimeout(() => {
+                setToast({ ...toast, show: false });
+            }, 3000);
+        }
     };
 
     return (

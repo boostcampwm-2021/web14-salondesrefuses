@@ -83,6 +83,13 @@ export const getExhibition = (exhibitionId: string) => {
     return axios.get<Exhibition>(`${API_SERVER_URL}/exhibitions/${exhibitionId}`);
 };
 
+export const updateUserData = (data: FormData) => {
+    return axios.post(`${API_SERVER_URL}/users`, data, {
+        headers: { 'Content-Type': 'multipart-formdata' },
+        withCredentials: true,
+    });
+};
+
 export const getUserArtwork = () => {
     return axios
         .get(`${API_SERVER_URL}/users/artworks`, {
