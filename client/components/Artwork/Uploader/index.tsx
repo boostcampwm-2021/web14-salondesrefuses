@@ -22,15 +22,10 @@ const Uploader = ({ handleNewImage }: UploaderProps) => {
     return (
         <Container>
             <FileInput onClick={onClickFileInput}>
-                <input
-                    type="file"
-                    name="newArtwork"
-                    ref={inputRef}
-                    onChange={onChangeFile}
-                />
+                <input type="file" name="newArtwork" ref={inputRef} onChange={onChangeFile} />
                 <img src="/icons/add.png" alt="add" />
             </FileInput>
-            <Tiles />
+            <Tiles align="center" />
         </Container>
     );
 };

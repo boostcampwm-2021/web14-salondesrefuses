@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { onResponseSuccess, holdExhibition } from 'utils/networking';
 import { useRouter } from 'next/router';
+import useToastState from '@store/toastState';
 
 const useInputExhibition = () => {
     const router = useRouter();
@@ -9,10 +10,10 @@ const useInputExhibition = () => {
     const [startAt, setStartAt] = useState('');
     const [endAt, setEndAt] = useState('');
     const [theme, setTheme] = useState('');
-    // const [category, setCategory] = useState('');
     const [collaborator, setCollaborator] = useState('');
     const [description, setDescription] = useState('');
     const [thumbnail, setThumbnail] = useState<File | null>(null);
+    const [toast, setToast] = useToastState();
 
     const onClickHold = async (contents: string, editorSize: string) => {
         const formData = new FormData();
@@ -28,8 +29,23 @@ const useInputExhibition = () => {
 
         const result = await holdExhibition(formData);
         if (onResponseSuccess(result.status)) {
+            setToast({
+                show: true,
+                content: '전시회 개최에 성공했습니다.',
+            });
+            setTimeout(() => {
+                setToast({ ...toast, show: false });
+            }, 3000);
             router.push(`/exhibition/${result.data.id}`);
-        } else alert('작품 등록에 실패했습니다.');
+        } else {
+            setToast({
+                show: true,
+                content: '전시회 개최에 실패했습니다.',
+            });
+            setTimeout(() => {
+                setToast({ ...toast, show: false });
+            }, 3000);
+        }
     };
 
     const onChangeTitleInput = (e: React.FormEvent) => {

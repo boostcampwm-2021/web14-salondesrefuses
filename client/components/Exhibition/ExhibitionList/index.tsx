@@ -9,11 +9,9 @@ import useInfiniteScroll from '@hooks/useInfiniteScroll';
 
 const ExhibitionList = ({ filter }: { filter: string }) => {
     const [exhibitions, setExhibitions] = useState<ExhibitionCardProps[]>([]);
+    console.log(exhibitions && exhibitions[0]);
     const [page, setPage] = useState(0);
-    const gridRef = useInfiniteScroll(
-        () => setPage((page) => page + 1),
-        exhibitions,
-    );
+    const gridRef = useInfiniteScroll(() => setPage((page) => page + 1), exhibitions);
 
     useEffect(() => {
         getExhibitions(filter.toLowerCase(), page).then((res) => {
@@ -22,9 +20,7 @@ const ExhibitionList = ({ filter }: { filter: string }) => {
     }, [page]);
 
     useEffect(() => {
-        getExhibitions(filter.toLowerCase(), page).then((res) =>
-            setExhibitions(res.data),
-        );
+        getExhibitions(filter.toLowerCase(), page).then((res) => setExhibitions(res.data));
     }, [filter]);
 
     return (
