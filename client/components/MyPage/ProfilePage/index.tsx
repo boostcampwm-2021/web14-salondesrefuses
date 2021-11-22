@@ -44,7 +44,6 @@ const ProfilePage = ({ user }: IPRofilePage) => {
             const expire = new Date(0);
             document.cookie = 'accessToken=; expires=' + expire.toString();
             document.cookie = 'refreshToken=; expires=' + expire.toString();
-            console.log(document.cookie);
             setToast({
                 show: true,
                 content: '로그아웃 되었습니다.',

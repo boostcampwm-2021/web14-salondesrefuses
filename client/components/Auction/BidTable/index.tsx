@@ -54,7 +54,6 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
                 value: Web3.utils.toWei(price.toString(), 'ether'),
                 gas: GAS_LIMIT,
             });
-            console.log(result);
         } catch (e) {
             console.log(e);
         }
@@ -80,7 +79,6 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
     useEffect(() => {
         socket.on('@auction/bid', (data: trendHistory) => {
             const currentBidPrice = Number(data.price);
-            console.log(Number((currentBidPrice + 0.01).toFixed(2)));
             setPrice(Number((currentBidPrice + 0.01).toFixed(2)));
         });
 
@@ -94,12 +92,7 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
             setAuctionDeadline(getRemainingTime(Number(data), new Date(endAt).getTime()));
         };
 
-        setContract(
-            new web3.eth.Contract(
-                ABI.abi as AbiItem[],
-                contractAddress.address,
-            ),
-        );
+        setContract(new web3.eth.Contract(ABI.abi as AbiItem[], contractAddress.address));
     }, []);
 
     const showToast = () => {

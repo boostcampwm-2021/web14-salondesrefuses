@@ -45,7 +45,6 @@ const routerPath = (path: PAGES, user: Session) => {
 const MyPage = () => {
     const user = useSessionState().contents;
     const [currentPage, setCurrentPage] = useState<PAGES>('profile');
-    console.log(user);
     return (
         <div>
             <Head>
