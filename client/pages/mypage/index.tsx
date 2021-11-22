@@ -20,16 +20,12 @@ const ExhibitionPage = dynamic(() => import('@components/MyPage/Exhibition'), {
 const ArtworkPage = dynamic(() => import('@components/MyPage/ArtworkPage'), {
     ssr: false,
 });
-const FavoritePage = dynamic(() => import('@components/MyPage/FavoritePage'), {
-    ssr: false,
-});
 
 export const DETAIL_PAGES = {
     profile: '내 프로필',
     auction: '거래/입찰 내역',
     exhibition: '내 전시',
     artwork: '내 작품',
-    favorite: '관심 작품',
 };
 
 export type PAGES = typeof DETAIL_PAGES[keyof typeof DETAIL_PAGES];
@@ -38,8 +34,7 @@ const routerPath = (path: PAGES, user: Session) => {
     if (path === 'profile') return <ProfilePage user={user} />;
     else if (path === 'auction') return <AuctionPage />;
     else if (path === 'exhibition') return <ExhibitionPage />;
-    else if (path === 'artwork') return <ArtworkPage />;
-    else return <FavoritePage />;
+    else return <ArtworkPage />;
 };
 
 const MyPage = () => {
