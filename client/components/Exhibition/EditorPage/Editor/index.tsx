@@ -124,8 +124,8 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
             currentElements.forEach((elem) => {
                 if (!elem) return;
                 const z = elem.style.zIndex;
-                if (direction === 'FORWARD') elem.style.zIndex = `${+z + 100}`;
-                else elem.style.zIndex = `${+z - 100}`;
+                if (direction === 'FORWARD') elem.style.zIndex = `${+z + 10}`;
+                else elem.style.zIndex = `${+z - 10 < 0 ? 0 : +z - 10}`;
             });
         };
     };
