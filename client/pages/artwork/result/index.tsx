@@ -33,15 +33,10 @@ const ResultPage = () => {
             method: 'eth_requestAccounts',
         });
 
-        console.log(contract);
-
         const result = await contract.methods.createNFT(account, artwork!.cid).send({ from: account, gas: GAS_LIMIT });
         const tokenId = result.events.Transfer.returnValues.tokenId;
 
         await contract.methods.registerAuction(tokenId).send({ from: account, gas: GAS_LIMIT });
-
-        // const balanceOf = await contract.methods.balanceOf(account!).call();
-        // console.log('balance : ', balanceOf);
         return tokenId;
     };
 
