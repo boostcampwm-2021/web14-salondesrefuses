@@ -9,7 +9,9 @@ import { Auction } from 'interfaces';
 import useAuctionSocketState from '@store/auctionSocketState';
 
 export type trendHistory = {
-    bidderName: string;
+    bidder: {
+        name: string;
+    };
     price: string;
     biddedAt: string;
 };

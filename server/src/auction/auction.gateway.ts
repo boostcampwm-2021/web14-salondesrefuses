@@ -58,7 +58,9 @@ export class AuctionGateway implements OnGatewayInit {
         }
 
         this.server.to(auctionId).emit('@auction/bid', {
-            bidderName,
+            bidder: {
+                name: bidderName,
+            },
             price,
             biddedAt,
         });

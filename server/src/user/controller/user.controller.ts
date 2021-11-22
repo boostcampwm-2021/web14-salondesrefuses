@@ -6,7 +6,7 @@ import { Exhibition } from '../../exhibition/exhibition.entity';
 import { CustomAuthGuard } from '../../auth/guard/CustomAuthGuard';
 import { RequestUserDTO } from '../dto/userDTO';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 import {
     getUsersArtworksApiOperation,
@@ -16,6 +16,7 @@ import {
     getBiddingArtworksApiOperation,
     getBiddedArtworksApiOperation,
     getUsersExhibitionsApiOperation,
+    updateUserProfileApiBody,
 } from '../swagger';
 
 @UseGuards(CustomAuthGuard)
@@ -34,6 +35,7 @@ export class UserController {
     @Put('/')
     @UseInterceptors(FileInterceptor('image'))
     @ApiOperation(updateUserProfileApiOperation)
+    @ApiBody(updateUserProfileApiBody)
     @ApiResponse({ type: UpdateResult })
     updateUserProfile(
         @Req() { user }: Express.Request & { user: User },
