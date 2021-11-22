@@ -15,6 +15,8 @@ import decreaseEditorIcon from '@assets/images/decrease-editor.png';
 import fontStylingIcon from '@assets/images/font-styling.png';
 import { useEditorImageState } from '@store/editorImageState';
 import { EditorContainer, ToolBar, Button, EditArea } from './style';
+import { FontStyle } from 'interfaces';
+
 type Props = {
     elements: EditorElementProp[];
     setElements: Function;
@@ -26,9 +28,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     const [showFontStyler, setShowFontStyler] = useState(false);
     const [isDoubleClicked, setIsDoubleClicked] = useState(false);
     const [color, setColor] = useState('#000');
-    const [align, setAlign] = useState<'LEFT' | 'CENTER' | 'RIGHT'>('LEFT');
-    const [fontSize, setFontSize] = useState(12);
-    const [fontStyle, setFontStyle] = useState<'Montserrat' | 'NotoSansKR'>('NotoSansKR');
+    const [fontStyles, setFontStyles] = useState<FontStyle>({ align: 'LEFT', fontSize: 14, fontFamily: 'Montserrat' });
 
     const [editorImageState, setEditorImageState] = useEditorImageState();
     const [height, setHeight] = useState<number>(1000);
@@ -53,6 +53,17 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
             },
         ]);
     }, [editorImageState]);
+
+    useEffect(() => {
+        currentElements.forEach((elem) => {
+            if (!elem) return;
+            if (elem.classList.contains('TEXT')) {
+                elem.style.setProperty('font-family', fontStyles.fontFamily);
+                elem.style.setProperty('font-size', fontStyles.fontSize + 'px');
+                elem.style.setProperty('text-align', fontStyles.align);
+            }
+        });
+    }, [JSON.stringify(fontStyles)]);
 
     useEffect(() => {
         if (!editorRef.current) return;
@@ -84,7 +95,9 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
         };
         setElements([...elements, element]);
     };
-    const changeFontStyle = () => {};
+    const changeFontStyles = (newFontStyle: FontStyle) => {
+        setFontStyles(newFontStyle);
+    };
     const keyToCurrentElements = (keyArr: Array<HTMLElement | null>) => {
         setCurrentElements(keyArr);
         setIsDoubleClicked(false);
@@ -150,7 +163,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
                         }}
                     />
                 )}
-                {showFontStyler && <FontStyler />}
+                {showFontStyler && <FontStyler fontStyle={fontStyles} changeFontStyle={changeFontStyles} />}
             </ToolBar>
             <EditArea height={height} ref={editorRef}>
                 {renderElements()}
