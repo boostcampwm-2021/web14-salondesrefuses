@@ -8,25 +8,14 @@ const filtering = ['거래', '입찰'];
 
 const AuctionPage = () => {
     const [auctions, setAuctions] = useState<AuctionCardProps[]>([]);
-    const [filter, setFilter] = useState<string>('거래');
 
     useEffect(() => {
-        getUserArtworkTrades(filter).then((res) => {
+        getUserArtworkTrades('transaction').then((res) => {
             setAuctions(res.data);
         });
-    }, [filter]);
+    }, []);
 
-    return (
-        <Container>
-            <Filter
-                filtering={filtering}
-                current={filter}
-                filterHandler={(s: string) => {
-                    setFilter(s);
-                }}
-            />
-        </Container>
-    );
+    return <Container></Container>;
 };
 
 const Container = styled.div``;

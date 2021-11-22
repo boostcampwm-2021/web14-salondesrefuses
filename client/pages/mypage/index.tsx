@@ -23,7 +23,7 @@ const ArtworkPage = dynamic(() => import('@components/MyPage/ArtworkPage'), {
 
 export const DETAIL_PAGES = {
     profile: '내 프로필',
-    auction: '거래/입찰 내역',
+    auction: '거래 내역',
     exhibition: '내 전시',
     artwork: '내 작품',
 };
