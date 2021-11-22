@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, forwardRef } from 'react';
 
 import ColorPicker from '../ColorPicker';
 import EditorElement from '../EditorElement';
+import FontStyler from '../FontStyler';
 import { initialImageStyle, initialRectStyle, initialTextStyle } from '@const/editor-initial-state';
 import { EditorElementName, EditorElementProp } from './types';
 import rectButtonIcon from '@assets/images/editor-rectangular.png';
@@ -11,9 +12,9 @@ import forwardButtonIcon from '@assets/images/editor-forward.png';
 import backwardButtonIcon from '@assets/images/editor-backward.png';
 import increaseEditorIcon from '@assets/images/increase-editor.png';
 import decreaseEditorIcon from '@assets/images/decrease-editor.png';
+import fontStylingIcon from '@assets/images/font-styling.png';
 import { useEditorImageState } from '@store/editorImageState';
 import { EditorContainer, ToolBar, Button, EditArea } from './style';
-
 type Props = {
     elements: EditorElementProp[];
     setElements: Function;
@@ -22,8 +23,12 @@ type Props = {
 const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     const [currentElements, setCurrentElements] = useState<Array<HTMLElement | null>>([]);
     const [showColorPicker, setShowColorPicker] = useState(false);
+    const [showFontStyler, setShowFontStyler] = useState(false);
     const [isDoubleClicked, setIsDoubleClicked] = useState(false);
     const [color, setColor] = useState('#000');
+    const [align, setAlign] = useState<'LEFT' | 'CENTER' | 'RIGHT'>('LEFT');
+    const [fontSize, setFontSize] = useState(12);
+    const [fontStyle, setFontStyle] = useState<'Montserrat' | 'NotoSansKR'>('NotoSansKR');
 
     const [editorImageState, setEditorImageState] = useEditorImageState();
     const [height, setHeight] = useState<number>(1000);
@@ -67,9 +72,11 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     };
 
     const onClickColorButton = () => {
-        setShowColorPicker(!showColorPicker);
+        setShowColorPicker((prev) => !prev);
     };
-
+    const onFontStylerButton = () => {
+        setShowFontStyler((prev) => !prev);
+    };
     const createText = () => {
         const element: EditorElementProp = {
             type: EditorElementName.text,
@@ -77,7 +84,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
         };
         setElements([...elements, element]);
     };
-
+    const changeFontStyle = () => {};
     const keyToCurrentElements = (keyArr: Array<HTMLElement | null>) => {
         setCurrentElements(keyArr);
         setIsDoubleClicked(false);
@@ -134,6 +141,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
                 <Button onClick={onClickZIndexButton('BACKWARD')} bg={backwardButtonIcon.src} />
                 <Button onClick={() => onClickIncreaseEditorButton()} bg={increaseEditorIcon.src} />
                 <Button onClick={() => onClickDecreaseEditorButton()} bg={decreaseEditorIcon.src} />
+                <Button onClick={onFontStylerButton} bg={fontStylingIcon.src} />
                 {showColorPicker && (
                     <ColorPicker
                         color={color}
@@ -142,6 +150,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
                         }}
                     />
                 )}
+                {showFontStyler && <FontStyler />}
             </ToolBar>
             <EditArea height={height} ref={editorRef}>
                 {renderElements()}
