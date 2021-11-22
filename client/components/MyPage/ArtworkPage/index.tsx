@@ -20,7 +20,7 @@ const ArtworkPage = () => {
     );
 };
 
-const filtering = ['등록한 작품', '구매한 작품'];
+const filtering = ['등록한 작품', '보유중인 작품'];
 
 const Container = styled.div``;
 
