@@ -68,6 +68,7 @@ const AuctionForm = ({ content, isHovered }: AuctionFormProps) => {
 
 const Card = ({ width, content }: Props) => {
     const isExhibition = content.hasOwnProperty('isSale') || content.hasOwnProperty('collaborator');
+    console.log(isExhibition);
     const [isHovered, setIsHovered] = useState(false);
 
     return (

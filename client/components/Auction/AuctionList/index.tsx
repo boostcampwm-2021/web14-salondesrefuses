@@ -66,6 +66,7 @@ const AuctionList = () => {
                 </Title>
                 <Grid ref={gridRef}>
                     {auctionItems.map((item, idx) => {
+                        console.log(item);
                         return <Card width="lg" content={item} key={idx} />;
                     })}
                 </Grid>
