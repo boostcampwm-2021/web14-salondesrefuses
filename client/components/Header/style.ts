@@ -13,7 +13,7 @@ export const HeaderContainer = styled.header`
     font: ${(props) => props.theme.font.textEnBase};
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(20px);
-    z-index: 900;
+    z-index: 9000;
 `;
 
 export const LeftContainer = styled.div`
