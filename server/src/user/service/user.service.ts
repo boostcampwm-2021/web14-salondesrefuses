@@ -9,7 +9,6 @@ import { UpdateResult } from 'typeorm';
 import { RequestUserDTO } from '../dto/userDTO';
 import { ExhibitionRepository } from '../../exhibition/exhibition.repository';
 import { Exhibition } from '../../exhibition/exhibition.entity';
-import { AuctionHistoryRepository } from '../../auctionHistory/auctionHistory.repository';
 
 @Injectable()
 export class UserService {
@@ -21,8 +20,6 @@ export class UserService {
         private artworkRepository: ArtworkRepository,
         @InjectRepository(ExhibitionRepository)
         private exhibitionRepository: ExhibitionRepository,
-        @InjectRepository(AuctionHistoryRepository)
-        private auctionHistoryRepository: AuctionHistoryRepository
     ) {}
 
     async checkRegisteredUser(userId: string, name: string, avatar: string, loginStrategy: string): Promise<User> {
@@ -48,11 +45,8 @@ export class UserService {
         file: Express.Multer.File,
         requestUserDTO: RequestUserDTO,
     ): Promise<UpdateResult> {
-        if(!file) {
-            return this.userRepository.update(
-                { id },
-                { ...requestUserDTO }
-            );
+        if (!file) {
+            return this.userRepository.update({ id }, { ...requestUserDTO });
         }
         const image = await this.imageService.fileUpload(file);
         const avatar = image.Location;
@@ -68,9 +62,8 @@ export class UserService {
         return this.artworkRepository.getInterestArtworks(id);
     }
 
-    async getBiddingArtworks({ id }: User): Promise<Artwork[]> {
-        const auctionHistories = await this.auctionHistoryRepository.getBiddingAuctions(id);
-        return auctionHistories.map(el => el.auction.artwork);
+    getBiddingArtworks({ id }: User): Promise<Artwork[]> {
+        return this.artworkRepository.findAllByBidding(id);
     }
 
     getBiddedArtworks(nftTokens: string): Promise<Artwork[]> {
