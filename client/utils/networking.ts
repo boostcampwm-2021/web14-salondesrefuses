@@ -113,6 +113,6 @@ export const setNFTToken = (artworkId: number, nftToken?: string) => {
         { nftToken },
         {
             withCredentials: true,
-        }
+        },
     );
 };

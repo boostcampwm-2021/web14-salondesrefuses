@@ -9,7 +9,7 @@ const ExhibitionPage = () => {
 
     useEffect(() => {
         getUserExhibitions().then((res) => {
-            setExhibitions(res.data);
+            setExhibitions(res);
         });
     }, []);
 

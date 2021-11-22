@@ -1,20 +1,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
-import {
-    ExhibitionCardProps,
-    AuctionCardProps,
-    CardSize,
-} from '@const/card-type';
-import {
-    BlurBottom,
-    CardContainer,
-    Price,
-    Title,
-    P,
-    BlurFull,
-    PriceContainer,
-} from './style';
+import { ExhibitionCardProps, AuctionCardProps, CardSize } from '@const/card-type';
+import { BlurBottom, CardContainer, Price, Title, P, BlurFull, PriceContainer } from './style';
 import LazyImage from './LazyImage';
 import ethLogo from '@assets/images/ETH.png';
 
@@ -79,17 +67,11 @@ const AuctionForm = ({ content, isHovered }: AuctionFormProps) => {
 };
 
 const Card = ({ width, content }: Props) => {
-    const isExhibition = content.hasOwnProperty('isSale');
+    const isExhibition = content.hasOwnProperty('isSale') || content.hasOwnProperty('collaborator');
     const [isHovered, setIsHovered] = useState(false);
 
     return (
-        <Link
-            href={
-                isExhibition
-                    ? `/exhibition/${content.id}`
-                    : `/auction/${content.id}`
-            }
-        >
+        <Link href={isExhibition ? `/exhibition/${content.id}` : `/auction/${content.id}`}>
             <CardContainer
                 width={CardSize[width]}
                 onMouseEnter={() => setIsHovered(true)}
@@ -97,15 +79,9 @@ const Card = ({ width, content }: Props) => {
             >
                 <LazyImage src={content.thumbnailImage} alt={content.title} />
                 {isExhibition ? (
-                    <ExhibitionForm
-                        content={content as ExhibitionCardProps}
-                        isHovered={isHovered}
-                    />
+                    <ExhibitionForm content={content as ExhibitionCardProps} isHovered={isHovered} />
                 ) : (
-                    <AuctionForm
-                        content={content as AuctionCardProps}
-                        isHovered={isHovered}
-                    />
+                    <AuctionForm content={content as AuctionCardProps} isHovered={isHovered} />
                 )}
             </CardContainer>
         </Link>
