@@ -16,13 +16,21 @@ export const signOut = (userId: string) => {
 };
 
 export const getUser = () => {
-    return axios.get<Session>(`${API_SERVER_URL}/users`, { withCredentials: true }).then((data) => data.data);
+    return axios.get<Session>(`${API_SERVER_URL}/users`, { withCredentials: true }).then((res) => res.data);
 };
 
 export const getAllArtworks = () => {
     return axios.get<Artwork[]>(`${API_SERVER_URL}/users/artworks`, {
         withCredentials: true,
     });
+};
+
+export const getAllBoughtArtworks = (tokens: number[]) => {
+    return axios
+        .get(`${API_SERVER_URL}/users/artworks/bid?nftTokens=${JSON.stringify(tokens)}`, {
+            withCredentials: true,
+        })
+        .then((res) => res.data);
 };
 
 export const getSingleArtwork = (id: number) => {
@@ -75,6 +83,13 @@ export const getExhibition = (exhibitionId: string) => {
     return axios.get<Exhibition>(`${API_SERVER_URL}/exhibitions/${exhibitionId}`);
 };
 
+export const updateUserData = (data: FormData) => {
+    return axios.post(`${API_SERVER_URL}/users`, data, {
+        headers: { 'Content-Type': 'multipart-formdata' },
+        withCredentials: true,
+    });
+};
+
 export const getUserArtwork = () => {
     return axios
         .get(`${API_SERVER_URL}/users/artworks`, {
@@ -113,6 +128,6 @@ export const setNFTToken = (artworkId: number, nftToken?: string) => {
         { nftToken },
         {
             withCredentials: true,
-        }
+        },
     );
 };

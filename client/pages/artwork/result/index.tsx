@@ -27,22 +27,16 @@ const ResultPage = () => {
 
     const mint = async () => {
         if (!window.ethereum || !contract) return;
+        if (token) return;
         await window.ethereum.enable();
         [account] = await window.ethereum.request({
             method: 'eth_requestAccounts',
         });
 
-        const result = await contract.methods
-            .createNFT(account, artwork!.cid)
-            .send({ from: account, gas: GAS_LIMIT });
+        const result = await contract.methods.createNFT(account, artwork!.cid).send({ from: account, gas: GAS_LIMIT });
         const tokenId = result.events.Transfer.returnValues.tokenId;
 
-        await contract.methods
-            .registerAuction(tokenId)
-            .send({ from: account, gas: GAS_LIMIT });
-
-        // const balanceOf = await contract.methods.balanceOf(account!).call();
-        // console.log('balance : ', balanceOf);
+        await contract.methods.registerAuction(tokenId).send({ from: account, gas: GAS_LIMIT });
         return tokenId;
     };
 
@@ -72,12 +66,7 @@ const ResultPage = () => {
         window.ethereum.on('accountsChanged', (accounts: string[]) => {
             account = accounts[0];
         });
-        setContract(
-            new web3.eth.Contract(
-                ABI.abi as AbiItem[],
-                contractAddress.address,
-            ),
-        );
+        setContract(new web3.eth.Contract(ABI.abi as AbiItem[], contractAddress.address));
     }, [id]);
 
     useEffect(() => {
@@ -91,27 +80,16 @@ const ResultPage = () => {
             </Head>
             <Layout>
                 <Container>
-                    <Background
-                        src={artwork?.originalImage}
-                        alt={artwork?.title}
-                    />
+                    <Background src={artwork?.originalImage} alt={artwork?.title} />
                     <Body>
                         <img src={artwork?.originalImage} alt="" />
-                        {artwork && (
-                            <ResultDetail artwork={artwork} token={token} />
-                        )}
+                        {artwork && <ResultDetail artwork={artwork} token={token} />}
                     </Body>
                     <Buttons>
-                        <Button
-                            onClick={onClickConfirm}
-                            active={token ? false : true}
-                        >
+                        <Button onClick={onClickConfirm} active={token ? false : true}>
                             Mint
                         </Button>
-                        <Button
-                            active={token ? true : false}
-                            onClick={onClickDone}
-                        >
+                        <Button active={token ? true : false} onClick={onClickDone}>
                             Done
                         </Button>
                     </Buttons>
@@ -172,8 +150,7 @@ const Button = styled.button<{ active: boolean }>`
     height: 50px;
     width: 40%;
     border: none;
-    background: ${(props) =>
-        props.active ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.1)'};
+    background: ${(props) => (props.active ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.1)')};
     color: white;
     box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
