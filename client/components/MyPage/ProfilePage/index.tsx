@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
+import Web3 from 'web3';
 
 import { Session } from 'interfaces';
 import ProfileImage from './ProfileImage';
@@ -36,6 +37,16 @@ const ProfilePage = ({ user }: IPRofilePage) => {
 
     const onChangeDescription = (e: React.FormEvent) => {
         setDescription((e.target as HTMLTextAreaElement).value);
+    };
+
+    const onClickGenerateWallet = async () => {
+        if (!window.ethereum) return;
+        const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
+        const account = web3.eth.accounts.create();
+        console.log(account);
+
+        const accounts = await web3.eth.personal.getAccounts();
+        console.log(accounts);
     };
 
     const onClickLogout = async () => {
@@ -95,12 +106,15 @@ const ProfilePage = ({ user }: IPRofilePage) => {
                 </div>
             </Form>
             <ButtonContainer>
+                <BlackButton onClick={onClickGenerateWallet}>New Wallet</BlackButton>
                 <BlackButton onClick={onClickLogout}>Log out</BlackButton>
                 <BlackButton onClick={onClickSave}>Save</BlackButton>
             </ButtonContainer>
         </Container>
     );
 };
+
+const ETHEREUM_HOST = process.env.ETHEREUM_HOST;
 
 const Container = styled.div`
     display: flex;
@@ -157,3 +171,5 @@ const ButtonContainer = styled.div`
 `;
 
 export default ProfilePage;
+
+// ganache-cli --account "0x70f1384b24df3d2cdaca7974552ec28f055812ca5e4da7a0ccd0ac0f8a4a9b00,9000000000000000000000"
