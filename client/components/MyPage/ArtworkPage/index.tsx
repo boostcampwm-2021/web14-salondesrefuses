@@ -15,7 +15,7 @@ const ArtworkPage = () => {
     return (
         <Container>
             <Filter filtering={filtering} current={filter} filterHandler={onClickFilter} />
-            {filter === '등록한 작품' ? <Tiles /> : <BoughtArtworkPage />}
+            {filter === '등록한 작품' ? <Tiles align="flex-start" /> : <BoughtArtworkPage />}
         </Container>
     );
 };
