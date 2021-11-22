@@ -15,7 +15,7 @@ import decreaseEditorIcon from '@assets/images/decrease-editor.png';
 import fontStylingIcon from '@assets/images/font-styling.png';
 import { useEditorImageState } from '@store/editorImageState';
 import { EditorContainer, ToolBar, Button, EditArea } from './style';
-import { FontStyle } from 'interfaces';
+import { FontStyle, FontFamily } from 'interfaces';
 
 type Props = {
     elements: EditorElementProp[];
@@ -85,7 +85,20 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     const onClickColorButton = () => {
         setShowColorPicker((prev) => !prev);
     };
+    const mirrorCurrentFontStyle = () => {
+        currentElements.forEach((elem) => {
+            if (!elem) return;
+            if (elem.classList.contains('TEXT')) {
+                setFontStyles({
+                    fontSize: parseInt(elem.style.fontSize) || 14,
+                    fontFamily: (elem.style.fontFamily as FontFamily) || 'Montserrat',
+                    align: (elem.style.textAlign as 'LEFT' | 'CENTER' | 'RIGHT') || 'LEFT',
+                });
+            }
+        });
+    };
     const onFontStylerButton = () => {
+        mirrorCurrentFontStyle();
         setShowFontStyler((prev) => !prev);
     };
     const createText = () => {
