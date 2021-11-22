@@ -13,7 +13,7 @@ export class CompletedAuctionService {
     ) {}
 
     async closeAuction(auctionId: number): Promise<CompletedAuction> {
-        const { bidderId, price, biddedAt } = await this.auctionHistoryService.deleteAuctionHistories(auctionId);
+        const { bidder, price, biddedAt } = await this.auctionHistoryService.deleteAuctionHistories(auctionId);
         const { id, seller, artwork, startAt, endAt } = await this.auctionService.closeAuction(auctionId);
 
         return await this.completedAuctionRepository.save({
@@ -22,7 +22,7 @@ export class CompletedAuctionService {
             sellerId: seller.id,
             startAt,
             endAt,
-            bidderId,
+            bidderId: bidder.id,
             price,
             biddedAt,
         });

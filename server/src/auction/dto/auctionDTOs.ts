@@ -63,14 +63,15 @@ export class AuctionDetailDTO {
     endAt: Date;
 
     static from(auction: Auction): AuctionDetailDTO {
-        const { artwork, endAt } = auction;
+        console.log(auction);
+        const { id, artwork, auctionHistories, endAt } = auction;
         const { artist } = artwork;
 
         const dto = new AuctionDetailDTO();
-        dto.id = auction.id;
-        dto.artwork = auction.artwork;
+        dto.id = id;
+        dto.artwork = artwork;
         dto.artist = artist;
-        dto.auctionHistories = auction.auctionHistories;
+        dto.auctionHistories = auctionHistories;
         dto.endAt = endAt;
         return dto;
     }
