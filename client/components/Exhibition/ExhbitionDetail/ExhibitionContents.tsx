@@ -5,7 +5,7 @@ import { EditorElementType, EditorElementStyle } from '@components/Exhibition/Ed
 
 const MakeElement = ({ content }: { content: contentStyles }) => {
     return content.tagName === 'IMAGE' ? (
-        <AbsoluteImage style={content.style} src={content.imageSrc} />
+        <AbsoluteImage style={content.style} src={content.imageSrc} onClick={(e) => console.log(e)} />
     ) : (
         <AbsoluteDiv style={content.style}>{content.tagName === 'TEXT' && content.innerText}</AbsoluteDiv>
     );
@@ -20,6 +20,7 @@ interface contentStyles {
     tagName: EditorElementType;
     innerText?: string;
     imageSrc?: string;
+    imageId?: number;
     style: EditorElementStyle;
 }
 

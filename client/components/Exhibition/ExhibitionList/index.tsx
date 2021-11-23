@@ -9,10 +9,8 @@ import useInfiniteScroll from '@hooks/useInfiniteScroll';
 
 const ExhibitionList = ({ filter }: { filter: string }) => {
     const [exhibitions, setExhibitions] = useState<ExhibitionCardProps[]>([]);
-    console.log(exhibitions && exhibitions[0]);
     const [page, setPage] = useState(0);
     const gridRef = useInfiniteScroll(() => setPage((page) => page + 1), exhibitions);
-
     useEffect(() => {
         getExhibitions(filter.toLowerCase(), page).then((res) => {
             setExhibitions([...exhibitions, ...res.data]);
