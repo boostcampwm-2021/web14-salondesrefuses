@@ -87,6 +87,10 @@ export class ArtworkRepository extends Repository<Artwork> {
         });
     }
 
+    findByArtworkIds(artworkIds: number[], relations?: string[]): Promise<Artwork[]> {
+        return this.find({ where: { id: In(artworkIds) }, relations: relations });
+    }
+
     async bulkUpdateArtworkState(artworkIds: number[]): Promise<void> {
         this.createQueryBuilder('artworks')
             .update()

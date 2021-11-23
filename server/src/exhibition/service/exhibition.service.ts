@@ -19,7 +19,10 @@ export class ExhibitionService {
 
     async getSpecificExhibition(id: number): Promise<ExhibitionDetailDTO> {
         const exhibition = await this.exhibitionRepository.getSpecificExhibition(id);
-        const artworks = await this.artworkRepository.findAllByExhibitionId(id, ['auction', 'artist']);
+        const artworks = await this.artworkRepository.findByArtworkIds(JSON.parse(exhibition.artworkIds), [
+            'auction',
+            'artist',
+        ]);
         return ExhibitionDetailDTO.from(exhibition, artworks);
     }
 
@@ -67,7 +70,7 @@ export class ExhibitionService {
         image: Express.Multer.File,
         holdExhibitionDTO: HoldExhibitionDTO,
         user: User,
-    ): Promise<HoldExhibitionDTO> {
+    ): Promise<ExhibitionDetailDTO> {
         const croppedThumbnail = await this.imageService.cropImage(image);
         const thumbnailPath = await this.imageService.fileUpload({ ...image, buffer: croppedThumbnail });
 
@@ -77,8 +80,12 @@ export class ExhibitionService {
             user,
         );
 
-        await this.exhibitionRepository.save(newExhibition);
-        return HoldExhibitionDTO.from(newExhibition);
+        const [exhibiton, artworks] = await Promise.all([
+            this.exhibitionRepository.save(newExhibition),
+            this.artworkRepository.findByArtworkIds(JSON.parse(holdExhibitionDTO.artworkIds), ['auction', 'artist']),
+        ]);
+
+        return ExhibitionDetailDTO.from(exhibiton, artworks);
     }
 
     async updateExhibition({ id, contents }: UpdateExhibitionDTO): Promise<UpdateResult> {

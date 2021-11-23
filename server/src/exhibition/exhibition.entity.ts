@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../user/user.entity';
 
 @Entity()
@@ -47,4 +47,7 @@ export class Exhibition {
 
     @Column({ nullable: true })
     theme: string;
+
+    @Column({ nullable: false, default: '[]' })
+    artworkIds: string;
 }

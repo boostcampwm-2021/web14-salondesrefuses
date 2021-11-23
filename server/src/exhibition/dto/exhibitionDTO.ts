@@ -77,7 +77,7 @@ export class HoldExhibitionDTO {
 
     categories: string;
 
-    artworkIds: number[];
+    artworkIds: string;
 
     size: string;
 
@@ -148,6 +148,7 @@ export class ExhibitionDetailDTO {
         exhibitionDetailDTO.id = id;
         exhibitionDetailDTO.title = title;
         exhibitionDetailDTO.collaborator = collaborator;
+        exhibitionDetailDTO.description = description;
         exhibitionDetailDTO.theme = theme;
         exhibitionDetailDTO.startAt = startAt;
         exhibitionDetailDTO.endAt = endAt;
