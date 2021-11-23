@@ -60,7 +60,7 @@ export class AuctionRepository extends Repository<Auction> {
         return this.createQueryBuilder('auction')
             .where(`auction.id = ${auctionId}`)
             .leftJoinAndSelect('auction.auctionHistories', 'history')
-            .innerJoinAndSelect('history.bidder', 'bidder')
+            .leftJoinAndSelect('history.bidder', 'bidder')
             .innerJoinAndSelect('auction.artwork', 'artwork')
             .innerJoinAndSelect('artwork.artist', 'artist')
             .getOne();

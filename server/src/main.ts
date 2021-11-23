@@ -24,7 +24,9 @@ async function bootstrap() {
     process.env.NODE_ENV === 'development' &&
         app.enableCors({ origin: process.env.FRONT_HOST, credentials: true });
 
-    await app.listen(PORT);
+    const server = await app.listen(PORT);
+    server.keepAliveTimeout = 61 * 1000;
+    server.headersTimeout = 65 * 1000;
 }
 
 bootstrap();
