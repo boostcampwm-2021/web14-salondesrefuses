@@ -39,8 +39,8 @@ export class Exhibition {
     @Column()
     size: string;
 
-    @ManyToOne(type => User, user => user.exhibitionList)
-    artist: User;
+    @Column()
+    artistName: string;
 
     @Column({ nullable: true, default: `[]` })
     categories: string;

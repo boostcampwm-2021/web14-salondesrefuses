@@ -11,17 +11,15 @@ export class ExhibitionRepository extends Repository<Exhibition> {
         return await this.findOne({ id });
     }
 
-    async getRandomExhibitions(): Promise<Exhibition[]> {
-        return await this.createQueryBuilder('exhibition')
-            .innerJoinAndSelect('exhibition.artist', 'artist')
+    getRandomExhibitions(): Promise<Exhibition[]> {
+        return this.createQueryBuilder('exhibition')
             .orderBy('RAND()')
             .limit(5)
             .getMany();
     }
 
-    async getNewestExhibitions(page: number): Promise<Exhibition[]> {
-        return await this.createQueryBuilder('exhibition')
-            .innerJoinAndSelect('exhibition.artist', 'artist')
+    getNewestExhibitions(page: number): Promise<Exhibition[]> {
+        return this.createQueryBuilder('exhibition')
             .where('exhibition.start_at <= now()')
             .orderBy(`now() - exhibition.start_at`, 'ASC')
             .addOrderBy('id', 'DESC')
@@ -30,18 +28,16 @@ export class ExhibitionRepository extends Repository<Exhibition> {
             .getMany();
     }
 
-    async getExhibitionsSortedByDeadline(page: number): Promise<Exhibition[]> {
-        return await this.createQueryBuilder('exhibition')
-            .innerJoinAndSelect('exhibition.artist', 'artist')
+    getExhibitionsSortedByDeadline(page: number): Promise<Exhibition[]> {
+        return this.createQueryBuilder('exhibition')
             .orderBy('exhibition.end_at - now()', 'ASC')
             .offset(page * 15)
             .limit(15)
             .getMany();
     }
 
-    async getExhibitionsSortedByInterest(page: number): Promise<Exhibition[]> {
-        return await this.createQueryBuilder('exhibition')
-            .innerJoinAndSelect('exhibition.artist', 'artist')
+    getExhibitionsSortedByInterest(page: number): Promise<Exhibition[]> {
+        return this.createQueryBuilder('exhibition')
             .innerJoin(
                 subQuery => {
                     return subQuery
@@ -60,8 +56,8 @@ export class ExhibitionRepository extends Repository<Exhibition> {
             .getMany();
     }
 
-    async getUsersExhibitions(artist: User): Promise<Exhibition[]> {
-        return await this.find({ artist });
+    getUsersExhibitions(artist: User): Promise<Exhibition[]> {
+        return this.find({ artistName: artist.name });
     }
 
     createExhibition(thumbnailPath: string, holdExhibitionDTO: HoldExhibitionDTO, user: User): Exhibition {
@@ -77,7 +73,7 @@ export class ExhibitionRepository extends Repository<Exhibition> {
             thumbnailImage: thumbnailPath,
             contents,
             theme,
-            artist: user,
+            artistName: user.name,
             categories: JSON.stringify(categories),
             size,
             artworkIds,

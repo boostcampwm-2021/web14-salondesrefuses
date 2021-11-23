@@ -46,9 +46,6 @@ export class User {
     @OneToMany(type => ArtworkInBid, artworkInBid => artworkInBid.user)
     artworksInBid: Artwork[];
 
-    @OneToMany(type => Exhibition, exhibition => exhibition.artist)
-    exhibitionList: Exhibition[];
-
     @OneToMany(type => Auction, auction => auction.seller)
     auctionList: Auction[];
 }
