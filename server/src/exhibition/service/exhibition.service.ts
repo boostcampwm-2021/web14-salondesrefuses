@@ -35,7 +35,7 @@ export class ExhibitionService {
 
         return exhibitions.map(exhibition => {
             const isSale = JSON.parse(exhibition.artworkIds).some((artworkId) => {
-                const found = artworks.find(artwork => artwork.id === artworkId);
+                const found = artworks.find(artwork => artwork.id === Number(artworkId));
                 return found.status === ArtworkStatus.InBid;
             });
             return ExhibitionDTO.from(exhibition, isSale);
@@ -49,7 +49,7 @@ export class ExhibitionService {
 
         return exhibitions.map(exhibition => {
             const isSale = JSON.parse(exhibition.artworkIds).some((artworkId) => {
-                const found = artworks.find(artwork => artwork.id === artworkId);
+                const found = artworks.find(artwork => artwork.id === Number(artworkId));
                 return found.status === ArtworkStatus.InBid;
             });
             return ExhibitionDTO.from(exhibition, isSale);
@@ -63,7 +63,7 @@ export class ExhibitionService {
 
         return exhibitions.map(exhibition => {
             const isSale = JSON.parse(exhibition.artworkIds).some((artworkId) => {
-                const found = artworks.find(artwork => artwork.id === artworkId);
+                const found = artworks.find(artwork => artwork.id === Number(artworkId));
                 return found.status === ArtworkStatus.InBid;
             });
             return ExhibitionDTO.from(exhibition, isSale);
@@ -77,7 +77,7 @@ export class ExhibitionService {
 
         return exhibitions.map(exhibition => {
             const isSale = JSON.parse(exhibition.artworkIds).some((artworkId) => {
-                const found = artworks.find(artwork => artwork.id === artworkId);
+                const found = artworks.find(artwork => artwork.id === Number(artworkId));
                 return found.status === ArtworkStatus.InBid;
             });
             return ExhibitionDTO.from(exhibition, isSale);
