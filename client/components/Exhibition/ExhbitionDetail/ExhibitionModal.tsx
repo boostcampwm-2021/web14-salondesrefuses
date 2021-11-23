@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { ExhibitionArtwork } from 'interfaces';
-import { Button, Center } from '@styles/common';
+import { BlackButton } from '@styles/common';
 import Link from 'next/link';
 
 interface Props {
@@ -26,10 +26,10 @@ const ExhibitionModal = ({ artwork, closeModal }: Props) => {
                             <div>
                                 <P type="XL">{artwork.title}</P>
                                 <P type="LG">{artwork.artist}</P>
-                                <P type="MD">{artwork.description}</P>
+                                <P type="BASE">{artwork.description}</P>
                                 {artwork.auctionId && (
                                     <Link href={`/auction/${artwork.auctionId}`}>
-                                        <Button>경매 보러 가기 </Button>
+                                        <ToAuction>경매 보러 가기 </ToAuction>
                                     </Link>
                                 )}
                             </div>
@@ -66,6 +66,7 @@ const ImgDiv = styled.div`
 `;
 const DetailContainer = styled.div`
     position: absolute;
+    padding: 10%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -74,10 +75,20 @@ const DetailContainer = styled.div`
     backdrop-filter: blur(5px);
     background-color: #ffffff4d;
 `;
+const ToAuction = styled(BlackButton)`
+    position: absolute;
+    top: 85%;
+    left: 75%;
+`;
 
 const P = styled.p<{ type: string }>`
     font: ${(props) =>
-        props.type === 'XL' ? props.theme.font.textEnXl : 'LG' ? props.theme.font.textEnLg : props.theme.font.textEnMd};
+        props.type === 'XL'
+            ? props.theme.font.textEnTitle
+            : 'LG'
+            ? props.theme.font.textEnLg
+            : props.theme.font.textEnBase};
+    margin-bottom: 30px;
 `;
 
 export default ExhibitionModal;
