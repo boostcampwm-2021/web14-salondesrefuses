@@ -14,10 +14,16 @@ const ExhbitionDetail = ({ exhibition }: { exhibition: Exhibition }) => {
         let artwork = exhibition.artworks.find((art) => art.id === +n);
         setModalArtwork(artwork || null);
         setShowModalArtwork(true);
+        document.body.style.overflow = 'hidden';
+    };
+    const closeModal = () => {
+        document.body.style.overflow = 'scroll';
+        setShowModalArtwork(false);
+        setModalArtwork(null);
     };
     return (
         <ExhibitionContainer>
-            {showModalArtwork && modalArtwork && <ExhibitionModal artwork={modalArtwork} />}
+            {showModalArtwork && modalArtwork && <ExhibitionModal artwork={modalArtwork} closeModal={closeModal} />}
             <div>
                 <ExhibitionDescription>
                     <TitleContainer>
