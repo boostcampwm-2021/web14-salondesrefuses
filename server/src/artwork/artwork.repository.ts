@@ -80,9 +80,9 @@ export class ArtworkRepository extends Repository<Artwork> {
         return await this.find({ where: [{ nftToken: In(nftTokens) }] });
     }
 
-    async findAllByExhibitionId(exhibitonId: number, relations?: string[]): Promise<Artwork[]> {
+    async findAllByExhibitionId(artworkIds: number[], relations?: string[]): Promise<Artwork[]> {
         return await this.find({
-            where: { exhibitionId: exhibitonId },
+            where: { id: In(artworkIds) },
             relations: relations,
         });
     }

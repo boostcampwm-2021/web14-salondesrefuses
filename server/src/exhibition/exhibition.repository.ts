@@ -24,6 +24,7 @@ export class ExhibitionRepository extends Repository<Exhibition> {
             .innerJoinAndSelect('exhibition.artist', 'artist')
             .where('exhibition.start_at <= now()')
             .orderBy(`now() - exhibition.start_at`, 'ASC')
+            .addOrderBy('id', 'DESC')
             .offset(page * 15)
             .limit(15)
             .getMany();

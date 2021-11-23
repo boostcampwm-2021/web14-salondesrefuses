@@ -30,7 +30,7 @@ export class ExhibitionService {
         const exhibitions = await this.exhibitionRepository.getRandomExhibitions();
         return Promise.all(
             exhibitions.map(async exhibition => {
-                const artworks = await this.artworkRepository.findAllByExhibitionId(exhibition.id);
+                const artworks = await this.artworkRepository.findAllByExhibitionId(JSON.parse(exhibition.artworkIds));
                 return ExhibitionDTO.from(exhibition, artworks);
             }),
         );
@@ -40,7 +40,7 @@ export class ExhibitionService {
         const exhibitions = await this.exhibitionRepository.getNewestExhibitions(page);
         return Promise.all(
             exhibitions.map(async exhibition => {
-                const artworks = await this.artworkRepository.findAllByExhibitionId(exhibition.id);
+                const artworks = await this.artworkRepository.findAllByExhibitionId(JSON.parse(exhibition.artworkIds));
                 return ExhibitionDTO.from(exhibition, artworks);
             }),
         );
@@ -50,7 +50,7 @@ export class ExhibitionService {
         const exhibitions = await this.exhibitionRepository.getExhibitionsSortedByDeadline(page);
         return Promise.all(
             exhibitions.map(async exhibition => {
-                const artworks = await this.artworkRepository.findAllByExhibitionId(exhibition.id);
+                const artworks = await this.artworkRepository.findAllByExhibitionId(JSON.parse(exhibition.artworkIds));
                 return ExhibitionDTO.from(exhibition, artworks);
             }),
         );
@@ -60,7 +60,7 @@ export class ExhibitionService {
         const exhibitions = await this.exhibitionRepository.getExhibitionsSortedByInterest(page);
         return Promise.all(
             exhibitions.map(async exhibition => {
-                const artworks = await this.artworkRepository.findAllByExhibitionId(exhibition.id);
+                const artworks = await this.artworkRepository.findAllByExhibitionId(JSON.parse(exhibition.artworkIds));
                 return ExhibitionDTO.from(exhibition, artworks);
             }),
         );
