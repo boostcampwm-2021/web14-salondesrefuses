@@ -59,6 +59,7 @@ const EditorElement = ({
             backgroundColor: currentStyle.backgroundColor,
             position: 'absolute' as 'absolute',
             border: isSelected ? '1px solid #3A8FD6' : '0px',
+            zIndex: 100,
         };
     };
 
