@@ -59,3 +59,11 @@ export interface Exhibition {
     categories: string;
     size: string;
 }
+
+export type FontFamily = 'Montserrat' | 'Noto Sans KR';
+
+export interface FontStyle {
+    align: 'LEFT' | 'CENTER' | 'RIGHT';
+    fontSize: number;
+    fontFamily: FontFamily;
+}

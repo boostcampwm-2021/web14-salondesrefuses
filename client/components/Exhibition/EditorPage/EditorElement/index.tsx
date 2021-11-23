@@ -39,6 +39,7 @@ const EditorElement = ({
     let isSelected = currentElements.some((element) => element === elementRef.current);
     const element = elementRef?.current;
     const [LT, LB, RT, RB] = getPositions(element);
+    const imgWidthThreshold = 800;
 
     const calculateStyle = () => {
         let imageHeight;
@@ -47,8 +48,9 @@ const EditorElement = ({
             if (!image) return;
             const tmpImg = new Image();
             tmpImg.src = image.originalImage;
-            imageHeight = tmpImg.height;
-            imageWidth = tmpImg.width;
+            imageHeight =
+                tmpImg.width > imgWidthThreshold ? (tmpImg.height * imgWidthThreshold) / tmpImg.width : tmpImg.height;
+            imageWidth = tmpImg.width > imgWidthThreshold ? imgWidthThreshold : tmpImg.width;
         }
         return {
             transform: `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`,
