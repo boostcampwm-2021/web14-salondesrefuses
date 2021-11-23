@@ -5,21 +5,19 @@ import styled from '@emotion/styled';
 
 import useSessionState from '@store/sessionState';
 import Layout from '@components/common/Layout';
+import Fallback from '@components/common/Fallback';
 import SideBar from '@components/MyPage/Sidebar';
 import { Session } from 'interfaces';
 
-const ProfilePage = dynamic(() => import('@components/MyPage/ProfilePage'), {
+const dynamicImportOption = {
+    loading: () => <Fallback />,
     ssr: false,
-});
-const AuctionPage = dynamic(() => import('@components/MyPage/AuctionPage'), {
-    ssr: false,
-});
-const ExhibitionPage = dynamic(() => import('@components/MyPage/Exhibition'), {
-    ssr: false,
-});
-const ArtworkPage = dynamic(() => import('@components/MyPage/ArtworkPage'), {
-    ssr: false,
-});
+};
+
+const ProfilePage = dynamic(() => import('@components/MyPage/ProfilePage'), dynamicImportOption);
+const AuctionPage = dynamic(() => import('@components/MyPage/AuctionPage'), dynamicImportOption);
+const ExhibitionPage = dynamic(() => import('@components/MyPage/Exhibition'), dynamicImportOption);
+const ArtworkPage = dynamic(() => import('@components/MyPage/ArtworkPage'), dynamicImportOption);
 
 export const DETAIL_PAGES = {
     profile: '내 프로필',
