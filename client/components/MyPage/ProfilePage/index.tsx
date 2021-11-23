@@ -9,44 +9,22 @@ import { BlackButton } from '@styles/common';
 import useToastState from '@store/toastState';
 import { onResponseSuccess, signOut, updateUserData } from '@utils/networking';
 import useSessionState from '@store/sessionState';
+import useProfileInput from '@hooks/useProfileInput';
 
 interface IPRofilePage {
     user: Session;
 }
 
 const ProfilePage = ({ user }: IPRofilePage) => {
-    const [profile, setProfile] = useState<File | null>();
-    const [nickname, setNickname] = useState<string>('');
-    const [socialId, setSocialId] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
+    const { profileInput, profileHandler, onChangeDescription, onChangeNickname, onChangeSocialId } = useProfileInput();
     const [toast, setToast] = useToastState();
-    const session = useSessionState();
-    const { push } = useRouter();
-
-    const profileHandler = (file: File) => {
-        setProfile(file);
-    };
-
-    const onChangeNickname = (e: React.FormEvent) => {
-        setNickname((e.target as HTMLInputElement).value);
-    };
-
-    const onChangeSocialId = (e: React.FormEvent) => {
-        setSocialId((e.target as HTMLInputElement).value);
-    };
-
-    const onChangeDescription = (e: React.FormEvent) => {
-        setDescription((e.target as HTMLTextAreaElement).value);
-    };
+    const { profile, nickname, socialId, description } = profileInput;
 
     const onClickGenerateWallet = async () => {
         if (!window.ethereum) return;
         const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
         const account = web3.eth.accounts.create();
-        console.log(account);
-
         const accounts = await web3.eth.personal.getAccounts();
-        console.log(accounts);
     };
 
     const onClickLogout = async () => {
