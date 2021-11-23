@@ -14,7 +14,7 @@ const initialInput = {
     description: '',
 };
 
-const useProfileInput = () => {
+const useInputProfile = () => {
     const [profileInput, setProfileInput] = useState<IProfileInput>(initialInput);
 
     const profileHandler = (file: File) => {
@@ -42,4 +42,4 @@ const useProfileInput = () => {
     };
 };
 
-export default useProfileInput;
+export default useInputProfile;

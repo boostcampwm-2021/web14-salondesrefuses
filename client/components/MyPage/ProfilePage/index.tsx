@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
 import Web3 from 'web3';
 
 import { Session } from 'interfaces';
@@ -8,8 +7,7 @@ import ProfileImage from './ProfileImage';
 import { BlackButton } from '@styles/common';
 import useToastState from '@store/toastState';
 import { onResponseSuccess, signOut, updateUserData } from '@utils/networking';
-import useSessionState from '@store/sessionState';
-import useProfileInput from '@hooks/useProfileInput';
+import useProfileInput from '@hooks/useInputProfile';
 
 interface IPRofilePage {
     user: Session;
