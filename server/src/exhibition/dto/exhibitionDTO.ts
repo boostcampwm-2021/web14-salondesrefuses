@@ -36,9 +36,9 @@ export class ExhibitionDTO {
     @ApiProperty()
     isSale: boolean;
 
-    static from(exhibition: Exhibition, artworks: Artwork[]): ExhibitionDTO {
+    static from(exhibition: Exhibition, isSale: boolean): ExhibitionDTO {
         const dto = new ExhibitionDTO();
-        const { id, title, description, artistName, collaborator, thumbnailImage, categories, theme } = exhibition;
+        const { id, title, description, artistName, collaborator, thumbnailImage, categories, theme, artworkIds } = exhibition;
 
         dto.id = id;
         dto.title = title;
@@ -48,8 +48,8 @@ export class ExhibitionDTO {
         dto.thumbnailImage = thumbnailImage;
         dto.category = categories;
         dto.theme = theme;
-        dto.artCount = artworks.length;
-        dto.isSale = artworks.some(artwork => artwork.status === ArtworkStatus.InBid);
+        dto.artCount = JSON.parse(artworkIds).length;
+        dto.isSale = isSale;
         return dto;
     }
 }

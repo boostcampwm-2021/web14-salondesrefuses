@@ -1,7 +1,7 @@
 import {
     Body,
     Controller,
-    Get,
+    Get, HttpCode, HttpException, HttpStatus,
     Param,
     ParseIntPipe,
     Patch,
@@ -58,6 +58,9 @@ export class ExhibitionController {
     @ApiResponse({ type: ExhibitionDTO })
     @ApiQuery({ name: 'page', type: Number })
     getNewestExhibitions(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDTO[]> {
+        if(page < 0) {
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+        }
         return this.exhibitionService.getNewestExhibitions(page);
     }
 
@@ -66,6 +69,9 @@ export class ExhibitionController {
     @ApiResponse({ type: ExhibitionDTO })
     @ApiQuery({ name: 'page', type: Number })
     getExhibitionsSortedByDeadline(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDTO[]> {
+        if(page < 0) {
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+        }
         return this.exhibitionService.getExhibitionsSortedByDeadline(page);
     }
 
@@ -74,6 +80,9 @@ export class ExhibitionController {
     @ApiResponse({ type: ExhibitionDTO })
     @ApiQuery({ name: 'page', type: Number })
     getExhibitionsSortedByInterest(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDTO[]> {
+        if(page < 0) {
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+        }
         return this.exhibitionService.getExhibitionsSortedByInterest(page);
     }
 
