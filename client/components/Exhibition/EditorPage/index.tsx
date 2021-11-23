@@ -13,7 +13,8 @@ interface EditorProp {
 interface ExhibitionElement {
     tagName: string;
     innerText: string;
-    imageSrc: string | null;
+    imageSrc?: string | null;
+    artworkId?: string;
     style: {
         [key: string]: string;
     };
@@ -43,12 +44,14 @@ const index = ({ backButtonHandler, holdExhibition }: EditorProp) => {
             if (element.classList.contains('IMAGE')) {
                 imageSrc = backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
             }
-            element.dataset.artwork && artworkIds.push(element.dataset.artwork);
+            const artworkId = element.dataset.artwork;
+            artworkId && artworkIds.push(artworkId);
 
             exhibitionElements.push({
                 tagName,
                 innerText,
                 imageSrc,
+                artworkId,
                 style: {
                     top,
                     left,
