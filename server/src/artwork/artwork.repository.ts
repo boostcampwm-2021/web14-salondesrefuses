@@ -75,7 +75,7 @@ export class ArtworkRepository extends Repository<Artwork> {
     }
 
     async getBiddedArtworks(nftTokens: string[]): Promise<Artwork[]> {
-        return await this.find({ where: [ { nftToken: In(nftTokens) } ] });
+        return await this.find({ where: [{ nftToken: In(nftTokens) }] });
     }
 
     async findAllByExhibitionId(exhibitonId: number, relations?: string[]): Promise<Artwork[]> {
@@ -83,6 +83,10 @@ export class ArtworkRepository extends Repository<Artwork> {
             where: { exhibitionId: exhibitonId },
             relations: relations,
         });
+    }
+
+    findByArtworkIds(artworkIds: number[], relations?: string[]): Promise<Artwork[]> {
+        return this.find({ where: { id: In(artworkIds) }, relations: relations });
     }
 
     async bulkUpdateArtworkState(artworkIds: number[]): Promise<void> {

@@ -96,7 +96,7 @@ export class ExhibitionController {
         @UploadedFile() image: Express.Multer.File,
         @Body() holdExhibitionDTO: HoldExhibitionDTO,
         @Req() { user }: Request & { user: User },
-    ): Promise<HoldExhibitionDTO> {
+    ): Promise<ExhibitionDetailDTO> {
         return this.exhibitionService.holdExhibition(image, holdExhibitionDTO, user);
     }
 
