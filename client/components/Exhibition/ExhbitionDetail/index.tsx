@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
-import { Exhibition } from 'interfaces';
+import { Exhibition, ExhibitionArtwork } from 'interfaces';
 import ExhibitionContents from './ExhibitionContents';
+import ExhibitionModal from './ExhibitionModal';
 
 const ExhbitionDetail = ({ exhibition }: { exhibition: Exhibition }) => {
+    const [modalArtwork, setModalArtwork] = useState<ExhibitionArtwork | null>(null);
+    const [showModalArtwork, setShowModalArtwork] = useState(false);
+    // const artworks = exhibition.artworks.map((artwork) => JSON.parse(artwork));
+    const setModalNum = (n: string | undefined) => {
+        if (!n) return;
+        let artwork = exhibition.artworks.find((art) => art.id === +n);
+        setModalArtwork(artwork || null);
+        setShowModalArtwork(true);
+    };
     return (
         <ExhibitionContainer>
+            {showModalArtwork && modalArtwork && <ExhibitionModal artwork={modalArtwork} />}
             <div>
                 <ExhibitionDescription>
                     <TitleContainer>
@@ -15,7 +26,7 @@ const ExhbitionDetail = ({ exhibition }: { exhibition: Exhibition }) => {
                     </TitleContainer>
                     <Description>{exhibition.description}</Description>
                 </ExhibitionDescription>
-                <ExhibitionContents contents={exhibition.contents} size={exhibition.size} />
+                <ExhibitionContents contents={exhibition.contents} size={exhibition.size} setModalNum={setModalNum} />
             </div>
         </ExhibitionContainer>
     );
