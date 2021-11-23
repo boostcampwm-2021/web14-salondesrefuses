@@ -64,7 +64,7 @@ export class ExhibitionRepository extends Repository<Exhibition> {
     }
 
     createExhibition(thumbnailPath: string, holdExhibitionDTO: HoldExhibitionDTO, user: User): Exhibition {
-        const { title, collaborator, description, startAt, endAt, contents, theme, categories, size } =
+        const { title, collaborator, description, startAt, endAt, contents, theme, categories, size, artworkIds } =
             holdExhibitionDTO;
 
         return this.create({
@@ -79,6 +79,7 @@ export class ExhibitionRepository extends Repository<Exhibition> {
             artist: user,
             categories: JSON.stringify(categories),
             size,
+            artworkIds,
         });
     }
 }
