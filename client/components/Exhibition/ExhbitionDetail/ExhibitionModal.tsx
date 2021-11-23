@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { ExhibitionArtwork } from 'interfaces';
 import { Button, Center } from '@styles/common';
+import Link from 'next/link';
 
 interface Props {
     artwork: ExhibitionArtwork;
@@ -10,28 +11,31 @@ interface Props {
 
 const ExhibitionModal = ({ artwork, closeModal }: Props) => {
     const [showDetail, setShowDetail] = useState(false);
+    const onModalClick = (e: React.MouseEvent<HTMLImageElement | HTMLDivElement, MouseEvent>, flag: boolean) => {
+        e.stopPropagation();
+        setShowDetail(flag);
+    };
     return (
-        <ModalWrapper
-            onClick={() => {
-                closeModal();
-            }}
-        >
+        <ModalWrapper onClick={() => closeModal()}>
             <Modal>
-                <Img src={artwork.originalImage} alt={artwork.title} onClick={() => setShowDetail(true)} />
-                {showDetail && (
-                    <DetailContainer onClick={() => setShowDetail(false)}>
-                        <div>
-                            <P type="XL">{artwork.title}</P>
-                            <P type="LG">{artwork.artist}</P>
-                            <P type="MD">{artwork.description}</P>
-                            {artwork.auctionId && (
-                                <a href={`${process.env.BASE_URL}/auction/${artwork.auctionId}`}>
-                                    <Button>경매 보러 가기</Button>
-                                </a>
-                            )}
-                        </div>
-                    </DetailContainer>
-                )}
+                <ImgDiv>
+                    <img src={artwork.originalImage} alt={artwork.title} onClick={(e) => onModalClick(e, true)} />
+
+                    {showDetail && (
+                        <DetailContainer onClick={(e) => onModalClick(e, false)}>
+                            <div>
+                                <P type="XL">{artwork.title}</P>
+                                <P type="LG">{artwork.artist}</P>
+                                <P type="MD">{artwork.description}</P>
+                                {artwork.auctionId && (
+                                    <Link href={`/auction/${artwork.auctionId}`}>
+                                        <Button>경매 보러 가기 </Button>
+                                    </Link>
+                                )}
+                            </div>
+                        </DetailContainer>
+                    )}
+                </ImgDiv>
             </Modal>
         </ModalWrapper>
     );
@@ -49,21 +53,26 @@ const ModalWrapper = styled.div`
 const Modal = styled.div`
     z-index: 9200;
 `;
-const Img = styled.img`
+const ImgDiv = styled.div`
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     height: 70%;
+
+    img {
+        height: 100%;
+    }
 `;
 const DetailContainer = styled.div`
     position: absolute;
-    top: 0;
-    left: 0;
-    max-height: 70%;
-    width: 80%;
-    background-color: #fff;
-    opacity: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    width: 100%;
+    backdrop-filter: blur(5px);
+    background-color: #ffffff4d;
 `;
 
 const P = styled.p<{ type: string }>`
