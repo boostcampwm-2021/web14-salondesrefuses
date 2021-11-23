@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import Layout from '@components/common/Layout';
 import { Exhibition } from 'interfaces';
-import { getExhibition } from '@utils/networking';
+import { getExhibition } from 'service/networking';
 import ExhibitionDetail from '@components/Exhibition/ExhbitionDetail';
 const ExhibitionDetailPage = () => {
     const { id } = useRouter().query;

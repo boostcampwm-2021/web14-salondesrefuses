@@ -6,7 +6,7 @@ import { Session } from 'interfaces';
 import ProfileImage from './ProfileImage';
 import { BlackButton } from '@styles/common';
 import useToastState from '@store/toastState';
-import { onResponseSuccess, signOut, updateUserData } from '@utils/networking';
+import { onResponseSuccess, signOut, updateUserData } from 'service/networking';
 import useProfileInput from '@hooks/useInputProfile';
 
 interface IPRofilePage {

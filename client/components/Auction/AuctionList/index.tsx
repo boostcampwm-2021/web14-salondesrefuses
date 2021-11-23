@@ -6,7 +6,7 @@ import { Button, Center } from '@styles/common';
 import { AuctionCardProps } from '@const/card-type';
 import Card from '@components/common/Card';
 import { Filter } from '@components/Exhibition/style';
-import { getAuctions } from '@utils/networking';
+import { getAuctions } from 'service/networking';
 import RequireLoginModal from '@components/common/RequireLoginModal';
 import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
 import useInfiniteScroll from '@hooks/useInfiniteScroll';

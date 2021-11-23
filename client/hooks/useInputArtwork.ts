@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { postArtwork, onResponseSuccess } from 'utils/networking';
+import { postArtwork, onResponseSuccess } from 'service/networking';
 import { useRouter } from 'next/router';
 
 import useToastState from '@store/toastState';

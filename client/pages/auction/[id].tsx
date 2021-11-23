@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { Auction, Session } from 'interfaces';
 import Layout from '@components/common/Layout';
 import ItemDetail from '@components/Auction/ItemDetail';
-import { getAuction } from '@utils/networking';
+import { getAuction } from 'service/networking';
 import useMagnifier from '@hooks/useMagnifier';
 import useSessionState from '@store/sessionState';
 
