@@ -19,7 +19,6 @@ export class ArtworkRepository extends Repository<Artwork> {
             title: createArtWorkDTO.title,
             type: createArtWorkDTO.type,
             year: createArtWorkDTO.year,
-            price: createArtWorkDTO.price,
             description: createArtWorkDTO.description,
             originalImage: originalImagePath,
             croppedImage: croppedImagePath,
@@ -45,9 +44,7 @@ export class ArtworkRepository extends Repository<Artwork> {
                         .select('interest_artwork.artwork_id')
                         .from(InterestArtwork, 'interest_artwork')
                         .where('interest_artwork.user_id = :userId', { userId });
-                },
-                'interest',
-                'interest.artwork_id = artwork.id',
+                }, 'interest', 'interest.artwork_id = artwork.id',
             )
             .getMany();
     }
@@ -56,14 +53,7 @@ export class ArtworkRepository extends Repository<Artwork> {
         return this.find({ where: [{ nftToken: In(nftTokens) }] });
     }
 
-    findAllByExhibitionId(artworkIds: number[], relations?: string[]): Promise<Artwork[]> {
-        return this.find({
-            where: { id: In(artworkIds) },
-            relations: relations,
-        });
-    }
-
-    findByArtworkIds(artworkIds: number[], relations?: string[]): Promise<Artwork[]> {
+    findAllByArtworkIds(artworkIds: number[], relations?: string[]): Promise<Artwork[]> {
         return this.find({ where: { id: In(artworkIds) }, relations: relations });
     }
 
@@ -85,9 +75,9 @@ export class ArtworkRepository extends Repository<Artwork> {
                 subquery => {
                     return subquery
                         .select('distinct(a.id), a.artwork_id')
-                        .from(AuctionHistory, 'ah')
-                        .innerJoin(Auction, 'a', 'ah.auction_id = a.id')
-                        .where(`ah.bidderId = ${bidderId}`);
+                        .from(AuctionHistory, 'auction_history')
+                        .innerJoin(Auction, 'a', 'auction_history.auction_id = a.id')
+                        .where(`auction_history.bidderId = ${bidderId}`);
                 },
                 'auction',
                 'artwork.id = auction.artwork_id',

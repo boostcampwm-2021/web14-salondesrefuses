@@ -9,7 +9,7 @@ export class UserRepository extends Repository<User> {
             userId,
             name,
             avatar,
-            loginStrategy
+            loginStrategy,
         });
 
         return this.save(user);

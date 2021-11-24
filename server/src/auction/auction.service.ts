@@ -2,10 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Auction } from './auction.entity';
 import { AuctionRepository } from './auction.repository';
 import { AuctionDetailDTO, AuctionListItemDTO } from './dto/auction.dto';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 @Injectable()
 export default class AuctionService {
-    constructor(private readonly auctionRepository: AuctionRepository) {}
+    constructor(private readonly auctionRepository: AuctionRepository) {
+    }
 
     async getRandomAuctions(): Promise<AuctionListItemDTO[]> {
         const auctions = await this.auctionRepository.findRandomAuctions();
@@ -24,7 +26,7 @@ export default class AuctionService {
 
     async getAuctionDetail(auctionId: number): Promise<AuctionDetailDTO> {
         const auction = await this.auctionRepository.findByAuctionWithAuctionHistoryAndArtwork(auctionId);
-        if(!auction) {
+        if (!auction) {
             throw new NotFoundException(`Can't find auction with id: ${auctionId}`);
         }
         return AuctionDetailDTO.from(auction);
@@ -32,7 +34,7 @@ export default class AuctionService {
 
     async closeAuction(auctionId: number): Promise<Auction> {
         const auction = await this.auctionRepository.deleteAuction(auctionId);
-        if(!auction) {
+        if (!auction) {
             throw new NotFoundException(`Can't find auction with id: ${auctionId}`);
         }
         return auction;
@@ -40,19 +42,17 @@ export default class AuctionService {
 
     async getAuctionInfo(auctionId: number): Promise<Auction> {
         const auction = await this.auctionRepository.findAuctionInfo(auctionId);
-        if(!auction) {
+        if (!auction) {
             throw new NotFoundException(`Can't find auction with id: ${auctionId}`);
         }
         return auction;
     }
 
-    async updateAuctionEndAt(auctionId: number, newEndAt: Date): Promise<void> {
-        const auction = await this.auctionRepository.findOne(auctionId);
-        if(!auction) {
+    async updateAuction(auctionId: number, updateColumns: QueryDeepPartialEntity<Auction>) {
+        const result = await this.auctionRepository.update({ id: auctionId }, updateColumns);
+        if (result.affected){
             throw new NotFoundException(`Can't find auction with id: ${auctionId}`);
         }
-        auction.endAt = newEndAt;
-        this.auctionRepository.save(auction);
     }
 
     getEndedAuctions(): Promise<Auction[]> {

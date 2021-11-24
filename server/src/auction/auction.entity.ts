@@ -8,6 +8,9 @@ export class Auction {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({ nullable: false })
+    price: string;
+
     @Column({
         type: 'timestamp',
         default: () => 'CURRENT_TIMESTAMP',

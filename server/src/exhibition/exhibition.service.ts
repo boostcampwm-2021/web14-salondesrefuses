@@ -23,7 +23,7 @@ export class ExhibitionService {
             throw new NotFoundException(`Can't find exhibition with id: ${id}`);
         }
 
-        const artworks = await this.artworkRepository.findByArtworkIds(JSON.parse(exhibition.artworkIds), [
+        const artworks = await this.artworkRepository.findAllByArtworkIds(JSON.parse(exhibition.artworkIds), [
             'auction',
             'artist',
         ]);
@@ -52,7 +52,7 @@ export class ExhibitionService {
 
     private async convertAllToExhibitionDTOWithInBidArtwork(exhibitions: Exhibition[]): Promise<ExhibitionDto[]> {
         const artworkIdAll = exhibitions.reduce((prev, exhibition) => [...prev, ...JSON.parse(exhibition.artworkIds)], []);
-        const artworks = await this.artworkRepository.findAllByExhibitionId(artworkIdAll);
+        const artworks = await this.artworkRepository.findAllByArtworkIds(artworkIdAll);
 
         return exhibitions.map(exhibition => {
             const isSale = JSON.parse(exhibition.artworkIds).some((artworkId) => {
@@ -80,7 +80,7 @@ export class ExhibitionService {
 
             const [exhibition, artworks] = await Promise.all([
                 this.exhibitionRepository.save(newExhibition),
-                this.artworkRepository.findByArtworkIds(JSON.parse(holdExhibitionDTO.artworkIds), ['auction', 'artist']),
+                this.artworkRepository.findAllByArtworkIds(JSON.parse(holdExhibitionDTO.artworkIds), ['auction', 'artist']),
             ]);
 
             return ExhibitionDetailDTO.from(exhibition, artworks);
