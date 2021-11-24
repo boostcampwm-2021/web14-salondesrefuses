@@ -46,7 +46,7 @@
 - [백로그](https://docs.google.com/spreadsheets/d/1tSS4CYy7gDF0yCO1lnmJiywx3LuLvd1WjvFX_amzuuM/edit?usp=sharing) 우리가 생각했던 기능을 작게 쪼개서 예상되는 작업 시간과 효율적인 업무 분담을 할 수 있도록 노력해보자!
 
 ### 기술스택
-![image](https://user-images.githubusercontent.com/76088639/143250297-7e3688e7-80b3-4126-b3fb-198602c5e2e9.png)
+![image](https://user-images.githubusercontent.com/76088639/143251121-5c930cd5-2b0d-4c9b-bd4d-80ede14dd604.png)
 
 ## 💫 프로젝트 동작
 ### 메인 페이지 
