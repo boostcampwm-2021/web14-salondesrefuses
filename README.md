@@ -1,13 +1,16 @@
 ## 프로젝트 주제: 벽전 / Salon des Refusés 
 
-<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/79743965-3f87-4889-a532-a403f356ee35/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211102%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211102T074107Z&X-Amz-Expires=86400&X-Amz-Signature=d0d20971879ca4ea4ed6de191aa5c713eb269bcd6f27b9b6620c311678650577&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22" width="600"/>
+<div align="center">
+  <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/79743965-3f87-4889-a532-a403f356ee35/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211102%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211102T074107Z&X-Amz-Expires=86400&X-Amz-Signature=d0d20971879ca4ea4ed6de191aa5c713eb269bcd6f27b9b6620c311678650577&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22" width="600"/>
 
-### 배포 링크
-[벽전(Salon des Refusés)](http://salondesrefuses.kro.kr/)
+  ### 배포 링크
+  [벽전(Salon des Refusés)](http://salondesrefuses.kro.kr/)
 
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fboostcampwm-2021%2Fweb14-salondesrefuses&count_bg=%233DA4C8&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+  [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fboostcampwm-2021%2Fweb14-salondesrefuses&count_bg=%233DA4C8&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 
-## 🏔족두리봉 멤버 소개
+</div>
+
+## 🏔 족두리봉 멤버 소개
 
 |[J009 권영기](https://github.com/kykapple)|[J049 김일혁](https://github.com/illlama)|[J075 문상혁](https://github.com/imnotmoon)|[J158 이정준](https://github.com/Alencion)|
 |------|---|---|------|
@@ -31,7 +34,7 @@
 
 - 또한, NFT 온라인 경매를 통해 작가들에게 관람객들이 마음에 든 작가의 작품을 직접 살 수 있는 기회를 제공하고자 합니다.
 
-## 기획
+## 📚 기획
 
 ### UI/UX
 
@@ -45,12 +48,43 @@
 ### 기술스택
 <img src="https://user-images.githubusercontent.com/53335940/139812138-13cbf166-9aa5-4e77-baae-afc40a65ebd5.png" width="500" />
 
-## 프로젝트 다짐
+## 💫 프로젝트 동작
+### 메인 페이지 
+<div align="center">
+  <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/897ead37-f51d-4bfe-97c1-79a7b59d29c1/%E1%84%92%E1%85%AA%E1%84%86%E1%85%A7%E1%86%AB_%E1%84%80%E1%85%B5%E1%84%85%E1%85%A9%E1%86%A8_2021-11-21_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_10.17.41.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20211124%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211124T131228Z&X-Amz-Expires=86400&X-Amz-Signature=ba853cf46647c8b9b33d2e22ab8ac335a27829e324a035a75fdfc42127b82d91&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2592%25E1%2585%25AA%25E1%2584%2586%25E1%2585%25A7%25E1%2586%25AB%2520%25E1%2584%2580%25E1%2585%25B5%25E1%2584%2585%25E1%2585%25A9%25E1%2586%25A8%25202021-11-21%2520%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE%252010.17.41.gif%22&x-id=GetObject" width="700"/>
+</div>
 
-1. 프론트, 백 나누지 말자!
-2. 우리는 코드로 말한다! PR은 결국 클린 코드! 주석 절대 안됨, console.log 절대 불가!! 🙅‍♂️
-3. 서로가 작성한 코드는 서로를 이해 시켜주기. 단순 복사붙여넣기 NO!!
-4. 테스트 코드 작성하기!
-5. 즐거운 분위기에서 코딩하기!
-6. TDD 학습 해보자! 
-7. 구현은 무조건 끝낸다!
+- 사용자는 등록된 자신의 작품을 에디터를 통해 전시회를 구성하고 전시회를 열 수 있습니다.
+
+### 작품 등록하기
+<div align="center">
+  <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/8699d2a6-d3d6-4ea0-8f7b-61dc69f3ae57/%E1%84%92%E1%85%AA%E1%84%86%E1%85%A7%E1%86%AB_%E1%84%80%E1%85%B5%E1%84%85%E1%85%A9%E1%86%A8_2021-11-21_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_10.22.13.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20211124%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211124T131321Z&X-Amz-Expires=86400&X-Amz-Signature=5108e26ffa1438ba47688448e5f54b8ba9608dfa902e70dc9329d6f84ebcc73d&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2592%25E1%2585%25AA%25E1%2584%2586%25E1%2585%25A7%25E1%2586%25AB%2520%25E1%2584%2580%25E1%2585%25B5%25E1%2584%2585%25E1%2585%25A9%25E1%2586%25A8%25202021-11-21%2520%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE%252010.22.13.gif%22&x-id=GetObject" width="700"/>
+</div>
+
+- 파일 추가를 통해 작품을 등록할 수 있습니다.
+
+- 등록하려는 작품에 대한 부가 정보를 입력할 수 있습니다.
+
+- 등록 후 Minting 과정을 통해 고유한 NFT를 생성할 수 있습니다.
+
+### 전시회 에디팅 
+<div align="center">
+  <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/d908e5a6-a17d-4d9a-b85a-c0b68b0dcf30/ezgif.com-gif-maker_%282%29.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20211124%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211124T131345Z&X-Amz-Expires=86400&X-Amz-Signature=a9d418c498d3aac774b6a562e3188fa7fb6158248629398011ac9e72f43c0f15&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22ezgif.com-gif-maker%2520%282%29.gif%22&x-id=GetObject" width="700"/>
+</div>
+
+- 사용자는 등록된 자신의 작품을 에디터를 통해 전시회를 구성하고 전시회를 열 수 있습니다.
+
+- **이미지, 텍스트, 도형을 자유롭게 배치시킬 수 있는 기능과 간단한 서식 기능을 제공합니다.**
+
+- 등록된 전시는 에디팅한 모습 그대로 다른 사용자에게도 보여집니다.
+
+### 작품 경매하기
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/15667978/143246425-b48e4eaf-1c12-4ecc-8ac6-80c1207cf13c.gif" width="700"/>
+</div>
+
+- 발급받은 NFT 토큰은 해당 작품이 유일함을 보장하며 경매에 등록할 수 있습니다.
+
+- 경매에 등록된 작품은 작품 등록 시 같이 기재한 경매 마감일까지 경매가 진행됩니다.
+
+- 다른 사용자들은 **Ethereum**을 통해 경매에 참여할 수 있습니다.
