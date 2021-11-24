@@ -69,7 +69,9 @@
 
 ### 전시회 에디팅 
 <div align="center">
-  <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/d908e5a6-a17d-4d9a-b85a-c0b68b0dcf30/ezgif.com-gif-maker_%282%29.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20211124%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211124T131345Z&X-Amz-Expires=86400&X-Amz-Signature=a9d418c498d3aac774b6a562e3188fa7fb6158248629398011ac9e72f43c0f15&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22ezgif.com-gif-maker%2520%282%29.gif%22&x-id=GetObject" width="700"/>
+  
+  ![ezgif com-gif-maker (10)](https://user-images.githubusercontent.com/13018853/143276156-1a518e6c-1d19-4ad6-bfe2-53058383509d.gif)
+  
 </div>
 
 - 사용자는 등록된 자신의 작품을 에디터를 통해 전시회를 구성하고 전시회를 열 수 있습니다.
@@ -77,6 +79,17 @@
 - **이미지, 텍스트, 도형을 자유롭게 배치시킬 수 있는 기능과 간단한 서식 기능을 제공합니다.**
 
 - 등록된 전시는 에디팅한 모습 그대로 다른 사용자에게도 보여집니다.
+
+### 전시회 관람
+<div align="center">
+  
+  ![ezgif com-gif-maker (9)](https://user-images.githubusercontent.com/13018853/143276525-b32093e4-08d0-484a-b6bd-d71f5973fa67.gif)
+
+</div>
+
+- 전시회를 보다 사진을 클릭하면 크게 볼 수 있습니다.
+
+- 만약 경매중인 작품일 경우, 경매 보러 가기를 통해 경매에 참여하실 수 있습니다.
 
 ### 작품 경매하기
 <div align="center">
