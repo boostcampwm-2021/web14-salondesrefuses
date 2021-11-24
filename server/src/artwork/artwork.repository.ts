@@ -1,8 +1,8 @@
-import { ObjectStorageData } from 'src/image/dto/ImageDTOs';
+import { ObjectStorageData } from 'src/image/dto/Image.dto';
 import { EntityRepository, In, Repository, UpdateResult } from 'typeorm';
 import { Artwork } from './artwork.entity';
-import { ArtworkStatus } from './artwork.status.enum';
-import { CreateArtworkDTO } from './dto/artworkDTOs';
+import { ArtworkStatus } from './enum/artwork.enum';
+import { CreateArtworkDTO } from './dto/artwork.dto';
 import { InterestArtwork } from '../interestArtwork/interestArtwork.entity';
 import { AuctionHistory } from 'src/auctionHistory/auctionHistory.entity';
 import { Auction } from 'src/auction/auction.entity';

@@ -48,7 +48,7 @@ export class InterestRequestDTO {
     isInterest: 'true' | 'false';
 }
 
-export class ArtworkDTO {
+export class ArtworkDto {
     @ApiProperty()
     id: number;
 
@@ -73,9 +73,9 @@ export class ArtworkDTO {
     @ApiProperty()
     auctionId?: number;
 
-    static from(artwork: Artwork): ArtworkDTO {
+    static from(artwork: Artwork): ArtworkDto {
         const { id, title, type, description, originalImage, croppedImage, artist, auction } = artwork;
-        const artworkDTO = new ArtworkDTO();
+        const artworkDTO = new ArtworkDto();
         artworkDTO.id = id;
         artworkDTO.title = title;
         artworkDTO.type = type;

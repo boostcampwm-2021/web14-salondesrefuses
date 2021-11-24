@@ -1,6 +1,6 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AuctionDetailDTO, AuctionListItemDTO } from './dto/auctionDTOs';
+import { AuctionDetailDTO, AuctionListItemDTO } from './dto/auction.dto';
 import AuctionService from './auction.service';
 import {
     getAuctionDetailApiOperation,

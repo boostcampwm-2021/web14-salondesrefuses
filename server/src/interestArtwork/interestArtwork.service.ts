@@ -1,16 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { InterestArtworkRepository } from './interestArtwork.repository';
 import { User } from '../user/user.entity';
-import { InterestRequestDTO } from '../artwork/dto/artworkDTOs';
+import { InterestRequestDTO } from '../artwork/dto/artwork.dto';
 import { ArtworkRepository } from '../artwork/artwork.repository';
 
 @Injectable()
 export class InterestArtworkService {
     constructor(
-        @InjectRepository(InterestArtworkRepository)
         private readonly interestArtworkRepository: InterestArtworkRepository,
-        @InjectRepository(ArtworkRepository)
         private readonly artworkRepository: ArtworkRepository
     ) {}
 

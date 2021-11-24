@@ -4,7 +4,7 @@ import { User } from './user.entity';
 import { Artwork } from '../artwork/artwork.entity';
 import { Exhibition } from '../exhibition/exhibition.entity';
 import { CustomAuthGuard } from '../auth/guard/CustomAuthGuard';
-import { RequestUserDTO } from './dto/userDTO';
+import { RequestUserDTO } from './dto/user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
@@ -23,7 +23,7 @@ import {
 @Controller('/users')
 @ApiTags('유저 컨트롤러')
 export class UserController {
-    constructor(private userService: UserService) {}
+    constructor(private readonly userService: UserService) {}
 
     @Get('/')
     @ApiOperation(getUserProfile)

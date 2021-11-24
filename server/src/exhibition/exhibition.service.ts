@@ -1,21 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { ExhibitionRepository } from './exhibition.repository';
-import { ExhibitionDetailDTO, ExhibitionDTO, HoldExhibitionDTO, UpdateExhibitionDTO } from './dto/exhibitionDTO';
+import { ExhibitionDetailDTO, ExhibitionDto, HoldExhibitionDTO, UpdateExhibitionDTO } from './dto/exhibition.dto';
 import { User } from 'src/user/user.entity';
 import { ImageService } from 'src/image/image.service';
 import { ArtworkRepository } from 'src/artwork/artwork.repository';
 import { UpdateResult } from 'typeorm';
-import { ArtworkStatus } from '../artwork/artwork.status.enum';
+import { ArtworkStatus } from '../artwork/enum/artwork.enum';
 import { Exhibition } from './exhibition.entity';
 
 @Injectable()
 export class ExhibitionService {
     constructor(
-        @InjectRepository(ExhibitionRepository)
-        private exhibitionRepository: ExhibitionRepository,
-        @InjectRepository(ArtworkRepository)
-        private artworkRepository: ArtworkRepository,
+        private readonly exhibitionRepository: ExhibitionRepository,
+        private readonly artworkRepository: ArtworkRepository,
         private readonly imageService: ImageService,
     ) {
     }
@@ -29,27 +26,27 @@ export class ExhibitionService {
         return ExhibitionDetailDTO.from(exhibition, artworks);
     }
 
-    async getRandomExhibitions(): Promise<ExhibitionDTO[]> {
+    async getRandomExhibitions(): Promise<ExhibitionDto[]> {
         const exhibitions = await this.exhibitionRepository.findRandomExhibitions();
         return this.convertAllToExhibitionDTOWithInBidArtwork(exhibitions);
     }
 
-    async getNewestExhibitions(page: number): Promise<ExhibitionDTO[]> {
+    async getNewestExhibitions(page: number): Promise<ExhibitionDto[]> {
         const exhibitions = await this.exhibitionRepository.findNewestExhibitions(page);
         return this.convertAllToExhibitionDTOWithInBidArtwork(exhibitions);
     }
 
-    async getExhibitionsSortedByDeadline(page: number): Promise<ExhibitionDTO[]> {
+    async getExhibitionsSortedByDeadline(page: number): Promise<ExhibitionDto[]> {
         const exhibitions = await this.exhibitionRepository.findExhibitionsSortedByDeadline(page);
         return this.convertAllToExhibitionDTOWithInBidArtwork(exhibitions);
     }
 
-    async getExhibitionsSortedByInterest(page: number): Promise<ExhibitionDTO[]> {
+    async getExhibitionsSortedByInterest(page: number): Promise<ExhibitionDto[]> {
         const exhibitions = await this.exhibitionRepository.findExhibitionsSortedByInterest(page);
         return this.convertAllToExhibitionDTOWithInBidArtwork(exhibitions);
     }
 
-    private async convertAllToExhibitionDTOWithInBidArtwork(exhibitions: Exhibition[]): Promise<ExhibitionDTO[]> {
+    private async convertAllToExhibitionDTOWithInBidArtwork(exhibitions: Exhibition[]): Promise<ExhibitionDto[]> {
         const artworkIdAll = exhibitions.reduce((prev, exhibition) => [...prev, ...JSON.parse(exhibition.artworkIds)], []);
         const artworks = await this.artworkRepository.findAllByExhibitionId(artworkIdAll);
 
@@ -58,7 +55,7 @@ export class ExhibitionService {
                 const found = artworks.find(artwork => artwork.id === Number(artworkId));
                 return found.status === ArtworkStatus.InBid;
             });
-            return ExhibitionDTO.from(exhibition, isSale);
+            return ExhibitionDto.from(exhibition, isSale);
         });
     }
 

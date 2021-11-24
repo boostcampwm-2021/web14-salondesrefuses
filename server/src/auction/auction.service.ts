@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Auction } from './auction.entity';
 import { AuctionRepository } from './auction.repository';
-import { AuctionDetailDTO, AuctionListItemDTO } from './dto/auctionDTOs';
+import { AuctionDetailDTO, AuctionListItemDTO } from './dto/auction.dto';
 
 @Injectable()
 export default class AuctionService {
@@ -27,11 +27,11 @@ export default class AuctionService {
         return AuctionDetailDTO.from(auction);
     }
 
-    async closeAuction(auctionId: number): Promise<Auction> {
+    closeAuction(auctionId: number): Promise<Auction> {
         return this.auctionRepository.deleteAuction(auctionId);
     }
 
-    async getAuctionInfo(auctionId: number): Promise<Auction> {
+    getAuctionInfo(auctionId: number): Promise<Auction> {
         return this.auctionRepository.findAuctionInfo(auctionId);
     }
 
@@ -41,7 +41,7 @@ export default class AuctionService {
         this.auctionRepository.save(auction);
     }
 
-    async getEndedAuctions(): Promise<Auction[]> {
+    getEndedAuctions(): Promise<Auction[]> {
         return this.auctionRepository.findEndedAuctions();
     }
 }

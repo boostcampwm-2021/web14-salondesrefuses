@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { ImageService } from 'src/image/image.service';
 import { ArtworkRepository } from './artwork.repository';
-import { CreateArtworkDTO, NewArtworkDTO } from './dto/artworkDTOs';
+import { CreateArtworkDTO, NewArtworkDTO } from './dto/artwork.dto';
 import { create, IPFSHTTPClient } from 'ipfs-http-client';
 import { AuctionRepository } from 'src/auction/auction.repository';
 import { User } from 'src/user/user.entity';
-import { ArtworkStatus } from './artwork.status.enum';
+import { ArtworkStatus } from './enum/artwork.enum';
 import { Artwork } from './artwork.entity';
 import { UpdateResult } from 'typeorm';
 
@@ -16,9 +15,7 @@ export class ArtworkService {
 
     constructor(
         private readonly imageService: ImageService,
-        @InjectRepository(ArtworkRepository)
         private readonly artworkRepository: ArtworkRepository,
-        @InjectRepository(AuctionRepository)
         private readonly auctionRepository: AuctionRepository,
     ) {
         this.ipfs = create({ url: process.env.IPFS_URL });
@@ -64,7 +61,7 @@ export class ArtworkService {
         }
     }
 
-    async getArtwork(artworkId: number): Promise<Artwork> {
+    getArtwork(artworkId: number): Promise<Artwork> {
         return this.artworkRepository.findArtwork(artworkId);
     }
 

@@ -1,7 +1,7 @@
-import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Auction } from '../auction/auction.entity';
-import { ArtworkStatus } from './artwork.status.enum';
+import { ArtworkStatus } from './enum/artwork.enum';
 
 @Entity()
 export class Artwork {

@@ -3,7 +3,7 @@ import { User } from '../user/user.entity';
 import { Exhibition } from './exhibition.entity';
 import { Artwork } from '../artwork/artwork.entity';
 import { InterestArtwork } from '../interestArtwork/interestArtwork.entity';
-import { HoldExhibitionDTO } from './dto/exhibitionDTO';
+import { HoldExhibitionDTO } from './dto/exhibition.dto';
 
 @EntityRepository(Exhibition)
 export class ExhibitionRepository extends Repository<Exhibition> {

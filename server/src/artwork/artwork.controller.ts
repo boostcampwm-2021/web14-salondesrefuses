@@ -14,7 +14,7 @@ import {
     ValidationPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateArtworkDTO, NewArtworkDTO, InterestRequestDTO } from './dto/artworkDTOs';
+import { CreateArtworkDTO, NewArtworkDTO, InterestRequestDTO } from './dto/artwork.dto';
 import { ArtworkService } from './artwork.service';
 import { CustomAuthGuard } from '../auth/guard/CustomAuthGuard';
 import { User } from 'src/user/user.entity';

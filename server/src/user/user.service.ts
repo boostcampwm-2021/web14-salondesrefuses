@@ -1,25 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 import { ArtworkRepository } from '../artwork/artwork.repository';
 import { ImageService } from '../image/image.service';
 import { Artwork } from '../artwork/artwork.entity';
 import { User } from './user.entity';
 import { UpdateResult } from 'typeorm';
-import { RequestUserDTO } from './dto/userDTO';
+import { RequestUserDTO } from './dto/user.dto';
 import { ExhibitionRepository } from '../exhibition/exhibition.repository';
 import { Exhibition } from '../exhibition/exhibition.entity';
 
 @Injectable()
 export class UserService {
     constructor(
-        private imageService: ImageService,
-        @InjectRepository(UserRepository)
-        private userRepository: UserRepository,
-        @InjectRepository(ArtworkRepository)
-        private artworkRepository: ArtworkRepository,
-        @InjectRepository(ExhibitionRepository)
-        private exhibitionRepository: ExhibitionRepository,
+        private readonly imageService: ImageService,
+        private readonly userRepository: UserRepository,
+        private readonly artworkRepository: ArtworkRepository,
+        private readonly exhibitionRepository: ExhibitionRepository,
     ) {}
 
     async checkRegisteredUser(userId: string, name: string, avatar: string, loginStrategy: string): Promise<User> {

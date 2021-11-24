@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import * as sharp from 'sharp';
 import { Logger } from '@nestjs/common';
-import { ObjectStorageData } from './dto/ImageDTOs';
+import { ObjectStorageData } from './dto/Image.dto';
 
 @Injectable()
 export class ImageService {
