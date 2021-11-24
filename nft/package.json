@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "deploy": "truffle migrate --reset",
+    "deploy": "./deploy.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -15,7 +15,6 @@
   "license": "ISC",
   "dependencies": {
     "@openzeppelin/contracts": "^4.3.3",
-    "dotenv": "^10.0.0",
-    "truffle": "^5.4.19"
+    "dotenv": "^10.0.0"
   }
 }

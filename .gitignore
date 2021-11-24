@@ -9,6 +9,4 @@ output.sql
 
 nft/build
 
-/ethereum
-
-/ethereum/*
+**/ethereum
