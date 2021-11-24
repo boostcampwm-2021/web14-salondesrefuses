@@ -52,6 +52,7 @@ const AbsoluteDiv = styled.div`
 `;
 const AbsoluteImage = styled.img`
     position: absolute;
+    cursor: zoom-in;
 `;
 
 export default ExhibitionContents;

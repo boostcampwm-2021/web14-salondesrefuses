@@ -59,7 +59,7 @@ const ImgDiv = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     height: 70%;
-
+    cursor: pointer;
     img {
         height: 100%;
     }
