@@ -102,10 +102,6 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
         if (!currentElements) return;
         currentElements.forEach((element) => {
             if (!element) return;
-            if (element.classList.contains('IMAGE')) {
-                const idx = editorImageState.findIndex((img) => img.id === Number(element.dataset.artwork));
-                setEditorImageState([...editorImageState.slice(0, idx), ...editorImageState.slice(idx + 1)]);
-            }
             element.remove();
         });
     };
