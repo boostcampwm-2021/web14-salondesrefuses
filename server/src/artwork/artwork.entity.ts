@@ -20,7 +20,7 @@ export class Artwork {
     @Column({ nullable: true })
     price: string;
 
-    @Column()
+    @Column({ type: 'text' })
     description: string;
 
     @Column({
