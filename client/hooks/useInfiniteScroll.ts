@@ -3,10 +3,7 @@ import { useEffect, useRef } from 'react';
 
 let observer: IntersectionObserver | null;
 
-const useInfiniteScroll = (
-    handlePage: () => void,
-    items: ExhibitionCardProps[] | AuctionCardProps[],
-) => {
+const useInfiniteScroll = (handlePage: () => void, items: ExhibitionCardProps[] | AuctionCardProps[]) => {
     const gridRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -23,9 +20,7 @@ const useInfiniteScroll = (
                 },
             );
         }
-        observer.observe(
-            gridRef.current.children[gridRef.current.children.length - 3],
-        );
+        observer.observe(gridRef.current.lastChild as Element);
         return () => {
             observer = null;
         };

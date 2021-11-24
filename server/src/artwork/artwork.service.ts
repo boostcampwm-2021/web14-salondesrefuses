@@ -1,13 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { ImageService } from 'src/image/service/image.service';
-import { ArtworkRepository } from '../artwork.repository';
-import { CreateArtworkDTO, NewArtworkDTO } from '../dto/artworkDTOs';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { ImageService } from 'src/image/image.service';
+import { ArtworkRepository } from './artwork.repository';
+import { CreateArtworkDTO, NewArtworkDTO } from './dto/artwork.dto';
 import { create, IPFSHTTPClient } from 'ipfs-http-client';
 import { AuctionRepository } from 'src/auction/auction.repository';
 import { User } from 'src/user/user.entity';
-import { ArtworkStatus } from '../artwork.status.enum';
-import { Artwork } from '../artwork.entity';
+import { ArtworkStatus } from './enum/artwork.enum';
+import { Artwork } from './artwork.entity';
 import { UpdateResult } from 'typeorm';
 
 @Injectable()
@@ -16,9 +15,7 @@ export class ArtworkService {
 
     constructor(
         private readonly imageService: ImageService,
-        @InjectRepository(ArtworkRepository)
         private readonly artworkRepository: ArtworkRepository,
-        @InjectRepository(AuctionRepository)
         private readonly auctionRepository: AuctionRepository,
     ) {
         this.ipfs = create({ url: process.env.IPFS_URL });
@@ -60,15 +57,23 @@ export class ArtworkService {
 
             return NewArtworkDTO.from(newArtwork);
         } catch (error) {
-            console.log(error);
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: 'create artwork failed'
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     async getArtwork(artworkId: number): Promise<Artwork> {
-        return this.artworkRepository.getArtwork(artworkId);
+        const artwork = await this.artworkRepository.findArtwork(artworkId);
+
+        if(!artwork) {
+            throw new NotFoundException(`Can't find artwork with id: ${artworkId}`);
+        }
+        return artwork;
     }
 
-    async bulkUpdateArtworkState(artworkIds: number[]): Promise<void> {
+    bulkUpdateArtworkState(artworkIds: number[]): void {
         this.artworkRepository.bulkUpdateArtworkState(artworkIds);
     }
 

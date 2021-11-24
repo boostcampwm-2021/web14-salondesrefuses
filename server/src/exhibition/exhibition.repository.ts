@@ -3,44 +3,46 @@ import { User } from '../user/user.entity';
 import { Exhibition } from './exhibition.entity';
 import { Artwork } from '../artwork/artwork.entity';
 import { InterestArtwork } from '../interestArtwork/interestArtwork.entity';
-import { HoldExhibitionDTO } from './dto/exhibitionDTO';
+import { HoldExhibitionDTO } from './dto/exhibition.dto';
+import { NotFoundException } from '@nestjs/common';
 
 @EntityRepository(Exhibition)
 export class ExhibitionRepository extends Repository<Exhibition> {
-    async getSpecificExhibition(id: number): Promise<Exhibition> {
-        return await this.findOne({ id });
+    async findExhibition(id: number): Promise<Exhibition> {
+        const exhibition = await this.findOne(id);
+        if(!exhibition) {
+            throw new NotFoundException();
+        }
+        return exhibition;
     }
 
-    async getRandomExhibitions(): Promise<Exhibition[]> {
-        return await this.createQueryBuilder('exhibition')
-            .innerJoinAndSelect('exhibition.artist', 'artist')
+    findRandomExhibitions(): Promise<Exhibition[]> {
+        return this.createQueryBuilder('exhibition')
             .orderBy('RAND()')
             .limit(5)
             .getMany();
     }
 
-    async getNewestExhibitions(page: number): Promise<Exhibition[]> {
-        return await this.createQueryBuilder('exhibition')
-            .innerJoinAndSelect('exhibition.artist', 'artist')
+    findNewestExhibitions(page: number): Promise<Exhibition[]> {
+        return this.createQueryBuilder('exhibition')
             .where('exhibition.start_at <= now()')
             .orderBy(`now() - exhibition.start_at`, 'ASC')
+            .addOrderBy('id', 'DESC')
             .offset(page * 15)
             .limit(15)
             .getMany();
     }
 
-    async getExhibitionsSortedByDeadline(page: number): Promise<Exhibition[]> {
-        return await this.createQueryBuilder('exhibition')
-            .innerJoinAndSelect('exhibition.artist', 'artist')
+    findExhibitionsSortedByDeadline(page: number): Promise<Exhibition[]> {
+        return this.createQueryBuilder('exhibition')
             .orderBy('exhibition.end_at - now()', 'ASC')
             .offset(page * 15)
             .limit(15)
             .getMany();
     }
 
-    async getExhibitionsSortedByInterest(page: number): Promise<Exhibition[]> {
-        return await this.createQueryBuilder('exhibition')
-            .innerJoinAndSelect('exhibition.artist', 'artist')
+    findExhibitionsSortedByInterest(page: number): Promise<Exhibition[]> {
+        return this.createQueryBuilder('exhibition')
             .innerJoin(
                 subQuery => {
                     return subQuery
@@ -59,8 +61,8 @@ export class ExhibitionRepository extends Repository<Exhibition> {
             .getMany();
     }
 
-    async getUsersExhibitions(artist: User): Promise<Exhibition[]> {
-        return await this.find({ artist });
+    findUsersExhibitions(artist: User): Promise<Exhibition[]> {
+        return this.find({ artistName: artist.name });
     }
 
     createExhibition(thumbnailPath: string, holdExhibitionDTO: HoldExhibitionDTO, user: User): Exhibition {
@@ -76,7 +78,7 @@ export class ExhibitionRepository extends Repository<Exhibition> {
             thumbnailImage: thumbnailPath,
             contents,
             theme,
-            artist: user,
+            artistName: user.name,
             categories: JSON.stringify(categories),
             size,
             artworkIds,

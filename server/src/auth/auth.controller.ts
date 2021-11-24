@@ -1,9 +1,9 @@
 import { Body, Controller, ParseIntPipe, Post, Res, UsePipes, ValidationPipe } from '@nestjs/common';
-import { AuthService } from '../service/auth.service';
+import { AuthService } from './auth.service';
 import { Response } from 'express';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { signInApiOperation, signOutApiBody, signOutApiOperation } from '../swagger';
-import { AuthCredentialDto } from '../dto/auth.credential.dto';
+import { signInApiOperation, signOutApiBody, signOutApiOperation } from './swagger';
+import { AuthDto } from './dto/auth.dto';
 
 @Controller('/auth')
 @ApiTags('인증 컨트롤러')
@@ -13,9 +13,9 @@ export class AuthController {
     @Post('/signIn')
     @UsePipes(ValidationPipe)
     @ApiOperation(signInApiOperation)
-    @ApiBody({ type: AuthCredentialDto })
+    @ApiBody({ type: AuthDto })
     async signIn(
-        @Body() authCredentialDto: AuthCredentialDto,
+        @Body() authCredentialDto: AuthDto,
         @Res() res: Response,
     ): Promise<void> {
         const { code, strategy } = authCredentialDto;

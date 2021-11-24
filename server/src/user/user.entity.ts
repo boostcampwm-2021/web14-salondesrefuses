@@ -1,9 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Artwork } from '../artwork/artwork.entity';
-import { Auction } from '../auction/auction.entity';
-import { Exhibition } from '../exhibition/exhibition.entity';
-import { InterestArtwork } from '../interestArtwork/interestArtwork.entity';
-import { ArtworkInBid } from '../artworkInBid/artworkInBid.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -33,22 +28,4 @@ export class User {
 
     @Column()
     loginStrategy: string;
-
-    @OneToMany(type => Artwork, artwork => artwork.artist)
-    artworks: Artwork[];
-
-    @OneToMany(type => Artwork, artwork => artwork.owner)
-    biddedArtworks: Artwork[];
-
-    @OneToMany(type => InterestArtwork, interestArtwork => interestArtwork.user)
-    interestArtworks: InterestArtwork[];
-
-    @OneToMany(type => ArtworkInBid, artworkInBid => artworkInBid.user)
-    artworksInBid: Artwork[];
-
-    @OneToMany(type => Exhibition, exhibition => exhibition.artist)
-    exhibitionList: Exhibition[];
-
-    @OneToMany(type => Auction, auction => auction.seller)
-    auctionList: Auction[];
 }

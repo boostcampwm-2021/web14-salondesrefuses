@@ -1,7 +1,7 @@
 import {
     Body,
     Controller,
-    Get,
+    Get, HttpException, HttpStatus,
     Param,
     ParseIntPipe,
     Patch,
@@ -14,8 +14,8 @@ import {
     UsePipes,
     ValidationPipe,
 } from '@nestjs/common';
-import { ExhibitionService } from '../service/exhibition.service';
-import { ExhibitionDetailDTO, ExhibitionDTO, HoldExhibitionDTO, UpdateExhibitionDTO } from '../dto/exhibitionDTO';
+import { ExhibitionService } from './exhibition.service';
+import { ExhibitionDetailDTO, ExhibitionDto, HoldExhibitionDTO, UpdateExhibitionDTO } from './dto/exhibition.dto';
 import {
     ApiBody,
     ApiConsumes,
@@ -34,7 +34,7 @@ import {
     getSpecificExhibitionApiOperation,
     holdExhibitionApiBody,
     updateExhibitionApiOperation,
-} from '../swagger';
+} from './swagger';
 import { User } from 'src/user/user.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CustomAuthGuard } from 'src/auth/guard/CustomAuthGuard';
@@ -43,37 +43,46 @@ import { UpdateResult } from 'typeorm';
 @Controller('/exhibitions')
 @ApiTags('전시회 컨트롤러')
 export class ExhibitionController {
-    constructor(private exhibitionService: ExhibitionService) {}
+    constructor(private readonly exhibitionService: ExhibitionService) {}
 
     @Get('/random')
     @ApiOperation(getRandomExhibitionsAPiOperation)
-    @ApiResponse({ type: ExhibitionDTO })
+    @ApiResponse({ type: ExhibitionDto })
     @ApiProperty({})
-    getRandomExhibitions(): Promise<ExhibitionDTO[]> {
+    getRandomExhibitions(): Promise<ExhibitionDto[]> {
         return this.exhibitionService.getRandomExhibitions();
     }
 
     @Get('/newest')
     @ApiOperation(getNewestExhibitionApiOperation)
-    @ApiResponse({ type: ExhibitionDTO })
+    @ApiResponse({ type: ExhibitionDto })
     @ApiQuery({ name: 'page', type: Number })
-    getNewestExhibitions(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDTO[]> {
+    getNewestExhibitions(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDto[]> {
+        if(page < 0) {
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+        }
         return this.exhibitionService.getNewestExhibitions(page);
     }
 
     @Get('/deadline')
     @ApiOperation(getExhibitionsSortedByDeadlineApiOperation)
-    @ApiResponse({ type: ExhibitionDTO })
+    @ApiResponse({ type: ExhibitionDto })
     @ApiQuery({ name: 'page', type: Number })
-    getExhibitionsSortedByDeadline(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDTO[]> {
+    getExhibitionsSortedByDeadline(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDto[]> {
+        if(page < 0) {
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+        }
         return this.exhibitionService.getExhibitionsSortedByDeadline(page);
     }
 
     @Get('/popular')
     @ApiOperation(getExhibitionsSortedByInterestApiOperation)
-    @ApiResponse({ type: ExhibitionDTO })
+    @ApiResponse({ type: ExhibitionDto })
     @ApiQuery({ name: 'page', type: Number })
-    getExhibitionsSortedByInterest(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDTO[]> {
+    getExhibitionsSortedByInterest(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDto[]> {
+        if(page < 0) {
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+        }
         return this.exhibitionService.getExhibitionsSortedByInterest(page);
     }
 

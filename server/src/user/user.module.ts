@@ -5,8 +5,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { UserRepository } from './user.repository';
 import { ArtworkRepository } from '../artwork/artwork.repository';
 import { ExhibitionRepository } from '../exhibition/exhibition.repository';
-import { UserController } from './controller/user.controller';
-import { UserService } from './service/user.service';
+import { UserController } from './user.controller';
+import { UserService } from './user.service';
 import { AuctionHistoryRepository } from '../auctionHistory/auctionHistory.repository';
 
 @Module({

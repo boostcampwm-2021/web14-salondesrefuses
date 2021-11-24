@@ -1,11 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { Artwork } from 'src/artwork/artwork.entity';
-import { ArtworkStatus } from 'src/artwork/artwork.status.enum';
-import { ArtworkDTO } from 'src/artwork/dto/artworkDTOs';
+import { ArtworkDto } from 'src/artwork/dto/artwork.dto';
 import { Exhibition } from '../exhibition.entity';
 
-export class ExhibitionDTO {
+export class ExhibitionDto {
     @ApiProperty()
     id: number;
 
@@ -36,20 +35,20 @@ export class ExhibitionDTO {
     @ApiProperty()
     isSale: boolean;
 
-    static from(exhibition: Exhibition, artworks: Artwork[]): ExhibitionDTO {
-        const dto = new ExhibitionDTO();
-        const { id, title, description, artist, collaborator, thumbnailImage, categories, theme } = exhibition;
+    static from(exhibition: Exhibition, isSale: boolean): ExhibitionDto {
+        const dto = new ExhibitionDto();
+        const { id, title, description, artistName, collaborator, thumbnailImage, categories, theme, artworkIds } = exhibition;
 
         dto.id = id;
         dto.title = title;
         dto.description = description;
-        dto.artist = artist.name;
+        dto.artist = artistName;
         dto.collaborator = collaborator;
         dto.thumbnailImage = thumbnailImage;
         dto.category = categories;
         dto.theme = theme;
-        dto.artCount = artworks.length;
-        dto.isSale = artworks.some(artwork => artwork.status === ArtworkStatus.InBid);
+        dto.artCount = JSON.parse(artworkIds).length;
+        dto.isSale = isSale;
         return dto;
     }
 }
@@ -136,7 +135,7 @@ export class ExhibitionDetailDTO {
     categories: string;
 
     @ApiProperty()
-    artworks: ArtworkDTO[];
+    artworks: ArtworkDto[];
 
     @ApiProperty()
     size: string;
@@ -155,7 +154,7 @@ export class ExhibitionDetailDTO {
         exhibitionDetailDTO.contents = contents;
         exhibitionDetailDTO.categories = categories;
         exhibitionDetailDTO.size = size;
-        exhibitionDetailDTO.artworks = artworks.map(artwork => ArtworkDTO.from(artwork));
+        exhibitionDetailDTO.artworks = artworks.map(artwork => ArtworkDto.from(artwork));
         return exhibitionDetailDTO;
     }
 }

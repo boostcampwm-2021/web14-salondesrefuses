@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { UserService } from '../../user/service/user.service';
+import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../../user/user.entity';
+import { User } from '../user/user.entity';
 import { UpdateResult } from 'typeorm';
 import axios from 'axios';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly userService: UserService, private readonly jwtService: JwtService) {}
+    constructor(
+        private readonly userService: UserService,
+        private readonly jwtService: JwtService
+    ) {}
 
     async signInWithGoogle(code: string): Promise<{ accessToken: string; refreshToken: string }> {
         const { data } = await axios({
