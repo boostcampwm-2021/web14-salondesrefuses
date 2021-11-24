@@ -12,6 +12,7 @@ export class AuctionRepository extends Repository<Auction> {
         if (createArtWorkDTO.isRegisterAuction === 'true') {
             return this.create({
                 seller: user,
+                price: createArtWorkDTO.price,
                 endAt: createArtWorkDTO.endAt,
             });
         }

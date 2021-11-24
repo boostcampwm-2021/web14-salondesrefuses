@@ -19,7 +19,7 @@ export type trendHistory = {
 const ItemDetail = ({ auction }: { auction: Auction }) => {
     const [socket] = useAuctionSocketState();
 
-    const { id, artwork, artist, auctionHistories } = auction;
+    const { id, artwork, artist, auctionHistories, price } = auction;
     const { title, type } = artwork;
     const trendHistoryList = JSON.parse(JSON.stringify(auctionHistories))
         .sort(
@@ -45,7 +45,7 @@ const ItemDetail = ({ auction }: { auction: Auction }) => {
             <AboutArtist artist={artist} />
             <BidTable
                 auction={auction}
-                currentPrice={Number(trendHistoryList[0]?.price)}
+                currentPrice={Number(price)}
             />
             <Trend trendHistoryList={trendHistoryList} />
             <ArtworkDetail artwork={artwork} />

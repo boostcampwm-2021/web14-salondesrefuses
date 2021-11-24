@@ -17,9 +17,6 @@ export class Artwork {
     @Column({ nullable: true })
     year: string;
 
-    @Column({ nullable: true })
-    price: string;
-
     @Column({ type: 'text' })
     description: string;
 

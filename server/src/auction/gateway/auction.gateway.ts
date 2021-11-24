@@ -49,7 +49,7 @@ export class AuctionGateway implements OnGatewayInit {
             const newEndAt = new Date();
             newEndAt.setMinutes(newEndAt.getMinutes() + 1);
 
-            this.auctionService.updateAuctionEndAt(auctionId, newEndAt);
+            this.auctionService.updateAuction(auctionId, { endAt: newEndAt });
 
             this.server.to(auctionId).emit('@auction/time_update', {
                 auctionId,
@@ -64,6 +64,8 @@ export class AuctionGateway implements OnGatewayInit {
             price,
             biddedAt,
         });
+
+        this.auctionService.updateAuction(auctionId, { price });
         this.auctionHistoryService.saveAuctionHistory(auctionId, bidderId, price, biddedAt);
     }
 }

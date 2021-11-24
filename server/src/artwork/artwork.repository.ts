@@ -19,7 +19,6 @@ export class ArtworkRepository extends Repository<Artwork> {
             title: createArtWorkDTO.title,
             type: createArtWorkDTO.type,
             year: createArtWorkDTO.year,
-            price: createArtWorkDTO.price,
             description: createArtWorkDTO.description,
             originalImage: originalImagePath,
             croppedImage: croppedImagePath,

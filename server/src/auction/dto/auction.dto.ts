@@ -28,14 +28,14 @@ export class AuctionListItemDTO {
 
     static from(auction: Auction): AuctionListItemDTO {
         const dto = new AuctionListItemDTO();
-        const { title, description, croppedImage, price, type, artist } = auction.artwork;
+        const { title, description, croppedImage, type, artist } = auction.artwork;
         const { name } = artist;
 
         dto.id = auction.id;
         dto.title = title;
         dto.description = description;
         dto.thumbnailImage = croppedImage;
-        dto.price = price;
+        dto.price = auction.price;
         dto.type = type;
         dto.artist = name;
 
@@ -54,6 +54,9 @@ export class AuctionDetailDTO {
     artist: User;
 
     @ApiProperty()
+    price: string;
+
+    @ApiProperty()
     auctionHistories: AuctionHistory[];
 
     @ApiProperty()
@@ -63,13 +66,14 @@ export class AuctionDetailDTO {
     endAt: Date;
 
     static from(auction: Auction): AuctionDetailDTO {
-        const { id, artwork, auctionHistories, endAt } = auction;
+        const { id, artwork, price, auctionHistories, endAt } = auction;
         const { artist } = artwork;
 
         const dto = new AuctionDetailDTO();
         dto.id = id;
         dto.artwork = artwork;
         dto.artist = artist;
+        dto.price = price;
         dto.auctionHistories = auctionHistories;
         dto.endAt = endAt;
         return dto;
