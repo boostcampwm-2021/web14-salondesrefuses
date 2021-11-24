@@ -1,21 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { GetStaticPaths } from 'next';
 
 import Layout from '@components/common/Layout';
-import { Exhibition } from 'interfaces';
-import { getExhibition } from '@utils/networking';
 import ExhibitionDetail from '@components/Exhibition/ExhbitionDetail';
-const ExhibitionDetailPage = () => {
-    const { id } = useRouter().query;
-    const [exhibition, setExhibition] = useState<Exhibition | null>(null);
+import { getExhibitionIds, getExhibition } from 'utils/networking';
+import { Exhibition } from 'interfaces';
 
-    useEffect(() => {
-        getExhibition(id as string).then((res) => {
-            return setExhibition(res.data);
-        });
-    }, []);
-
+const ExhibitionDetailPage = ({ exhibition }: { exhibition: Exhibition }) => {
     return (
         <div>
             <Head>
@@ -26,15 +18,23 @@ const ExhibitionDetailPage = () => {
     );
 };
 
-// export const getStaticProps: GetStaticProps = async () => {
-//     const ExhibitionData = (await getRandomExhibitions()).data;
+export const getStaticPaths: GetStaticPaths = async () => {
+    const exhibitionIds = await getExhibitionIds();
+    const paths = exhibitionIds.map((id) => ({
+        params: { id: id.toString() },
+    }));
 
-//     return {
-//         props: {
-//             ExhibitionsData: JSON.parse(JSON.stringify(ExhibitionsData)),
-//             AuctionsData: JSON.parse(JSON.stringify(AuctionsData)),
-//         } as Props,
-//     };
-// };
+    return { paths, fallback: false };
+};
+
+interface Params {
+    params: {
+        id: string;
+    };
+}
+export const getStaticProps = async ({ params }: Params) => {
+    const exhibition = (await getExhibition(params.id)).data;
+    return { props: { exhibition: exhibition } };
+};
 
 export default ExhibitionDetailPage;
