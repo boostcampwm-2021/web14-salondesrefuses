@@ -55,11 +55,11 @@ export class UserService {
     }
 
     getUsersArtworks({ id }: User): Promise<Artwork[]> {
-        return this.artworkRepository.getUsersArtworks(id);
+        return this.artworkRepository.findUsersArtworks(id);
     }
 
     getInterestArtworks({ id }: User): Promise<Artwork[]> {
-        return this.artworkRepository.getInterestArtworks(id);
+        return this.artworkRepository.findInterestArtworks(id);
     }
 
     getBiddingArtworks({ id }: User): Promise<Artwork[]> {
@@ -67,10 +67,10 @@ export class UserService {
     }
 
     getBiddedArtworks(nftTokens: string): Promise<Artwork[]> {
-        return this.artworkRepository.getBiddedArtworks(JSON.parse(JSON.stringify(nftTokens)));
+        return this.artworkRepository.findBiddedArtworks(JSON.parse(JSON.stringify(nftTokens)));
     }
 
     getUsersExhibitions(user: User): Promise<Exhibition[]> {
-        return this.exhibitionRepository.getUsersExhibitions(user);
+        return this.exhibitionRepository.findUsersExhibitions(user);
     }
 }

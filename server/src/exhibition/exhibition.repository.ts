@@ -7,18 +7,18 @@ import { HoldExhibitionDTO } from './dto/exhibitionDTO';
 
 @EntityRepository(Exhibition)
 export class ExhibitionRepository extends Repository<Exhibition> {
-    async getSpecificExhibition(id: number): Promise<Exhibition> {
-        return await this.findOne({ id });
+    getSpecificExhibition(id: number): Promise<Exhibition> {
+        return this.findOne({ id });
     }
 
-    getRandomExhibitions(): Promise<Exhibition[]> {
+    findRandomExhibitions(): Promise<Exhibition[]> {
         return this.createQueryBuilder('exhibition')
             .orderBy('RAND()')
             .limit(5)
             .getMany();
     }
 
-    getNewestExhibitions(page: number): Promise<Exhibition[]> {
+    findNewestExhibitions(page: number): Promise<Exhibition[]> {
         return this.createQueryBuilder('exhibition')
             .where('exhibition.start_at <= now()')
             .orderBy(`now() - exhibition.start_at`, 'ASC')
@@ -28,7 +28,7 @@ export class ExhibitionRepository extends Repository<Exhibition> {
             .getMany();
     }
 
-    getExhibitionsSortedByDeadline(page: number): Promise<Exhibition[]> {
+    findExhibitionsSortedByDeadline(page: number): Promise<Exhibition[]> {
         return this.createQueryBuilder('exhibition')
             .orderBy('exhibition.end_at - now()', 'ASC')
             .offset(page * 15)
@@ -36,7 +36,7 @@ export class ExhibitionRepository extends Repository<Exhibition> {
             .getMany();
     }
 
-    getExhibitionsSortedByInterest(page: number): Promise<Exhibition[]> {
+    findExhibitionsSortedByInterest(page: number): Promise<Exhibition[]> {
         return this.createQueryBuilder('exhibition')
             .innerJoin(
                 subQuery => {
@@ -56,7 +56,7 @@ export class ExhibitionRepository extends Repository<Exhibition> {
             .getMany();
     }
 
-    getUsersExhibitions(artist: User): Promise<Exhibition[]> {
+    findUsersExhibitions(artist: User): Promise<Exhibition[]> {
         return this.find({ artistName: artist.name });
     }
 

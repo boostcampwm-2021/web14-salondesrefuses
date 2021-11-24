@@ -73,7 +73,7 @@ export class ArtworkController {
         @Body() interestRequestDTO: InterestRequestDTO,
         @Req() { user }: Express.Request & { user: User },
     ): Promise<boolean> {
-        return this.interestArtworkService.insertInterestArtwork(user, interestRequestDTO);
+        return this.interestArtworkService.createInterestArtwork(user, interestRequestDTO);
     }
 
     @Patch('/:artworkId/nft')

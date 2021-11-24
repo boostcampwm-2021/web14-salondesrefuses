@@ -30,7 +30,7 @@ export class AuctionHistoryService {
 
     async deleteAuctionHistories(id: number): Promise<AuctionHistory> {
         const auction = await this.auctionRepository.findOne({ id });
-        const highestAuctionHistory = await this.auctionHistoryRepository.getHighestAuctionHistory(id);
+        const highestAuctionHistory = await this.auctionHistoryRepository.findHighestAuctionHistory(id);
 
         await this.auctionHistoryRepository.delete({ auction });
         return highestAuctionHistory;

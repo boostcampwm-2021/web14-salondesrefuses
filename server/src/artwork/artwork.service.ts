@@ -65,10 +65,10 @@ export class ArtworkService {
     }
 
     async getArtwork(artworkId: number): Promise<Artwork> {
-        return this.artworkRepository.getArtwork(artworkId);
+        return this.artworkRepository.findArtwork(artworkId);
     }
 
-    async bulkUpdateArtworkState(artworkIds: number[]): Promise<void> {
+    bulkUpdateArtworkState(artworkIds: number[]): void {
         this.artworkRepository.bulkUpdateArtworkState(artworkIds);
     }
 

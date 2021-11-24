@@ -1,7 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import moment = require('moment');
-import { ArtworkStatus } from 'src/artwork/artwork.status.enum';
-import { Raw } from 'typeorm';
 import { Auction } from './auction.entity';
 import { AuctionRepository } from './auction.repository';
 import { AuctionDetailDTO, AuctionListItemDTO } from './dto/auctionDTOs';
@@ -11,7 +8,7 @@ export default class AuctionService {
     constructor(private readonly auctionRepository: AuctionRepository) {}
 
     async getRandomAuctions(): Promise<AuctionListItemDTO[]> {
-        const auctions = await this.auctionRepository.getRandomAuctions();
+        const auctions = await this.auctionRepository.findRandomAuctions();
         return auctions.map(auction => AuctionListItemDTO.from(auction));
     }
 
@@ -35,7 +32,7 @@ export default class AuctionService {
     }
 
     async getAuctionInfo(auctionId: number): Promise<Auction> {
-        return this.auctionRepository.findOne({ relations: ['artwork'], where: { id: auctionId } });
+        return this.auctionRepository.findAuctionInfo(auctionId);
     }
 
     async updateAuctionEndAt(auctionId: number, newEndAt: Date): Promise<void> {
@@ -45,14 +42,6 @@ export default class AuctionService {
     }
 
     async getEndedAuctions(): Promise<Auction[]> {
-        const dateWithoutTime = moment().format('yyyy-MM-DD');
-
-        return this.auctionRepository.find({
-            relations: ['artwork'],
-            where: [
-                { endAt: Raw(alias => `${alias} <= '${dateWithoutTime}'`) },
-                { artwork: { status: ArtworkStatus.InBid } },
-            ],
-        });
+        return this.auctionRepository.findEndedAuctions();
     }
 }

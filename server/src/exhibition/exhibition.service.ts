@@ -7,6 +7,7 @@ import { ImageService } from 'src/image/image.service';
 import { ArtworkRepository } from 'src/artwork/artwork.repository';
 import { UpdateResult } from 'typeorm';
 import { ArtworkStatus } from '../artwork/artwork.status.enum';
+import { Exhibition } from './exhibition.entity';
 
 @Injectable()
 export class ExhibitionService {
@@ -29,49 +30,26 @@ export class ExhibitionService {
     }
 
     async getRandomExhibitions(): Promise<ExhibitionDTO[]> {
-        const exhibitions = await this.exhibitionRepository.getRandomExhibitions();
-        const artworkIdAll = exhibitions.reduce((prev, exhibition) => [...prev, ...JSON.parse(exhibition.artworkIds)], []);
-        const artworks = await this.artworkRepository.findAllByExhibitionId(artworkIdAll);
-
-        return exhibitions.map(exhibition => {
-            const isSale = JSON.parse(exhibition.artworkIds).some((artworkId) => {
-                const found = artworks.find(artwork => artwork.id === Number(artworkId));
-                return found.status === ArtworkStatus.InBid;
-            });
-            return ExhibitionDTO.from(exhibition, isSale);
-        });
+        const exhibitions = await this.exhibitionRepository.findRandomExhibitions();
+        return this.convertAllToExhibitionDTOWithInBidArtwork(exhibitions);
     }
 
     async getNewestExhibitions(page: number): Promise<ExhibitionDTO[]> {
-        const exhibitions = await this.exhibitionRepository.getNewestExhibitions(page);
-        const artworkIdAll = exhibitions.reduce((prev, exhibition) => [...prev, ...JSON.parse(exhibition.artworkIds)], []);
-        const artworks = await this.artworkRepository.findAllByExhibitionId(artworkIdAll);
-
-        return exhibitions.map(exhibition => {
-            const isSale = JSON.parse(exhibition.artworkIds).some((artworkId) => {
-                const found = artworks.find(artwork => artwork.id === Number(artworkId));
-                return found.status === ArtworkStatus.InBid;
-            });
-            return ExhibitionDTO.from(exhibition, isSale);
-        });
+        const exhibitions = await this.exhibitionRepository.findNewestExhibitions(page);
+        return this.convertAllToExhibitionDTOWithInBidArtwork(exhibitions);
     }
 
     async getExhibitionsSortedByDeadline(page: number): Promise<ExhibitionDTO[]> {
-        const exhibitions = await this.exhibitionRepository.getExhibitionsSortedByDeadline(page);
-        const artworkIdAll = exhibitions.reduce((prev, exhibition) => [...prev, ...JSON.parse(exhibition.artworkIds)], []);
-        const artworks = await this.artworkRepository.findAllByExhibitionId(artworkIdAll);
-
-        return exhibitions.map(exhibition => {
-            const isSale = JSON.parse(exhibition.artworkIds).some((artworkId) => {
-                const found = artworks.find(artwork => artwork.id === Number(artworkId));
-                return found.status === ArtworkStatus.InBid;
-            });
-            return ExhibitionDTO.from(exhibition, isSale);
-        });
+        const exhibitions = await this.exhibitionRepository.findExhibitionsSortedByDeadline(page);
+        return this.convertAllToExhibitionDTOWithInBidArtwork(exhibitions);
     }
 
     async getExhibitionsSortedByInterest(page: number): Promise<ExhibitionDTO[]> {
-        const exhibitions = await this.exhibitionRepository.getExhibitionsSortedByInterest(page);
+        const exhibitions = await this.exhibitionRepository.findExhibitionsSortedByInterest(page);
+        return this.convertAllToExhibitionDTOWithInBidArtwork(exhibitions);
+    }
+
+    private async convertAllToExhibitionDTOWithInBidArtwork(exhibitions: Exhibition[]): Promise<ExhibitionDTO[]> {
         const artworkIdAll = exhibitions.reduce((prev, exhibition) => [...prev, ...JSON.parse(exhibition.artworkIds)], []);
         const artworks = await this.artworkRepository.findAllByExhibitionId(artworkIdAll);
 
@@ -98,15 +76,15 @@ export class ExhibitionService {
             user,
         );
 
-        const [exhibiton, artworks] = await Promise.all([
+        const [exhibition, artworks] = await Promise.all([
             this.exhibitionRepository.save(newExhibition),
             this.artworkRepository.findByArtworkIds(JSON.parse(holdExhibitionDTO.artworkIds), ['auction', 'artist']),
         ]);
 
-        return ExhibitionDetailDTO.from(exhibiton, artworks);
+        return ExhibitionDetailDTO.from(exhibition, artworks);
     }
 
-    async updateExhibition({ id, contents }: UpdateExhibitionDTO): Promise<UpdateResult> {
-        return await this.exhibitionRepository.update(id, { contents });
+    updateExhibition({ id, contents }: UpdateExhibitionDTO): Promise<UpdateResult> {
+        return this.exhibitionRepository.update(id, { contents });
     }
 }
