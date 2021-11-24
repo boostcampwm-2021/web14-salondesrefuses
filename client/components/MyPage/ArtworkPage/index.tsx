@@ -19,7 +19,7 @@ const ArtworkPage = () => {
         <Container>
             <Filter filtering={filtering} current={filter} filterHandler={onClickFilter} />
             {filter === '등록한 작품' ? (
-                <ErrorBoundary fallback={<Fallback />}>
+                <ErrorBoundary fallback={<div>....failed</div>}>
                     <CSuspense fallback={<Fallback />}>
                         <Tiles align="flex-start" />
                     </CSuspense>

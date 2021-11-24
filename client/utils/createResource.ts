@@ -17,7 +17,7 @@ const createResource = (promise: Promise<any>) => {
         read() {
             switch (status) {
                 case 'pending':
-                    throw suspender;
+                    throw { suspender, status };
                 case 'error':
                     throw result;
                 default:

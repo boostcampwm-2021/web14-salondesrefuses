@@ -14,6 +14,7 @@ function isPromise(i: any): i is Promise<any> {
 }
 
 class CSuspense extends Component<SuspenseProps, SuspenseState> {
+    private mounted = false;
     state: SuspenseState = {
         pending: false,
     };
@@ -22,23 +23,28 @@ class CSuspense extends Component<SuspenseProps, SuspenseState> {
         super(props);
     }
 
-    static getDerivedStateFromError(err: any) {
-        if (isPromise(err)) {
-            console.log(err);
-            return { pending: false };
-        }
-        return { pending: true };
+    public componentDidMount() {
+        this.mounted = true;
     }
 
-    public componentDidCatch(err: any) {
-        if (isPromise(err)) {
-            console.log(err);
-            this.setState({ pending: true });
-            err.then(() => {
-                this.setState({ pending: false });
-            }).catch((err) => {
-                this.setState({ error: err || new Error('Suspense Error') });
-            });
+    public componentWillUnmount() {
+        this.mounted = false;
+    }
+
+    public componentDidCatch(p: any) {
+        if (!this.mounted) return;
+        if (isPromise(p.suspender)) {
+            if (p.status === 'pending') {
+                p.suspender.then(
+                    () => {
+                        this.state.pending && this.setState({ pending: false });
+                    },
+                    () => {
+                        throw new Error('요청에 실패했습니다.');
+                    },
+                );
+                this.setState({ pending: true });
+            }
         }
     }
 

@@ -6,8 +6,9 @@ import ImageTile from '../ImageTile';
 import { Artwork } from 'interfaces';
 import createResource from '@utils/createResource';
 
+const resource = createResource(getAllArtworks());
+
 const Tiles = ({ align = 'center' }: { align: string }) => {
-    const resource = createResource(getAllArtworks());
     const artworks: Artwork[] = resource.read().data;
 
     return (
