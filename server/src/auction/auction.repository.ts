@@ -81,8 +81,8 @@ export class AuctionRepository extends Repository<Auction> {
 
     findAuctionInfo(auctionId: number): Promise<Auction> {
         return this.findOne({
-            relations: [ 'artwork' ],
-            where: { id: auctionId }
+            relations: ['artwork'],
+            where: { id: auctionId },
         });
     }
 
@@ -92,8 +92,8 @@ export class AuctionRepository extends Repository<Auction> {
             where: [
                 { endAt: Raw(endAt => `${endAt} <= CURRENT_DATE`) },
                 { artwork: { status: ArtworkStatus.InBid } },
-            ]
-        })
+            ],
+        });
     }
 
 }

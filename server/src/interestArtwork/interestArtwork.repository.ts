@@ -8,8 +8,8 @@ export class InterestArtworkRepository extends Repository<InterestArtwork> {
 
     createInterestArtwork(user: User, artwork: Artwork): Promise<InterestArtwork> {
         return this.save({
-            user,
-            artwork
+            userId: user.id,
+            artwork,
         });
     }
 
