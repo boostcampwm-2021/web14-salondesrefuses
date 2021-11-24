@@ -1,9 +1,9 @@
 import { Body, Controller, ParseIntPipe, Post, Res, UsePipes, ValidationPipe } from '@nestjs/common';
-import { AuthService } from '../service/auth.service';
+import { AuthService } from './auth.service';
 import { Response } from 'express';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { signInApiOperation, signOutApiBody, signOutApiOperation } from '../swagger';
-import { AuthCredentialDto } from '../dto/auth.credential.dto';
+import { signInApiOperation, signOutApiBody, signOutApiOperation } from './swagger';
+import { AuthCredentialDto } from './dto/auth.credential.dto';
 
 @Controller('/auth')
 @ApiTags('인증 컨트롤러')

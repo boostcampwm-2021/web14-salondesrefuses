@@ -4,7 +4,6 @@ import { Artwork } from './artwork.entity';
 import { ArtworkStatus } from './artwork.status.enum';
 import { CreateArtworkDTO } from './dto/artworkDTOs';
 import { InterestArtwork } from '../interestArtwork/interestArtwork.entity';
-import { ArtworkInBid } from '../artworkInBid/artworkInBid.entity';
 import { AuctionHistory } from 'src/auctionHistory/auctionHistory.entity';
 import { Auction } from 'src/auction/auction.entity';
 
@@ -32,14 +31,6 @@ export class ArtworkRepository extends Repository<Artwork> {
         return await this.findOne({ id });
     }
 
-    async getRandomAuctionArtworks(): Promise<Artwork[]> {
-        return await this.createQueryBuilder('artwork')
-            .where('artwork.status = :status', { status: ArtworkStatus.InBid })
-            .orderBy('RAND()')
-            .limit(3)
-            .getMany();
-    }
-
     async getUsersArtworks(userId: number): Promise<Artwork[]> {
         return await this.find({
             where: { artist: userId },
@@ -57,21 +48,6 @@ export class ArtworkRepository extends Repository<Artwork> {
                 },
                 'interest',
                 'interest.artwork_id = artwork.id',
-            )
-            .getMany();
-    }
-
-    async getBiddingArtworks(userId: number): Promise<Artwork[]> {
-        return await this.createQueryBuilder('artwork')
-            .innerJoin(
-                subQuery => {
-                    return subQuery
-                        .select('artwork_in_bid.artwork_id')
-                        .from(ArtworkInBid, 'artwork_in_bid')
-                        .where('artwork_in_bid.user_id = :userId', { userId });
-                },
-                'bidding',
-                'bidding.artwork_id = artwork.id',
             )
             .getMany();
     }

@@ -1,13 +1,13 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AuctionDetailDTO, AuctionListItemDTO } from '../dto/auctionDTOs';
-import AuctionService from '../service/auction.service';
+import { AuctionDetailDTO, AuctionListItemDTO } from './dto/auctionDTOs';
+import AuctionService from './auction.service';
 import {
     getAuctionDetailApiOperation,
     getAuctionsSortedByPopularApiOperation,
     getAuctionsSortedByNewsestApiOperation,
     getRandomAuctionsApiOperation,
-} from '../swagger';
+} from './swagger';
 
 @Controller('auctions')
 @ApiTags('옥션 컨트롤러')

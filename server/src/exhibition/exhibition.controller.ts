@@ -14,8 +14,8 @@ import {
     UsePipes,
     ValidationPipe,
 } from '@nestjs/common';
-import { ExhibitionService } from '../service/exhibition.service';
-import { ExhibitionDetailDTO, ExhibitionDTO, HoldExhibitionDTO, UpdateExhibitionDTO } from '../dto/exhibitionDTO';
+import { ExhibitionService } from './exhibition.service';
+import { ExhibitionDetailDTO, ExhibitionDTO, HoldExhibitionDTO, UpdateExhibitionDTO } from './dto/exhibitionDTO';
 import {
     ApiBody,
     ApiConsumes,
@@ -34,7 +34,7 @@ import {
     getSpecificExhibitionApiOperation,
     holdExhibitionApiBody,
     updateExhibitionApiOperation,
-} from '../swagger';
+} from './swagger';
 import { User } from 'src/user/user.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CustomAuthGuard } from 'src/auth/guard/CustomAuthGuard';

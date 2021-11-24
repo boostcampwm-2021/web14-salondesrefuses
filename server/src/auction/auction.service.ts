@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import moment = require('moment');
 import { ArtworkStatus } from 'src/artwork/artwork.status.enum';
 import { Raw } from 'typeorm';
-import { Auction } from '../auction.entity';
-import { AuctionRepository } from '../auction.repository';
-import { AuctionDetailDTO, AuctionListItemDTO } from '../dto/auctionDTOs';
+import { Auction } from './auction.entity';
+import { AuctionRepository } from './auction.repository';
+import { AuctionDetailDTO, AuctionListItemDTO } from './dto/auctionDTOs';
 
 @Injectable()
 export default class AuctionService {

@@ -1,5 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from '../user/user.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Exhibition {
@@ -32,7 +31,7 @@ export class Exhibition {
 
     @Column({
         type: 'text',
-        nullable: true,
+        default: '[]',
     })
     contents: string;
 

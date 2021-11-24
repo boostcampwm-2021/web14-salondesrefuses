@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserRepository } from '../user.repository';
-import { ArtworkRepository } from '../../artwork/artwork.repository';
-import { ImageService } from '../../image/service/image.service';
-import { Artwork } from '../../artwork/artwork.entity';
-import { User } from '../user.entity';
+import { UserRepository } from './user.repository';
+import { ArtworkRepository } from '../artwork/artwork.repository';
+import { ImageService } from '../image/image.service';
+import { Artwork } from '../artwork/artwork.entity';
+import { User } from './user.entity';
 import { UpdateResult } from 'typeorm';
-import { RequestUserDTO } from '../dto/userDTO';
-import { ExhibitionRepository } from '../../exhibition/exhibition.repository';
-import { Exhibition } from '../../exhibition/exhibition.entity';
+import { RequestUserDTO } from './dto/userDTO';
+import { ExhibitionRepository } from '../exhibition/exhibition.repository';
+import { Exhibition } from '../exhibition/exhibition.entity';
 
 @Injectable()
 export class UserService {

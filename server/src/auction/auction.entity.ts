@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Artwork } from '../artwork/artwork.entity';
-import { User } from '../user/user.entity';
 import { AuctionHistory } from '../auctionHistory/auctionHistory.entity';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class Auction {
@@ -20,7 +20,7 @@ export class Auction {
     })
     endAt: Date;
 
-    @ManyToOne(type => User, user => user.auctionList)
+    @ManyToOne(type => User)
     seller: User;
 
     @OneToOne(type => Artwork, artwork => artwork.auction)

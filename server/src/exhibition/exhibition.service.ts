@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ExhibitionRepository } from '../exhibition.repository';
-import { ExhibitionDetailDTO, ExhibitionDTO, HoldExhibitionDTO, UpdateExhibitionDTO } from '../dto/exhibitionDTO';
+import { ExhibitionRepository } from './exhibition.repository';
+import { ExhibitionDetailDTO, ExhibitionDTO, HoldExhibitionDTO, UpdateExhibitionDTO } from './dto/exhibitionDTO';
 import { User } from 'src/user/user.entity';
-import { ImageService } from 'src/image/service/image.service';
+import { ImageService } from 'src/image/image.service';
 import { ArtworkRepository } from 'src/artwork/artwork.repository';
 import { UpdateResult } from 'typeorm';
-import { ArtworkStatus } from '../../artwork/artwork.status.enum';
+import { ArtworkStatus } from '../artwork/artwork.status.enum';
 
 @Injectable()
 export class ExhibitionService {

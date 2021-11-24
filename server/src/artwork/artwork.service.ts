@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ImageService } from 'src/image/service/image.service';
-import { ArtworkRepository } from '../artwork.repository';
-import { CreateArtworkDTO, NewArtworkDTO } from '../dto/artworkDTOs';
+import { ImageService } from 'src/image/image.service';
+import { ArtworkRepository } from './artwork.repository';
+import { CreateArtworkDTO, NewArtworkDTO } from './dto/artworkDTOs';
 import { create, IPFSHTTPClient } from 'ipfs-http-client';
 import { AuctionRepository } from 'src/auction/auction.repository';
 import { User } from 'src/user/user.entity';
-import { ArtworkStatus } from '../artwork.status.enum';
-import { Artwork } from '../artwork.entity';
+import { ArtworkStatus } from './artwork.status.enum';
+import { Artwork } from './artwork.entity';
 import { UpdateResult } from 'typeorm';
 
 @Injectable()
