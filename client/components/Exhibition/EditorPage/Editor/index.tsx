@@ -10,9 +10,10 @@ import colorButtonIcon from '@assets/images/editor-color.png';
 import textButtonIcon from '@assets/images/editor-text.png';
 import forwardButtonIcon from '@assets/images/editor-forward.png';
 import backwardButtonIcon from '@assets/images/editor-backward.png';
-import increaseEditorIcon from '@assets/images/increase-editor.png';
-import decreaseEditorIcon from '@assets/images/decrease-editor.png';
-import fontStylingIcon from '@assets/images/font-styling.png';
+import increaseEditorIcon from '@assets/images/editor-increase.png';
+import decreaseEditorIcon from '@assets/images/editor-decrease.png';
+import deleteIcon from '@assets/images/editor-trash.png';
+import fontStylingIcon from '@assets/images/editor-font-styling.png';
 import { useEditorImageState } from '@store/editorImageState';
 import { EditorContainer, ToolBar, Button, EditArea } from './style';
 import { FontStyle, FontFamily } from 'interfaces';
@@ -168,6 +169,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
                 <Button onClick={() => onClickIncreaseEditorButton()} bg={increaseEditorIcon.src} />
                 <Button onClick={() => onClickDecreaseEditorButton()} bg={decreaseEditorIcon.src} />
                 <Button onClick={onFontStylerButton} bg={fontStylingIcon.src} />
+                <Button bg={deleteIcon.src} />
                 {showColorPicker && (
                     <ColorPicker
                         color={color}
