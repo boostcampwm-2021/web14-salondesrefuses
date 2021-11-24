@@ -1,5 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from '../user/user.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Exhibition {
@@ -39,8 +38,8 @@ export class Exhibition {
     @Column()
     size: string;
 
-    @ManyToOne(type => User, user => user.exhibitionList)
-    artist: User;
+    @Column()
+    artistName: string;
 
     @Column({ nullable: true, default: `[]` })
     categories: string;

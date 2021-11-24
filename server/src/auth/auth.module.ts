@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UserModule } from '../user/user.module';
-import { AuthController } from './controller/auth.controller';
-import { AuthService } from './service/auth.service';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { CustomAuthGuard } from './guard/CustomAuthGuard';
 import { TypeOrmModule } from '@nestjs/typeorm';

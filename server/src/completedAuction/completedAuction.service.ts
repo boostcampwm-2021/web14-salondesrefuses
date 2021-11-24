@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CompletedAuctionRepository } from './completedAuction.repository';
-import AuctionService from '../auction/service/auction.service';
+import AuctionService from '../auction/auction.service';
 import { AuctionHistoryService } from '../auctionHistory/auctionHistory.service';
 import { CompletedAuction } from './completedAuction.entity';
 

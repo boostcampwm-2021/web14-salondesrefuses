@@ -2,7 +2,6 @@ import {
     Body,
     Controller,
     Get,
-    HttpCode,
     Param,
     ParseIntPipe, Patch,
     Post,
@@ -14,9 +13,9 @@ import {
     ValidationPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateArtworkDTO, NewArtworkDTO, InterestRequestDTO } from '../dto/artworkDTOs';
-import { ArtworkService } from '../service/artwork.service';
-import { CustomAuthGuard } from '../../auth/guard/CustomAuthGuard';
+import { CreateArtworkDTO, NewArtworkDTO, InterestRequestDTO } from './dto/artwork.dto';
+import { ArtworkService } from './artwork.service';
+import { CustomAuthGuard } from '../auth/guard/CustomAuthGuard';
 import { User } from 'src/user/user.entity';
 import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
@@ -25,10 +24,10 @@ import {
     interestApiOperation,
     getArtworkApiOperation,
     updateNFTTokenApiOperation,
-} from '../swagger';
+} from './swagger';
 import { InterestArtwork } from 'src/interestArtwork/interestArtwork.entity';
 import { InterestArtworkService } from 'src/interestArtwork/interestArtwork.service';
-import { Artwork } from '../artwork.entity';
+import { Artwork } from './artwork.entity';
 import { UpdateResult } from 'typeorm';
 
 @Controller('artworks')
@@ -73,7 +72,7 @@ export class ArtworkController {
         @Body() interestRequestDTO: InterestRequestDTO,
         @Req() { user }: Express.Request & { user: User },
     ): Promise<boolean> {
-        return this.interestArtworkService.insertInterestArtwork(user, interestRequestDTO);
+        return this.interestArtworkService.createInterestArtwork(user, interestRequestDTO);
     }
 
     @Patch('/:artworkId/nft')

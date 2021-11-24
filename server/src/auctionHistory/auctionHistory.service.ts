@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { AuctionHistory } from './auctionHistory.entity';
 import { AuctionHistoryRepository } from './auctionHistory.repository';
 import { AuctionRepository } from '../auction/auction.repository';
@@ -8,11 +7,8 @@ import { UserRepository } from '../user/user.repository';
 @Injectable()
 export class AuctionHistoryService {
     constructor(
-        @InjectRepository(AuctionHistoryRepository)
         private readonly auctionHistoryRepository: AuctionHistoryRepository,
-        @InjectRepository(AuctionRepository)
         private readonly auctionRepository: AuctionRepository,
-        @InjectRepository(UserRepository)
         private readonly userRepository: UserRepository
     ) {}
 
@@ -30,7 +26,7 @@ export class AuctionHistoryService {
 
     async deleteAuctionHistories(id: number): Promise<AuctionHistory> {
         const auction = await this.auctionRepository.findOne({ id });
-        const highestAuctionHistory = await this.auctionHistoryRepository.getHighestAuctionHistory(id);
+        const highestAuctionHistory = await this.auctionHistoryRepository.findHighestAuctionHistory(id);
 
         await this.auctionHistoryRepository.delete({ auction });
         return highestAuctionHistory;
