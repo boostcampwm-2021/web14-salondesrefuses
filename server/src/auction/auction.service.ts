@@ -6,7 +6,10 @@ import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity
 
 @Injectable()
 export default class AuctionService {
-    constructor(private readonly auctionRepository: AuctionRepository) {
+    constructor(private readonly auctionRepository: AuctionRepository) {}
+
+    async getAuctionIds(): Promise<number[]> {
+        return (await this.auctionRepository.find()).map(auction => auction.id);
     }
 
     async getRandomAuctions(): Promise<AuctionListItemDTO[]> {
@@ -50,7 +53,7 @@ export default class AuctionService {
 
     async updateAuction(auctionId: number, updateColumns: QueryDeepPartialEntity<Auction>) {
         const result = await this.auctionRepository.update({ id: auctionId }, updateColumns);
-        if (result.affected){
+        if (result.affected) {
             throw new NotFoundException(`Can't find auction with id: ${auctionId}`);
         }
     }

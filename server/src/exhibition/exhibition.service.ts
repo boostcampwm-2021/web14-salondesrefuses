@@ -14,12 +14,15 @@ export class ExhibitionService {
         private readonly exhibitionRepository: ExhibitionRepository,
         private readonly artworkRepository: ArtworkRepository,
         private readonly imageService: ImageService,
-    ) {
+    ) {}
+
+    async getExhibitionIds(): Promise<number[]> {
+        return (await this.exhibitionRepository.find()).map(exhibition => exhibition.id);
     }
 
     async getSpecificExhibition(id: number): Promise<ExhibitionDetailDTO> {
         const exhibition = await this.exhibitionRepository.findExhibition(id);
-        if(!exhibition) {
+        if (!exhibition) {
             throw new NotFoundException(`Can't find exhibition with id: ${id}`);
         }
 
@@ -51,11 +54,14 @@ export class ExhibitionService {
     }
 
     private async convertAllToExhibitionDTOWithInBidArtwork(exhibitions: Exhibition[]): Promise<ExhibitionDto[]> {
-        const artworkIdAll = exhibitions.reduce((prev, exhibition) => [...prev, ...JSON.parse(exhibition.artworkIds)], []);
+        const artworkIdAll = exhibitions.reduce(
+            (prev, exhibition) => [...prev, ...JSON.parse(exhibition.artworkIds)],
+            [],
+        );
         const artworks = await this.artworkRepository.findAllByArtworkIds(artworkIdAll);
 
         return exhibitions.map(exhibition => {
-            const isSale = JSON.parse(exhibition.artworkIds).some((artworkId) => {
+            const isSale = JSON.parse(exhibition.artworkIds).some(artworkId => {
                 const found = artworks.find(artwork => artwork.id === Number(artworkId));
                 return found.status === ArtworkStatus.InBid;
             });
@@ -80,21 +86,27 @@ export class ExhibitionService {
 
             const [exhibition, artworks] = await Promise.all([
                 this.exhibitionRepository.save(newExhibition),
-                this.artworkRepository.findAllByArtworkIds(JSON.parse(holdExhibitionDTO.artworkIds), ['auction', 'artist']),
+                this.artworkRepository.findAllByArtworkIds(JSON.parse(holdExhibitionDTO.artworkIds), [
+                    'auction',
+                    'artist',
+                ]),
             ]);
 
             return ExhibitionDetailDTO.from(exhibition, artworks);
-        } catch(error) {
-            throw new HttpException({
-                status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error: 'create exhibition failed'
-            }, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (error) {
+            throw new HttpException(
+                {
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    error: 'create exhibition failed',
+                },
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
         }
     }
 
     async updateExhibition({ id, contents }: UpdateExhibitionDTO): Promise<UpdateResult> {
         const result = await this.exhibitionRepository.update(id, { contents });
-        if(!result.affected) {
+        if (!result.affected) {
             throw new NotFoundException(`Can't find exhibition with id: ${id}`);
         }
 

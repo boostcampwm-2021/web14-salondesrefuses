@@ -7,12 +7,19 @@ import {
     getAuctionsSortedByPopularApiOperation,
     getAuctionsSortedByNewsestApiOperation,
     getRandomAuctionsApiOperation,
+    getAuctionIdsApiOperation,
 } from './swagger';
 
 @Controller('auctions')
 @ApiTags('옥션 컨트롤러')
 export default class AuctionController {
     constructor(private readonly auctionService: AuctionService) {}
+
+    @Get('')
+    @ApiOperation(getAuctionIdsApiOperation)
+    getExhibitionsIds(): Promise<number[]> {
+        return this.auctionService.getAuctionIds();
+    }
 
     @Get('/random')
     @ApiOperation(getRandomAuctionsApiOperation)
@@ -26,8 +33,8 @@ export default class AuctionController {
     @ApiQuery({ name: 'page', type: Number })
     @ApiResponse({ type: AuctionListItemDTO })
     getAuctionsOrderByNewest(@Query('page', ParseIntPipe) page: number): Promise<AuctionListItemDTO[]> {
-        if(page < 0) {
-            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+        if (page < 0) {
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
         }
         return this.auctionService.getAuctionsSortedByNewest(page);
     }
@@ -37,8 +44,8 @@ export default class AuctionController {
     @ApiQuery({ name: 'page', type: Number })
     @ApiResponse({ type: AuctionListItemDTO })
     getAuctionsOrderByPopular(@Query('page', ParseIntPipe) page: number): Promise<AuctionListItemDTO[]> {
-        if(page < 0) {
-            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+        if (page < 0) {
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
         }
         return this.auctionService.getAuctionsSortedByPopular(page);
     }

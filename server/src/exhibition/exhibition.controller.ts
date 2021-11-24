@@ -1,7 +1,9 @@
 import {
     Body,
     Controller,
-    Get, HttpException, HttpStatus,
+    Get,
+    HttpException,
+    HttpStatus,
     Param,
     ParseIntPipe,
     Patch,
@@ -29,6 +31,7 @@ import {
 import {
     getExhibitionsSortedByDeadlineApiOperation,
     getExhibitionsSortedByInterestApiOperation,
+    getExhibtionIdsApiOperation,
     getNewestExhibitionApiOperation,
     getRandomExhibitionsAPiOperation,
     getSpecificExhibitionApiOperation,
@@ -45,6 +48,12 @@ import { UpdateResult } from 'typeorm';
 export class ExhibitionController {
     constructor(private readonly exhibitionService: ExhibitionService) {}
 
+    @Get('')
+    @ApiOperation(getExhibtionIdsApiOperation)
+    getExhibitionsIds(): Promise<number[]> {
+        return this.exhibitionService.getExhibitionIds();
+    }
+
     @Get('/random')
     @ApiOperation(getRandomExhibitionsAPiOperation)
     @ApiResponse({ type: ExhibitionDto })
@@ -58,8 +67,8 @@ export class ExhibitionController {
     @ApiResponse({ type: ExhibitionDto })
     @ApiQuery({ name: 'page', type: Number })
     getNewestExhibitions(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDto[]> {
-        if(page < 0) {
-            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+        if (page < 0) {
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
         }
         return this.exhibitionService.getNewestExhibitions(page);
     }
@@ -69,8 +78,8 @@ export class ExhibitionController {
     @ApiResponse({ type: ExhibitionDto })
     @ApiQuery({ name: 'page', type: Number })
     getExhibitionsSortedByDeadline(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDto[]> {
-        if(page < 0) {
-            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+        if (page < 0) {
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
         }
         return this.exhibitionService.getExhibitionsSortedByDeadline(page);
     }
@@ -80,8 +89,8 @@ export class ExhibitionController {
     @ApiResponse({ type: ExhibitionDto })
     @ApiQuery({ name: 'page', type: Number })
     getExhibitionsSortedByInterest(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDto[]> {
-        if(page < 0) {
-            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+        if (page < 0) {
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
         }
         return this.exhibitionService.getExhibitionsSortedByInterest(page);
     }
