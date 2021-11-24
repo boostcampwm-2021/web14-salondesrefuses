@@ -46,6 +46,17 @@ export interface Auction {
     auctionHistories: string[];
 }
 
+export interface ExhibitionArtwork {
+    artist: string;
+    auctionId: number;
+    croppedImage: string;
+    description: string;
+    id: number;
+    originalImage: string;
+    title: string;
+    type: string;
+}
+
 export interface Exhibition {
     id: number;
     title: string;
@@ -58,6 +69,7 @@ export interface Exhibition {
     thumbnail: string;
     categories: string;
     size: string;
+    artworks: ExhibitionArtwork[];
 }
 
 export type FontFamily = 'Montserrat' | 'Noto Sans KR';

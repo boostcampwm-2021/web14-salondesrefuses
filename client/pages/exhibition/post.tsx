@@ -11,8 +11,7 @@ import useInputExhibition from '@hooks/useInputExhibition';
 
 const ExhibitionPostPage = () => {
     const [currentPage, setCurrentPage] = useState<'FORM' | 'EDITOR'>('FORM');
-    const { formInput, onClickHold } =
-        useInputExhibition();
+    const { formInput, onClickHold } = useInputExhibition();
 
     const onClickNextButton = () => {
         setCurrentPage('EDITOR');
@@ -32,20 +31,16 @@ const ExhibitionPostPage = () => {
                     <>
                         <Title>
                             <h1>Hold Exhibition</h1>
-                            <Description>
-                                나만의 전시회를 만들어 보세요!
-                            </Description>
+                            <Description>나만의 전시회를 만들어 보세요!</Description>
                         </Title>
                         <Container>
                             <Form formInput={formInput} />
                             <ArtworkSelector />
-                            <NextButton onClick={onClickNextButton}>
-                                Next
-                            </NextButton>
+                            <NextButton onClick={onClickNextButton}>Next</NextButton>
                         </Container>
                     </>
                 ) : (
-                    <Editor backButtonHandler={handleBackButton} holdExhibition={onClickHold}/>
+                    <Editor backButtonHandler={handleBackButton} holdExhibition={onClickHold} />
                 )}
             </Layout>
         </div>

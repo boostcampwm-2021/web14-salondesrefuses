@@ -8,12 +8,13 @@ import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/type
 
 interface EditorProp {
     backButtonHandler: () => void;
-    holdExhibition: (content: string, size: string) => void;
+    holdExhibition: (content: string, size: string, artworkIds: string) => void;
 }
 interface ExhibitionElement {
     tagName: string;
     innerText: string;
-    imageSrc: string | null;
+    imageSrc?: string | null;
+    artworkId?: string;
     style: {
         [key: string]: string;
     };
@@ -31,6 +32,7 @@ const index = ({ backButtonHandler, holdExhibition }: EditorProp) => {
         const exhibitionElements: Array<ExhibitionElement> = [];
         if (!editorRef.current) return;
         const editorSize = window.getComputedStyle(editorRef.current!).height;
+        const artworkIds: Array<string | undefined> = [];
 
         [...editorRef.current.childNodes].forEach((el: ChildNode) => {
             const element = el as HTMLElement;
@@ -42,11 +44,14 @@ const index = ({ backButtonHandler, holdExhibition }: EditorProp) => {
             if (element.classList.contains('IMAGE')) {
                 imageSrc = backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
             }
+            const artworkId = element.dataset.artwork;
+            artworkId && artworkIds.push(artworkId);
 
             exhibitionElements.push({
                 tagName,
                 innerText,
                 imageSrc,
+                artworkId,
                 style: {
                     top,
                     left,
@@ -60,7 +65,7 @@ const index = ({ backButtonHandler, holdExhibition }: EditorProp) => {
             });
         });
 
-        holdExhibition(JSON.stringify(exhibitionElements), editorSize);
+        holdExhibition(JSON.stringify(exhibitionElements), editorSize, JSON.stringify(artworkIds));
     };
 
     return (
@@ -85,7 +90,6 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
-
     width: 1180px;
     margin: 50px 0;
     user-select: none;

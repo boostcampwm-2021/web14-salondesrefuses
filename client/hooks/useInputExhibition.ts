@@ -15,7 +15,7 @@ const useInputExhibition = () => {
     const [thumbnail, setThumbnail] = useState<File | null>(null);
     const [toast, setToast] = useToastState();
 
-    const onClickHold = async (contents: string, editorSize: string) => {
+    const onClickHold = async (contents: string, editorSize: string, artworkIds: string) => {
         const formData = new FormData();
         formData.append('title', titleInput);
         formData.append('collaborator', collaborator);
@@ -26,7 +26,7 @@ const useInputExhibition = () => {
         formData.append('contents', contents);
         formData.append('size', editorSize);
         formData.append('thumbnail', thumbnail!);
-
+        formData.append('artworkIds', artworkIds);
         const result = await holdExhibition(formData);
         if (onResponseSuccess(result.status)) {
             setToast({
