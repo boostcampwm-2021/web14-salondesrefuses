@@ -98,6 +98,17 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
             }
         });
     };
+    const deleteElement = () => {
+        if (!currentElements) return;
+        currentElements.forEach((element) => {
+            if (!element) return;
+            if (element.classList.contains('IMAGE')) {
+                const idx = editorImageState.findIndex((img) => img.id === Number(element.dataset.artwork));
+                setEditorImageState([...editorImageState.slice(0, idx), ...editorImageState.slice(idx + 1)]);
+            }
+            element.remove();
+        });
+    };
     const onFontStylerButton = () => {
         mirrorCurrentFontStyle();
         setShowFontStyler((prev) => !prev);
@@ -169,7 +180,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
                 <Button onClick={() => onClickIncreaseEditorButton()} bg={increaseEditorIcon.src} />
                 <Button onClick={() => onClickDecreaseEditorButton()} bg={decreaseEditorIcon.src} />
                 <Button onClick={onFontStylerButton} bg={fontStylingIcon.src} />
-                <Button bg={deleteIcon.src} />
+                <Button onClick={deleteElement} bg={deleteIcon.src} />
                 {showColorPicker && (
                     <ColorPicker
                         color={color}
