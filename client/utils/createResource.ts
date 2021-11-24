@@ -1,10 +1,6 @@
 const createResource = (promise: Promise<any>) => {
-    return wrapPromise(promise);
-};
-
-const wrapPromise = <T>(promise: Promise<T>) => {
     let status = 'pending';
-    let result: T | null;
+    let result: any;
 
     let suspender = promise.then(
         (response) => {

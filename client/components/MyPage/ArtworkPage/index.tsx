@@ -6,6 +6,7 @@ import Filter from '../Filter';
 import BoughtArtworkPage from './BoughtArtworkPage';
 import Fallback from '@components/common/Fallback';
 import CSuspense from '@components/common/Suspense';
+import ErrorBoundary from '@components/common/ErrorBoundary';
 
 const ArtworkPage = () => {
     const [filter, setFilter] = useState<string>('등록한 작품');
@@ -18,9 +19,11 @@ const ArtworkPage = () => {
         <Container>
             <Filter filtering={filtering} current={filter} filterHandler={onClickFilter} />
             {filter === '등록한 작품' ? (
-                <Suspense fallback={<Fallback />}>
-                    <Tiles align="flex-start" />
-                </Suspense>
+                <ErrorBoundary fallback={<Fallback />}>
+                    <CSuspense fallback={<Fallback />}>
+                        <Tiles align="flex-start" />
+                    </CSuspense>
+                </ErrorBoundary>
             ) : (
                 <BoughtArtworkPage />
             )}

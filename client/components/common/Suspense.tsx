@@ -14,32 +14,31 @@ function isPromise(i: any): i is Promise<any> {
 }
 
 class CSuspense extends Component<SuspenseProps, SuspenseState> {
-    private mounted = false;
-
     state: SuspenseState = {
         pending: false,
     };
 
-    public componentDidMount() {
-        this.mounted = true;
+    constructor(props: SuspenseProps) {
+        super(props);
     }
 
-    public componentWillUnmount() {
-        this.mounted = false;
+    static getDerivedStateFromError(err: any) {
+        if (isPromise(err)) {
+            console.log(err);
+            return { pending: false };
+        }
+        return { pending: true };
     }
 
     public componentDidCatch(err: any) {
-        console.log('componentDidCatch', isPromise(err));
-        if (!this.mounted) return;
         if (isPromise(err)) {
+            console.log(err);
             this.setState({ pending: true });
             err.then(() => {
                 this.setState({ pending: false });
             }).catch((err) => {
                 this.setState({ error: err || new Error('Suspense Error') });
             });
-        } else {
-            throw err;
         }
     }
 
@@ -50,8 +49,11 @@ class CSuspense extends Component<SuspenseProps, SuspenseState> {
     }
 
     public render() {
-        console.log(this.state.pending);
-        return this.state.pending ? this.props.fallback : this.props.children;
+        console.log('pending : ', this.state.pending);
+        if (this.state.pending) {
+            return this.props.fallback;
+        }
+        return this.props.children;
     }
 }
 
