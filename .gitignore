@@ -8,3 +8,5 @@ output.sql
 .env
 
 nft/build
+
+**/ethereum

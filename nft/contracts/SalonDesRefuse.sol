@@ -11,7 +11,6 @@ contract SalonDesRefuse is ERC721URIStorage, IERC721Enumerable, Ownable {
     Counters.Counter private _tokenIds;
     address public contractOwner;
 
-    mapping(uint => uint) tokenPrice;
     mapping(uint => Bid) lastBid;
 
     struct Bid {
