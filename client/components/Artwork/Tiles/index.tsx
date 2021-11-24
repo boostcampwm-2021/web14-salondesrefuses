@@ -4,15 +4,12 @@ import styled from '@emotion/styled';
 import { getAllArtworks } from 'service/networking';
 import ImageTile from '../ImageTile';
 import { Artwork } from 'interfaces';
+import createResource from '@utils/createResource';
+
+const resource = createResource(getAllArtworks());
 
 const Tiles = ({ align = 'center' }: { align: string }) => {
-    const [artworks, setArtworks] = useState<Artwork[]>([]);
-
-    useEffect(() => {
-        getAllArtworks().then((result) => {
-            setArtworks(result.data);
-        });
-    }, []);
+    const artworks: Artwork[] = resource.read().data;
 
     return (
         <Container align={align}>

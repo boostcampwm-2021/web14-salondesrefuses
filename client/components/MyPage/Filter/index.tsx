@@ -16,9 +16,9 @@ const Filter = ({ filtering, current, filterHandler }: IFilter) => {
 
     return (
         <Container>
-            {filtering.map((item) => {
+            {filtering.map((item, idx) => {
                 return (
-                    <Item onClick={onClickItem(item)} active={current === item}>
+                    <Item onClick={onClickItem(item)} active={current === item} key={idx}>
                         {item}
                     </Item>
                 );
