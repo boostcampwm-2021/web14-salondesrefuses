@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Auction } from './auction.entity';
 import { AuctionRepository } from './auction.repository';
 import { AuctionDetailDTO, AuctionListItemDTO } from './dto/auction.dto';
@@ -24,19 +24,33 @@ export default class AuctionService {
 
     async getAuctionDetail(auctionId: number): Promise<AuctionDetailDTO> {
         const auction = await this.auctionRepository.findByAuctionWithAuctionHistoryAndArtwork(auctionId);
+        if(!auction) {
+            throw new NotFoundException(`Can't find auction with id: ${auctionId}`);
+        }
         return AuctionDetailDTO.from(auction);
     }
 
-    closeAuction(auctionId: number): Promise<Auction> {
-        return this.auctionRepository.deleteAuction(auctionId);
+    async closeAuction(auctionId: number): Promise<Auction> {
+        const auction = await this.auctionRepository.deleteAuction(auctionId);
+        if(!auction) {
+            throw new NotFoundException(`Can't find auction with id: ${auctionId}`);
+        }
+        return auction;
     }
 
-    getAuctionInfo(auctionId: number): Promise<Auction> {
-        return this.auctionRepository.findAuctionInfo(auctionId);
+    async getAuctionInfo(auctionId: number): Promise<Auction> {
+        const auction = await this.auctionRepository.findAuctionInfo(auctionId);
+        if(!auction) {
+            throw new NotFoundException(`Can't find auction with id: ${auctionId}`);
+        }
+        return auction;
     }
 
     async updateAuctionEndAt(auctionId: number, newEndAt: Date): Promise<void> {
         const auction = await this.auctionRepository.findOne(auctionId);
+        if(!auction) {
+            throw new NotFoundException(`Can't find auction with id: ${auctionId}`);
+        }
         auction.endAt = newEndAt;
         this.auctionRepository.save(auction);
     }

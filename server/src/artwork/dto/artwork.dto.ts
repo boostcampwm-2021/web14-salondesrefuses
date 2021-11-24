@@ -3,9 +3,9 @@ import { Artwork } from '../artwork.entity';
 import { IsNotEmpty, Matches } from 'class-validator';
 
 export class CreateArtworkDTO {
+    @IsNotEmpty()
     title: string;
 
-    @IsNotEmpty()
     type: string;
 
     year: string;

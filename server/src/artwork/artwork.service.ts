@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { ImageService } from 'src/image/image.service';
 import { ArtworkRepository } from './artwork.repository';
 import { CreateArtworkDTO, NewArtworkDTO } from './dto/artwork.dto';
@@ -57,12 +57,20 @@ export class ArtworkService {
 
             return NewArtworkDTO.from(newArtwork);
         } catch (error) {
-            console.log(error);
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: 'create artwork failed'
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    getArtwork(artworkId: number): Promise<Artwork> {
-        return this.artworkRepository.findArtwork(artworkId);
+    async getArtwork(artworkId: number): Promise<Artwork> {
+        const artwork = await this.artworkRepository.findArtwork(artworkId);
+
+        if(!artwork) {
+            throw new NotFoundException(`Can't find artwork with id: ${artworkId}`);
+        }
+        return artwork;
     }
 
     bulkUpdateArtworkState(artworkIds: number[]): void {

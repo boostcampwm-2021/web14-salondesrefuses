@@ -31,7 +31,7 @@ export class Exhibition {
 
     @Column({
         type: 'text',
-        default: '[]',
+        nullable: true,
     })
     contents: string;
 

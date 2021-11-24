@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { ArtworkRepository } from '../artwork/artwork.repository';
 import { ImageService } from '../image/image.service';
@@ -28,12 +28,21 @@ export class UserService {
         return user;
     }
 
-    updateUserToken(id: number, refreshToken: string): Promise<UpdateResult> {
-        return this.userRepository.update(id, { refreshToken });
+    async updateUserToken(id: number, refreshToken: string): Promise<UpdateResult> {
+        const result = await this.userRepository.update(id, { refreshToken });
+        if(!result.affected) {
+            throw new NotFoundException(`Can't find user with id : ${id}`);
+        }
+
+        return result;
     }
 
-    getUserProfile({ id }: User): Promise<User> {
-        return this.userRepository.findOne({ id });
+    async getUserProfile({ id }: User): Promise<User> {
+        const user = await this.userRepository.findOne({ id });
+        if(!user) {
+            throw new NotFoundException(`Can't find user with id : ${id}`);
+        }
+        return user;
     }
 
     async updateUserProfile(
@@ -45,9 +54,19 @@ export class UserService {
             return this.userRepository.update({ id }, { ...requestUserDTO });
         }
         const image = await this.imageService.fileUpload(file);
+        if(!image) {
+            throw new InternalServerErrorException('Failed to upload image');
+        }
+
         const avatar = image.Location;
 
-        return this.userRepository.update({ id }, { ...requestUserDTO, avatar });
+        const result = await this.userRepository.update({ id }, { ...requestUserDTO, avatar });
+        if(!result.affected) {
+            throw new NotFoundException(`Can't find user with id : ${id}`);
+        }
+
+        return result;
+
     }
 
     getUsersArtworks({ id }: User): Promise<Artwork[]> {

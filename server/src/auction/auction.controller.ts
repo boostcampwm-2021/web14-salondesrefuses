@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuctionDetailDTO, AuctionListItemDTO } from './dto/auction.dto';
 import AuctionService from './auction.service';
@@ -26,6 +26,9 @@ export default class AuctionController {
     @ApiQuery({ name: 'page', type: Number })
     @ApiResponse({ type: AuctionListItemDTO })
     getAuctionsOrderByNewest(@Query('page', ParseIntPipe) page: number): Promise<AuctionListItemDTO[]> {
+        if(page < 0) {
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+        }
         return this.auctionService.getAuctionsSortedByNewest(page);
     }
 
@@ -34,6 +37,9 @@ export default class AuctionController {
     @ApiQuery({ name: 'page', type: Number })
     @ApiResponse({ type: AuctionListItemDTO })
     getAuctionsOrderByPopular(@Query('page', ParseIntPipe) page: number): Promise<AuctionListItemDTO[]> {
+        if(page < 0) {
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+        }
         return this.auctionService.getAuctionsSortedByPopular(page);
     }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { ExhibitionRepository } from './exhibition.repository';
 import { ExhibitionDetailDTO, ExhibitionDto, HoldExhibitionDTO, UpdateExhibitionDTO } from './dto/exhibition.dto';
 import { User } from 'src/user/user.entity';
@@ -18,7 +18,11 @@ export class ExhibitionService {
     }
 
     async getSpecificExhibition(id: number): Promise<ExhibitionDetailDTO> {
-        const exhibition = await this.exhibitionRepository.getSpecificExhibition(id);
+        const exhibition = await this.exhibitionRepository.findExhibition(id);
+        if(!exhibition) {
+            throw new NotFoundException(`Can't find exhibition with id: ${id}`);
+        }
+
         const artworks = await this.artworkRepository.findByArtworkIds(JSON.parse(exhibition.artworkIds), [
             'auction',
             'artist',
@@ -64,24 +68,36 @@ export class ExhibitionService {
         holdExhibitionDTO: HoldExhibitionDTO,
         user: User,
     ): Promise<ExhibitionDetailDTO> {
-        const croppedThumbnail = await this.imageService.cropImage(image);
-        const thumbnailPath = await this.imageService.fileUpload({ ...image, buffer: croppedThumbnail });
+        try {
+            const croppedThumbnail = await this.imageService.cropImage(image);
+            const thumbnailPath = await this.imageService.fileUpload({ ...image, buffer: croppedThumbnail });
 
-        const newExhibition = this.exhibitionRepository.createExhibition(
-            thumbnailPath.Location,
-            holdExhibitionDTO,
-            user,
-        );
+            const newExhibition = this.exhibitionRepository.createExhibition(
+                thumbnailPath.Location,
+                holdExhibitionDTO,
+                user,
+            );
 
-        const [exhibition, artworks] = await Promise.all([
-            this.exhibitionRepository.save(newExhibition),
-            this.artworkRepository.findByArtworkIds(JSON.parse(holdExhibitionDTO.artworkIds), ['auction', 'artist']),
-        ]);
+            const [exhibition, artworks] = await Promise.all([
+                this.exhibitionRepository.save(newExhibition),
+                this.artworkRepository.findByArtworkIds(JSON.parse(holdExhibitionDTO.artworkIds), ['auction', 'artist']),
+            ]);
 
-        return ExhibitionDetailDTO.from(exhibition, artworks);
+            return ExhibitionDetailDTO.from(exhibition, artworks);
+        } catch(error) {
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: 'create exhibition failed'
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    updateExhibition({ id, contents }: UpdateExhibitionDTO): Promise<UpdateResult> {
-        return this.exhibitionRepository.update(id, { contents });
+    async updateExhibition({ id, contents }: UpdateExhibitionDTO): Promise<UpdateResult> {
+        const result = await this.exhibitionRepository.update(id, { contents });
+        if(!result.affected) {
+            throw new NotFoundException(`Can't find exhibition with id: ${id}`);
+        }
+
+        return result;
     }
 }

@@ -22,7 +22,10 @@ export class InterestArtworkService {
 
             return true;
         } catch(err) {
-            throw new HttpException("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: 'Failed to like the artwork'
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

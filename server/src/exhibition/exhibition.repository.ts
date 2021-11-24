@@ -4,11 +4,16 @@ import { Exhibition } from './exhibition.entity';
 import { Artwork } from '../artwork/artwork.entity';
 import { InterestArtwork } from '../interestArtwork/interestArtwork.entity';
 import { HoldExhibitionDTO } from './dto/exhibition.dto';
+import { NotFoundException } from '@nestjs/common';
 
 @EntityRepository(Exhibition)
 export class ExhibitionRepository extends Repository<Exhibition> {
-    getSpecificExhibition(id: number): Promise<Exhibition> {
-        return this.findOne({ id });
+    async findExhibition(id: number): Promise<Exhibition> {
+        const exhibition = await this.findOne(id);
+        if(!exhibition) {
+            throw new NotFoundException();
+        }
+        return exhibition;
     }
 
     findRandomExhibitions(): Promise<Exhibition[]> {
