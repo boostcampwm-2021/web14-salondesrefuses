@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@openzeppelin/contracts": "^4.3.3",
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "truffle-hdwallet-provider": "^1.0.17"
   }
 }
