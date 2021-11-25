@@ -28,8 +28,12 @@ export class ImageService {
             Key: `objects/${Date.now()}-${image.originalname}`,
             Body: image.buffer,
         };
+        const options = {
+            partSize: 5 * 1024 * 1024,
+        };
+
         return new Promise((resolve, reject) => {
-            this.s3.upload(params, (err, data) => {
+            this.s3.upload(params, options, (err, data) => {
                 if (err) {
                     Logger.error(err);
                     reject(err.message);
