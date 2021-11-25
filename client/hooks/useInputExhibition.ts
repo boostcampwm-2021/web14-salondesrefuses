@@ -25,7 +25,6 @@ const initialInput = {
 
 const useInputExhibition = () => {
     const router = useRouter();
-
     const [exhibitionInput, setExhibitionInput] = useState<IExhibitionInput>(initialInput);
     const { title, collaborator, theme, description, startAt, endAt, thumbnail } = exhibitionInput;
     const showToast = useToast({

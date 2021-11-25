@@ -12,7 +12,7 @@ const ExhbitionDetail = ({ exhibition }: { exhibition: Exhibition }) => {
     const [modalArtwork, setModalArtwork] = useState<ExhibitionArtwork | null>(null);
     const [showModalArtwork, setShowModalArtwork] = useState(false);
     const session = useSessionState();
-    const isExhibitor = session.contents.id === exhibition.artistId;
+    const isExhibitor = session.contents?.id === exhibition.artistId;
 
     const setModalNum = (n: string | undefined) => {
         if (!n) return;
@@ -26,6 +26,7 @@ const ExhbitionDetail = ({ exhibition }: { exhibition: Exhibition }) => {
         setShowModalArtwork(false);
         setModalArtwork(null);
     };
+
     return (
         <ExhibitionContainer>
             {showModalArtwork && modalArtwork && <ExhibitionModal artwork={modalArtwork} closeModal={closeModal} />}
@@ -37,7 +38,7 @@ const ExhbitionDetail = ({ exhibition }: { exhibition: Exhibition }) => {
                             <Artist>{exhibition.collaborator}</Artist>
                         </div>
                         {isExhibitor && (
-                            <Link href="/exhibition/edit">
+                            <Link href={{ pathname: '/exhibition/edit', query: { exhibitionId: exhibition.id } }}>
                                 <BlackButton>Edit</BlackButton>
                             </Link>
                         )}

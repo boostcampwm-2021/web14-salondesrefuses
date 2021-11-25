@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 import Form from '@components/Exhibition/FormPage';
 import ArtworkSelector from '@components/Exhibition/ArtworkSelectorWrapper';

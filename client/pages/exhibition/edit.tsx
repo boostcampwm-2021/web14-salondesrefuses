@@ -1,0 +1,79 @@
+import React, { useEffect, useState } from 'react';
+import styled from '@emotion/styled';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+
+import Form from '@components/Exhibition/FormPage';
+import ArtworkSelector from '@components/Exhibition/ArtworkSelectorWrapper';
+import Layout from '@components/common/Layout';
+import { Description, NextButton, Title } from '@components/Exhibition/style';
+import Editor from '@components/Exhibition/EditorPage';
+import useInputExhibition from '@hooks/useInputExhibition';
+import { getExhibition } from '../../service/networking';
+import { Exhibition } from 'interfaces';
+
+const ExhibitionEditPage = () => {
+    const [currentPage, setCurrentPage] = useState<'FORM' | 'EDITOR'>('FORM');
+    const params = useRouter().query.exhibitionId;
+    const { formInput, onClickHold } = useInputExhibition();
+    const [exhibitionData, setExhibitionData] = useState<Exhibition | null>(null);
+    const onClickNextButton = () => {
+        setCurrentPage('EDITOR');
+    };
+
+    const handleBackButton = () => {
+        setCurrentPage('FORM');
+    };
+    useEffect(() => {
+        getExhibition(params as string).then((res) => {
+            return setExhibitionData(res.data);
+        });
+    }, []);
+    const getExhibitionFormData = () => {
+        if (!exhibitionData) return;
+        return {
+            title: exhibitionData.title,
+            startAt: exhibitionData.startAt,
+            endAt: exhibitionData.endAt,
+            theme: exhibitionData.theme,
+            collaborator: exhibitionData.collaborator,
+            description: exhibitionData.description,
+            thumbnail: exhibitionData.thumbnail,
+        };
+    };
+
+    return (
+        <div>
+            <Head>
+                <title>벽전 - 전시회 수정</title>
+            </Head>
+            <Layout>
+                {currentPage === 'FORM' && exhibitionData ? (
+                    <>
+                        <Title>
+                            <h1>Edit Exhibition</h1>
+                            <Description>전시 수정 페이지</Description>
+                        </Title>
+                        <Container>
+                            <Form formInput={formInput} oldInputData={getExhibitionFormData()} />
+                            <ArtworkSelector />
+                            <NextButton onClick={onClickNextButton}>Next</NextButton>
+                        </Container>
+                    </>
+                ) : (
+                    <Editor backButtonHandler={handleBackButton} holdExhibition={onClickHold} />
+                )}
+            </Layout>
+        </div>
+    );
+};
+
+const Container = styled.div`
+    display: flex;
+    position: relative;
+
+    width: 1180px;
+    margin: 50px auto;
+`;
+
+export default ExhibitionEditPage;

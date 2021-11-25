@@ -7,20 +7,26 @@ import Preview from './Preview/Preview';
 import { HoldExhibition } from '../types';
 import addIcon from '@public/icons/add.png';
 
+interface OldInputData {
+    title: string;
+    startAt: Date;
+    endAt: Date;
+    theme: string;
+    collaborator: string;
+    description: string;
+    thumbnail: string | null;
+}
 interface FormProps {
     formInput: HoldExhibition;
+    oldInputData?: OldInputData | undefined;
 }
 
-const index = ({ formInput }: FormProps) => {
+const index = ({ formInput, oldInputData }: FormProps) => {
     const thumbnailRef = useRef<HTMLInputElement>(null);
 
     const {
-        title,
         startAt,
         endAt,
-        theme,
-        collaborator,
-        description,
         thumbnail,
         onChangeTitleInput,
         onChangeStartAt,
@@ -30,15 +36,26 @@ const index = ({ formInput }: FormProps) => {
         onChangeDescription,
         onChangeThumbnail,
     } = formInput;
+    const { title, theme, collaborator, description } = oldInputData || formInput;
     return (
         <Container>
             <LabelInput label="전시회 제목" require>
                 <Input type="text" placeholder="제목을 입력해주세요." value={title} onChange={onChangeTitleInput} />
             </LabelInput>
             <LabelInput label="기간" require>
-                <Input type="date" placeholder="전시회 시작 일자" value={startAt} onChange={onChangeStartAt} />
+                <Input
+                    type="date"
+                    placeholder="전시회 시작 일자"
+                    value={startAt.toString().slice(0, 10)}
+                    onChange={onChangeStartAt}
+                />
                 <Label>부터</Label>
-                <Input type="date" placeholder="전시회 종료 일자" value={endAt} onChange={onChangeEndAt} />
+                <Input
+                    type="date"
+                    placeholder="전시회 종료 일자"
+                    value={endAt.toString().slice(0, 10)}
+                    onChange={onChangeEndAt}
+                />
                 <Label>까지</Label>
             </LabelInput>
             <LabelInput label="테마">
