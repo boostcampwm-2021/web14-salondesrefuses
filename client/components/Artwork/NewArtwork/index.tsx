@@ -15,7 +15,7 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
     const { onClickDone, onChangeTitleInput, onChangeTypeInput, titleInput, typeInput, handleModalInput } =
         useInputArtwork(image);
     const { backgroundImageRef, imageRef } = usePreviewImage(image);
-    const { modalPositionBottom, handleModalPosition } = useControlModalPosition();
+    const { modalPositionBottom, handleModalPosition, onClickHiddenModal } = useControlModalPosition();
 
     return (
         <>
@@ -51,6 +51,7 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
                     handleModalInput={handleModalInput}
                     position={modalPositionBottom}
                     handleModalPosition={handleModalPosition}
+                    onClick={onClickHiddenModal}
                 />
             </Container>
             <img ref={backgroundImageRef} src="" alt="background" />
