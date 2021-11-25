@@ -111,6 +111,9 @@ export class ExhibitionDetailDTO {
     id: number;
 
     @ApiProperty()
+    artistId: number;
+
+    @ApiProperty()
     title: string;
 
     @ApiProperty()
@@ -145,6 +148,7 @@ export class ExhibitionDetailDTO {
 
         const exhibitionDetailDTO = new ExhibitionDetailDTO();
         exhibitionDetailDTO.id = id;
+        exhibitionDetailDTO.artistId = artworks[0].artist.id;
         exhibitionDetailDTO.title = title;
         exhibitionDetailDTO.collaborator = collaborator;
         exhibitionDetailDTO.description = description;
