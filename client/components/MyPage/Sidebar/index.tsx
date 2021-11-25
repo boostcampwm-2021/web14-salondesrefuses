@@ -25,7 +25,7 @@ const SideBar = ({ router, current }: { router: (route: PAGES) => void; current:
     );
 };
 
-const Container = styled.section`
+const Container = styled.aside`
     position: fixed;
     top: 70px;
     left: 0px;

@@ -16,19 +16,17 @@ const LazyImage = ({ src, alt }: ILazyImage) => {
             setIsLoad(true);
         }
 
-        imageRef.current &&
-            imageRef.current.addEventListener('loadImage', loadImage);
+        imageRef.current && imageRef.current.addEventListener('loadImage', loadImage);
 
         return () => {
-            imageRef.current &&
-                imageRef.current.removeEventListener('loadImage', loadImage);
+            imageRef.current && imageRef.current.removeEventListener('loadImage', loadImage);
         };
     }, []);
 
     useEffect(() => {
         if (!observer) {
             observer = new IntersectionObserver(onIntersection, {
-                threshold: 0.5,
+                threshold: 0.2,
             });
         }
         imageRef.current && observer.observe(imageRef.current);
@@ -38,17 +36,12 @@ const LazyImage = ({ src, alt }: ILazyImage) => {
         };
     }, []);
 
-    return (
-        <img src={isLoad ? src : fallbackImage.src} alt={alt} ref={imageRef} />
-    );
+    return <img src={isLoad ? src : fallbackImage.src} alt={alt} ref={imageRef} />;
 };
 
 let observer: IntersectionObserver | null = null;
 
-const onIntersection = (
-    entries: IntersectionObserverEntry[],
-    io: IntersectionObserver,
-) => {
+const onIntersection = (entries: IntersectionObserverEntry[], io: IntersectionObserver) => {
     entries.forEach((entry) => {
         if (entry.isIntersecting) {
             io.unobserve(entry.target);

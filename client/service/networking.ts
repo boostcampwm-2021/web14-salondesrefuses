@@ -84,7 +84,7 @@ export const getExhibition = (exhibitionId: string) => {
 };
 
 export const updateUserData = (data: FormData) => {
-    return axios.post(`${API_SERVER_URL}/users`, data, {
+    return axios.put(`${API_SERVER_URL}/users`, data, {
         headers: { 'Content-Type': 'multipart-formdata' },
         withCredentials: true,
     });

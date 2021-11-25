@@ -3,7 +3,7 @@ import Head from 'next/head';
 
 import Layout from '@components/common/Layout';
 
-const CuationPage = () => {
+const CuationPageSeries = () => {
     return (
         <div>
             <Head>
@@ -15,4 +15,4 @@ const CuationPage = () => {
     );
 };
 
-export default CuationPage;
+export default CuationPageSeries;

@@ -3,13 +3,13 @@ import { useState, useEffect } from 'react';
 const useControlModalPosition = () => {
     const [modalPositionBottom, setModalPositionBottom] = useState('-560px');
 
-    // 왜인지 모르겠는데 안먹음...
     const onClickHiddenModal = () => {
-        setModalPositionBottom('-53vh');
+        setModalPositionBottom('10vh');
     };
 
     const onWheelModal = (e: WheelEvent) => {
         if (e.deltaY > 30) setModalPositionBottom('10vh');
+        else if (e.deltaY < -30) setModalPositionBottom('-560px');
     };
 
     const handleModalPosition = (bottom: string) => {
@@ -25,7 +25,7 @@ const useControlModalPosition = () => {
         };
     }, []);
 
-    return { modalPositionBottom, handleModalPosition };
+    return { modalPositionBottom, handleModalPosition, onClickHiddenModal };
 };
 
 export default useControlModalPosition;

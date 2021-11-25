@@ -9,9 +9,10 @@ interface ArtworkModalProps {
     handleModalInput: React.Dispatch<{ [key: string]: string }>;
     position: string;
     handleModalPosition: React.Dispatch<string>;
+    onClick: () => void;
 }
 
-const ArtworkModal = ({ handleModalInput, position, handleModalPosition }: ArtworkModalProps) => {
+const ArtworkModal = ({ handleModalInput, position, handleModalPosition, onClick }: ArtworkModalProps) => {
     const modalRef = useRef<HTMLDivElement | null>(null);
     const {
         handleChecked,
@@ -23,13 +24,14 @@ const ArtworkModal = ({ handleModalInput, position, handleModalPosition }: Artwo
         validInput,
     } = useArtworkInput();
 
-    const onClickConfirm = () => {
+    const onClickConfirm = (e: React.MouseEvent) => {
+        e.stopPropagation();
         handleModalInput({ ...artworkInput });
         handleModalPosition('-560px');
     };
 
     return (
-        <Modal bottom={position} ref={modalRef}>
+        <Modal bottom={position} ref={modalRef} onClick={onClick}>
             <ArtworkFilter checked={artworkInput.checked} setChecked={(checked) => handleChecked(checked)} />
             <Form>
                 <span>Description</span>

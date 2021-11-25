@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { postArtwork, onResponseSuccess } from 'service/networking';
 import { useRouter } from 'next/router';
 
-import useToastState from '@store/toastState';
+import useToast from '@hooks/useToast';
 
 const useInputArtwork = (image: File) => {
     const [modalInputData, setModalInputData] = useState<{
@@ -12,7 +12,10 @@ const useInputArtwork = (image: File) => {
 
     const [titleInput, setTitleInput] = useState('');
     const [typeInput, setTypeInput] = useState('');
-    const [toast, setToast] = useToastState();
+    const showToast = useToast({
+        onSuccess: '작품 등록에 성공했습니다.',
+        onFailed: '작품 등록에 실패했습니다.',
+    });
 
     const onClickDone = async () => {
         const formData = new FormData();
@@ -27,22 +30,10 @@ const useInputArtwork = (image: File) => {
 
         const result = await postArtwork(formData);
         if (onResponseSuccess(result.status)) {
-            setToast({
-                show: true,
-                content: '작품 등록에 성공했습니다.',
-            });
-            setTimeout(() => {
-                setToast({ ...toast, show: false });
-            }, 3000);
+            showToast('success');
             router.push(`/artwork/result?id=${result.data.id}`);
         } else {
-            setToast({
-                show: true,
-                content: '작품 등록에 실패했습니다.',
-            });
-            setTimeout(() => {
-                setToast({ ...toast, show: false });
-            }, 3000);
+            showToast('failed');
         }
     };
 

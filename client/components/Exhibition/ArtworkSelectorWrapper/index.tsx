@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 
 import { SpaceBetween } from '@styles/common';
 import ArtworkSelector from '../ArtworkSelector';
+import CSuspense from '@components/common/Suspense';
+import Fallback from '@components/common/Fallback';
 
 const index = () => {
     return (
@@ -10,7 +12,9 @@ const index = () => {
             <ArtworkSelectorHeader>
                 <Label>작품 선택하기</Label>
             </ArtworkSelectorHeader>
-            <ArtworkSelector />
+            <CSuspense fallback={<Fallback />}>
+                <ArtworkSelector />
+            </CSuspense>
         </ArtworkSelectorWrapper>
     );
 };

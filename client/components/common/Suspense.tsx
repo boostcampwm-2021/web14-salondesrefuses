@@ -55,7 +55,6 @@ class CSuspense extends Component<SuspenseProps, SuspenseState> {
     }
 
     public render() {
-        console.log('pending : ', this.state.pending);
         if (this.state.pending) {
             return this.props.fallback;
         }

@@ -4,34 +4,39 @@ import Slider, { Settings } from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
+import curations from '@const/curations';
+import CarouselItem from '../CarouselItem.tsx';
+
 const AuctionCarousel = () => {
     return (
         <SlideWrapper>
             <CarouselSlider {...settings}>
-                <div style={{ backgroundColor: 'black' }}>1</div>
-                <div style={{ backgroundColor: 'grey' }}>2</div>
-                <div style={{ backgroundColor: 'offwhite' }}>3</div>
+                {curations.map((curation) => {
+                    return <CarouselItem curation={curation} key={curation.id} />;
+                })}
             </CarouselSlider>
         </SlideWrapper>
     );
 };
 
-const settings = {
+const settings: Settings = {
     dots: true,
     infinite: true,
-    speed: 700,
+    speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     draggable: true,
     adaptiveHeight: true,
     autoplay: true,
-    autoplaySpeed: 1200,
+    autoplaySpeed: 3000,
+    lazyLoad: 'progressive',
+    fade: true,
 };
 
 const SlideWrapper = styled.section`
     position: relative;
     background-color: ${(props) => props.theme.color.background};
-    width: 100%;
+    width: 100vw;
     height: 500px;
 `;
 

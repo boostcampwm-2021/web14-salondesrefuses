@@ -4,15 +4,19 @@ import { Artwork } from 'interfaces';
 import { useSelectedImageState, useEditorImageState } from '@store/editorImageState';
 import { getAllArtworks } from 'service/networking';
 import { Container, Tiles, Check } from './style';
+import createResource from '@utils/createResource';
+
+const resource = createResource(getAllArtworks());
 
 const Selector = () => {
-    const [images, setImages] = useState<Artwork[]>([]);
+    // const [images, setImages] = useState<Artwork[]>([]);
+    const images: Artwork[] = resource.read().data;
     const [selectedImages, setSelectedImages] = useSelectedImageState();
     const [_, setEditorImageState] = useEditorImageState();
 
-    useEffect(() => {
-        getAllArtworks().then((res) => setImages(res.data));
-    }, []);
+    // useEffect(() => {
+    //     getAllArtworks().then((res) => setImages(res.data));
+    // }, []);
 
     const onClickImage = (id: number) => {
         return () => {
