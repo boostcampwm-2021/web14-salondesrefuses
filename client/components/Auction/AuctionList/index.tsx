@@ -28,6 +28,7 @@ const AuctionList = () => {
 
     useEffect(() => {
         getAuctions(onSelect.toLowerCase(), page).then((res) => setAuctionItems(res.data));
+        setPage((page) => 0);
     }, [onSelect]);
 
     const onClickFilter = ({ currentTarget }: React.MouseEvent) => {
