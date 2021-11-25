@@ -60,6 +60,7 @@ export interface ExhibitionArtwork {
 
 export interface Exhibition {
     id: number;
+    artistId: number;
     title: string;
     collaborator: string;
     theme: string;
