@@ -1,8 +1,6 @@
 export const initialRectStyle = {
-    size: {
-        width: 100,
-        height: 100,
-    },
+    width: 100,
+    height: 100,
     top: 0,
     left: 0,
     backgroundColor: 'black',
@@ -10,10 +8,8 @@ export const initialRectStyle = {
 };
 
 export const initialTextStyle = {
-    size: {
-        width: 100,
-        height: 100,
-    },
+    width: 100,
+    height: 100,
     top: 0,
     left: 0,
     backgroundColor: 'none',
@@ -21,10 +17,8 @@ export const initialTextStyle = {
 };
 
 export const initialImageStyle = {
-    size: {
-        width: 'auto',
-        height: 'auto',
-    },
+    width: 'auto',
+    height: 'auto',
     top: 0,
     left: 0,
     backgroundColor: 'none',

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { EditorElementType, EditorElementStyle } from '@components/Exhibition/EditorPage/Editor/types';
+import Image from 'next/image';
 
 const MakeElement = ({
     content,
@@ -9,8 +10,15 @@ const MakeElement = ({
     content: contentStyles;
     setModalNum: (n: string | undefined) => void;
 }) => {
-    return content.tagName === 'IMAGE' ? (
-        <AbsoluteImage style={content.style} src={content.imageSrc} onClick={() => setModalNum(content.artworkId)} />
+    return content.tagName === 'IMAGE' && content.imageSrc ? (
+        <AbsoluteImage style={content.style} onClick={() => setModalNum(content.artworkId)}>
+            <Image
+                src={content.imageSrc}
+                alt={content.artworkId}
+                width={content.style.width}
+                height={content.style.height}
+            />
+        </AbsoluteImage>
     ) : (
         <AbsoluteDiv style={content.style}>{content.tagName === 'TEXT' && content.innerText}</AbsoluteDiv>
     );
@@ -50,7 +58,7 @@ const ElementContainer = styled.div<{ size: string }>`
 const AbsoluteDiv = styled.div`
     position: absolute;
 `;
-const AbsoluteImage = styled.img`
+const AbsoluteImage = styled.div`
     position: absolute;
     cursor: zoom-in;
 `;

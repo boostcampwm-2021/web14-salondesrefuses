@@ -131,3 +131,6 @@ export const setNFTToken = (artworkId: number, nftToken?: string) => {
         },
     );
 };
+export const getExhibitionIds = () => {
+    return axios.get<number[]>(`${API_SERVER_URL}/exhibitions`).then((res) => res.data);
+};

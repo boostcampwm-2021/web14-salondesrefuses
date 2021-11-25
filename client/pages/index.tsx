@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 
 import Mobile from '@components/Home/Mobile';
 import Pc from '@components/Home/Pc';
@@ -16,14 +16,14 @@ const Home: NextPage<Props> = ({ ExhibitionsData, AuctionsData }: Props) => {
     return isMobile() ? <Mobile /> : <Pc ExhibitionsData={ExhibitionsData} AuctionsData={AuctionsData} />;
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
     const ExhibitionsData = (await getRandomExhibitions()).data;
     const AuctionsData = (await getRandomAuctions()).data;
 
     return {
         props: {
-            ExhibitionsData: JSON.parse(JSON.stringify(ExhibitionsData)),
-            AuctionsData: JSON.parse(JSON.stringify(AuctionsData)),
+            ExhibitionsData: ExhibitionsData,
+            AuctionsData: AuctionsData,
         } as Props,
     };
 };
