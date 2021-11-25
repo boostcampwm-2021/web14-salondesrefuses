@@ -4,7 +4,7 @@ import { GetStaticPaths } from 'next';
 
 import Layout from '@components/common/Layout';
 import ExhibitionDetail from '@components/Exhibition/ExhbitionDetail';
-import { getExhibitionIds, getExhibition } from 'utils/networking';
+import { getExhibitionIds, getExhibition } from '@service/networking';
 import { Exhibition } from 'interfaces';
 
 const ExhibitionDetailPage = ({ exhibition }: { exhibition: Exhibition }) => {

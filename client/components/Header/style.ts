@@ -9,7 +9,7 @@ export const HeaderContainer = styled.header`
     height: 70px;
     padding: 0 100px;
     ${SpaceBetween}
-    border-bottom: 1px solid ${(props) => props.theme.color.gray1};
+    border-bottom: 1px solid rgba(100, 100, 100, 0.3);
     font: ${(props) => props.theme.font.textEnBase};
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(20px);
