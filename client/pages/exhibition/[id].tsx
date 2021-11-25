@@ -1,10 +1,10 @@
 import React from 'react';
 import Head from 'next/head';
-import { GetServerSideProps, GetServerSidePropsContext, GetStaticPaths } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 
 import Layout from '@components/common/Layout';
 import ExhibitionDetail from '@components/Exhibition/ExhbitionDetail';
-import { getExhibitionIds, getExhibition } from '@service/networking';
+import { getExhibition } from '@service/networking';
 import { Exhibition } from 'interfaces';
 
 const ExhibitionDetailPage = ({ exhibition }: { exhibition: Exhibition }) => {

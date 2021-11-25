@@ -1,32 +1,30 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
-import { Auction, Session } from 'interfaces';
+import { Auction } from 'interfaces';
 import Layout from '@components/common/Layout';
 import ItemDetail from '@components/Auction/ItemDetail';
 import { getAuction } from 'service/networking';
 import useMagnifier from '@hooks/useMagnifier';
-import useSessionState from '@store/sessionState';
 
 const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
     const { imageRef, magnifierRef, showMagnify } = useMagnifier();
-    const user = useSessionState(); // 유저 객체
 
     const { artwork, artist } = auction;
     const { title, originalImage, year } = artwork;
     const { name } = artist;
 
-    useEffect(() => {
-        document.body.style.overflow = 'hidden';
-        return () => {
-            document.body.style.overflow = 'visible';
-        };
-    }, []);
+    // useEffect(() => {
+    //     document.body.style.overflow = 'hidden';
+    //     return () => {
+    //         document.body.style.overflow = 'visible';
+    //     };
+    // }, []);
 
     return (
-        <>
+        <NonScrollable>
             <Head>
                 <title>
                     Auction - {title} ({name}, {year})
@@ -47,20 +45,24 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
                     </Grid>
                 </Container>
             </Layout>
-        </>
+        </NonScrollable>
     );
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const artworkId = (params as { id: string }).id;
     const auction = await getAuction(Number(artworkId));
-
     return {
         props: {
             auction: auction.data,
         },
     };
 };
+
+const NonScrollable = styled.div`
+    height: 100vh;
+    overflow: hidden;
+`;
 
 const Container = styled.div`
     height: 100vh;

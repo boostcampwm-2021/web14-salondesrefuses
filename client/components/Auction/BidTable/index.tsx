@@ -52,7 +52,7 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
 
         if (!account) return false;
         try {
-            const result = await contract.methods.bid(artwork.nftToken).send({
+            await contract.methods.bid(artwork.nftToken).send({
                 from: account,
                 value: Web3.utils.toWei(price.toString(), 'ether'),
                 gas: GAS_LIMIT,

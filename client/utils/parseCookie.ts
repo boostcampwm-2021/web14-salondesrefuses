@@ -4,7 +4,6 @@ const parseCookie = () => {
         const [key, value] = str.split('=');
         cookieObject[key.trim()] = value?.trim();
     });
-
     return (key: string): string | undefined => {
         return cookieObject[key];
     };

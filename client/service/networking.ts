@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Artwork, Auction, Exhibition, PostArtworkResponse, Session } from 'interfaces';
-import { AuctionCardProps, ExhibitionCardProps } from '@const/card-type';
+import { AuctionCardProps } from '@const/card-type';
 
 const API_SERVER_URL = process.env.API_SERVER_URL;
 
@@ -16,7 +16,7 @@ export const signOut = (userId: string) => {
 };
 
 export const getUser = () => {
-    return axios.get<Session>(`${API_SERVER_URL}/users`, { withCredentials: true }).then((res) => res.data);
+    return axios.get<Session>(`${API_SERVER_URL}/users`, { withCredentials: true });
 };
 
 export const getAllArtworks = () => {
