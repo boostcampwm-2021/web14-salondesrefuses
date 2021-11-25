@@ -5,9 +5,9 @@ import Web3 from 'web3';
 import { Session } from 'interfaces';
 import ProfileImage from './ProfileImage';
 import { BlackButton } from '@styles/common';
-import useToastState from '@store/toastState';
 import { onResponseSuccess, signOut, updateUserData } from 'service/networking';
 import useProfileInput from '@hooks/useInputProfile';
+import useToast from '@hooks/useToast';
 
 interface IPRofilePage {
     user: Session;
@@ -15,7 +15,14 @@ interface IPRofilePage {
 
 const ProfilePage = ({ user }: IPRofilePage) => {
     const { profileInput, profileHandler, onChangeDescription, onChangeNickname, onChangeSocialId } = useProfileInput();
-    const [toast, setToast] = useToastState();
+    const showLogoutToast = useToast({
+        onSuccess: '로그아웃 되었습니다.',
+        onFailed: '',
+    });
+    const showProfileUpdateToast = useToast({
+        onSuccess: '프로필이 업데이트되었습니다.',
+        onFailed: '프로필 업데이트에 실패했습니다.',
+    });
     const { profile, nickname, socialId, description } = profileInput;
 
     const onClickLogout = async () => {
@@ -24,16 +31,7 @@ const ProfilePage = ({ user }: IPRofilePage) => {
             const expire = new Date(0);
             document.cookie = 'accessToken=; expires=' + expire.toString();
             document.cookie = 'refreshToken=; expires=' + expire.toString();
-            setToast({
-                show: true,
-                content: '로그아웃 되었습니다.',
-            });
-            setTimeout(() => {
-                setToast({
-                    show: false,
-                    content: '로그아웃 되었습니다.',
-                });
-            }, 3000);
+            showLogoutToast('success');
             window.location.href = '/';
         }
     };
@@ -47,21 +45,9 @@ const ProfilePage = ({ user }: IPRofilePage) => {
 
         const res = await updateUserData(formData);
         if (onResponseSuccess(res.status)) {
-            setToast({
-                show: true,
-                content: '프로필이 업데이트되었습니다.',
-            });
-            setTimeout(() => {
-                setToast({ ...toast, show: false });
-            }, 3000);
+            showProfileUpdateToast('success');
         } else {
-            setToast({
-                show: true,
-                content: '프로필 업데이트에 실패했습니다.',
-            });
-            setTimeout(() => {
-                setToast({ ...toast, show: false });
-            }, 3000);
+            showProfileUpdateToast('failed');
         }
     };
 

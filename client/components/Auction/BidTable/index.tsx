@@ -7,7 +7,7 @@ import { trendHistory } from '@components/Auction/ItemDetail';
 import { getRemainingTime } from '@utils/time';
 import Web3 from 'web3';
 import { WEI } from '@constants/eth';
-import useToastState from '@store/toastState';
+import useToast from '@hooks/useToast';
 import { AbiItem } from 'web3-utils';
 import { Contract } from 'web3-eth-contract';
 import ABI from '@public/ethereum/abi.json';
@@ -21,7 +21,10 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
     const { id, artwork } = auction;
     let { endAt } = auction;
     const [socket] = useAuctionSocketState();
-    const [toast, setToast] = useToastState();
+    const showToast = useToast({
+        onSuccess: '',
+        onFailed: '지갑에 ETH가 부족합니다.',
+    });
     const [price, setPrice] = useState<number>(currentPrice ? Number((currentPrice + 0.01).toFixed(2)) : artwork.price);
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
     const [contract, setContract] = useState<Contract>();
@@ -63,7 +66,7 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
         const biddable = await checkBiddable(price);
         await bidBlockChain(price);
         if (!biddable) {
-            showToast();
+            showToast('failed');
             return;
         }
 
@@ -94,20 +97,6 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
 
         setContract(new web3.eth.Contract(ABI.abi as AbiItem[], contractAddress.address));
     }, []);
-
-    const showToast = () => {
-        setToast({
-            ...toast,
-            show: true,
-            content: '지갑에 ETH가 부족합니다.',
-        });
-        setTimeout(() => {
-            setToast({
-                show: false,
-                content: '지갑에 ETH가 부족합니다.',
-            });
-        }, 3000);
-    };
 
     return (
         <Container>

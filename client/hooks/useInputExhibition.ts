@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { onResponseSuccess, holdExhibition } from 'service/networking';
 import { useRouter } from 'next/router';
-import useToastState from '@store/toastState';
+import useToast from '@hooks/useToast';
 
 interface IExhibitionInput {
     title: string;
@@ -28,7 +28,10 @@ const useInputExhibition = () => {
 
     const [exhibitionInput, setExhibitionInput] = useState<IExhibitionInput>(initialInput);
     const { title, collaborator, theme, description, startAt, endAt, thumbnail } = exhibitionInput;
-    const [toast, setToast] = useToastState();
+    const showToast = useToast({
+        onSuccess: '전시회 개최에 성공했습니다.',
+        onFailed: '전시회 개최에 실패했습니다.',
+    });
 
     const onClickHold = async (contents: string, editorSize: string, artworkIds: string) => {
         const formData = new FormData();
@@ -44,22 +47,10 @@ const useInputExhibition = () => {
         formData.append('artworkIds', artworkIds);
         const result = await holdExhibition(formData);
         if (onResponseSuccess(result.status)) {
-            setToast({
-                show: true,
-                content: '전시회 개최에 성공했습니다.',
-            });
-            setTimeout(() => {
-                setToast({ ...toast, show: false });
-            }, 3000);
+            showToast('success');
             router.push(`/exhibition/${result.data.id}`);
         } else {
-            setToast({
-                show: true,
-                content: '전시회 개최에 실패했습니다.',
-            });
-            setTimeout(() => {
-                setToast({ ...toast, show: false });
-            }, 3000);
+            showToast('failed');
         }
     };
 
