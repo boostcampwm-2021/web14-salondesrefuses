@@ -16,6 +16,7 @@ const pathToObj = {
     mypage: { title: 'My Page', cb: defaultHeader },
 };
 type mainPathInterface = '' | 'artwork' | 'exhibition' | 'auction' | 'mypage';
+
 const Header = () => {
     const mainPath = useRouter().pathname.split('/')[1] as mainPathInterface;
     const session = useSessionState().contents;
@@ -29,7 +30,7 @@ const Header = () => {
                     </ImageContainer>
                 </Link>
                 <Hr />
-                <p>{pathToObj[mainPath].title}</p>
+                <Link href={`/${mainPath}`}>{pathToObj[mainPath].title}</Link>
             </LeftContainer>
             {pathToObj[mainPath].cb(session, mainPath === 'exhibition')}
         </HeaderContainer>

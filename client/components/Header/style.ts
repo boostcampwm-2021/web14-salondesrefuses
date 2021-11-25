@@ -24,7 +24,7 @@ export const LeftContainer = styled.div`
         width: auto;
         cursor: pointer;
     }
-    p {
+    a {
         margin: 0 30px;
         color: ${(props) => props.theme.color.primary};
     }
