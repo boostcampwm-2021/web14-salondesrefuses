@@ -54,8 +54,8 @@ const EditorElement = ({
         }
         return {
             transform: `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`,
-            width: `${imageWidth || currentStyle.size.width}px`,
-            height: `${imageHeight || currentStyle.size.height}px`,
+            width: `${imageWidth || currentStyle.width}px`,
+            height: `${imageHeight || currentStyle.height}px`,
             backgroundColor: currentStyle.backgroundColor,
             position: 'absolute' as 'absolute',
             border: isSelected ? '1px solid #3A8FD6' : '0px',

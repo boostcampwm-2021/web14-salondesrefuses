@@ -11,7 +11,8 @@ export type EditorElementStyle = {
     left: number;
     transform?: string;
     backgroundColor: string;
-    size: { width: number | string; height: number | string };
+    width: number | string;
+    height: number | string;
     zIndex: number;
 };
 

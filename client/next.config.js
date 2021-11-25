@@ -17,4 +17,7 @@ module.exports = {
         KAKAO_AUTH_URL: process.env.NEXT_PUBLIC_KAKAO_AUTH_URL,
         ETHEREUM_HOST: process.env.NEXT_PUBLIC_ETHEREUM_HOST,
     },
+    images: {
+        domains: ['salon-bucket.kr.object.ncloudstorage.com'],
+    },
 };
