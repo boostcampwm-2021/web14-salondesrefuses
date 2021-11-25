@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import { GetStaticPaths } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext, GetStaticPaths } from 'next';
 
 import Layout from '@components/common/Layout';
 import ExhibitionDetail from '@components/Exhibition/ExhbitionDetail';
@@ -18,22 +18,9 @@ const ExhibitionDetailPage = ({ exhibition }: { exhibition: Exhibition }) => {
     );
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-    const exhibitionIds = await getExhibitionIds();
-    const paths = exhibitionIds.map((id) => ({
-        params: { id: id.toString() },
-    }));
-
-    return { paths, fallback: false };
-};
-
-interface Params {
-    params: {
-        id: string;
-    };
-}
-export const getStaticProps = async ({ params }: Params) => {
-    const exhibition = (await getExhibition(params.id)).data;
+export const getServerSideProps: GetServerSideProps = async ({ params }: GetServerSidePropsContext) => {
+    const id = params!.id as string;
+    const exhibition = (await getExhibition(id)).data;
     return { props: { exhibition: exhibition } };
 };
 
