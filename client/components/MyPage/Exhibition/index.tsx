@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { ExhibitionCardProps } from '@const/card-type';
-import { getUserExhibitions } from '@utils/networking';
+import { getUserExhibitions } from 'service/networking';
 import Card from '@components/common/Card';
 
 const ExhibitionPage = () => {

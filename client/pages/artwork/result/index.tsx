@@ -8,7 +8,7 @@ import { Contract } from 'web3-eth-contract';
 
 import { Artwork } from 'interfaces';
 import Layout from '@components/common/Layout';
-import { getSingleArtwork, setNFTToken } from '@utils/networking';
+import { getSingleArtwork, setNFTToken } from 'service/networking';
 import { Center } from '@styles/common';
 import ResultDetail from '@components/Artwork/ResultDetail';
 

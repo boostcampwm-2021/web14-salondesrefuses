@@ -6,7 +6,7 @@ import { AbiItem } from 'web3-utils';
 
 import ABI from '@public/ethereum/abi.json';
 import contractAddress from '@public/ethereum/address.json';
-import { getAllBoughtArtworks } from '@utils/networking';
+import { getAllBoughtArtworks } from 'service/networking';
 import { AuctionCardProps } from '@const/card-type';
 import Card from '@components/common/Card';
 

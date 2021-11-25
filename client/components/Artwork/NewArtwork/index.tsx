@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React from 'react';
 
 import { Button } from '@styles/common';
 import ArtworkModal from '../ArtworkModal';
@@ -12,17 +12,10 @@ interface NewArtworkProp {
 }
 
 const NewArtwork = ({ image }: NewArtworkProp) => {
-    const {
-        onClickDone,
-        onChangeTitleInput,
-        onChangeTypeInput,
-        titleInput,
-        typeInput,
-        handleModalInput,
-    } = useInputArtwork(image);
+    const { onClickDone, onChangeTitleInput, onChangeTypeInput, titleInput, typeInput, handleModalInput } =
+        useInputArtwork(image);
     const { backgroundImageRef, imageRef } = usePreviewImage(image);
-    const { modalPositionBottom, handleModalPosition } =
-        useControlModalPosition();
+    const { modalPositionBottom, handleModalPosition } = useControlModalPosition();
 
     return (
         <>

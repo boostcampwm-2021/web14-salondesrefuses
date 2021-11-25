@@ -4,7 +4,7 @@ import { GetStaticProps } from 'next';
 import Mobile from '@components/Home/Mobile';
 import Pc from '@components/Home/Pc';
 import { isMobile } from 'utils/isMobile';
-import { getRandomAuctions, getRandomExhibitions } from 'utils/networking';
+import { getRandomAuctions, getRandomExhibitions } from 'service/networking';
 import { AuctionCardProps, ExhibitionCardProps } from '@const/card-type';
 
 interface Props {
@@ -13,11 +13,7 @@ interface Props {
 }
 
 const Home: NextPage<Props> = ({ ExhibitionsData, AuctionsData }: Props) => {
-    return isMobile() ? (
-        <Mobile />
-    ) : (
-        <Pc ExhibitionsData={ExhibitionsData} AuctionsData={AuctionsData} />
-    );
+    return isMobile() ? <Mobile /> : <Pc ExhibitionsData={ExhibitionsData} AuctionsData={AuctionsData} />;
 };
 
 export const getStaticProps: GetStaticProps = async () => {

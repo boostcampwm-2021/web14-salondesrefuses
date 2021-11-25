@@ -1,6 +1,6 @@
 import { selector, useRecoilValueLoadable } from 'recoil';
 import parseCookie from '@utils/parseCookie';
-import { getUser } from '@utils/networking';
+import { getUser } from 'service/networking';
 
 const sessionSelector = selector({
     key: '@session/get',
