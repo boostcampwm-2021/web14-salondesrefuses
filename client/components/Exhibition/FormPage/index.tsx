@@ -14,7 +14,7 @@ const index = ({ formInput }: FormProps) => {
     const thumbnailRef = useRef<HTMLInputElement>(null);
 
     const {
-        titleInput,
+        title,
         startAt,
         endAt,
         theme,
@@ -32,36 +32,16 @@ const index = ({ formInput }: FormProps) => {
     return (
         <Container>
             <LabelInput label="전시회 제목" require>
-                <Input
-                    type="text"
-                    placeholder="제목을 입력해주세요."
-                    value={titleInput}
-                    onChange={onChangeTitleInput}
-                />
+                <Input type="text" placeholder="제목을 입력해주세요." value={title} onChange={onChangeTitleInput} />
             </LabelInput>
             <LabelInput label="기간" require>
-                <Input
-                    type="date"
-                    placeholder="전시회 시작 일자"
-                    value={startAt}
-                    onChange={onChangeStartAt}
-                />
+                <Input type="date" placeholder="전시회 시작 일자" value={startAt} onChange={onChangeStartAt} />
                 <Label>부터</Label>
-                <Input
-                    type="date"
-                    placeholder="전시회 종료 일자"
-                    value={endAt}
-                    onChange={onChangeEndAt}
-                />
+                <Input type="date" placeholder="전시회 종료 일자" value={endAt} onChange={onChangeEndAt} />
                 <Label>까지</Label>
             </LabelInput>
             <LabelInput label="테마">
-                <Input
-                    type="type"
-                    placeholder="전시회의 느낌을 작성해보세요!"
-                    value={theme}
-                    onChange={onChangeTheme}
-                />
+                <Input type="type" placeholder="전시회의 느낌을 작성해보세요!" value={theme} onChange={onChangeTheme} />
             </LabelInput>
             <LabelInput label="카테고리">
                 <Input type="type" placeholder="카테고리를 작성해주세요." />
@@ -75,11 +55,7 @@ const index = ({ formInput }: FormProps) => {
                 />
             </LabelInput>
             <LabelInput label="설명">
-                <TextArea
-                    placeholder="설명을 작성해주세요!"
-                    value={description}
-                    onChange={onChangeDescription}
-                />
+                <TextArea placeholder="설명을 작성해주세요!" value={description} onChange={onChangeDescription} />
             </LabelInput>
             <LabelInput label="전시회 썸네일" require>
                 <ThumbnailBox onClick={() => thumbnailRef.current!.click()}>
