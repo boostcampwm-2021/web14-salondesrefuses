@@ -22,10 +22,7 @@ const ItemDetail = ({ auction }: { auction: Auction }) => {
     const { id, artwork, artist, auctionHistories, price } = auction;
     const { title, type } = artwork;
     const trendHistoryList = JSON.parse(JSON.stringify(auctionHistories))
-        .sort(
-            (a: trendHistory, b: trendHistory) =>
-                Number(b?.price) - Number(a?.price),
-        )
+        .sort((a: trendHistory, b: trendHistory) => Number(b?.price) - Number(a?.price))
         .slice(0, 6);
 
     useEffect(() => {
@@ -43,10 +40,7 @@ const ItemDetail = ({ auction }: { auction: Auction }) => {
                 <span>{type}</span>
             </Summary>
             <AboutArtist artist={artist} />
-            <BidTable
-                auction={auction}
-                currentPrice={Number(price)}
-            />
+            <BidTable auction={auction} currentPrice={Number(price)} />
             <Trend trendHistoryList={trendHistoryList} />
             <ArtworkDetail artwork={artwork} />
         </Container>
@@ -55,7 +49,7 @@ const ItemDetail = ({ auction }: { auction: Auction }) => {
 
 const Container = styled.section`
     width: 100%;
-    overflow: scroll;
+    overflow-y: scroll;
     overflow-x: hidden;
     padding: 10px 0;
 
