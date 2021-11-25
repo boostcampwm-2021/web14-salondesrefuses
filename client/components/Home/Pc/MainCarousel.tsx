@@ -40,12 +40,6 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
         getColorLost();
     }, []);
 
-    // useEffect(() => {
-    //     console.log(el);
-    //     console.log(window.getComputedStyle(el as Element).transition);
-    // }, [el && window.getComputedStyle(el!).transition]);
-    //https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
-    //https://stackoverflow.com/questions/2157963/is-it-possible-to-listen-to-a-style-change-event
     return (
         <>
             <SlideWrapper>
