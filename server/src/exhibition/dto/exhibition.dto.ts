@@ -117,6 +117,9 @@ export class ExhibitionDetailDTO {
     title: string;
 
     @ApiProperty()
+    thumbnailImage: string;
+
+    @ApiProperty()
     collaborator: string;
 
     @ApiProperty()
@@ -144,12 +147,13 @@ export class ExhibitionDetailDTO {
     size: string;
 
     static from(exhibition: Exhibition, artworks: Artwork[]): ExhibitionDetailDTO {
-        const { id, title, collaborator, theme, description, startAt, endAt, contents, categories, size } = exhibition;
+        const { id, title, collaborator, theme, description, startAt, endAt, contents, categories, size, thumbnailImage } = exhibition;
 
         const exhibitionDetailDTO = new ExhibitionDetailDTO();
         exhibitionDetailDTO.id = id;
         exhibitionDetailDTO.artistId = artworks[0].artist.id;
         exhibitionDetailDTO.title = title;
+        exhibitionDetailDTO.thumbnailImage = thumbnailImage;
         exhibitionDetailDTO.collaborator = collaborator;
         exhibitionDetailDTO.description = description;
         exhibitionDetailDTO.theme = theme;
