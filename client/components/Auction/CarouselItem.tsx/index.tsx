@@ -57,6 +57,7 @@ const Content = styled.div`
     top: 0px;
     ${SpaceAround};
     font-family: 'Mixed Regular';
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.46) 18.75%, #ffffff 100%);
 
     & span {
         display: block;
