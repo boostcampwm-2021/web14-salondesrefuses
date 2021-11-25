@@ -17,6 +17,24 @@ const BoughtArtworkPage = () => {
     const [boughtArtworks, setBoughtArtworks] = useState<AuctionCardProps[]>([]);
     const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
 
+    const getArtworks = async () => {
+        if (!contract) return;
+        await window.ethereum.enable();
+        [account] = await window.ethereum.request({
+            method: 'eth_requestAccounts',
+        });
+        const balanceOf = await contract.methods.balanceOf(account!).call();
+
+        const myNFTs = await Promise.all(
+            Array.from({ length: balanceOf }).map(async (_, idx) => {
+                const token = await contract.methods.tokenOfOwnerByIndex(account!, idx).call();
+                return +token;
+            }),
+        );
+        const result = await getAllBoughtArtworks(myNFTs);
+        return result;
+    };
+
     useEffect(() => {
         window.ethereum.on('accountsChanged', (accounts: string[]) => {
             account = accounts[0];
@@ -27,20 +45,7 @@ const BoughtArtworkPage = () => {
     useEffect(() => {
         if (!contract) return;
         (async () => {
-            await window.ethereum.enable();
-            [account] = await window.ethereum.request({
-                method: 'eth_requestAccounts',
-            });
-            const balanceOf = await contract.methods.balanceOf(account!).call();
-
-            const myNFTs = await Promise.all(
-                Array.from({ length: balanceOf }).map(async (_, idx) => {
-                    const token = await contract.methods.tokenOfOwnerByIndex(account!, idx).call();
-                    return +token;
-                }),
-            );
-
-            const result = await getAllBoughtArtworks(myNFTs);
+            const result = await getArtworks();
             setBoughtArtworks(result);
         })();
     }, [contract]);

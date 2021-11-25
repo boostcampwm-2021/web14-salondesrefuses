@@ -18,13 +18,6 @@ const ProfilePage = ({ user }: IPRofilePage) => {
     const [toast, setToast] = useToastState();
     const { profile, nickname, socialId, description } = profileInput;
 
-    const onClickGenerateWallet = async () => {
-        if (!window.ethereum) return;
-        const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
-        const account = web3.eth.accounts.create();
-        const accounts = await web3.eth.personal.getAccounts();
-    };
-
     const onClickLogout = async () => {
         const res = await signOut(`${user.id}`);
         if (onResponseSuccess(res.status)) {
@@ -90,7 +83,6 @@ const ProfilePage = ({ user }: IPRofilePage) => {
                 </div>
             </Form>
             <ButtonContainer>
-                <BlackButton onClick={onClickGenerateWallet}>New Wallet</BlackButton>
                 <BlackButton onClick={onClickLogout}>Log out</BlackButton>
                 <BlackButton onClick={onClickSave}>Save</BlackButton>
             </ButtonContainer>
