@@ -4,7 +4,7 @@ import { GetServerSideProps } from 'next';
 import Mobile from '@components/Home/Mobile';
 import Pc from '@components/Home/Pc';
 import { isMobile } from 'utils/isMobile';
-import { getRandomAuctions, getRandomExhibitions } from 'utils/networking';
+import { getRandomAuctions, getRandomExhibitions } from 'service/networking';
 import { AuctionCardProps, ExhibitionCardProps } from '@const/card-type';
 
 interface Props {

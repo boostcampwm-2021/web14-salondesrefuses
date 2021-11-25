@@ -1,53 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
 import Web3 from 'web3';
 
 import { Session } from 'interfaces';
 import ProfileImage from './ProfileImage';
 import { BlackButton } from '@styles/common';
 import useToastState from '@store/toastState';
-import { onResponseSuccess, signOut, updateUserData } from '@utils/networking';
-import useSessionState from '@store/sessionState';
+import { onResponseSuccess, signOut, updateUserData } from 'service/networking';
+import useProfileInput from '@hooks/useInputProfile';
 
 interface IPRofilePage {
     user: Session;
 }
 
 const ProfilePage = ({ user }: IPRofilePage) => {
-    const [profile, setProfile] = useState<File | null>();
-    const [nickname, setNickname] = useState<string>('');
-    const [socialId, setSocialId] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
+    const { profileInput, profileHandler, onChangeDescription, onChangeNickname, onChangeSocialId } = useProfileInput();
     const [toast, setToast] = useToastState();
-    const session = useSessionState();
-    const { push } = useRouter();
-
-    const profileHandler = (file: File) => {
-        setProfile(file);
-    };
-
-    const onChangeNickname = (e: React.FormEvent) => {
-        setNickname((e.target as HTMLInputElement).value);
-    };
-
-    const onChangeSocialId = (e: React.FormEvent) => {
-        setSocialId((e.target as HTMLInputElement).value);
-    };
-
-    const onChangeDescription = (e: React.FormEvent) => {
-        setDescription((e.target as HTMLTextAreaElement).value);
-    };
-
-    const onClickGenerateWallet = async () => {
-        if (!window.ethereum) return;
-        const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
-        const account = web3.eth.accounts.create();
-        console.log(account);
-
-        const accounts = await web3.eth.personal.getAccounts();
-        console.log(accounts);
-    };
+    const { profile, nickname, socialId, description } = profileInput;
 
     const onClickLogout = async () => {
         const res = await signOut(`${user.id}`);
@@ -114,7 +83,6 @@ const ProfilePage = ({ user }: IPRofilePage) => {
                 </div>
             </Form>
             <ButtonContainer>
-                <BlackButton onClick={onClickGenerateWallet}>New Wallet</BlackButton>
                 <BlackButton onClick={onClickLogout}>Log out</BlackButton>
                 <BlackButton onClick={onClickSave}>Save</BlackButton>
             </ButtonContainer>

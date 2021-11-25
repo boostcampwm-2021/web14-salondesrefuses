@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 import { ExhibitionCardProps } from '@const/card-type';
 import Card from '@components/common/Card';
-import { getExhibitions } from '@utils/networking';
+import { getExhibitions } from 'service/networking';
 import { SpaceBetween } from '@styles/common';
 import useInfiniteScroll from '@hooks/useInfiniteScroll';
 

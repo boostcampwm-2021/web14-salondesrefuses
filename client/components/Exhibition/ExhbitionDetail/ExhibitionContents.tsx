@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import { EditorElementType, EditorElementStyle } from '@components/Exhibition/EditorPage/Editor/types';
 import Image from 'next/image';

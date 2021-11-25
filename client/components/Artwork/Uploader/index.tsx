@@ -1,7 +1,12 @@
 import React, { useRef } from 'react';
 import styled from '@emotion/styled';
+import dynamic from 'next/dynamic';
 
-import Tiles from '../Tiles';
+// import Tiles from '../Tiles';
+import CSuspense from '@components/common/Suspense';
+import Fallback from '@components/common/Fallback';
+
+const Tiles = dynamic(() => import('@components/Artwork/Tiles'), { ssr: false });
 
 interface UploaderProps {
     handleNewImage: (image: File) => void;
@@ -25,7 +30,9 @@ const Uploader = ({ handleNewImage }: UploaderProps) => {
                 <input type="file" name="newArtwork" ref={inputRef} onChange={onChangeFile} />
                 <img src="/icons/add.png" alt="add" />
             </FileInput>
-            <Tiles align="center" />
+            <CSuspense fallback={<Fallback />}>
+                <Tiles align="center" />
+            </CSuspense>
         </Container>
     );
 };

@@ -1,23 +1,38 @@
 import React, { useState } from 'react';
-import { onResponseSuccess, holdExhibition } from 'utils/networking';
+import { onResponseSuccess, holdExhibition } from 'service/networking';
 import { useRouter } from 'next/router';
 import useToastState from '@store/toastState';
+
+interface IExhibitionInput {
+    title: string;
+    startAt: string;
+    endAt: string;
+    theme: string;
+    collaborator: string;
+    description: string;
+    thumbnail: File | null;
+}
+
+const initialInput = {
+    title: '',
+    startAt: '',
+    endAt: '',
+    theme: '',
+    collaborator: '',
+    description: '',
+    thumbnail: null,
+};
 
 const useInputExhibition = () => {
     const router = useRouter();
 
-    const [titleInput, setTitleInput] = useState('');
-    const [startAt, setStartAt] = useState('');
-    const [endAt, setEndAt] = useState('');
-    const [theme, setTheme] = useState('');
-    const [collaborator, setCollaborator] = useState('');
-    const [description, setDescription] = useState('');
-    const [thumbnail, setThumbnail] = useState<File | null>(null);
+    const [exhibitionInput, setExhibitionInput] = useState<IExhibitionInput>(initialInput);
+    const { title, collaborator, theme, description, startAt, endAt, thumbnail } = exhibitionInput;
     const [toast, setToast] = useToastState();
 
     const onClickHold = async (contents: string, editorSize: string, artworkIds: string) => {
         const formData = new FormData();
-        formData.append('title', titleInput);
+        formData.append('title', title);
         formData.append('collaborator', collaborator);
         formData.append('theme', theme);
         formData.append('description', description);
@@ -49,36 +64,36 @@ const useInputExhibition = () => {
     };
 
     const onChangeTitleInput = (e: React.FormEvent) => {
-        setTitleInput((e.target as HTMLInputElement).value);
+        setExhibitionInput({ ...exhibitionInput, title: (e.target as HTMLInputElement).value });
     };
 
     const onChangeStartAt = (e: React.FormEvent) => {
-        setStartAt((e.target as HTMLInputElement).value);
+        setExhibitionInput({ ...exhibitionInput, startAt: (e.target as HTMLInputElement).value });
     };
 
     const onChangeEndAt = (e: React.FormEvent) => {
-        setEndAt((e.target as HTMLInputElement).value);
+        setExhibitionInput({ ...exhibitionInput, endAt: (e.target as HTMLInputElement).value });
     };
 
     const onChangeTheme = (e: React.FormEvent) => {
-        setTheme((e.target as HTMLInputElement).value);
+        setExhibitionInput({ ...exhibitionInput, theme: (e.target as HTMLInputElement).value });
     };
 
     const onChangeCollaborator = (e: React.FormEvent) => {
-        setCollaborator((e.target as HTMLInputElement).value);
+        setExhibitionInput({ ...exhibitionInput, collaborator: (e.target as HTMLInputElement).value });
     };
 
     const onChangeDescription = (e: React.FormEvent) => {
-        setDescription((e.target as HTMLInputElement).value);
+        setExhibitionInput({ ...exhibitionInput, description: (e.target as HTMLInputElement).value });
     };
 
     const onChangeThumbnail = (current: HTMLInputElement | null) => {
-        current!.files && setThumbnail(current!.files[0]);
+        current!.files && setExhibitionInput({ ...exhibitionInput, thumbnail: current!.files[0] });
     };
 
     return {
         formInput: {
-            titleInput,
+            title,
             startAt,
             endAt,
             theme,

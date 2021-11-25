@@ -6,7 +6,7 @@ export interface SelectArtworkAction {
 }
 
 export interface HoldExhibition {
-    titleInput: string;
+    title: string;
     startAt: string;
     endAt: string;
     theme: string;
