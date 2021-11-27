@@ -7,6 +7,4 @@ output.sql
 .DS_Store
 .env
 
-nft/build
-
 **/ethereum
