@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import styled from '@emotion/styled';
 
 import { BlackButton, Description, Title } from '../style';
