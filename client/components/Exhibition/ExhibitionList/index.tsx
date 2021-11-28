@@ -6,21 +6,21 @@ import { getExhibitions } from 'service/networking';
 import useInfiniteScroll from '@hooks/useInfiniteScroll';
 import { Grid } from '@components/common/Card/style';
 
-const ExhibitionList = ({ filter }: { filter: string }) => {
+const ExhibitionList = ({ onSelect }: { onSelect: string }) => {
     const [exhibitions, setExhibitions] = useState<ExhibitionCardProps[]>([]);
     const [page, setPage] = useState(0);
     const gridRef = useInfiniteScroll(() => setPage((page) => page + 1), exhibitions);
 
     useEffect(() => {
-        getExhibitions(filter.toLowerCase(), page).then((res) => {
+        getExhibitions(onSelect.toLowerCase(), page).then((res) => {
             setExhibitions([...exhibitions, ...res.data]);
         });
-    }, [page]);
+    }, [page, onSelect]);
 
     useEffect(() => {
-        getExhibitions(filter.toLowerCase(), 0).then((res) => setExhibitions(res.data));
-        setPage((page) => 0);
-    }, [filter]);
+        setPage(0);
+        setExhibitions([]);
+    }, [onSelect]);
 
     return (
         <Grid ref={gridRef}>
