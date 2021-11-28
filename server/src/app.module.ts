@@ -13,6 +13,7 @@ import { AuctionHistoryModule } from './auctionHistory/auctionHistory.module';
 import { CompletedAuctionModule } from './completedAuction/completedAuction.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronTaskModule } from './cronTask/crontask.module';
+import { PortModule } from './utils/port/port.module';
 
 @Module({
     imports: [
@@ -29,6 +30,7 @@ import { CronTaskModule } from './cronTask/crontask.module';
         AuctionHistoryModule,
         CompletedAuctionModule,
         CronTaskModule,
+        PortModule
     ],
 })
 export class AppModule {}
