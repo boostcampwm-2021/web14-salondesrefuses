@@ -14,7 +14,7 @@ interface OldInputData {
     theme: string;
     collaborator: string;
     description: string;
-    thumbnail: string | null;
+    thumbnailImage: string | null;
 }
 interface FormProps {
     formInput: HoldExhibition;
@@ -25,18 +25,15 @@ const index = ({ formInput, oldInputData }: FormProps) => {
     const thumbnailRef = useRef<HTMLInputElement>(null);
 
     const {
-        startAt,
-        endAt,
-        thumbnail,
         onChangeTitleInput,
         onChangeStartAt,
         onChangeEndAt,
         onChangeTheme,
         onChangeCollaborator,
         onChangeDescription,
-        onChangeThumbnail,
+        onChangethumbnailImage,
     } = formInput;
-    const { title, theme, collaborator, description } = oldInputData || formInput;
+    const { title, startAt, endAt, theme, collaborator, description, thumbnailImage } = oldInputData || formInput;
     return (
         <Container>
             <LabelInput label="전시회 제목" require>
@@ -77,7 +74,7 @@ const index = ({ formInput, oldInputData }: FormProps) => {
             </LabelInput>
             <LabelInput label="전시회 썸네일" require>
                 <ThumbnailBox onClick={() => thumbnailRef.current!.click()}>
-                    {thumbnail ? <Preview image={thumbnail} /> : <Placeholder src={addIcon.src} />}
+                    {thumbnailImage ? <Preview image={thumbnailImage} /> : <Placeholder src={addIcon.src} />}
                 </ThumbnailBox>
                 <Input
                     ref={thumbnailRef}
@@ -85,7 +82,7 @@ const index = ({ formInput, oldInputData }: FormProps) => {
                     name="thumbnail"
                     hidden
                     onChange={() => {
-                        onChangeThumbnail(thumbnailRef.current);
+                        onChangethumbnailImage(thumbnailRef.current);
                     }}
                 />
             </LabelInput>

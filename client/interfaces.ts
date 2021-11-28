@@ -68,7 +68,7 @@ export interface Exhibition {
     startAt: Date;
     endAt: Date;
     contents: string;
-    thumbnail: string;
+    thumbnailImage: string;
     categories: string;
     size: string;
     artworks: ExhibitionArtwork[];

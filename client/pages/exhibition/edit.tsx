@@ -38,7 +38,7 @@ const ExhibitionEditPage = () => {
             theme: exhibitionData.theme,
             collaborator: exhibitionData.collaborator,
             description: exhibitionData.description,
-            thumbnail: exhibitionData.thumbnail,
+            thumbnailImage: exhibitionData.thumbnailImage,
         };
     };
 

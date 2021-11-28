@@ -10,7 +10,7 @@ interface IExhibitionInput {
     theme: string;
     collaborator: string;
     description: string;
-    thumbnail: File | null;
+    thumbnailImage: File | null;
 }
 
 const initialInput = {
@@ -20,13 +20,13 @@ const initialInput = {
     theme: '',
     collaborator: '',
     description: '',
-    thumbnail: null,
+    thumbnailImage: null,
 };
 
 const useInputExhibition = () => {
     const router = useRouter();
     const [exhibitionInput, setExhibitionInput] = useState<IExhibitionInput>(initialInput);
-    const { title, collaborator, theme, description, startAt, endAt, thumbnail } = exhibitionInput;
+    const { title, collaborator, theme, description, startAt, endAt, thumbnailImage } = exhibitionInput;
     const showToast = useToast({
         onSuccess: '전시회 개최에 성공했습니다.',
         onFailed: '전시회 개최에 실패했습니다.',
@@ -42,7 +42,7 @@ const useInputExhibition = () => {
         formData.append('endAt', endAt);
         formData.append('contents', contents);
         formData.append('size', editorSize);
-        formData.append('thumbnail', thumbnail!);
+        formData.append('thumbnail', thumbnailImage!);
         formData.append('artworkIds', artworkIds);
         const result = await holdExhibition(formData);
         if (onResponseSuccess(result.status)) {
@@ -77,8 +77,8 @@ const useInputExhibition = () => {
         setExhibitionInput({ ...exhibitionInput, description: (e.target as HTMLInputElement).value });
     };
 
-    const onChangeThumbnail = (current: HTMLInputElement | null) => {
-        current!.files && setExhibitionInput({ ...exhibitionInput, thumbnail: current!.files[0] });
+    const onChangethumbnailImage = (current: HTMLInputElement | null) => {
+        current!.files && setExhibitionInput({ ...exhibitionInput, thumbnailImage: current!.files[0] });
     };
 
     return {
@@ -89,14 +89,14 @@ const useInputExhibition = () => {
             theme,
             collaborator,
             description,
-            thumbnail,
+            thumbnailImage,
             onChangeTitleInput,
             onChangeStartAt,
             onChangeEndAt,
             onChangeTheme,
             onChangeCollaborator,
             onChangeDescription,
-            onChangeThumbnail,
+            onChangethumbnailImage,
         },
         onClickHold,
     };
