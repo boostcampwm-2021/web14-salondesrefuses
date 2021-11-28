@@ -11,6 +11,7 @@ import RequireLoginModal from '@components/common/RequireLoginModal';
 import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
 import useInfiniteScroll from '@hooks/useInfiniteScroll';
 import useSessionState from '@store/sessionState';
+import { Grid } from '@components/common/Card/style';
 
 const AuctionList = () => {
     const session = useSessionState().contents;
@@ -103,13 +104,6 @@ const Title = styled.div`
 const BlackButton = styled(Button)`
     color: ${(props) => props.theme.color.title};
     border-color: ${(props) => props.theme.color.title};
-`;
-
-const Grid = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 50px;
-    margin-bottom: 45px;
 `;
 
 const FilterWrapper = styled.div`

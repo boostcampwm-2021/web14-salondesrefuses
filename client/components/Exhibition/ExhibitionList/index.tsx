@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import styled from '@emotion/styled';
+import React, { useState, useEffect } from 'react';
 
 import { ExhibitionCardProps } from '@const/card-type';
 import Card from '@components/common/Card';
 import { getExhibitions } from 'service/networking';
-import { SpaceBetween } from '@styles/common';
 import useInfiniteScroll from '@hooks/useInfiniteScroll';
+import { Grid } from '@components/common/Card/style';
 
 const ExhibitionList = ({ filter }: { filter: string }) => {
     const [exhibitions, setExhibitions] = useState<ExhibitionCardProps[]>([]);
@@ -24,23 +23,12 @@ const ExhibitionList = ({ filter }: { filter: string }) => {
     }, [filter]);
 
     return (
-        <Container ref={gridRef}>
+        <Grid ref={gridRef}>
             {exhibitions.map((exihibition, idx) => (
                 <Card key={idx} width="lg" content={exihibition} />
             ))}
-        </Container>
+        </Grid>
     );
 };
-
-const Container = styled.div`
-    ${SpaceBetween}
-    flex-wrap: wrap;
-
-    width: 1180px;
-
-    & > div {
-        margin-bottom: 45px;
-    }
-`;
 
 export default ExhibitionList;
