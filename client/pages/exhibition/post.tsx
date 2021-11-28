@@ -8,9 +8,16 @@ import Layout from '@components/common/Layout';
 import { Description, NextButton, Title } from '@components/Exhibition/style';
 import Editor from '@components/Exhibition/EditorPage';
 import useInputExhibition from '@hooks/useInputExhibition';
+import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/types';
 
 const ExhibitionPostPage = () => {
     const [currentPage, setCurrentPage] = useState<'FORM' | 'EDITOR'>('FORM');
+    const [elements, setElements] = useState<EditorElementProp[]>([]);
+
+    const setElementList = (elementList: EditorElementProp[]) => {
+        setElements(elementList);
+    };
+
     const { formInput, onClickHold } = useInputExhibition();
 
     const onClickNextButton = () => {
@@ -40,7 +47,12 @@ const ExhibitionPostPage = () => {
                         </Container>
                     </>
                 ) : (
-                    <Editor backButtonHandler={handleBackButton} holdExhibition={onClickHold} />
+                    <Editor
+                        elements={elements}
+                        setElementList={setElementList}
+                        backButtonHandler={handleBackButton}
+                        holdExhibition={onClickHold}
+                    />
                 )}
             </Layout>
         </div>
