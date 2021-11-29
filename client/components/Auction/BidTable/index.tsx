@@ -88,7 +88,7 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
                 gas: GAS_LIMIT,
             });
             return true;
-        } catch (error) {
+        } catch (error: any) {
             const parseStr = error.message.match(/{.*}/);
             if (!parseStr) {
                 console.log(error);
