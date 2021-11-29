@@ -81,6 +81,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
 
     const createRectangular = () => {
         const element: EditorElementProp = {
+            id: elements.length,
             tagName: EditorElementName.rectangular,
             style: initialRectStyle,
         };
@@ -114,7 +115,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     const createText = () => {
         const element: EditorElementProp = {
             id: elements.length,
-            type: EditorElementName.text,
+            tagName: EditorElementName.text,
             style: initialTextStyle,
         };
         setElements([...elements, element]);

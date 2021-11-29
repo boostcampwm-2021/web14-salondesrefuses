@@ -30,8 +30,8 @@ const ExhibitionPostPage = () => {
     };
 
     const onClickNextButton = () => {
-        const { title, startAt, endAt, thumbnail } = formInput;
-        if(!title || !startAt || !endAt || !thumbnail || !selectedImages.length) {
+        const { title, startAt, endAt, thumbnailImage } = formInput;
+        if (!title || !startAt || !endAt || !thumbnailImage || !selectedImages.length) {
             showToast('failed');
             return;
         }
@@ -44,10 +44,10 @@ const ExhibitionPostPage = () => {
     };
 
     useEffect(() => {
-        return (() => {
+        return () => {
             setSelectedImages([]);
             setEditorImageState([]);
-        });
+        };
     }, []);
 
     return (

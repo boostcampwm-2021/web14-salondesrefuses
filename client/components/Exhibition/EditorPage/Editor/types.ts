@@ -18,6 +18,7 @@ export type EditorElementStyle = {
 };
 
 export interface EditorElementProp {
+    id: number;
     tagName: EditorElementType;
     style: EditorElementStyle;
     image?: Artwork;
