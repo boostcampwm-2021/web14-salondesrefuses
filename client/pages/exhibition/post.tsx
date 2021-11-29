@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Head from 'next/head';
 
@@ -9,10 +9,14 @@ import { Description, NextButton, Title } from '@components/Exhibition/style';
 import Editor from '@components/Exhibition/EditorPage';
 import useInputExhibition from '@hooks/useInputExhibition';
 import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/types';
+import { useEditorImageState, useSelectedImageState } from '@store/editorImageState';
 
 const ExhibitionPostPage = () => {
     const [currentPage, setCurrentPage] = useState<'FORM' | 'EDITOR'>('FORM');
     const [elements, setElements] = useState<EditorElementProp[]>([]);
+
+    const [selectedImages, setSelectedImages] = useSelectedImageState();
+    const [editorImageState, setEditorImageState] = useEditorImageState();
 
     const setElementList = (elementList: EditorElementProp[]) => {
         setElements(elementList);
@@ -27,6 +31,13 @@ const ExhibitionPostPage = () => {
     const handleBackButton = () => {
         setCurrentPage('FORM');
     };
+
+    useEffect(() => {
+        return (() => {
+            setSelectedImages([]);
+            setEditorImageState([]);
+        });
+    }, []);
 
     return (
         <div>
