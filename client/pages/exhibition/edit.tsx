@@ -74,6 +74,7 @@ const ExhibitionEditPage = () => {
                         holdExhibition={onClickHold}
                         elements={elements}
                         setElementList={setElementList}
+                        isEdit={true}
                     />
                 )}
             </Layout>

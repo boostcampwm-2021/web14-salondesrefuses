@@ -11,6 +11,7 @@ interface EditorProp {
     holdExhibition: (content: string, size: string, artworkIds: string) => void;
     elements: EditorElementProp[];
     setElementList: (elementList: EditorElementProp[]) => void;
+    isEdit: boolean;
 }
 interface ExhibitionElement {
     tagName: string;
@@ -22,9 +23,8 @@ interface ExhibitionElement {
     };
 }
 
-const index = ({ backButtonHandler, holdExhibition, elements, setElementList }: EditorProp) => {
+const index = ({ backButtonHandler, holdExhibition, elements, setElementList, isEdit }: EditorProp) => {
     const editorRef = useRef<HTMLDivElement | null>(null);
-    const isEdit = elements.length > 0 ? true : false;
 
     const saveButtonHandler = async () => {
         const exhibitionElements: Array<ExhibitionElement> = [];
