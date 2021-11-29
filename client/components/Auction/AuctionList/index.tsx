@@ -15,7 +15,7 @@ import { Grid } from '@components/common/Card/style';
 
 const AuctionList = () => {
     const session = useSessionState().contents;
-    const [onSelect, setOnSelect] = useState('Popular');
+    const [onSelect, setOnSelect] = useState('Newest');
     const [auctionItems, setAuctionItems] = useState<AuctionCardProps[]>([]);
     const [page, setPage] = useState(0);
     const { requireLoginModal, onClickPostArtworkWithoutLogin, closeModal } = useHandleRequireLoginModal();
@@ -40,13 +40,13 @@ const AuctionList = () => {
         return (
             <FilterWrapper>
                 <div>
-                    <Filter onClick={onClickFilter} select={onSelect === 'Popular'}>
-                        Popular
+                    <Filter onClick={onClickFilter} select={onSelect === 'Newest'}>
+                        Newest
                     </Filter>
                 </div>
                 <div>
-                    <Filter onClick={onClickFilter} select={onSelect === 'Newest'}>
-                        Newest
+                    <Filter onClick={onClickFilter} select={onSelect === 'Popular'}>
+                        Popular
                     </Filter>
                 </div>
             </FilterWrapper>
