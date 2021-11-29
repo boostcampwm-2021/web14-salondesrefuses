@@ -15,8 +15,8 @@ const Container = styled.div<{ show: boolean }>`
     width: 300px;
     height: 50px;
     bottom: 100px;
-    z-index: 999;
-    opacity: ${(props) => (props.show ? '1' : '0')};
+    z-index: ${({ show }) => (show ? '999' : '0')};
+    opacity: ${({ show }) => (show ? '1' : '0')};
     display: flex;
     justify-content: center;
     gap: 20px;

@@ -156,6 +156,7 @@ const Button = styled.button<{ active: boolean }>`
     border-radius: 10px;
     transition: all 0.3s ease;
     font: ${(props) => props.theme.font.textEnMd};
+    cursor: pointer;
 
     ${(props) =>
         props.active
