@@ -25,9 +25,13 @@ export class CronTaskService {
         this.logger.debug('Called when the every day 04:00');
         const auctions = await this.auctionService.getEndedAuctions();
 
-        auctions.map(auction => auction.artwork.nftToken).forEach(token => this.transact(Number(token)));
-        auctions.forEach(auction => this.completedAuctionService.closeAuction(auction.id));
-        this.artworkService.bulkUpdateArtworkState(auctions.map(auction => auction.artwork.id));
+        try {
+            auctions.map(auction => auction.artwork.nftToken).forEach(token => this.transact(Number(token)));
+            auctions.forEach(auction => this.completedAuctionService.closeAuction(auction.id));
+            this.artworkService.bulkUpdateArtworkState(auctions.map(auction => auction.artwork.id));
+        } catch (error) {
+            this.logger.error(`Cron job error: ${error}`);
+        }
     }
 
     async transact(tokenId: number) {
