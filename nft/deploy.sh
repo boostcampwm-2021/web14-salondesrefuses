@@ -3,11 +3,9 @@
 CURRENT_PATH=`pwd -P`
 NFT_PATH=${CURRENT_PATH%/*}
 
-echo '> nft 빌드'
+echo '> nft 배포'
 
-if [ ! -d $NFT_PATH/nft/build ]; then
-    truffle migrate --reset
-fi
+truffle deploy
 
 if [ ! -d $NFT_PATH/server/src/cronTask/ethereum ]; then
     mkdir $NFT_PATH/server/src/cronTask/ethereum
@@ -23,4 +21,4 @@ cp $NFT_PATH/nft/build/address/SalonDesRefusesAddress.json $NFT_PATH/client/publ
 cp $NFT_PATH/nft/build/contracts/SalonDesRefuse.json $NFT_PATH/server/src/cronTask/ethereum/abi.json
 cp $NFT_PATH/nft/build/contracts/SalonDesRefuse.json $NFT_PATH/client/public/ethereum/abi.json
 
-echo '> nft 빌드끝'
+echo '> nft 배포 끝'
