@@ -42,7 +42,7 @@ const useArtworkInput = () => {
 
     const onChangeYear = (e: React.FormEvent) => {
         const input = (e.target as HTMLInputElement).value;
-        if (!RegExp(/\d{4}/gi).test(input) && input.length > 0) setValidInput({ ...validInput, year: false });
+        if (!RegExp(/^[12][\d]{3}$/gi).test(input) && input.length > 0) setValidInput({ ...validInput, year: false });
         else setValidInput({ ...validInput, year: true });
         setArtworkInput({ ...artworkInput, year: input });
     };
@@ -57,7 +57,7 @@ const useArtworkInput = () => {
 
     const onChangePrice = (e: React.FormEvent) => {
         const input = (e.target as HTMLInputElement).value;
-        const regex = RegExp(/[0-9.]+/gi);
+        const regex = RegExp(/^[0-9.]+$/gi);
         if (!regex.test(input) && input.length > 0) setValidInput({ ...validInput, price: false });
         else setValidInput({ ...validInput, price: true });
         setArtworkInput({ ...artworkInput, price: input });
