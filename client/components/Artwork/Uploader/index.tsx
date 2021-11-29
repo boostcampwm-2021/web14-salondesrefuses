@@ -30,6 +30,7 @@ const Uploader = ({ handleNewImage }: UploaderProps) => {
         const newFile = inputRef.current!.files![0];
         if (byteToMB(newFile.size) > 3) {
             showToast('failed');
+            inputRef.current!.value = '';
             return;
         }
         handleNewImage(newFile);
