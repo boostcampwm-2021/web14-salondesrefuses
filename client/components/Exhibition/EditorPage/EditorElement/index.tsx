@@ -156,7 +156,9 @@ const EditorElement = ({
                         isDoubleClicked={isDoubleClicked}
                         spellCheck={false}
                         onBlur={() => setIsDoubleClickedFunc(false)}
-                    ></InputDiv>
+                    >
+                        {text}
+                    </InputDiv>
                     {isSelected && getBorderController(tagName)}
                 </div>
             ) : (

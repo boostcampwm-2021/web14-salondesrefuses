@@ -154,6 +154,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
 
     const renderElements = () => {
         return elements.map((element, idx) => {
+            console.log(element);
             if (element.tagName)
                 return (
                     <EditorElement
@@ -165,6 +166,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
                         tagName={element.tagName}
                         image={element.image}
                         imgSrc={element.imgSrc}
+                        text={element.innerText}
                         artworkId={element.artworkId}
                         isDoubleClicked={isDoubleClicked}
                         setIsDoubleClickedFunc={setIsDoubleClickedFunc}
