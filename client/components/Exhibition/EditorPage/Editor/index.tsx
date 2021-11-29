@@ -48,6 +48,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
         setElements([
             ...elements,
             {
+                id: elements.length,
                 type: 'IMAGE',
                 style: initialImageStyle,
                 image: editorImageState[editorImageState.length - 1],
@@ -73,10 +74,15 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
                 keyToCurrentElements([]);
             }
         });
+
+        return (() => {
+            setEditorImageState([]);
+        });
     }, []);
 
     const createRectangular = () => {
         const element: EditorElementProp = {
+            id: elements.length,
             type: EditorElementName.rectangular,
             style: initialRectStyle,
         };
@@ -100,10 +106,8 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     };
     const deleteElement = () => {
         if (!currentElements) return;
-        currentElements.forEach((element) => {
-            if (!element) return;
-            element.remove();
-        });
+        setElements(() => elements.filter(el => el.id !== Number(currentElements[0]?.id)));
+        setCurrentElements([]);
     };
     const onFontStylerButton = () => {
         mirrorCurrentFontStyle();
@@ -111,6 +115,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     };
     const createText = () => {
         const element: EditorElementProp = {
+            id: elements.length,
             type: EditorElementName.text,
             style: initialTextStyle,
         };
