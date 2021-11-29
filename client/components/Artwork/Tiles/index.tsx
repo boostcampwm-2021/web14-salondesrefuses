@@ -37,6 +37,7 @@ const Grid = styled.div`
     width: 100%;
     max-width: 1000px;
     margin-top: 30px;
+    text-align: center;
 
     & > div {
         display: inline-block;
