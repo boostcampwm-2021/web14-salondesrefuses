@@ -48,8 +48,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
         setElements([
             ...elements,
             {
-                id: elements.length,
-                type: 'IMAGE',
+                tagName: 'IMAGE',
                 style: initialImageStyle,
                 image: editorImageState[editorImageState.length - 1],
             },

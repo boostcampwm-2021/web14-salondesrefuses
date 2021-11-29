@@ -10,10 +10,11 @@ export type EditorElementStyle = {
     top: number;
     left: number;
     transform?: string;
-    backgroundColor: string;
+    backgroundColor?: string;
     width: number | string;
     height: number | string;
     zIndex: number;
+    position: 'absolute' | 'flex';
 };
 
 export interface EditorElementProp {

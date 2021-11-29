@@ -5,6 +5,7 @@ export const initialRectStyle = {
     left: 0,
     backgroundColor: 'black',
     zIndex: 100,
+    position: 'absolute' as 'absolute',
 };
 
 export const initialTextStyle = {
@@ -14,6 +15,7 @@ export const initialTextStyle = {
     left: 0,
     backgroundColor: 'none',
     zIndex: 100,
+    position: 'absolute' as 'absolute',
 };
 
 export const initialImageStyle = {
@@ -23,4 +25,5 @@ export const initialImageStyle = {
     left: 0,
     backgroundColor: 'none',
     zIndex: 100,
+    position: 'absolute' as 'absolute',
 };
