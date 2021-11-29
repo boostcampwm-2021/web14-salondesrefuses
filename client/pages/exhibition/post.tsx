@@ -16,6 +16,7 @@ import useToast from '@hooks/useToast';
 const ExhibitionPostPage = () => {
     const [currentPage, setCurrentPage] = useState<'FORM' | 'EDITOR'>('FORM');
     const [elements, setElements] = useState<EditorElementProp[]>([]);
+    const { formInput, onClickHold } = useInputExhibition();
 
     const [selectedImages, setSelectedImages] = useSelectedImageState();
     const [editorImageState, setEditorImageState] = useEditorImageState();
@@ -27,8 +28,6 @@ const ExhibitionPostPage = () => {
     const setElementList = (elementList: EditorElementProp[]) => {
         setElements(elementList);
     };
-
-    const { formInput, onClickHold } = useInputExhibition();
 
     const onClickNextButton = () => {
         const { title, startAt, endAt, thumbnail } = formInput;

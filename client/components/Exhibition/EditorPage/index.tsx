@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import styled from '@emotion/styled';
 
 import { BlackButton, Description, Title } from '../style';
@@ -9,7 +9,8 @@ import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/type
 interface EditorProp {
     backButtonHandler: () => void;
     holdExhibition: (content: string, size: string, artworkIds: string) => void;
-    oldElements?: string | null;
+    elements: EditorElementProp[];
+    setElementList: (elementList: EditorElementProp[]) => void;
 }
 interface ExhibitionElement {
     tagName: string;
@@ -21,17 +22,9 @@ interface ExhibitionElement {
     };
 }
 
-const index = ({ backButtonHandler, holdExhibition, oldElements }: EditorProp) => {
-    const [elements, setElements] = useState<EditorElementProp[]>([]);
+const index = ({ backButtonHandler, holdExhibition, elements, setElementList }: EditorProp) => {
     const editorRef = useRef<HTMLDivElement | null>(null);
-    const setElementList = (elementList: EditorElementProp[]) => {
-        setElements(elementList);
-    };
-    const isEdit = oldElements ? true : false;
-    useEffect(() => {
-        if (!oldElements) return;
-        setElements(JSON.parse(oldElements));
-    }, []);
+    const isEdit = elements.length ? true : false;
 
     const saveButtonHandler = async () => {
         const exhibitionElements: Array<ExhibitionElement> = [];

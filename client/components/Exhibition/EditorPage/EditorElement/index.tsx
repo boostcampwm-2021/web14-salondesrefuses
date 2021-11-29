@@ -8,11 +8,13 @@ import { onDraggable, getPositions, getDotStyle, onResize } from './utils';
 interface Prop {
     style: EditorElementStyle;
     editable?: boolean;
-    type: EditorElementType;
+    tagName: EditorElementType;
     image?: Artwork;
+    imgSrc?: string;
     text?: string;
     align?: string;
     idx: number;
+    artworkId?: string;
     currentElements: Array<HTMLElement | null>;
     keyToCurrentElements: (arr: Array<HTMLElement | null>) => void;
     isDoubleClicked: boolean;
@@ -22,11 +24,13 @@ interface Prop {
 const EditorElement = ({
     style,
     editable = true,
-    type,
+    tagName,
     image,
+    imgSrc,
     text,
     align,
     idx,
+    artworkId,
     currentElements = [],
     keyToCurrentElements,
     isDoubleClicked,
@@ -43,7 +47,7 @@ const EditorElement = ({
     const calculateStyle = () => {
         let imageHeight;
         let imageWidth;
-        if (type === 'IMAGE') {
+        if (tagName === 'IMAGE') {
             if (!image) return;
             const tmpImg = new Image();
             tmpImg.src = image.originalImage;
@@ -93,14 +97,14 @@ const EditorElement = ({
     }, [currentElements]);
 
     useEffect(() => {
-        if (!elementRef.current || type !== 'TEXT') return;
+        if (!elementRef.current || tagName !== 'TEXT') return;
         keyToCurrentElements([elementRef.current]);
         (elementRef.current.children[0] as HTMLElement).focus();
     }, []);
 
     return (
         <>
-            {type === 'RECTANGULAR' ? (
+            {tagName === 'RECTANGULAR' ? (
                 <div
                     className="editorElement RECTANGULAR"
                     onClick={() => keyToCurrentElements([elementRef.current])}
@@ -109,9 +113,9 @@ const EditorElement = ({
                     ref={elementRef as RefObject<HTMLDivElement>}
                     id={`${idx}`}
                 >
-                    {isSelected && getBorderController(type)}
+                    {isSelected && getBorderController(tagName)}
                 </div>
-            ) : type === 'TEXT' ? (
+            ) : tagName === 'TEXT' ? (
                 <div
                     className="editorElement TEXT"
                     style={calculateStyle()}
@@ -131,7 +135,7 @@ const EditorElement = ({
                         spellCheck={false}
                         onBlur={() => setIsDoubleClickedFunc(false)}
                     ></InputDiv>
-                    {isSelected && getBorderController(type)}
+                    {isSelected && getBorderController(tagName)}
                 </div>
             ) : (
                 <ImgDiv
@@ -141,11 +145,10 @@ const EditorElement = ({
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
                     draggable={false}
-                    imgSrc={image!.originalImage}
-                    data-artwork={image!.id}
-                    id={`${idx}`}
+                    imgSrc={image ? image.originalImage : imgSrc!}
+                    data-artwork={image ? image.id : artworkId!}
                 >
-                    {isSelected && getBorderController(type)}
+                    {isSelected && getBorderController(tagName)}
                 </ImgDiv>
             )}
         </>

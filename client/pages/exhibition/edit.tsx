@@ -11,12 +11,19 @@ import Editor from '@components/Exhibition/EditorPage';
 import useInputExhibition from '@hooks/useInputExhibition';
 import { getExhibition } from '../../service/networking';
 import { Exhibition } from 'interfaces';
+import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/types';
 
 const ExhibitionEditPage = () => {
     const [currentPage, setCurrentPage] = useState<'FORM' | 'EDITOR'>('FORM');
+    const [exhibitionData, setExhibitionData] = useState<Exhibition | null>(null);
+    const [elements, setElements] = useState<EditorElementProp[]>([]);
     const params = useRouter().query.exhibitionId;
     const { formInput, onClickHold } = useInputExhibition();
-    const [exhibitionData, setExhibitionData] = useState<Exhibition | null>(null);
+
+    const setElementList = (elementList: EditorElementProp[]) => {
+        setElements(elementList);
+    };
+
     const onClickNextButton = () => {
         setCurrentPage('EDITOR');
     };
@@ -26,6 +33,7 @@ const ExhibitionEditPage = () => {
     };
     useEffect(() => {
         getExhibition(params as string).then((res) => {
+            setElementList(JSON.parse(res.data.contents));
             return setExhibitionData(res.data);
         });
     }, []);
@@ -61,7 +69,12 @@ const ExhibitionEditPage = () => {
                         </Container>
                     </>
                 ) : (
-                    <Editor backButtonHandler={handleBackButton} holdExhibition={onClickHold} />
+                    <Editor
+                        backButtonHandler={handleBackButton}
+                        holdExhibition={onClickHold}
+                        elements={elements}
+                        setElementList={setElementList}
+                    />
                 )}
             </Layout>
         </div>
