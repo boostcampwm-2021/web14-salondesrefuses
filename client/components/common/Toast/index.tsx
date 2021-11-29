@@ -12,7 +12,7 @@ const Container = styled.div<{ show: boolean }>`
     position: fixed;
     background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(30px);
-    width: 300px;
+    width: 350px;
     height: 50px;
     bottom: 100px;
     z-index: 999;

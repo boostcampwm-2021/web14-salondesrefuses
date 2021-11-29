@@ -10,6 +10,7 @@ import Editor from '@components/Exhibition/EditorPage';
 import useInputExhibition from '@hooks/useInputExhibition';
 import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/types';
 import { useEditorImageState, useSelectedImageState } from '@store/editorImageState';
+import useToast from '@hooks/useToast';
 
 const ExhibitionPostPage = () => {
     const [currentPage, setCurrentPage] = useState<'FORM' | 'EDITOR'>('FORM');
@@ -17,6 +18,10 @@ const ExhibitionPostPage = () => {
 
     const [selectedImages, setSelectedImages] = useSelectedImageState();
     const [editorImageState, setEditorImageState] = useEditorImageState();
+    const showToast = useToast({
+        onSuccess: '',
+        onFailed: '제목 / 기간 / 썸네일 / 작품을 선택해주세요.',
+    });
 
     const setElementList = (elementList: EditorElementProp[]) => {
         setElements(elementList);
@@ -25,6 +30,12 @@ const ExhibitionPostPage = () => {
     const { formInput, onClickHold } = useInputExhibition();
 
     const onClickNextButton = () => {
+        const { title, startAt, endAt, thumbnail } = formInput;
+        if(!title || !startAt || !endAt || !thumbnail || !selectedImages.length) {
+            showToast('failed');
+            return;
+        }
+
         setCurrentPage('EDITOR');
     };
 
