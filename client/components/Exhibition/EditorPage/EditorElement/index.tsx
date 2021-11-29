@@ -107,6 +107,7 @@ const EditorElement = ({
                     style={calculateStyle()}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
+                    id={`${idx}`}
                 >
                     {isSelected && getBorderController(type)}
                 </div>
@@ -122,6 +123,7 @@ const EditorElement = ({
                         editerbleDiv.focus();
                         setIsDoubleClickedFunc(true);
                     }}
+                    id={`${idx}`}
                 >
                     <InputDiv
                         contentEditable={true}
@@ -141,6 +143,7 @@ const EditorElement = ({
                     draggable={false}
                     imgSrc={image!.originalImage}
                     data-artwork={image!.id}
+                    id={`${idx}`}
                 >
                     {isSelected && getBorderController(type)}
                 </ImgDiv>

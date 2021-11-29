@@ -31,7 +31,10 @@ const useInputArtwork = (image: File) => {
         const result = await postArtwork(formData);
         if (onResponseSuccess(result.status)) {
             showToast('success');
-            router.push(`/artwork/result?id=${result.data.id}`);
+
+            modalInputData['checked'] === 'auction'
+                ? router.push(`/artwork/result?id=${result.data.id}`)
+                : router.reload();
         } else {
             showToast('failed');
         }

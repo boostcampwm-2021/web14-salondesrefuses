@@ -47,13 +47,13 @@ const AuctionList = () => {
         return (
             <FilterWrapper>
                 <div>
-                    <Filter onClick={onClickFilter} select={onSelect === 'Popular'}>
-                        Popular
+                    <Filter onClick={onClickFilter} select={onSelect === 'Newest'}>
+                        Newest
                     </Filter>
                 </div>
                 <div>
-                    <Filter onClick={onClickFilter} select={onSelect === 'Newest'}>
-                        Newest
+                    <Filter onClick={onClickFilter} select={onSelect === 'Popular'}>
+                        Popular
                     </Filter>
                 </div>
             </FilterWrapper>
