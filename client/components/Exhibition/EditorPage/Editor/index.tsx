@@ -45,14 +45,13 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
 
     useEffect(() => {
         if (editorImageState.length === 0) return;
-        setElements([
-            ...elements,
-            {
-                tagName: 'IMAGE',
-                style: initialImageStyle,
-                image: editorImageState[editorImageState.length - 1],
-            },
-        ]);
+        const element: EditorElementProp = {
+            id: elements.length,
+            tagName: EditorElementName.image,
+            style: initialTextStyle,
+            image: editorImageState[editorImageState.length - 1],
+        };
+        setElements([...elements, element]);
     }, [editorImageState]);
 
     useEffect(() => {

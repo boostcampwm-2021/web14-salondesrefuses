@@ -61,7 +61,7 @@ const EditorElement = ({
         return {
             top: 0,
             left: 0,
-            transform: `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`,
+            transform: currentStyle.transform,
             width: `${currentStyle.width}px`,
             height: `${currentStyle.height}px`,
             backgroundColor: currentStyle.backgroundColor,
@@ -110,7 +110,7 @@ const EditorElement = ({
                     left: 0,
                     width: imgStyle.width,
                     height: imgStyle.height,
-                    transform: `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`,
+                    transform: currentStyle.transform,
                     zIndex: 100,
                     position: 'absolute' as 'absolute',
                 });
