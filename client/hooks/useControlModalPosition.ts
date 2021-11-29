@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
 
 const useControlModalPosition = () => {
-    const [modalPositionBottom, setModalPositionBottom] = useState('-560px');
+    const [modalPositionTop, setModalPositionTop] = useState('calc(100% - 45px)');
 
     const onClickHiddenModal = () => {
-        setModalPositionBottom('10vh');
+        setModalPositionTop('calc(50% - 265px)');
     };
 
     const onWheelModal = (e: WheelEvent) => {
-        if (e.deltaY > 30) setModalPositionBottom('10vh');
-        else if (e.deltaY < -30) setModalPositionBottom('-560px');
+        if (e.deltaY > 30) setModalPositionTop('calc(50% - 265px)');
+        else if (e.deltaY < -30) setModalPositionTop('calc(100% - 45px)');
     };
 
     const handleModalPosition = (bottom: string) => {
-        setModalPositionBottom(bottom);
+        setModalPositionTop(bottom);
     };
 
     useEffect(() => {
@@ -25,7 +25,7 @@ const useControlModalPosition = () => {
         };
     }, []);
 
-    return { modalPositionBottom, handleModalPosition, onClickHiddenModal };
+    return { modalPositionTop, handleModalPosition, onClickHiddenModal };
 };
 
 export default useControlModalPosition;

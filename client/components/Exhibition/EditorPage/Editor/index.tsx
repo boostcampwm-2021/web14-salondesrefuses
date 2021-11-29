@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, forwardRef } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 
 import ColorPicker from '../ColorPicker';
 import EditorElement from '../EditorElement';
@@ -121,7 +121,6 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     };
     const keyToCurrentElements = (keyArr: Array<HTMLElement | null>) => {
         setCurrentElements(keyArr);
-        setIsDoubleClicked(false);
     };
     const setIsDoubleClickedFunc = (check: boolean) => {
         setIsDoubleClicked(check);

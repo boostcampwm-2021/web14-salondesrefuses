@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import { Artwork } from 'interfaces';
 import { EditorElementStyle, EditorElementType } from '../Editor/types';
 import { onDraggable, getPositions, getDotStyle, onResize } from './utils';
-import { Center } from '@styles/common';
 
 interface Prop {
     style: EditorElementStyle;
@@ -116,11 +115,20 @@ const EditorElement = ({
                     className="editorElement TEXT"
                     style={calculateStyle()}
                     onClick={() => keyToCurrentElements([elementRef.current])}
-                    onMouseDown={(e) => isSelected && onDraggable(e, element)}
+                    onMouseDown={(e) => isSelected && !isDoubleClicked && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
-                    onDoubleClick={() => setIsDoubleClickedFunc(true)}
+                    onDoubleClick={(e) => {
+                        const editerbleDiv = elementRef.current!.firstElementChild! as HTMLInputElement;
+                        editerbleDiv.focus();
+                        setIsDoubleClickedFunc(true);
+                    }}
                 >
-                    <InputDiv contentEditable={true} isDoubleClicked={isDoubleClicked} spellCheck={false}></InputDiv>
+                    <InputDiv
+                        contentEditable={true}
+                        isDoubleClicked={isDoubleClicked}
+                        spellCheck={false}
+                        onBlur={() => setIsDoubleClickedFunc(false)}
+                    ></InputDiv>
                     {isSelected && getBorderController(type)}
                 </div>
             ) : (
@@ -147,7 +155,6 @@ const ImgDiv = styled.div<ImgDivProps>`
     background-image: url(${(props) => props.imgSrc});
     background-size: contain;
     background-repeat: no-repeat;
-}
 `;
 interface InputDivProps {
     isDoubleClicked: boolean;

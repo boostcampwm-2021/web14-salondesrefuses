@@ -2,6 +2,13 @@ import styled from '@emotion/styled';
 interface CardContainerProps {
     width: number;
 }
+
+export const Grid = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 50px;
+    margin-bottom: 45px;
+`;
 export const CardContainer = styled.div<CardContainerProps>`
     display: flex;
     width: ${(props) => props.width}px;
@@ -33,12 +40,7 @@ export const BlurBottom = styled.div`
     height: 30%;
     width: 100%;
     align-self: flex-end;
-    background: linear-gradient(
-        180deg,
-        rgba(175, 175, 175, 0) 0%,
-        rgba(44, 44, 44, 0.47) 77.08%,
-        #2d2d2d 100%
-    );
+    background: linear-gradient(180deg, rgba(175, 175, 175, 0) 0%, rgba(44, 44, 44, 0.47) 77.08%, #2d2d2d 100%);
     border-radius: 0px 0px 20px 20px;
     backdrop-filter: blur(20px);
     padding: 20px;

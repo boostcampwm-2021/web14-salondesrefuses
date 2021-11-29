@@ -15,7 +15,7 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
     const { onClickDone, onChangeTitleInput, onChangeTypeInput, titleInput, typeInput, handleModalInput } =
         useInputArtwork(image);
     const { backgroundImageRef, imageRef } = usePreviewImage(image);
-    const { modalPositionBottom, handleModalPosition, onClickHiddenModal } = useControlModalPosition();
+    const { modalPositionTop, handleModalPosition, onClickHiddenModal } = useControlModalPosition();
 
     return (
         <>
@@ -49,7 +49,7 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
                 </Form>
                 <ArtworkModal
                     handleModalInput={handleModalInput}
-                    position={modalPositionBottom}
+                    position={modalPositionTop}
                     handleModalPosition={handleModalPosition}
                     onClick={onClickHiddenModal}
                 />

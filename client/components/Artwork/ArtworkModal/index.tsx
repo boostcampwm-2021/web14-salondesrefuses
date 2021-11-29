@@ -1,9 +1,7 @@
 import useArtworkInput from '@hooks/useArtworkInput';
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import ArtworkFilter from '../ArtworkFilter';
 import { Modal, Form, LightForm, ConfirmButton } from './style';
-
-const date = new Date();
 
 interface ArtworkModalProps {
     handleModalInput: React.Dispatch<{ [key: string]: string }>;
@@ -27,7 +25,7 @@ const ArtworkModal = ({ handleModalInput, position, handleModalPosition, onClick
     const onClickConfirm = (e: React.MouseEvent) => {
         e.stopPropagation();
         handleModalInput({ ...artworkInput });
-        handleModalPosition('-560px');
+        handleModalPosition('calc(100% - 45px)');
     };
 
     return (

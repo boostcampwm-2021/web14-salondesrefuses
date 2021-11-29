@@ -10,7 +10,7 @@ import { getAuction } from 'service/networking';
 import useMagnifier from '@hooks/useMagnifier';
 
 const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
-    const { imageRef, magnifierRef, showMagnify } = useMagnifier();
+    const { imageRef, magnifierRef, showMagnify, imgOnLoadHandle } = useMagnifier();
 
     const { artwork, artist } = auction;
     const { title, originalImage, year } = artwork;
@@ -38,7 +38,12 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
                         <section>
                             <ImageWrapper>
                                 <Magnifier imagePath={originalImage} onClick={() => showMagnify()} ref={magnifierRef} />
-                                <Image src={originalImage} onClick={() => showMagnify()} ref={imageRef} />
+                                <Image
+                                    src={originalImage}
+                                    onClick={() => showMagnify()}
+                                    ref={imageRef}
+                                    onLoad={imgOnLoadHandle}
+                                />
                             </ImageWrapper>
                         </section>
                         <ItemDetail auction={auction} />
@@ -117,10 +122,10 @@ interface MagnifierProps {
 }
 
 const Magnifier = styled.div<MagnifierProps>`
-    width: 100px;
-    height: 100px;
     position: absolute;
     z-index: 200;
+    width: 150px;
+    height: 150px;
     border: 2px solid rgba(255, 255, 255, 0.9);
     background-image: url('${(props) => props.imagePath}');
     background-repeat: no-repeat;

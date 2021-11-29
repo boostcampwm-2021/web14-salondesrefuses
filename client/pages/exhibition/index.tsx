@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 
 import Layout from '@components/common/Layout';
-import {
-    TopContainer,
-    Buttons,
-    BlackButton,
-} from '../../components/Exhibition/style';
+import { TopContainer, Buttons, BlackButton } from '../../components/Exhibition/style';
 import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
 import RequireLoginModal from '@components/common/RequireLoginModal';
 import ListFilter from '@components/Exhibition/ListFilter';
@@ -18,8 +14,7 @@ const ExhibitionPage: NextPage = () => {
     const [onSelect, setOnSelect] = useState<string>('Newest');
     const session = useSessionState().contents;
 
-    const { requireLoginModal, onClickPostArtworkWithoutLogin, closeModal } =
-        useHandleRequireLoginModal();
+    const { requireLoginModal, onClickPostArtworkWithoutLogin, closeModal } = useHandleRequireLoginModal();
 
     const handleFilter = ({ currentTarget }: React.MouseEvent) => {
         setOnSelect(currentTarget.textContent || 'Newest');
@@ -37,12 +32,8 @@ const ExhibitionPage: NextPage = () => {
             </>
         ) : (
             <>
-                <BlackButton onClick={onClickPostArtworkWithoutLogin}>
-                    Hold Exhibition
-                </BlackButton>
-                <BlackButton onClick={onClickPostArtworkWithoutLogin}>
-                    Post Artwork
-                </BlackButton>
+                <BlackButton onClick={onClickPostArtworkWithoutLogin}>Hold Exhibition</BlackButton>
+                <BlackButton onClick={onClickPostArtworkWithoutLogin}>Post Artwork</BlackButton>
             </>
         );
     };
@@ -53,7 +44,7 @@ const ExhibitionPage: NextPage = () => {
                 <ListFilter handleFilter={handleFilter} select={onSelect} />
                 <Buttons>{buildButtons()}</Buttons>
             </TopContainer>
-            <ExhibitionList filter={onSelect} />
+            <ExhibitionList onSelect={onSelect} />
             {requireLoginModal && <RequireLoginModal close={closeModal} />}
         </Layout>
     );

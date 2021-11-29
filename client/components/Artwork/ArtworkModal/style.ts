@@ -9,7 +9,7 @@ export const Modal = styled.div<{ bottom: string }>`
     backdrop-filter: blur(100px);
     border-radius: 30px;
     padding: 40px;
-    bottom: ${(props) => props.bottom};
+    top: ${(props) => props.bottom};
     z-index: 500;
 
     & span {
@@ -17,8 +17,9 @@ export const Modal = styled.div<{ bottom: string }>`
         font-weight: 200;
     }
 
-    transition: bottom 0.2s ease;
+    transition: top 0.2s ease;
 `;
+
 export const ConfirmButton = styled.button`
     width: 130px;
     height: 40px;

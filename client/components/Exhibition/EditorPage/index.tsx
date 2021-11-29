@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import styled from '@emotion/styled';
 
 import { BlackButton, Description, Title } from '../style';
@@ -7,6 +7,8 @@ import ImageSlider from './ImageSlider';
 import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/types';
 
 interface EditorProp {
+    elements: EditorElementProp[];
+    setElementList: (elementList: EditorElementProp[]) => void;
     backButtonHandler: () => void;
     holdExhibition: (content: string, size: string, artworkIds: string) => void;
 }
@@ -20,13 +22,8 @@ interface ExhibitionElement {
     };
 }
 
-const index = ({ backButtonHandler, holdExhibition }: EditorProp) => {
-    const [elements, setElements] = useState<EditorElementProp[]>([]);
+const index = ({ elements, setElementList, backButtonHandler, holdExhibition }: EditorProp) => {
     const editorRef = useRef<HTMLDivElement | null>(null);
-
-    const setElementList = (elementList: EditorElementProp[]) => {
-        setElements(elementList);
-    };
 
     const saveButtonHandler = async () => {
         const exhibitionElements: Array<ExhibitionElement> = [];
