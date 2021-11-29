@@ -25,6 +25,7 @@ const Container = styled.div<{ show: boolean }>`
     box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
     font: ${(props) => props.theme.font.textMd};
     font-size: 1rem;
+    point-events: none;
 
     transition: opacity 0.3s ease-in-out;
 `;
