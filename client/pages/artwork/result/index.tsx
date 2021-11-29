@@ -87,7 +87,7 @@ const ResultPage = () => {
                     </Body>
                     <Buttons>
                         <Button onClick={onClickConfirm} active={token ? false : true}>
-                            Mint
+                            Create NFT
                         </Button>
                         <Button active={token ? true : false} onClick={onClickDone}>
                             Done
