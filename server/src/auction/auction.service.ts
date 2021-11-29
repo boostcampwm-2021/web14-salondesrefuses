@@ -53,7 +53,7 @@ export default class AuctionService {
 
     async updateAuction(auctionId: number, updateColumns: QueryDeepPartialEntity<Auction>) {
         const result = await this.auctionRepository.update({ id: auctionId }, updateColumns);
-        if (result.affected) {
+        if (!result.affected) {
             throw new NotFoundException(`Can't find auction with id: ${auctionId}`);
         }
     }

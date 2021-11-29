@@ -57,6 +57,19 @@ export class AuctionGateway implements OnGatewayInit {
             });
         }
 
+        try {
+            await Promise.all([
+                this.auctionService.updateAuction(auctionId, { price }),
+                this.auctionHistoryService.saveAuctionHistory(auctionId, bidderId, price, biddedAt),
+            ]);
+        } catch (error) {
+            this.server.to(auctionId).emit('@auction/error', {
+                error,
+                message: 'bid error',
+            });
+            return;
+        }
+
         this.server.to(auctionId).emit('@auction/bid', {
             bidder: {
                 name: bidderName,
@@ -64,8 +77,5 @@ export class AuctionGateway implements OnGatewayInit {
             price,
             biddedAt,
         });
-
-        this.auctionService.updateAuction(auctionId, { price });
-        this.auctionHistoryService.saveAuctionHistory(auctionId, bidderId, price, biddedAt);
     }
 }

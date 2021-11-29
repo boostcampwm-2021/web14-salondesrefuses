@@ -2309,22 +2309,10 @@
       "links": {},
       "address": "0xD80D456e63d61c18CDEBB35845B8052204513A0C",
       "transactionHash": "0x43489f89c647024dcd8e49274113f241f924013a66b2e13d842e16aa21116a0a"
-    },
-    "1638171224083": {
-      "events": {},
-      "links": {},
-      "address": "0xe78A0F7E598Cc8b0Bb87894B0F60dD2a88d6a8Ab",
-      "transactionHash": "0x244050e0b8909e76eea861f45ba1ae93c57fc84cae48486394ee6c3f68ddbe1c"
-    },
-    "1638171337262": {
-      "events": {},
-      "links": {},
-      "address": "0xe78A0F7E598Cc8b0Bb87894B0F60dD2a88d6a8Ab",
-      "transactionHash": "0x244050e0b8909e76eea861f45ba1ae93c57fc84cae48486394ee6c3f68ddbe1c"
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-29T07:36:00.074Z",
+  "updatedAt": "2021-11-29T12:58:58.977Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
