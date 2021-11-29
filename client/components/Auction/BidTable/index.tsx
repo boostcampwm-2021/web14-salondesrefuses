@@ -15,6 +15,7 @@ import contractAddress from '@public/ethereum/address.json';
 import useSessionState from '@store/sessionState';
 import useModalState from '@store/modalState';
 import { useRouter } from 'next/router';
+import { ToastMsg } from '@const/toast-message';
 
 let eventSource: EventSource | null;
 let account: string | null;
@@ -23,54 +24,97 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
     const { id, artwork } = auction;
     let { endAt } = auction;
     const [socket] = useAuctionSocketState();
-    const showToast = useToast({
-        onSuccess: '',
-        onFailed: '지갑에 ETH가 부족합니다.',
-    });
-    const [price, setPrice] = useState<number>(currentPrice ? Number((currentPrice + 0.01).toFixed(2)) : artwork.price);
+    const [price, setPrice] = useState<number>(currentPrice ? Number((currentPrice * 1.05).toFixed(2)) : artwork.price);
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
     const [contract, setContract] = useState<Contract>();
     const [_, setModalState] = useModalState();
     const router = useRouter();
     const user = useSessionState().getValue();
+    const showNotEnoughEthToast = useToast({
+        onSuccess: '',
+        onFailed: ToastMsg.NOT_ENOUGH_ETH,
+    });
+    const showNeedMetamaskToast = useToast({
+        onSuccess: '',
+        onFailed: ToastMsg.NEED_METAMASK_ACCOUNT,
+    });
+    const showNotBidOwner = useToast({
+        onSuccess: '',
+        onFailed: ToastMsg.NOT_BID_OWNER,
+    });
+    const showNotBidLowerPrice = useToast({
+        onSuccess: '',
+        onFailed: ToastMsg.NOT_BID_LOWER_PRICE,
+    });
 
     const web3 = new Web3(new Web3.providers.HttpProvider(process.env.ETHEREUM_HOST!));
 
     const checkBiddable = async (price: number) => {
-        if (!window.ethereum) return false;
+        if (!window.ethereum) {
+            showNeedMetamaskToast('failed');
+            return false;
+        }
         [account] = await window.ethereum.request({
             method: 'eth_requestAccounts',
         });
-        if (!account) return false;
+        if (!account) {
+            showNeedMetamaskToast('failed');
+            return false;
+        }
         const balance = await web3.eth.getBalance(account);
         if (price > +balance / WEI) return false;
         return true;
     };
 
-    const bidBlockChain = async (price: number) => {
-        if (!window.ethereum || !contract) return;
+    const bidNFT = async (price: number) => {
+        if (!window.ethereum || !contract) {
+            showNeedMetamaskToast('failed');
+            return false;
+        }
 
         [account] = await window.ethereum.request({
             method: 'eth_requestAccounts',
         });
 
-        if (!account) return false;
+        if (!account) {
+            showNeedMetamaskToast('failed');
+            return false;
+        }
+
         try {
             await contract.methods.bid(artwork.nftToken).send({
                 from: account,
                 value: Web3.utils.toWei(price.toString(), 'ether'),
                 gas: GAS_LIMIT,
             });
-        } catch (e) {
-            console.log(e);
+            return true;
+        } catch (error) {
+            const parseStr = error.message.match(/{.*}/);
+            if (!parseStr) {
+                console.log(error);
+                return false;
+            }
+            const message = JSON.parse(parseStr[0].replaceAll("'", '"'));
+            if (message.code === '100') {
+                showNotBidOwner('failed');
+            } else if (message.code === '200') {
+                setPrice((price) => Number((price * 1.05).toFixed(2)));
+                showNotBidLowerPrice('failed');
+            } else {
+                console.log(message);
+            }
         }
     };
 
     const bidArtwork = async () => {
         const biddable = await checkBiddable(price);
-        await bidBlockChain(price);
         if (!biddable) {
-            showToast('failed');
+            showNotEnoughEthToast('failed');
+            return;
+        }
+
+        const isBidSuccess = await bidNFT(price);
+        if (!isBidSuccess) {
             return;
         }
 
@@ -86,7 +130,7 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
     useEffect(() => {
         socket.on('@auction/bid', (data: trendHistory) => {
             const currentBidPrice = Number(data.price);
-            setPrice(Number((currentBidPrice + 0.01).toFixed(2)));
+            setPrice(Number((currentBidPrice * 1.05).toFixed(2)));
         });
 
         socket.on('@auction/time_update', (data: { id: number; endAt: Date }) => {

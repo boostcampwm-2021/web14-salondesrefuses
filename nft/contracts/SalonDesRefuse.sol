@@ -50,8 +50,8 @@ contract SalonDesRefuse is ERC721URIStorage, IERC721Enumerable, Ownable {
     }
 
     function bid(uint _tokenId) public payable returns (bool) {
-        require(ownerOf(_tokenId) != msg.sender);
-        require(lastBid[_tokenId].price < msg.value);
+        require(ownerOf(_tokenId) != msg.sender, "{'code':'100','message':'Token owners cannot participate in the auction.'}");
+        require(lastBid[_tokenId].price < msg.value, "{'code':'200','message':'Cannot be bid at a lower price.'}");
 
         address prevBidder = lastBid[_tokenId].bidder;
         payable(prevBidder).transfer(lastBid[_tokenId].price);
@@ -63,7 +63,7 @@ contract SalonDesRefuse is ERC721URIStorage, IERC721Enumerable, Ownable {
     function complete(uint _tokenId) public onlyOwner {
         address tokenOwner = ownerOf(_tokenId);
 
-        require(getApproved(_tokenId) == contractOwner);
+        require(getApproved(_tokenId) == contractOwner, "{'code':'300','message':'Cannot be transferred Token'}");
 
         payable(tokenOwner).transfer(lastBid[_tokenId].price);
         safeTransferFrom(tokenOwner, lastBid[_tokenId].bidder, _tokenId);

@@ -5,6 +5,7 @@ import { AuctionHistory } from './auctionHistory.entity';
 export class AuctionHistoryRepository extends Repository<AuctionHistory> {
     async findHighestAuctionHistory(auctionId: number): Promise<AuctionHistory> {
         return await this.createQueryBuilder('auctionHistory')
+            .innerJoinAndSelect('bidder', 'bidder')
             .where('auctionHistory.auction_id = :auctionId', { auctionId })
             .orderBy('auctionHistory.id', 'DESC')
             .getOne();
