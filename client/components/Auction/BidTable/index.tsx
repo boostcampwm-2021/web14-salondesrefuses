@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
+import Web3 from 'web3';
+import { AbiItem } from 'web3-utils';
+import { Contract } from 'web3-eth-contract';
 
 import { Auction } from 'interfaces';
 import useAuctionSocketState from '@store/auctionSocketState';
 import { trendHistory } from '@components/Auction/ItemDetail';
 import { getRemainingTime } from '@utils/time';
-import Web3 from 'web3';
 import { WEI } from '@constants/eth';
 import useToast from '@hooks/useToast';
-import { AbiItem } from 'web3-utils';
-import { Contract } from 'web3-eth-contract';
 import ABI from '@public/ethereum/abi.json';
 import contractAddress from '@public/ethereum/address.json';
 import useSessionState from '@store/sessionState';
+import useModalState from '@store/modalState';
+import { useRouter } from 'next/router';
 
 let eventSource: EventSource | null;
 let account: string | null;
@@ -28,7 +30,9 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
     const [price, setPrice] = useState<number>(currentPrice ? Number((currentPrice + 0.01).toFixed(2)) : artwork.price);
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
     const [contract, setContract] = useState<Contract>();
-    const user = useSessionState().getValue(); // 유저 객체
+    const [_, setModalState] = useModalState();
+    const router = useRouter();
+    const user = useSessionState().getValue();
 
     const web3 = new Web3(new Web3.providers.HttpProvider(process.env.ETHEREUM_HOST!));
 
@@ -96,22 +100,41 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
         };
 
         setContract(new web3.eth.Contract(ABI.abi as AbiItem[], contractAddress.address));
+
+        return () => {
+            socket?.offAny();
+            eventSource?.close();
+        };
     }, []);
 
+    useEffect(() => {
+        if (auctionDeadline === '00:00:00') {
+            setModalState({
+                show: true,
+                onConfirm: () => {
+                    router.push('/auction');
+                },
+                content: '이미 종료된 경매입니다.',
+            });
+        }
+    }, [auctionDeadline]);
+
     return (
-        <Container>
-            <Timer>
-                <span>경매 마감 기한</span>
-                <b>{auctionDeadline}</b>
-            </Timer>
-            <Bid>
-                <div>
-                    <span>현재가격</span>
-                    <b>{price} ETH</b>
-                </div>
-                <Button onClick={bidArtwork}>입찰 {price} ETH</Button>
-            </Bid>
-        </Container>
+        <>
+            <Container>
+                <Timer>
+                    <span>경매 마감 기한</span>
+                    <b>{auctionDeadline}</b>
+                </Timer>
+                <Bid>
+                    <div>
+                        <span>현재가격</span>
+                        <b>{price} ETH</b>
+                    </div>
+                    <Button onClick={bidArtwork}>입찰 {price} ETH</Button>
+                </Bid>
+            </Container>
+        </>
     );
 };
 

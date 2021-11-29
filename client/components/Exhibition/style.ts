@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Button, SpaceBetween } from '@styles/common';
+import { Button, Center, SpaceBetween } from '@styles/common';
 import { FilterProps } from '../../pages/exhibition/index';
 
 export const TopContainer = styled.div`
@@ -110,13 +110,14 @@ export const Description = styled.p`
     color: ${(props) => props.theme.color.gray1};
 `;
 
-export const ThumbnailBox = styled.span`
+export const ThumbnailBox = styled.div`
     position: relative;
     width: 300px;
     height: 450px;
 
     overflow: hidden;
     border: 1px solid #a6a6a6;
+    ${Center};
 
     & > img {
         position: absolute;

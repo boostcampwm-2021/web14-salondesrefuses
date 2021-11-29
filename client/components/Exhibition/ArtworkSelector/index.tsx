@@ -9,14 +9,9 @@ import createResource from '@utils/createResource';
 const resource = createResource(getAllArtworks());
 
 const Selector = () => {
-    // const [images, setImages] = useState<Artwork[]>([]);
     const images: Artwork[] = resource.read().data;
     const [selectedImages, setSelectedImages] = useSelectedImageState();
     const [_, setEditorImageState] = useEditorImageState();
-
-    // useEffect(() => {
-    //     getAllArtworks().then((res) => setImages(res.data));
-    // }, []);
 
     const onClickImage = (id: number) => {
         return () => {

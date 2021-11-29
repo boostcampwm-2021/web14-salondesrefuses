@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { NavButton, RightContainer, SearchBarContainer } from './style';
+import { NavButton, RightContainer } from './style';
 import ProfilePic from '@assets/images/profile.png';
 
 const getAvatar = (avatar: string | null) => {
@@ -28,29 +28,5 @@ export const defaultHeader = (session: any) => {
                 <NavButton>{session ? <img src={getAvatar(session.avatar)} alt="profile" /> : 'LogIn'}</NavButton>
             </a>
         </RightContainer>
-    );
-};
-
-export const withSearchBar = (session: any, isExhibition: boolean) => {
-    const [search, setSearch] = useState('');
-
-    return (
-        <>
-            <SearchBarContainer>
-                <input
-                    value={search}
-                    placeholder="Search by artist, gallery name, etc."
-                    onChange={(e) => setSearch(e.target.value)}
-                />
-            </SearchBarContainer>
-            <RightContainer>
-                <Link href={isExhibition ? '/auction' : '/exhibition'}>
-                    <NavButton>{isExhibition ? 'Auctions' : 'Exhibitions'}</NavButton>
-                </Link>
-                <a href="#" onClick={routeMyPageOrLogin(session)}>
-                    <NavButton>{session ? <img src={getAvatar(session.avatar)} alt="profile" /> : 'LogIn'}</NavButton>
-                </a>
-            </RightContainer>
-        </>
     );
 };

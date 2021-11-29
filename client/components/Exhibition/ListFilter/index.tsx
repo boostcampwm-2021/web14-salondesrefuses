@@ -15,11 +15,6 @@ const ListFilter = ({ handleFilter, select }: IListFilter) => {
                 </Filter>
             </div>
             <div>
-                <Filter select={select === 'Popular'} onClick={handleFilter}>
-                    Popular
-                </Filter>
-            </div>
-            <div>
                 <Filter select={select === 'Deadline'} onClick={handleFilter}>
                     Deadline
                 </Filter>

@@ -55,15 +55,3 @@ export const NavButton = styled.div`
     }
     cursor: pointer;
 `;
-export const SearchBarContainer = styled.div`
-    flex-grow: 2;
-    input {
-        ${Center}
-        border: 1px solid ${(props) => props.theme.color.gray1};
-        box-sizing: border-box;
-        border-radius: 4px;
-        width: 100%;
-        padding: 10px 20px;
-        font: ${(props) => props.theme.font.textEnSm};
-    }
-`;

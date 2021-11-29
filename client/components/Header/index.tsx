@@ -5,15 +5,15 @@ import { useRouter } from 'next/router';
 
 import Logo from '@assets/images/logo.png';
 import { HeaderContainer, LeftContainer, Hr, ImageContainer } from './style';
-import { withSearchBar, defaultHeader } from './headerStyles';
+import { defaultHeader } from './headerStyles';
 import useSessionState from '@store/sessionState';
 
 const pathToObj = {
-    '': { title: 'Main', cb: defaultHeader },
-    artwork: { title: 'New Artwork', cb: withSearchBar },
-    exhibition: { title: 'Exhibitions', cb: withSearchBar },
-    auction: { title: 'Auction', cb: withSearchBar },
-    mypage: { title: 'My Page', cb: defaultHeader },
+    '': { title: 'Main', root: '/' },
+    artwork: { title: 'New Artwork', root: '/' },
+    exhibition: { title: 'Exhibitions', root: '/exhibition' },
+    auction: { title: 'Auction', root: '/auction' },
+    mypage: { title: 'My Page', root: '/mypage' },
 };
 type mainPathInterface = '' | 'artwork' | 'exhibition' | 'auction' | 'mypage';
 
@@ -30,9 +30,9 @@ const Header = () => {
                     </ImageContainer>
                 </Link>
                 <Hr />
-                <Link href={`/${mainPath}`}>{pathToObj[mainPath].title}</Link>
+                <Link href={pathToObj[mainPath].root}>{pathToObj[mainPath].title}</Link>
             </LeftContainer>
-            {pathToObj[mainPath].cb(session, mainPath === 'exhibition')}
+            {defaultHeader(session)}
         </HeaderContainer>
     );
 };
