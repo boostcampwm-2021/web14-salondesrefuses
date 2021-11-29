@@ -88,6 +88,8 @@ const Container = styled.div`
     width: 70%;
     font: ${(props) => props.theme.font.textMd};
     font-size: 1em;
+    width: calc(100vw-400px);
+    overflow: hidden;
 `;
 
 const Form = styled.div`
@@ -113,6 +115,7 @@ const Form = styled.div`
     }
 
     & textarea {
+        width: 80%;
         border: 1px solid ${(props) => props.theme.color.placeholder};
         resize: none;
         padding: 10px 10px;

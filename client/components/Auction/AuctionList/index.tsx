@@ -7,18 +7,17 @@ import { AuctionCardProps } from '@const/card-type';
 import Card from '@components/common/Card';
 import { Filter } from '@components/Exhibition/style';
 import { getAuctions } from 'service/networking';
-import RequireLoginModal from '@components/common/RequireLoginModal';
-import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
 import useInfiniteScroll from '@hooks/useInfiniteScroll';
 import useSessionState from '@store/sessionState';
 import { Grid } from '@components/common/Card/style';
+import useModalState from '@store/modalState';
 
 const AuctionList = () => {
     const session = useSessionState().contents;
+    const [modalState, setModalState] = useModalState();
     const [onSelect, setOnSelect] = useState('Popular');
     const [auctionItems, setAuctionItems] = useState<AuctionCardProps[]>([]);
     const [page, setPage] = useState(0);
-    const { requireLoginModal, onClickPostArtworkWithoutLogin, closeModal } = useHandleRequireLoginModal();
     const gridRef = useInfiniteScroll(() => {
         setPage((page) => page + 1);
     }, auctionItems);
@@ -34,6 +33,14 @@ const AuctionList = () => {
 
     const onClickFilter = ({ currentTarget }: React.MouseEvent) => {
         setOnSelect(currentTarget.textContent || 'Newest');
+    };
+
+    const onClickButtonWithoutSession = () => {
+        setModalState({
+            show: true,
+            onConfirm: () => {},
+            content: '먼저 로그인을 해주세요.',
+        });
     };
 
     const buildFilterWrapper = () => {
@@ -63,7 +70,7 @@ const AuctionList = () => {
                             <BlackButton>Post Artwork</BlackButton>
                         </Link>
                     ) : (
-                        <BlackButton onClick={onClickPostArtworkWithoutLogin}>Post Artwork</BlackButton>
+                        <BlackButton onClick={onClickButtonWithoutSession}>Post Artwork</BlackButton>
                     )}
                 </Title>
                 <Grid ref={gridRef}>
@@ -72,7 +79,6 @@ const AuctionList = () => {
                     })}
                 </Grid>
             </Container>
-            {requireLoginModal && <RequireLoginModal close={closeModal} />}
         </>
     );
 };

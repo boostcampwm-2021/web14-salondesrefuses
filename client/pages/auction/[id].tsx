@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
@@ -15,13 +15,6 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
     const { artwork, artist } = auction;
     const { title, originalImage, year } = artwork;
     const { name } = artist;
-
-    // useEffect(() => {
-    //     document.body.style.overflow = 'hidden';
-    //     return () => {
-    //         document.body.style.overflow = 'visible';
-    //     };
-    // }, []);
 
     return (
         <NonScrollable>
@@ -44,6 +37,7 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
                                     ref={imageRef}
                                     onLoad={imgOnLoadHandle}
                                 />
+                                <span>click image to zoom</span>
                             </ImageWrapper>
                         </section>
                         <ItemDetail auction={auction} />
@@ -91,7 +85,6 @@ const Grid = styled.div`
 
     & > section {
         height: 80%;
-        position: relative;
     }
 
     & section {
@@ -109,6 +102,26 @@ const Grid = styled.div`
 const ImageWrapper = styled.div`
     display: flex;
     position: relative;
+    flex-direction: column;
+    align-items: center;
+
+    & > span {
+        margin-top: 20px;
+        font: ${(props) => props.theme.font.textEnBase};
+        animation: text-color 4s ease infinite;
+
+        @keyframes text-color {
+            0% {
+                color: rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                color: rgba(255, 255, 255, 0.3);
+            }
+            100% {
+                color: rgba(0, 0, 0, 0.3);
+            }
+        }
+    }
 `;
 
 const Image = styled.img`
