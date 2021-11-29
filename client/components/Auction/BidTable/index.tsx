@@ -100,6 +100,11 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
         };
 
         setContract(new web3.eth.Contract(ABI.abi as AbiItem[], contractAddress.address));
+
+        return () => {
+            socket?.offAny();
+            eventSource?.close();
+        };
     }, []);
 
     useEffect(() => {
