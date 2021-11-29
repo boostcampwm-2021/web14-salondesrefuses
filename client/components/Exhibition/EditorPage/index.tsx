@@ -24,7 +24,7 @@ interface ExhibitionElement {
 
 const index = ({ backButtonHandler, holdExhibition, elements, setElementList }: EditorProp) => {
     const editorRef = useRef<HTMLDivElement | null>(null);
-    const isEdit = elements.length ? true : false;
+    const isEdit = elements.length > 0 ? true : false;
 
     const saveButtonHandler = async () => {
         const exhibitionElements: Array<ExhibitionElement> = [];

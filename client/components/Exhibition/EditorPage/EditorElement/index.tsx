@@ -105,7 +105,6 @@ const EditorElement = ({
         if (tagName === 'IMAGE') {
             const asyncGetImgStyle = async () => {
                 const imgStyle = await getImgStyle();
-                console.log(imgStyle);
                 setElementStyle({
                     top: 0,
                     left: 0,
@@ -117,6 +116,8 @@ const EditorElement = ({
                 });
             };
             asyncGetImgStyle();
+        } else {
+            setElementStyle(calculateBaseStyle());
         }
         if (!elementRef.current || tagName !== 'TEXT') return;
         keyToCurrentElements([elementRef.current]);
@@ -129,7 +130,7 @@ const EditorElement = ({
                 <div
                     className="editorElement RECTANGULAR"
                     onClick={() => keyToCurrentElements([elementRef.current])}
-                    style={calculateBaseStyle()}
+                    style={elementStyle as React.CSSProperties}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
                     id={`${idx}`}
@@ -139,7 +140,7 @@ const EditorElement = ({
             ) : tagName === 'TEXT' ? (
                 <div
                     className="editorElement TEXT"
-                    style={calculateBaseStyle()}
+                    style={elementStyle as React.CSSProperties}
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     onMouseDown={(e) => isSelected && !isDoubleClicked && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
