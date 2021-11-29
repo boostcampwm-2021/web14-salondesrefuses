@@ -43,22 +43,27 @@ const EditorElement = ({
     const element = elementRef?.current;
     const [LT, LB, RT, RB] = getPositions(element);
     const imgWidthThreshold = 800;
+    const [elementStyle, setElementStyle] = useState(style);
 
-    const calculateStyle = () => {
-        let imageHeight;
-        let imageWidth;
-        if (tagName === 'IMAGE') {
-            if (!image) return;
-            const tmpImg = new Image();
-            tmpImg.src = image.originalImage;
-            imageHeight =
-                tmpImg.width > imgWidthThreshold ? (tmpImg.height * imgWidthThreshold) / tmpImg.width : tmpImg.height;
-            imageWidth = tmpImg.width > imgWidthThreshold ? imgWidthThreshold : tmpImg.width;
-        }
+    const getImgStyle = async () => {
+        const tmpImg = new Image();
+        tmpImg.src = image?.originalImage || imgSrc!;
+        await tmpImg.decode();
+        let imageHeight =
+            tmpImg.width > imgWidthThreshold ? (tmpImg.height * imgWidthThreshold) / tmpImg.width : tmpImg.height;
+        let imageWidth = tmpImg.width > imgWidthThreshold ? imgWidthThreshold : tmpImg.width;
         return {
-            transform: `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`,
             width: `${imageWidth || currentStyle.width}px`,
             height: `${imageHeight || currentStyle.height}px`,
+        };
+    };
+    const calculateBaseStyle = () => {
+        return {
+            top: 0,
+            left: 0,
+            transform: `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`,
+            width: `${currentStyle.width}px`,
+            height: `${currentStyle.height}px`,
             backgroundColor: currentStyle.backgroundColor,
             position: 'absolute' as 'absolute',
             border: isSelected ? '1px solid #3A8FD6' : '0px',
@@ -97,6 +102,22 @@ const EditorElement = ({
     }, [currentElements]);
 
     useEffect(() => {
+        if (tagName === 'IMAGE') {
+            const asyncGetImgStyle = async () => {
+                const imgStyle = await getImgStyle();
+                console.log(imgStyle);
+                setElementStyle({
+                    top: 0,
+                    left: 0,
+                    width: imgStyle.width,
+                    height: imgStyle.height,
+                    transform: `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`,
+                    zIndex: 100,
+                    position: 'absolute' as 'absolute',
+                });
+            };
+            asyncGetImgStyle();
+        }
         if (!elementRef.current || tagName !== 'TEXT') return;
         keyToCurrentElements([elementRef.current]);
         (elementRef.current.children[0] as HTMLElement).focus();
@@ -108,7 +129,7 @@ const EditorElement = ({
                 <div
                     className="editorElement RECTANGULAR"
                     onClick={() => keyToCurrentElements([elementRef.current])}
-                    style={calculateStyle()}
+                    style={calculateBaseStyle()}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
                     id={`${idx}`}
@@ -118,7 +139,7 @@ const EditorElement = ({
             ) : tagName === 'TEXT' ? (
                 <div
                     className="editorElement TEXT"
-                    style={calculateStyle()}
+                    style={calculateBaseStyle()}
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     onMouseDown={(e) => isSelected && !isDoubleClicked && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
@@ -141,7 +162,7 @@ const EditorElement = ({
                 <ImgDiv
                     className="editorElement IMAGE"
                     onClick={() => keyToCurrentElements([elementRef.current])}
-                    style={calculateStyle()}
+                    style={elementStyle as React.CSSProperties}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
                     draggable={false}
