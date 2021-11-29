@@ -85,7 +85,6 @@ const Grid = styled.div`
 
     & > section {
         height: 80%;
-        position: relative;
     }
 
     & section {
