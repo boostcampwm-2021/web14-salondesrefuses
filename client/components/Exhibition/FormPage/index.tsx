@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import styled from '@emotion/styled';
 
 import LabelInput from '../LabelInput';
 import { Input, TextArea, ThumbnailBox } from '../style';
 import Preview from './Preview/Preview';
 import { HoldExhibition } from '../types';
+import addIcon from '@public/icons/add.png';
 
 interface FormProps {
     formInput: HoldExhibition;
@@ -59,7 +60,7 @@ const index = ({ formInput }: FormProps) => {
             </LabelInput>
             <LabelInput label="전시회 썸네일" require>
                 <ThumbnailBox onClick={() => thumbnailRef.current!.click()}>
-                    {thumbnail && <Preview image={thumbnail} />}
+                    {thumbnail ? <Preview image={thumbnail} /> : <Placeholder src={addIcon.src} />}
                 </ThumbnailBox>
                 <Input
                     ref={thumbnailRef}
@@ -86,6 +87,12 @@ const Container = styled.div`
 
 const Label = styled.label`
     font: ${(props) => props.theme.font.textBase};
+`;
+
+const Placeholder = styled.img`
+    width: 50px;
+    height: 50px !important;
+    cursor: pointer;
 `;
 
 export default index;
