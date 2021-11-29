@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef } from 'react';
 
 import ColorPicker from '../ColorPicker';
 import EditorElement from '../EditorElement';
@@ -75,15 +75,14 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
             }
         });
 
-        return (() => {
+        return () => {
             setEditorImageState([]);
-        });
+        };
     }, []);
 
     const createRectangular = () => {
         const element: EditorElementProp = {
-            id: elements.length,
-            type: EditorElementName.rectangular,
+            tagName: EditorElementName.rectangular,
             style: initialRectStyle,
         };
         setElements([...elements, element]);
@@ -106,7 +105,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     };
     const deleteElement = () => {
         if (!currentElements) return;
-        setElements(() => elements.filter(el => el.id !== Number(currentElements[0]?.id)));
+        setElements(() => elements.filter((el) => el.id !== Number(currentElements[0]?.id)));
         setCurrentElements([]);
     };
     const onFontStylerButton = () => {
@@ -126,6 +125,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     };
     const keyToCurrentElements = (keyArr: Array<HTMLElement | null>) => {
         setCurrentElements(keyArr);
+        setIsDoubleClicked(false);
     };
     const setIsDoubleClickedFunc = (check: boolean) => {
         setIsDoubleClicked(check);
@@ -154,19 +154,24 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     };
 
     const renderElements = () => {
-        return elements.map((element, idx) => (
-            <EditorElement
-                key={idx}
-                idx={idx}
-                style={element.style}
-                currentElements={currentElements}
-                keyToCurrentElements={keyToCurrentElements}
-                type={element.type}
-                image={element.image}
-                isDoubleClicked={isDoubleClicked}
-                setIsDoubleClickedFunc={setIsDoubleClickedFunc}
-            ></EditorElement>
-        ));
+        return elements.map((element, idx) => {
+            if (element.tagName)
+                return (
+                    <EditorElement
+                        key={idx}
+                        idx={idx}
+                        style={element.style}
+                        currentElements={currentElements}
+                        keyToCurrentElements={keyToCurrentElements}
+                        tagName={element.tagName}
+                        image={element.image}
+                        imgSrc={element.imgSrc}
+                        artworkId={element.artworkId}
+                        isDoubleClicked={isDoubleClicked}
+                        setIsDoubleClickedFunc={setIsDoubleClickedFunc}
+                    ></EditorElement>
+                );
+        });
     };
 
     return (
