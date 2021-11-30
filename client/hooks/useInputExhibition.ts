@@ -41,14 +41,9 @@ const useInputExhibition = () => {
         formData.append('size', editorSize);
         formData.append('thumbnail', thumbnailImage!);
         formData.append('artworkIds', artworkIds);
-        // isEdit && formData.append('id', exhibitionId);
+        isEdit && formData.append('id', exhibitionId);
         formData.forEach((v) => console.log(v));
-        const result = isEdit
-            ? await editExhibition({
-                  id: exhibitionId,
-                  contents: contents,
-              })
-            : await holdExhibition(formData);
+        const result = isEdit ? await editExhibition(formData) : await holdExhibition(formData);
         if (onResponseSuccess(result.status)) {
             showToast('success');
             isEdit ? router.push(`/exhibition/${result.data.id}`) : router.push(`/exhibition/${exhibitionId}`);
