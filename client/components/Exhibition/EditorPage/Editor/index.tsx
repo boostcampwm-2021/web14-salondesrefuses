@@ -48,7 +48,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
         const element: EditorElementProp = {
             id: elements.length,
             tagName: EditorElementName.image,
-            style: initialTextStyle,
+            style: initialImageStyle,
             image: editorImageState[editorImageState.length - 1],
         };
         setElements([...elements, element]);
@@ -154,7 +154,6 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
 
     const renderElements = () => {
         return elements.map((element, idx) => {
-            console.log(element);
             if (element.tagName)
                 return (
                     <EditorElement
@@ -165,7 +164,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
                         keyToCurrentElements={keyToCurrentElements}
                         tagName={element.tagName}
                         image={element.image}
-                        imgSrc={element.imgSrc}
+                        imageSrc={element.imageSrc}
                         text={element.innerText}
                         artworkId={element.artworkId}
                         isDoubleClicked={isDoubleClicked}

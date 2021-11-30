@@ -10,7 +10,7 @@ interface Prop {
     editable?: boolean;
     tagName: EditorElementType;
     image?: Artwork;
-    imgSrc?: string;
+    imageSrc?: string;
     text?: string;
     align?: string;
     idx: number;
@@ -26,7 +26,7 @@ const EditorElement = ({
     editable = true,
     tagName,
     image,
-    imgSrc,
+    imageSrc,
     text,
     align,
     idx,
@@ -47,14 +47,14 @@ const EditorElement = ({
 
     const getImgStyle = async () => {
         const tmpImg = new Image();
-        tmpImg.src = image?.originalImage || imgSrc!;
+        tmpImg.src = image?.originalImage || imageSrc!;
         await tmpImg.decode();
         let imageHeight =
             tmpImg.width > imgWidthThreshold ? (tmpImg.height * imgWidthThreshold) / tmpImg.width : tmpImg.height;
         let imageWidth = tmpImg.width > imgWidthThreshold ? imgWidthThreshold : tmpImg.width;
         return {
-            width: `${imageWidth || currentStyle.width}px`,
-            height: `${imageHeight || currentStyle.height}px`,
+            width: `${style.width === 'auto' ? imageWidth || currentStyle.width : style.width}px`,
+            height: `${style.height === 'auto' ? imageHeight || currentStyle.height : style.height}px`,
         };
     };
     const calculateBaseStyle = () => {
@@ -156,6 +156,7 @@ const EditorElement = ({
                         isDoubleClicked={isDoubleClicked}
                         spellCheck={false}
                         onBlur={() => setIsDoubleClickedFunc(false)}
+                        suppressContentEditableWarning={true}
                     >
                         {text}
                     </InputDiv>
@@ -169,7 +170,7 @@ const EditorElement = ({
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
                     draggable={false}
-                    imgSrc={image ? image.originalImage : imgSrc!}
+                    imageSrc={image ? image.originalImage : imageSrc!}
                     data-artwork={image ? image.id : artworkId!}
                 >
                     {isSelected && getBorderController(tagName)}
@@ -179,10 +180,10 @@ const EditorElement = ({
     );
 };
 interface ImgDivProps {
-    imgSrc: string;
+    imageSrc: string;
 }
 const ImgDiv = styled.div<ImgDivProps>`
-    background-image: url(${(props) => props.imgSrc});
+    background-image: url(${(props) => props.imageSrc});
     background-size: contain;
     background-repeat: no-repeat;
 `;

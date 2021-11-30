@@ -23,6 +23,6 @@ export interface EditorElementProp {
     style: EditorElementStyle;
     image?: Artwork;
     innerText?: string;
-    imgSrc?: string;
+    imageSrc?: string;
     artworkId?: string;
 }
