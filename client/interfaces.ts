@@ -81,3 +81,13 @@ export interface FontStyle {
     fontSize: number;
     fontFamily: FontFamily;
 }
+
+export interface IExhibitionInput {
+    title: string;
+    startAt: string;
+    endAt: string;
+    theme: string;
+    collaborator: string;
+    description: string;
+    thumbnailImage: File | null;
+}

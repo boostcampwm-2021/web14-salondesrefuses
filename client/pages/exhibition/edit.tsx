@@ -18,7 +18,7 @@ const ExhibitionEditPage = () => {
     const [exhibitionData, setExhibitionData] = useState<Exhibition | null>(null);
     const [elements, setElements] = useState<EditorElementProp[]>([]);
     const params = useRouter().query.exhibitionId;
-    const { formInput, onClickHold } = useInputExhibition();
+    const { formInput, onClickHold, setExhibitionInput } = useInputExhibition();
 
     const setElementList = (elementList: EditorElementProp[]) => {
         setElements(elementList);
@@ -63,7 +63,11 @@ const ExhibitionEditPage = () => {
                             <Description>전시 수정 페이지</Description>
                         </Title>
                         <Container>
-                            <Form formInput={formInput} oldInputData={getExhibitionFormData()} />
+                            <Form
+                                formInput={formInput}
+                                oldInputData={getExhibitionFormData()}
+                                setExhibitionInput={setExhibitionInput}
+                            />
                             <ArtworkSelector />
                             <NextButton onClick={onClickNextButton}>Next</NextButton>
                         </Container>

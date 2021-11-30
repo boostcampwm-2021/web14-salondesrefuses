@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 
 import LabelInput from '../LabelInput';
@@ -6,8 +6,15 @@ import { Input, TextArea, ThumbnailBox } from '../style';
 import Preview from './Preview/Preview';
 import { HoldExhibition } from '../types';
 import addIcon from '@public/icons/add.png';
+import { IExhibitionInput } from 'interfaces';
 
-interface OldInputData {
+interface FormProps {
+    formInput: HoldExhibition;
+    oldInputData?: OldExhibition | undefined;
+    setExhibitionInput?: React.Dispatch<React.SetStateAction<IExhibitionInput>>;
+}
+
+export interface OldExhibition {
     title: string;
     startAt: Date;
     endAt: Date;
@@ -16,15 +23,18 @@ interface OldInputData {
     description: string;
     thumbnailImage: string | null;
 }
-interface FormProps {
-    formInput: HoldExhibition;
-    oldInputData?: OldInputData | undefined;
-}
 
-const index = ({ formInput, oldInputData }: FormProps) => {
+const index = ({ formInput, oldInputData, setExhibitionInput }: FormProps) => {
     const thumbnailRef = useRef<HTMLInputElement>(null);
 
     const {
+        title,
+        startAt,
+        endAt,
+        theme,
+        collaborator,
+        description,
+        thumbnailImage,
         onChangeTitleInput,
         onChangeStartAt,
         onChangeEndAt,
@@ -33,7 +43,22 @@ const index = ({ formInput, oldInputData }: FormProps) => {
         onChangeDescription,
         onChangethumbnailImage,
     } = formInput;
-    const { title, startAt, endAt, theme, collaborator, description, thumbnailImage } = oldInputData || formInput;
+
+    useEffect(() => {
+        if (!oldInputData) return;
+        // const thumbnail = new Image();
+        // thumbnail.src = oldInputData.thumbnailImage || '';
+        setExhibitionInput &&
+            setExhibitionInput({
+                title: oldInputData.title,
+                startAt: oldInputData.startAt.toString().slice(0, 10),
+                endAt: oldInputData.endAt.toString().slice(0, 10),
+                theme: oldInputData.theme,
+                collaborator: oldInputData.collaborator,
+                description: oldInputData.description,
+                thumbnailImage: thumbnailImage,
+            });
+    }, []);
     return (
         <Container>
             <LabelInput label="전시회 제목" require>

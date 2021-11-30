@@ -1,17 +1,8 @@
 import React, { useState } from 'react';
-import { onResponseSuccess, holdExhibition, editExhibition } from 'service/networking';
+import { onResponseSuccess, holdExhibition, editExhibition, getExhibitionIds } from 'service/networking';
 import { useRouter } from 'next/router';
 import useToast from '@hooks/useToast';
-
-interface IExhibitionInput {
-    title: string;
-    startAt: string;
-    endAt: string;
-    theme: string;
-    collaborator: string;
-    description: string;
-    thumbnailImage: File | null;
-}
+import { IExhibitionInput } from 'interfaces';
 
 const initialInput = {
     title: '',
@@ -50,12 +41,17 @@ const useInputExhibition = () => {
         formData.append('size', editorSize);
         formData.append('thumbnail', thumbnailImage!);
         formData.append('artworkIds', artworkIds);
-        isEdit && formData.append('id', exhibitionId);
+        // isEdit && formData.append('id', exhibitionId);
         formData.forEach((v) => console.log(v));
-        const result = isEdit ? await editExhibition(formData) : await holdExhibition(formData);
+        const result = isEdit
+            ? await editExhibition({
+                  id: exhibitionId,
+                  contents: contents,
+              })
+            : await holdExhibition(formData);
         if (onResponseSuccess(result.status)) {
             showToast('success');
-            router.push(`/exhibition/${result.data.id}`);
+            isEdit ? router.push(`/exhibition/${result.data.id}`) : router.push(`/exhibition/${exhibitionId}`);
         } else {
             showToast('failed');
         }
@@ -107,6 +103,7 @@ const useInputExhibition = () => {
             onChangethumbnailImage,
         },
         onClickHold,
+        setExhibitionInput,
     };
 };
 

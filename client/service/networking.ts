@@ -66,10 +66,10 @@ export const holdExhibition = (data: FormData) => {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
 };
-export const editExhibition = (data: FormData) => {
-    return axios.patch<PostArtworkResponse>(`${API_SERVER_URL}/exhibitions/update`, data, {
+export const editExhibition = (data: { id: string; contents: string }) => {
+    return axios.patch(`${API_SERVER_URL}/exhibitions/update`, data, {
         withCredentials: true,
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: { 'Content-Type': 'Application/JSON' },
     });
 };
 
