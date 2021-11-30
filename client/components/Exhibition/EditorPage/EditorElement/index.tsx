@@ -148,6 +148,7 @@ const EditorElement = ({
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     onMouseDown={(e) => isSelected && !isDoubleClicked && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
+                    onKeyDown={(e) => e.stopPropagation()}
                     onDoubleClick={(e) => {
                         const editerbleDiv = elementRef.current!.firstElementChild! as HTMLInputElement;
                         editerbleDiv.focus();

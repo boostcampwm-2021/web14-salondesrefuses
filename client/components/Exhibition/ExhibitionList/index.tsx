@@ -12,15 +12,15 @@ const ExhibitionList = ({ onSelect }: { onSelect: string }) => {
     const gridRef = useInfiniteScroll(() => setPage((page) => page + 1), exhibitions);
 
     useEffect(() => {
+        setExhibitions([]);
+        setPage(0);
+    }, [onSelect]);
+
+    useEffect(() => {
         getExhibitions(onSelect.toLowerCase(), page).then((res) => {
             setExhibitions([...exhibitions, ...res.data]);
         });
     }, [page, onSelect]);
-
-    useEffect(() => {
-        setPage(0);
-        setExhibitions([]);
-    }, [onSelect]);
 
     return (
         <Grid ref={gridRef}>

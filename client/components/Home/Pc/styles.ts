@@ -36,12 +36,7 @@ export const CarouselContent = styled.div<carouselContentInterface>`
     & > div {
         width: 100%;
         height: 100%;
-        background: linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 0.46) 18.75%,
-            #ffffff 100%
-        );
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.46) 18.75%, #ffffff 100%);
         backdrop-filter: blur(15px);
         padding: 80px 130px;
     }
@@ -75,8 +70,7 @@ export const Title = styled.p<TitleProps>`
     z-index: 30;
     text-align: left;
     margin: 30px 0 0 140px;
-    color: ${(props) =>
-        props.isBlack ? props.theme.color.black : props.theme.color.white};
+    color: ${(props) => (props.isBlack ? props.theme.color.black : props.theme.color.white)};
     &:after {
         content: '';
         display: block;
@@ -134,4 +128,39 @@ export const AuctionCardContainer = styled.div`
 export const MoreButtonContainer = styled.div`
     ${Center};
     margin: 50px auto;
+`;
+
+export const NFTContainer = styled.div`
+    width: 100%;
+    padding: 30px 150px;
+`;
+
+export const FlexWrapper = styled.div`
+    width: 1180px;
+    margin: 0 auto;
+    ${SpaceBetween};
+
+    & > img {
+        margin: 150px;
+        width: 250px;
+        height: 250px;
+    }
+`;
+
+export const Contents = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    & > h1 {
+        margin-top: 0;
+        margin-bottom: 50px;
+        font: ${(props) => props.theme.font.text2Xl};
+        font-family: 'Mixed Regular';
+        font-weight: bold;
+    }
+
+    & > p {
+        font: ${(props) => props.theme.font.textMd};
+        margin-bottom: 25px;
+    }
 `;
