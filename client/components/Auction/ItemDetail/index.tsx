@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import styled from '@emotion/styled';
 
 import AboutArtist from '../AboutArtist';
-import BidTable from '../BidTable';
 import Trend from '../Trend';
 import ArtworkDetail from '../ArtworkDetail';
 import { Auction } from 'interfaces';
 import useAuctionSocketState from '@store/auctionSocketState';
+import { setColorFromImage } from '@utils/setColorFromImage';
+const BidTable = dynamic(() => import('../BidTable'), { ssr: false });
 
 export type trendHistory = {
     bidder: {
@@ -16,8 +18,9 @@ export type trendHistory = {
     biddedAt: string;
 };
 
-const ItemDetail = ({ auction }: { auction: Auction }) => {
+const ItemDetail = ({ auction, image }: { auction: Auction; image: string }) => {
     const [socket] = useAuctionSocketState();
+    const [isBlack, setIsBlack] = useState(true);
 
     const { id, artwork, artist, auctionHistories, price } = auction;
     const { title, type } = artwork;
@@ -27,6 +30,7 @@ const ItemDetail = ({ auction }: { auction: Auction }) => {
 
     useEffect(() => {
         socket.emit('@auction/enter', id);
+        setColorFromImage(image).then((res) => setIsBlack(res));
 
         return () => {
             socket.emit('@auction/leave', id);
@@ -35,7 +39,7 @@ const ItemDetail = ({ auction }: { auction: Auction }) => {
 
     return (
         <Container>
-            <Summary>
+            <Summary isBlack={isBlack}>
                 <h1>{title}</h1>
                 <span>{type}</span>
             </Summary>
@@ -52,14 +56,10 @@ const Container = styled.section`
     overflow-y: scroll;
     overflow-x: hidden;
     padding: 10px 0;
+    position: relative;
 
     &::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: #bbbbbb;
-        border-radius: 10px;
+        display: none;
     }
 
     & > div {
@@ -73,7 +73,7 @@ const Container = styled.section`
     }
 `;
 
-const Summary = styled.section`
+const Summary = styled.section<{ isBlack: boolean }>`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -82,6 +82,7 @@ const Summary = styled.section`
     & > span,
     h1 {
         margin: 2px;
+        color: ${({ isBlack }) => (isBlack ? 'black' : 'white')};
     }
 
     & > h1 {
