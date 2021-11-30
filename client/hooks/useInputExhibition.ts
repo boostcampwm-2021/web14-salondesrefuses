@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { onResponseSuccess, holdExhibition } from 'service/networking';
+import { onResponseSuccess, holdExhibition, editExhibition } from 'service/networking';
 import { useRouter } from 'next/router';
 import useToast from '@hooks/useToast';
 
@@ -32,8 +32,14 @@ const useInputExhibition = () => {
         onFailed: '전시회 개최에 실패했습니다.',
     });
 
-    const onClickHold = async (contents: string, editorSize: string, artworkIds: string) => {
+    const onClickHold = async (
+        contents: string,
+        editorSize: string,
+        artworkIds: string,
+        exhibitionId: string | undefined,
+    ) => {
         const formData = new FormData();
+        const isEdit = typeof exhibitionId === 'string';
         formData.append('title', title);
         formData.append('collaborator', collaborator);
         formData.append('theme', theme);
@@ -44,7 +50,9 @@ const useInputExhibition = () => {
         formData.append('size', editorSize);
         formData.append('thumbnail', thumbnailImage!);
         formData.append('artworkIds', artworkIds);
-        const result = await holdExhibition(formData);
+        isEdit && formData.append('id', exhibitionId);
+        formData.forEach((v) => console.log(v));
+        const result = isEdit ? await editExhibition(formData) : await holdExhibition(formData);
         if (onResponseSuccess(result.status)) {
             showToast('success');
             router.push(`/exhibition/${result.data.id}`);

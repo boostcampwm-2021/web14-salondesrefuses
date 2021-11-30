@@ -5,10 +5,12 @@ import { BlackButton, Description, Title } from '../style';
 import Editor from './Editor';
 import ImageSlider from './ImageSlider';
 import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/types';
+import { useRouter } from 'next/router';
+import { Exhibition } from 'interfaces';
 
 interface EditorProp {
     backButtonHandler: () => void;
-    holdExhibition: (content: string, size: string, artworkIds: string) => void;
+    holdExhibition: (content: string, size: string, artworkIds: string, isEdit: string | undefined) => void;
     elements: EditorElementProp[];
     setElementList: (elementList: EditorElementProp[]) => void;
     isEdit: boolean;
@@ -25,6 +27,7 @@ interface ExhibitionElement {
 
 const index = ({ backButtonHandler, holdExhibition, elements, setElementList, isEdit }: EditorProp) => {
     const editorRef = useRef<HTMLDivElement | null>(null);
+    const exhibitionId = (useRouter().query.exhibitionId as string) || undefined;
 
     const saveButtonHandler = async () => {
         const exhibitionElements: Array<ExhibitionElement> = [];
@@ -63,7 +66,7 @@ const index = ({ backButtonHandler, holdExhibition, elements, setElementList, is
             });
         });
 
-        holdExhibition(JSON.stringify(exhibitionElements), editorSize, JSON.stringify(artworkIds));
+        holdExhibition(JSON.stringify(exhibitionElements), editorSize, JSON.stringify(artworkIds), exhibitionId);
     };
 
     return (
