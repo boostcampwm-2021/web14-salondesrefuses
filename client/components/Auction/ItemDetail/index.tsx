@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import styled from '@emotion/styled';
 
 import AboutArtist from '../AboutArtist';
-import BidTable from '../BidTable';
 import Trend from '../Trend';
 import ArtworkDetail from '../ArtworkDetail';
 import { Auction } from 'interfaces';
 import useAuctionSocketState from '@store/auctionSocketState';
 import { setColorFromImage } from '@utils/setColorFromImage';
+const BidTable = dynamic(() => import('../BidTable'), { ssr: false });
 
 export type trendHistory = {
     bidder: {
@@ -55,14 +56,10 @@ const Container = styled.section`
     overflow-y: scroll;
     overflow-x: hidden;
     padding: 10px 0;
+    position: relative;
 
     &::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: #bbbbbb;
-        border-radius: 10px;
+        display: none;
     }
 
     & > div {

@@ -38,6 +38,10 @@ const Container = styled.div`
     overflow-y: scroll;
     height: 100%;
     padding: 5%;
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
 `;
 
 const Box = styled.section`
