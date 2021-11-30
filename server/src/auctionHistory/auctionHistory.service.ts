@@ -9,12 +9,12 @@ export class AuctionHistoryService {
     constructor(
         private readonly auctionHistoryRepository: AuctionHistoryRepository,
         private readonly auctionRepository: AuctionRepository,
-        private readonly userRepository: UserRepository
+        private readonly userRepository: UserRepository,
     ) {}
 
     async saveAuctionHistory(id: string, bidderId: string, price: string, biddedAt: string): Promise<AuctionHistory> {
         const auction = await this.auctionRepository.findOne({ id: Number(id) });
-        const bidder = await this.userRepository.findOne(( { id: Number(bidderId) }));
+        const bidder = await this.userRepository.findOne({ id: Number(bidderId) });
 
         return await this.auctionHistoryRepository.save({
             auction,
@@ -25,11 +25,10 @@ export class AuctionHistoryService {
     }
 
     async deleteAuctionHistories(id: number): Promise<AuctionHistory> {
-        const auction = await this.auctionRepository.findOne({ id });
+        const auction = await this.auctionRepository.findOne(id);
         const highestAuctionHistory = await this.auctionHistoryRepository.findHighestAuctionHistory(id);
 
         await this.auctionHistoryRepository.delete({ auction });
         return highestAuctionHistory;
     }
-
 }
