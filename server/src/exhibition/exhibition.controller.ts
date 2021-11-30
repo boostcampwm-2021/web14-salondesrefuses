@@ -49,7 +49,7 @@ import { UpdateResult } from 'typeorm';
 export class ExhibitionController {
     constructor(private readonly exhibitionService: ExhibitionService) {}
 
-    @Get('')
+    @Get()
     @ApiOperation(getExhibtionIdsApiOperation)
     getExhibitionsIds(): Promise<number[]> {
         return this.exhibitionService.getExhibitionIds();

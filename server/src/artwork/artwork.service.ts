@@ -17,11 +17,13 @@ export class ArtworkService {
         private readonly imageService: ImageService,
         private readonly artworkRepository: ArtworkRepository,
         private readonly auctionRepository: AuctionRepository,
-    ) {
-        this.ipfs = create({ url: process.env.IPFS_URL });
-    }
+    ) {}
 
     async createCID(image): Promise<string> {
+        if(!this.ipfs) {
+            this.ipfs = create({ url: process.env.IPFS_URL });
+        }
+
         const { cid } = await this.ipfs.add(image.buffer);
         return cid.toString();
     }

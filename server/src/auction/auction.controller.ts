@@ -15,7 +15,7 @@ import {
 export default class AuctionController {
     constructor(private readonly auctionService: AuctionService) {}
 
-    @Get('')
+    @Get()
     @ApiOperation(getAuctionIdsApiOperation)
     getExhibitionsIds(): Promise<number[]> {
         return this.auctionService.getAuctionIds();
