@@ -48,7 +48,7 @@ const ArtworkModal = ({ handleModalInput, position, handleModalPosition, onClick
                             type="text"
                             value={artworkInput.bidEnd}
                             onChange={onChangeBidEnd}
-                            placeholder="yyyy-mm-dd"
+                            placeholder="yyyy-mm-dd hh:mm"
                         />
                         {!validInput.bidEnd && <p>input right format</p>}
                     </LightForm>
