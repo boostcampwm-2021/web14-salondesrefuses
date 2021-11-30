@@ -82,7 +82,7 @@ export class UserService {
     }
 
     getBiddedArtworks(nftTokens: string): Promise<Artwork[]> {
-        return this.artworkRepository.findBiddedArtworks(JSON.parse(JSON.stringify(nftTokens)));
+        return this.artworkRepository.findBiddedArtworks(JSON.parse(nftTokens));
     }
 
     getUsersExhibitions(user: User): Promise<Exhibition[]> {

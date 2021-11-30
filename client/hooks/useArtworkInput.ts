@@ -49,7 +49,7 @@ const useArtworkInput = () => {
 
     const onChangeBidEnd = (e: React.FormEvent) => {
         const input = (e.target as HTMLInputElement).value;
-        const regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]) [01][\d]:[0-5][\d]$/gi);
+        const regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])( (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]))?$/gi);
         if (!regex.test(input) && input.length > 0) setValidInput({ ...validInput, bidEnd: false });
         else setValidInput({ ...validInput, bidEnd: true });
         setArtworkInput({ ...artworkInput, bidEnd: input });
