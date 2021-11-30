@@ -181,6 +181,12 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
         }
     };
 
+    const onKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Backspace') {
+            deleteElement();
+        }
+    };
+
     return (
         <EditorContainer height={height}>
             <ToolBar>
@@ -203,7 +209,13 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
                 )}
                 {showFontStyler && <FontStyler fontStyle={fontStyles} changeFontStyle={changeFontStyles} />}
             </ToolBar>
-            <EditArea height={height} onContextMenu={onContextMenuHandle} ref={editorRef}>
+            <EditArea
+                height={height}
+                onContextMenu={onContextMenuHandle}
+                ref={editorRef}
+                onKeyDown={onKeyDown}
+                tabIndex={0}
+            >
                 {renderElements()}
             </EditArea>
         </EditorContainer>

@@ -6,7 +6,7 @@ interface EditorProps {
 
 export const EditorContainer = styled.div<EditorProps>`
     width: 100%;
-    height: ${props => props.height}px;
+    height: ${(props) => props.height}px;
     border: 1px solid ${(props) => props.theme.color.gray1};
     overflow: hidden;
 `;
@@ -37,5 +37,9 @@ export const Button = styled.button<{ bg: string }>`
 export const EditArea = styled.div<EditorProps>`
     position: relative;
     overflow: hidden;
-    height: ${props => props.height}px;
+    height: ${(props) => props.height}px;
+
+    &:focus-visible {
+        outline: none;
+    }
 `;
