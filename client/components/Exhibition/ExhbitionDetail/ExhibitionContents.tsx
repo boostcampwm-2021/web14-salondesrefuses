@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import styled from '@emotion/styled';
 import { EditorElementType, EditorElementStyle } from '@components/Exhibition/EditorPage/Editor/types';
-import Image from 'next/image';
 
 const MakeElement = ({
     content,
@@ -11,16 +10,15 @@ const MakeElement = ({
     setModalNum: (n: string | undefined) => void;
 }) => {
     return content.tagName === 'IMAGE' && content.imageSrc ? (
-        <AbsoluteImage style={content.style} onClick={() => setModalNum(content.artworkId)}>
-            <Image
-                src={content.imageSrc}
-                alt={content.artworkId}
-                width={content.style.width}
-                height={content.style.height}
-            />
-        </AbsoluteImage>
+        <AbsoluteImage
+            style={content.style as CSSProperties}
+            imgUrl={content.imageSrc}
+            onClick={() => setModalNum(content.artworkId)}
+        />
     ) : (
-        <AbsoluteDiv style={content.style}>{content.tagName === 'TEXT' && content.innerText}</AbsoluteDiv>
+        <AbsoluteDiv style={content.style as CSSProperties}>
+            {content.tagName === 'TEXT' && content.innerText}
+        </AbsoluteDiv>
     );
 };
 
@@ -58,9 +56,12 @@ const ElementContainer = styled.div<{ size: string }>`
 const AbsoluteDiv = styled.div`
     position: absolute;
 `;
-const AbsoluteImage = styled.div`
+const AbsoluteImage = styled.div<{ imgUrl: string }>`
     position: absolute;
     cursor: zoom-in;
+    background-image: url(${(props) => props.imgUrl});
+    background-size: contain;
+    background-repeat: no-repeat;
 `;
 
 export default ExhibitionContents;
