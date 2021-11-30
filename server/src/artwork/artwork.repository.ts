@@ -44,7 +44,9 @@ export class ArtworkRepository extends Repository<Artwork> {
                         .select('interest_artwork.artwork_id')
                         .from(InterestArtwork, 'interest_artwork')
                         .where('interest_artwork.user_id = :userId', { userId });
-                }, 'interest', 'interest.artwork_id = artwork.id',
+                },
+                'interest',
+                'interest.artwork_id = artwork.id',
             )
             .getMany();
     }
@@ -77,7 +79,7 @@ export class ArtworkRepository extends Repository<Artwork> {
                         .select('distinct(a.id), a.artwork_id')
                         .from(AuctionHistory, 'auction_history')
                         .innerJoin(Auction, 'a', 'auction_history.auction_id = a.id')
-                        .where(`auction_history.bidderId = ${bidderId}`);
+                        .where(`auction_history.bidder_id = ${bidderId}`);
                 },
                 'auction',
                 'artwork.id = auction.artwork_id',

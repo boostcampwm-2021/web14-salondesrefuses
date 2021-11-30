@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Button } from '@styles/common';
 import ArtworkModal from '../ArtworkModal';
@@ -16,6 +16,10 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
         useInputArtwork(image);
     const { backgroundImageRef, imageRef } = usePreviewImage(image);
     const { modalPositionTop, handleModalPosition, onClickHiddenModal } = useControlModalPosition();
+
+    const onKeyDownTab = (e: React.KeyboardEvent) => {
+        if (e.key === 'Tab') e.preventDefault();
+    };
 
     return (
         <>
@@ -44,6 +48,7 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
                             placeholder="ex) Photography ..."
                             value={typeInput}
                             onChange={onChangeTypeInput}
+                            onKeyDown={onKeyDownTab}
                         />
                     </Input>
                 </Form>

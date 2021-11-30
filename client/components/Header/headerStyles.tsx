@@ -15,7 +15,7 @@ const routeMyPageOrLogin = (session: any) => {
     };
 };
 
-export const defaultHeader = (session: any) => {
+const DefaultHeader = ({ session }: { session: any }) => {
     return (
         <RightContainer>
             <Link href="/exhibition">
@@ -30,3 +30,5 @@ export const defaultHeader = (session: any) => {
         </RightContainer>
     );
 };
+
+export default DefaultHeader;
