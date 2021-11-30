@@ -5,8 +5,9 @@ import { useRouter } from 'next/router';
 
 import Logo from '@assets/images/logo.png';
 import { HeaderContainer, LeftContainer, Hr, ImageContainer } from './style';
-import { defaultHeader } from './headerStyles';
 import useSessionState from '@store/sessionState';
+import dynamic from 'next/dynamic';
+const DefaultHeader = dynamic(() => import('./headerStyles'), { ssr: false });
 
 const pathToObj = {
     '': { title: 'Main', root: '/' },
@@ -32,7 +33,7 @@ const Header = () => {
                 <Hr />
                 <Link href={pathToObj[mainPath].root}>{pathToObj[mainPath].title}</Link>
             </LeftContainer>
-            {defaultHeader(session)}
+            {<DefaultHeader session={session} />}
         </HeaderContainer>
     );
 };
