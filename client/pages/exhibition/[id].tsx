@@ -6,6 +6,8 @@ import Layout from '@components/common/Layout';
 import ExhibitionDetail from '@components/Exhibition/ExhbitionDetail';
 import { getExhibition } from '@service/networking';
 import { Exhibition } from 'interfaces';
+import ErrorBoundary from '@components/common/ErrorBoundary';
+import Fallback from '@components/common/Fallback';
 
 const ExhibitionDetailPage = ({ exhibition }: { exhibition: Exhibition }) => {
     return (
@@ -13,7 +15,11 @@ const ExhibitionDetailPage = ({ exhibition }: { exhibition: Exhibition }) => {
             <Head>
                 <title>벽전 - 전시회 탐색</title>
             </Head>
-            <Layout>{exhibition && <ExhibitionDetail exhibition={exhibition} />}</Layout>
+            <Layout>
+                <ErrorBoundary fallback={<Fallback />}>
+                    <ExhibitionDetail exhibition={exhibition} />
+                </ErrorBoundary>
+            </Layout>
         </div>
     );
 };
