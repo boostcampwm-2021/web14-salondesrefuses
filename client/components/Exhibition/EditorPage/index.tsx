@@ -40,7 +40,8 @@ const index = ({ backButtonHandler, holdExhibition, elements, setElementList, is
             const { innerText } = element;
             const tagName = element.classList[1];
             const { width, height, color, transform, backgroundColor } = element.style;
-            const { top, left, zIndex, backgroundImage } = window.getComputedStyle(element);
+            const { top, left, zIndex, backgroundImage, fontFamily, fontSize, textAlign } =
+                window.getComputedStyle(element);
             let imageSrc = null;
             if (element.classList.contains('IMAGE')) {
                 imageSrc = backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
@@ -62,6 +63,9 @@ const index = ({ backButtonHandler, holdExhibition, elements, setElementList, is
                     backgroundColor,
                     transform,
                     zIndex,
+                    fontFamily,
+                    fontSize,
+                    textAlign,
                 },
             });
         });

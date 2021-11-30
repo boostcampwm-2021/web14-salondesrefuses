@@ -66,6 +66,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     }, [JSON.stringify(fontStyles)]);
 
     useEffect(() => {
+        console.log(elements);
         if (!editorRef.current) return;
         editorRef.current.addEventListener('click', (e: any) => {
             if (!(e.target as HTMLDivElement).classList.contains('editorElement')) {

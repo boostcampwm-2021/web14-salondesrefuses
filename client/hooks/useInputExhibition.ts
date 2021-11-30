@@ -46,7 +46,7 @@ const useInputExhibition = () => {
         const result = isEdit ? await editExhibition(formData) : await holdExhibition(formData);
         if (onResponseSuccess(result.status)) {
             showToast('success');
-            isEdit ? router.push(`/exhibition/${result.data.id}`) : router.push(`/exhibition/${exhibitionId}`);
+            isEdit ? router.push(`/exhibition/${exhibitionId}`) : router.push(`/exhibition/${result.data.id}`);
         } else {
             showToast('failed');
         }

@@ -68,6 +68,9 @@ const EditorElement = ({
             position: 'absolute' as 'absolute',
             border: isSelected ? '1px solid #3A8FD6' : '0px',
             zIndex: 100,
+            textAlign: currentStyle.textAlign,
+            fontFamily: currentStyle.fontFamily,
+            fontSize: currentStyle.fontSize,
         };
     };
 
@@ -102,6 +105,7 @@ const EditorElement = ({
     }, [currentElements]);
 
     useEffect(() => {
+        console.log(elementStyle);
         if (tagName === 'IMAGE') {
             const asyncGetImgStyle = async () => {
                 const imgStyle = await getImgStyle();
