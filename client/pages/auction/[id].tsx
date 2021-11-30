@@ -22,7 +22,7 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
                 <title>
                     Auction - {title} ({name}, {year})
                 </title>
-                <meta name="경매" content="경매경매" />
+                <meta name={title} content={`(${name}, ${year})`} />
             </Head>
             <Layout>
                 <Container>
@@ -40,7 +40,7 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
                                 <span>click image to zoom</span>
                             </ImageWrapper>
                         </section>
-                        <ItemDetail auction={auction} />
+                        <ItemDetail auction={auction} image={originalImage} />
                     </Grid>
                 </Container>
             </Layout>

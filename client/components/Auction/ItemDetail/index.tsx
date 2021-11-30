@@ -7,6 +7,7 @@ import Trend from '../Trend';
 import ArtworkDetail from '../ArtworkDetail';
 import { Auction } from 'interfaces';
 import useAuctionSocketState from '@store/auctionSocketState';
+import { setColorFromImage } from '@utils/setColorFromImage';
 
 export type trendHistory = {
     bidder: {
@@ -16,8 +17,9 @@ export type trendHistory = {
     biddedAt: string;
 };
 
-const ItemDetail = ({ auction }: { auction: Auction }) => {
+const ItemDetail = ({ auction, image }: { auction: Auction; image: string }) => {
     const [socket] = useAuctionSocketState();
+    const [isBlack, setIsBlack] = useState(true);
 
     const { id, artwork, artist, auctionHistories, price } = auction;
     const { title, type } = artwork;
@@ -27,6 +29,7 @@ const ItemDetail = ({ auction }: { auction: Auction }) => {
 
     useEffect(() => {
         socket.emit('@auction/enter', id);
+        setColorFromImage(image).then((res) => setIsBlack(res));
 
         return () => {
             socket.emit('@auction/leave', id);
@@ -35,7 +38,7 @@ const ItemDetail = ({ auction }: { auction: Auction }) => {
 
     return (
         <Container>
-            <Summary>
+            <Summary isBlack={isBlack}>
                 <h1>{title}</h1>
                 <span>{type}</span>
             </Summary>
@@ -73,7 +76,7 @@ const Container = styled.section`
     }
 `;
 
-const Summary = styled.section`
+const Summary = styled.section<{ isBlack: boolean }>`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -82,6 +85,7 @@ const Summary = styled.section`
     & > span,
     h1 {
         margin: 2px;
+        color: ${({ isBlack }) => (isBlack ? 'black' : 'white')};
     }
 
     & > h1 {
