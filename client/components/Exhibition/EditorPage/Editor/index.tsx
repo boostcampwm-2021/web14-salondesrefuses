@@ -17,6 +17,7 @@ import fontStylingIcon from '@assets/images/editor-font-styling.png';
 import { useEditorImageState } from '@store/editorImageState';
 import { EditorContainer, ToolBar, Button, EditArea } from './style';
 import { FontStyle, FontFamily } from 'interfaces';
+import useToast from '@hooks/useToast';
 
 type Props = {
     elements: EditorElementProp[];
@@ -34,6 +35,10 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     const [editorImageState, setEditorImageState] = useEditorImageState();
     const [height, setHeight] = useState<number>(1000);
     const initialHeightValue = 1000;
+    const showMouseRightClickToast = useToast({
+        onSuccess: '에디터 사용 중에 마우스 오른쪽을 누를 수 없습니다.',
+        onFailed: '',
+    });
 
     useEffect(() => {
         currentElements.forEach((elem) => {
@@ -75,9 +80,9 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
             }
         });
 
-        return (() => {
+        return () => {
             setEditorImageState([]);
-        });
+        };
     }, []);
 
     const createRectangular = () => {
@@ -106,7 +111,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     };
     const deleteElement = () => {
         if (!currentElements) return;
-        setElements(() => elements.filter(el => el.id !== Number(currentElements[0]?.id)));
+        setElements(() => elements.filter((el) => el.id !== Number(currentElements[0]?.id)));
         setCurrentElements([]);
     };
     const onFontStylerButton = () => {
@@ -169,6 +174,13 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
         ));
     };
 
+    const onContextMenuHandle = (e: React.MouseEvent) => {
+        if (e.type === 'contextmenu') {
+            e.preventDefault();
+            showMouseRightClickToast('success');
+        }
+    };
+
     return (
         <EditorContainer height={height}>
             <ToolBar>
@@ -191,7 +203,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
                 )}
                 {showFontStyler && <FontStyler fontStyle={fontStyles} changeFontStyle={changeFontStyles} />}
             </ToolBar>
-            <EditArea height={height} ref={editorRef}>
+            <EditArea height={height} onContextMenu={onContextMenuHandle} ref={editorRef}>
                 {renderElements()}
             </EditArea>
         </EditorContainer>
