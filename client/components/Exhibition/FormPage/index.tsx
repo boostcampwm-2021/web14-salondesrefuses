@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 
 import LabelInput from '../LabelInput';
@@ -6,12 +6,25 @@ import { Input, TextArea, ThumbnailBox } from '../style';
 import Preview from './Preview/Preview';
 import { HoldExhibition } from '../types';
 import addIcon from '@public/icons/add.png';
+import { IExhibitionInput } from 'interfaces';
 
 interface FormProps {
     formInput: HoldExhibition;
+    oldInputData?: OldExhibition | undefined;
+    setExhibitionInput?: React.Dispatch<React.SetStateAction<IExhibitionInput>>;
 }
 
-const index = ({ formInput }: FormProps) => {
+export interface OldExhibition {
+    title: string;
+    startAt: Date;
+    endAt: Date;
+    theme: string;
+    collaborator: string;
+    description: string;
+    thumbnailImage: string | null;
+}
+
+const index = ({ formInput, oldInputData, setExhibitionInput }: FormProps) => {
     const thumbnailRef = useRef<HTMLInputElement>(null);
 
     const {
@@ -21,24 +34,50 @@ const index = ({ formInput }: FormProps) => {
         theme,
         collaborator,
         description,
-        thumbnail,
+        thumbnailImage,
         onChangeTitleInput,
         onChangeStartAt,
         onChangeEndAt,
         onChangeTheme,
         onChangeCollaborator,
         onChangeDescription,
-        onChangeThumbnail,
+        onChangethumbnailImage,
     } = formInput;
+
+    useEffect(() => {
+        if (!oldInputData) return;
+        // const thumbnail = new Image();
+        // thumbnail.src = oldInputData.thumbnailImage || '';
+        setExhibitionInput &&
+            setExhibitionInput({
+                title: oldInputData.title,
+                startAt: oldInputData.startAt.toString().slice(0, 10),
+                endAt: oldInputData.endAt.toString().slice(0, 10),
+                theme: oldInputData.theme,
+                collaborator: oldInputData.collaborator,
+                description: oldInputData.description,
+                thumbnailImage: thumbnailImage,
+            });
+    }, []);
     return (
         <Container>
             <LabelInput label="전시회 제목" require>
                 <Input type="text" placeholder="제목을 입력해주세요." value={title} onChange={onChangeTitleInput} />
             </LabelInput>
             <LabelInput label="기간" require>
-                <Input type="date" placeholder="전시회 시작 일자" value={startAt} onChange={onChangeStartAt} />
+                <Input
+                    type="date"
+                    placeholder="전시회 시작 일자"
+                    value={startAt.toString().slice(0, 10)}
+                    onChange={onChangeStartAt}
+                />
                 <Label>부터</Label>
-                <Input type="date" placeholder="전시회 종료 일자" value={endAt} onChange={onChangeEndAt} />
+                <Input
+                    type="date"
+                    placeholder="전시회 종료 일자"
+                    value={endAt.toString().slice(0, 10)}
+                    onChange={onChangeEndAt}
+                />
                 <Label>까지</Label>
             </LabelInput>
             <LabelInput label="테마">
@@ -60,7 +99,7 @@ const index = ({ formInput }: FormProps) => {
             </LabelInput>
             <LabelInput label="전시회 썸네일" require>
                 <ThumbnailBox onClick={() => thumbnailRef.current!.click()}>
-                    {thumbnail ? <Preview image={thumbnail} /> : <Placeholder src={addIcon.src} />}
+                    {thumbnailImage ? <Preview image={thumbnailImage} /> : <Placeholder src={addIcon.src} />}
                 </ThumbnailBox>
                 <Input
                     ref={thumbnailRef}
@@ -68,7 +107,7 @@ const index = ({ formInput }: FormProps) => {
                     name="thumbnail"
                     hidden
                     onChange={() => {
-                        onChangeThumbnail(thumbnailRef.current);
+                        onChangethumbnailImage(thumbnailRef.current);
                     }}
                 />
             </LabelInput>

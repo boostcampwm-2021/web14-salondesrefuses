@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef } from 'react';
 
 import ColorPicker from '../ColorPicker';
 import EditorElement from '../EditorElement';
@@ -50,15 +50,13 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
 
     useEffect(() => {
         if (editorImageState.length === 0) return;
-        setElements([
-            ...elements,
-            {
-                id: elements.length,
-                type: 'IMAGE',
-                style: initialImageStyle,
-                image: editorImageState[editorImageState.length - 1],
-            },
-        ]);
+        const element: EditorElementProp = {
+            id: elements.length,
+            tagName: EditorElementName.image,
+            style: initialImageStyle,
+            image: editorImageState[editorImageState.length - 1],
+        };
+        setElements([...elements, element]);
     }, [editorImageState]);
 
     useEffect(() => {
@@ -73,6 +71,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     }, [JSON.stringify(fontStyles)]);
 
     useEffect(() => {
+        console.log(elements);
         if (!editorRef.current) return;
         editorRef.current.addEventListener('click', (e: any) => {
             if (!(e.target as HTMLDivElement).classList.contains('editorElement')) {
@@ -88,7 +87,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     const createRectangular = () => {
         const element: EditorElementProp = {
             id: elements.length,
-            type: EditorElementName.rectangular,
+            tagName: EditorElementName.rectangular,
             style: initialRectStyle,
         };
         setElements([...elements, element]);
@@ -121,7 +120,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     const createText = () => {
         const element: EditorElementProp = {
             id: elements.length,
-            type: EditorElementName.text,
+            tagName: EditorElementName.text,
             style: initialTextStyle,
         };
         setElements([...elements, element]);
@@ -131,6 +130,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     };
     const keyToCurrentElements = (keyArr: Array<HTMLElement | null>) => {
         setCurrentElements(keyArr);
+        setIsDoubleClicked(false);
     };
     const setIsDoubleClickedFunc = (check: boolean) => {
         setIsDoubleClicked(check);
@@ -159,19 +159,25 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     };
 
     const renderElements = () => {
-        return elements.map((element, idx) => (
-            <EditorElement
-                key={idx}
-                idx={idx}
-                style={element.style}
-                currentElements={currentElements}
-                keyToCurrentElements={keyToCurrentElements}
-                type={element.type}
-                image={element.image}
-                isDoubleClicked={isDoubleClicked}
-                setIsDoubleClickedFunc={setIsDoubleClickedFunc}
-            ></EditorElement>
-        ));
+        return elements.map((element, idx) => {
+            if (element.tagName)
+                return (
+                    <EditorElement
+                        key={idx}
+                        idx={idx}
+                        style={element.style}
+                        currentElements={currentElements}
+                        keyToCurrentElements={keyToCurrentElements}
+                        tagName={element.tagName}
+                        image={element.image}
+                        imageSrc={element.imageSrc}
+                        text={element.innerText}
+                        artworkId={element.artworkId}
+                        isDoubleClicked={isDoubleClicked}
+                        setIsDoubleClickedFunc={setIsDoubleClickedFunc}
+                    ></EditorElement>
+                );
+        });
     };
 
     const onContextMenuHandle = (e: React.MouseEvent) => {

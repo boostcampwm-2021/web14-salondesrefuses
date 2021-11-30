@@ -5,12 +5,15 @@ import { BlackButton, Description, Title } from '../style';
 import Editor from './Editor';
 import ImageSlider from './ImageSlider';
 import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/types';
+import { useRouter } from 'next/router';
+import { Exhibition } from 'interfaces';
 
 interface EditorProp {
+    backButtonHandler: () => void;
+    holdExhibition: (content: string, size: string, artworkIds: string, isEdit: string | undefined) => void;
     elements: EditorElementProp[];
     setElementList: (elementList: EditorElementProp[]) => void;
-    backButtonHandler: () => void;
-    holdExhibition: (content: string, size: string, artworkIds: string) => void;
+    isEdit: boolean;
 }
 interface ExhibitionElement {
     tagName: string;
@@ -22,8 +25,9 @@ interface ExhibitionElement {
     };
 }
 
-const index = ({ elements, setElementList, backButtonHandler, holdExhibition }: EditorProp) => {
+const index = ({ backButtonHandler, holdExhibition, elements, setElementList, isEdit }: EditorProp) => {
     const editorRef = useRef<HTMLDivElement | null>(null);
+    const exhibitionId = (useRouter().query.exhibitionId as string) || undefined;
 
     const saveButtonHandler = async () => {
         const exhibitionElements: Array<ExhibitionElement> = [];
@@ -36,7 +40,8 @@ const index = ({ elements, setElementList, backButtonHandler, holdExhibition }: 
             const { innerText } = element;
             const tagName = element.classList[1];
             const { width, height, color, transform, backgroundColor } = element.style;
-            const { top, left, zIndex, backgroundImage } = window.getComputedStyle(element);
+            const { top, left, zIndex, backgroundImage, fontFamily, fontSize, textAlign } =
+                window.getComputedStyle(element);
             let imageSrc = null;
             if (element.classList.contains('IMAGE')) {
                 imageSrc = backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
@@ -58,17 +63,20 @@ const index = ({ elements, setElementList, backButtonHandler, holdExhibition }: 
                     backgroundColor,
                     transform,
                     zIndex,
+                    fontFamily,
+                    fontSize,
+                    textAlign,
                 },
             });
         });
 
-        holdExhibition(JSON.stringify(exhibitionElements), editorSize, JSON.stringify(artworkIds));
+        holdExhibition(JSON.stringify(exhibitionElements), editorSize, JSON.stringify(artworkIds), exhibitionId);
     };
 
     return (
         <>
             <Title>
-                <h1>Edit Exhibition</h1>
+                <h1>{isEdit ? 'Edit Exhibition' : 'Hold Exhibition'}</h1>
                 <Description>나만의 전시회를 만들어 보세요!</Description>
             </Title>
             <Container>

@@ -8,11 +8,13 @@ import { onDraggable, getPositions, getDotStyle, onResize } from './utils';
 interface Prop {
     style: EditorElementStyle;
     editable?: boolean;
-    type: EditorElementType;
+    tagName: EditorElementType;
     image?: Artwork;
+    imageSrc?: string;
     text?: string;
     align?: string;
     idx: number;
+    artworkId?: string;
     currentElements: Array<HTMLElement | null>;
     keyToCurrentElements: (arr: Array<HTMLElement | null>) => void;
     isDoubleClicked: boolean;
@@ -22,11 +24,13 @@ interface Prop {
 const EditorElement = ({
     style,
     editable = true,
-    type,
+    tagName,
     image,
+    imageSrc,
     text,
     align,
     idx,
+    artworkId,
     currentElements = [],
     keyToCurrentElements,
     isDoubleClicked,
@@ -39,26 +43,34 @@ const EditorElement = ({
     const element = elementRef?.current;
     const [LT, LB, RT, RB] = getPositions(element);
     const imgWidthThreshold = 800;
+    const [elementStyle, setElementStyle] = useState(style);
 
-    const calculateStyle = () => {
-        let imageHeight;
-        let imageWidth;
-        if (type === 'IMAGE') {
-            if (!image) return;
-            const tmpImg = new Image();
-            tmpImg.src = image.originalImage;
-            imageHeight =
-                tmpImg.width > imgWidthThreshold ? (tmpImg.height * imgWidthThreshold) / tmpImg.width : tmpImg.height;
-            imageWidth = tmpImg.width > imgWidthThreshold ? imgWidthThreshold : tmpImg.width;
-        }
+    const getImgStyle = async () => {
+        const tmpImg = new Image();
+        tmpImg.src = image?.originalImage || imageSrc!;
+        await tmpImg.decode();
+        let imageHeight =
+            tmpImg.width > imgWidthThreshold ? (tmpImg.height * imgWidthThreshold) / tmpImg.width : tmpImg.height;
+        let imageWidth = tmpImg.width > imgWidthThreshold ? imgWidthThreshold : tmpImg.width;
         return {
-            transform: `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`,
-            width: `${imageWidth || currentStyle.width}px`,
-            height: `${imageHeight || currentStyle.height}px`,
+            width: `${style.width === 'auto' ? imageWidth || currentStyle.width : style.width}px`,
+            height: `${style.height === 'auto' ? imageHeight || currentStyle.height : style.height}px`,
+        };
+    };
+    const calculateBaseStyle = () => {
+        return {
+            top: 0,
+            left: 0,
+            transform: currentStyle.transform,
+            width: `${currentStyle.width}px`,
+            height: `${currentStyle.height}px`,
             backgroundColor: currentStyle.backgroundColor,
             position: 'absolute' as 'absolute',
             border: isSelected ? '1px solid #3A8FD6' : '0px',
             zIndex: 100,
+            textAlign: currentStyle.textAlign,
+            fontFamily: currentStyle.fontFamily,
+            fontSize: currentStyle.fontSize,
         };
     };
 
@@ -93,28 +105,46 @@ const EditorElement = ({
     }, [currentElements]);
 
     useEffect(() => {
-        if (!elementRef.current || type !== 'TEXT') return;
+        console.log(elementStyle);
+        if (tagName === 'IMAGE') {
+            const asyncGetImgStyle = async () => {
+                const imgStyle = await getImgStyle();
+                setElementStyle({
+                    top: 0,
+                    left: 0,
+                    width: imgStyle.width,
+                    height: imgStyle.height,
+                    transform: currentStyle.transform,
+                    zIndex: 100,
+                    position: 'absolute' as 'absolute',
+                });
+            };
+            asyncGetImgStyle();
+        } else {
+            setElementStyle(calculateBaseStyle());
+        }
+        if (!elementRef.current || tagName !== 'TEXT') return;
         keyToCurrentElements([elementRef.current]);
         (elementRef.current.children[0] as HTMLElement).focus();
     }, []);
 
     return (
         <>
-            {type === 'RECTANGULAR' ? (
+            {tagName === 'RECTANGULAR' ? (
                 <div
                     className="editorElement RECTANGULAR"
                     onClick={() => keyToCurrentElements([elementRef.current])}
-                    style={calculateStyle()}
+                    style={elementStyle as React.CSSProperties}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
                     id={`${idx}`}
                 >
-                    {isSelected && getBorderController(type)}
+                    {isSelected && getBorderController(tagName)}
                 </div>
-            ) : type === 'TEXT' ? (
+            ) : tagName === 'TEXT' ? (
                 <div
                     className="editorElement TEXT"
-                    style={calculateStyle()}
+                    style={elementStyle as React.CSSProperties}
                     onClick={() => keyToCurrentElements([elementRef.current])}
                     onMouseDown={(e) => isSelected && !isDoubleClicked && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
@@ -131,32 +161,34 @@ const EditorElement = ({
                         isDoubleClicked={isDoubleClicked}
                         spellCheck={false}
                         onBlur={() => setIsDoubleClickedFunc(false)}
-                    ></InputDiv>
-                    {isSelected && getBorderController(type)}
+                        suppressContentEditableWarning={true}
+                    >
+                        {text}
+                    </InputDiv>
+                    {isSelected && getBorderController(tagName)}
                 </div>
             ) : (
                 <ImgDiv
                     className="editorElement IMAGE"
                     onClick={() => keyToCurrentElements([elementRef.current])}
-                    style={calculateStyle()}
+                    style={elementStyle as React.CSSProperties}
                     onMouseDown={(e) => isSelected && onDraggable(e, element)}
                     ref={elementRef as RefObject<HTMLDivElement>}
                     draggable={false}
-                    imgSrc={image!.originalImage}
-                    data-artwork={image!.id}
-                    id={`${idx}`}
+                    imageSrc={image ? image.originalImage : imageSrc!}
+                    data-artwork={image ? image.id : artworkId!}
                 >
-                    {isSelected && getBorderController(type)}
+                    {isSelected && getBorderController(tagName)}
                 </ImgDiv>
             )}
         </>
     );
 };
 interface ImgDivProps {
-    imgSrc: string;
+    imageSrc: string;
 }
 const ImgDiv = styled.div<ImgDivProps>`
-    background-image: url(${(props) => props.imgSrc});
+    background-image: url(${(props) => props.imageSrc});
     background-size: contain;
     background-repeat: no-repeat;
 `;

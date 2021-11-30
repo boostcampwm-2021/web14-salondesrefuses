@@ -60,6 +60,7 @@ export interface ExhibitionArtwork {
 
 export interface Exhibition {
     id: number;
+    artistId: number;
     title: string;
     collaborator: string;
     theme: string;
@@ -67,7 +68,7 @@ export interface Exhibition {
     startAt: Date;
     endAt: Date;
     contents: string;
-    thumbnail: string;
+    thumbnailImage: string;
     categories: string;
     size: string;
     artworks: ExhibitionArtwork[];
@@ -79,4 +80,14 @@ export interface FontStyle {
     align: 'LEFT' | 'CENTER' | 'RIGHT';
     fontSize: number;
     fontFamily: FontFamily;
+}
+
+export interface IExhibitionInput {
+    title: string;
+    startAt: string;
+    endAt: string;
+    theme: string;
+    collaborator: string;
+    description: string;
+    thumbnailImage: File | null;
 }

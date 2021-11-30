@@ -12,12 +12,12 @@ export interface HoldExhibition {
     theme: string;
     collaborator: string;
     description: string;
-    thumbnail: File | null;
+    thumbnailImage: File | null;
     onChangeTitleInput: (e: React.FormEvent) => void;
     onChangeStartAt: (e: React.FormEvent) => void;
     onChangeEndAt: (e: React.FormEvent) => void;
     onChangeTheme: (e: React.FormEvent) => void;
     onChangeCollaborator: (e: React.FormEvent) => void;
     onChangeDescription: (e: React.FormEvent) => void;
-    onChangeThumbnail: (current: HTMLInputElement | null) => void;
+    onChangethumbnailImage: (current: HTMLInputElement | null) => void;
 }

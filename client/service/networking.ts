@@ -66,6 +66,12 @@ export const holdExhibition = (data: FormData) => {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
 };
+export const editExhibition = (data: FormData) => {
+    return axios.patch(`${API_SERVER_URL}/exhibitions/update`, data, {
+        withCredentials: true,
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
+};
 
 export const getRandomAuctions = () => {
     return axios.get(`${API_SERVER_URL}/auctions/random?status=onSale`);

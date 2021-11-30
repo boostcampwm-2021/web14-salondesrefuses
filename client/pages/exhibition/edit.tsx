@@ -9,79 +9,76 @@ import Layout from '@components/common/Layout';
 import { Description, NextButton, Title } from '@components/Exhibition/style';
 import Editor from '@components/Exhibition/EditorPage';
 import useInputExhibition from '@hooks/useInputExhibition';
+import { getExhibition } from '../../service/networking';
+import { Exhibition } from 'interfaces';
 import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/types';
-import { useEditorImageState, useSelectedImageState } from '@store/editorImageState';
-import useToast from '@hooks/useToast';
-import CSuspense from '@components/common/Suspense';
-import Fallback from '@components/common/Fallback';
-import ErrorBoundary from '@components/common/ErrorBoundary';
 
-const ExhibitionPostPage = () => {
+const ExhibitionEditPage = () => {
     const [currentPage, setCurrentPage] = useState<'FORM' | 'EDITOR'>('FORM');
+    const [exhibitionData, setExhibitionData] = useState<Exhibition | null>(null);
     const [elements, setElements] = useState<EditorElementProp[]>([]);
-    const { formInput, onClickHold } = useInputExhibition();
-
-    const [selectedImages, setSelectedImages] = useSelectedImageState();
-    const [editorImageState, setEditorImageState] = useEditorImageState();
-    const showToast = useToast({
-        onSuccess: '',
-        onFailed: '제목 / 기간 / 썸네일 / 작품을 선택해주세요.',
-    });
+    const params = useRouter().query.exhibitionId;
+    const { formInput, onClickHold, setExhibitionInput } = useInputExhibition();
 
     const setElementList = (elementList: EditorElementProp[]) => {
         setElements(elementList);
     };
 
     const onClickNextButton = () => {
-        const { title, startAt, endAt, thumbnailImage } = formInput;
-        if (!title || !startAt || !endAt || !thumbnailImage || !selectedImages.length) {
-            showToast('failed');
-            return;
-        }
-
         setCurrentPage('EDITOR');
     };
 
     const handleBackButton = () => {
         setCurrentPage('FORM');
     };
-
     useEffect(() => {
-        return () => {
-            setSelectedImages([]);
-            setEditorImageState([]);
-        };
+        getExhibition(params as string).then((res) => {
+            setElementList(JSON.parse(res.data.contents));
+            return setExhibitionData(res.data);
+        });
     }, []);
+    const getExhibitionFormData = () => {
+        if (!exhibitionData) return;
+        return {
+            title: exhibitionData.title,
+            startAt: exhibitionData.startAt,
+            endAt: exhibitionData.endAt,
+            theme: exhibitionData.theme,
+            collaborator: exhibitionData.collaborator,
+            description: exhibitionData.description,
+            thumbnailImage: exhibitionData.thumbnailImage,
+        };
+    };
 
     return (
         <div>
             <Head>
-                <title>벽전 - 전시회 등록</title>
+                <title>벽전 - 전시회 수정</title>
             </Head>
             <Layout>
-                {currentPage === 'FORM' ? (
+                {currentPage === 'FORM' && exhibitionData ? (
                     <>
                         <Title>
-                            <h1>Hold Exhibition</h1>
-                            <Description>나만의 전시회를 만들어 보세요!</Description>
+                            <h1>Edit Exhibition</h1>
+                            <Description>전시 수정 페이지</Description>
                         </Title>
                         <Container>
-                            <Form formInput={formInput} />
-                            <ErrorBoundary fallback={<div>...failed</div>}>
-                                <CSuspense fallback={<Fallback />}>
-                                    <ArtworkSelector />
-                                </CSuspense>
-                            </ErrorBoundary>
+                            <Form
+                                formInput={formInput}
+                                oldInputData={getExhibitionFormData()}
+                                setExhibitionInput={setExhibitionInput}
+                            />
+                            <ArtworkSelector />
                             <NextButton onClick={onClickNextButton}>Next</NextButton>
                         </Container>
                     </>
                 ) : (
                     <Editor
-                        elements={elements}
-                        setElementList={setElementList}
                         backButtonHandler={handleBackButton}
                         holdExhibition={onClickHold}
-                        isEdit={false}
+                        elements={elements}
+                        setElementList={setElementList}
+                        isEdit={true}
                     />
                 )}
             </Layout>
@@ -97,4 +94,4 @@ const Container = styled.div`
     margin: 50px auto;
 `;
 
-export default ExhibitionPostPage;
+export default ExhibitionEditPage;

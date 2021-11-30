@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import Link from 'next/link';
 
 import { Exhibition, ExhibitionArtwork } from 'interfaces';
 import ExhibitionContents from './ExhibitionContents';
 import ExhibitionModal from './ExhibitionModal';
+import useSessionState from '@store/sessionState';
+import { BlackButton } from '../style';
 
 const ExhbitionDetail = ({ exhibition }: { exhibition: Exhibition }) => {
     const [modalArtwork, setModalArtwork] = useState<ExhibitionArtwork | null>(null);
     const [showModalArtwork, setShowModalArtwork] = useState(false);
-    // const artworks = exhibition.artworks.map((artwork) => JSON.parse(artwork));
+    const session = useSessionState();
+    const isExhibitor = session.contents?.id === exhibition.artistId;
+
     const setModalNum = (n: string | undefined) => {
         if (!n) return;
         let artwork = exhibition.artworks.find((art) => art.id === +n);
@@ -21,14 +26,22 @@ const ExhbitionDetail = ({ exhibition }: { exhibition: Exhibition }) => {
         setShowModalArtwork(false);
         setModalArtwork(null);
     };
+
     return (
         <ExhibitionContainer>
             {showModalArtwork && modalArtwork && <ExhibitionModal artwork={modalArtwork} closeModal={closeModal} />}
             <div>
                 <ExhibitionDescription>
                     <TitleContainer>
-                        <Title>{exhibition.title}</Title>
-                        <Artist>{exhibition.collaborator}</Artist>
+                        <div>
+                            <Title>{exhibition.title}</Title>
+                            <Artist>{exhibition.collaborator}</Artist>
+                        </div>
+                        {isExhibitor && (
+                            <Link href={{ pathname: '/exhibition/edit', query: { exhibitionId: exhibition.id } }}>
+                                <BlackButton>Edit</BlackButton>
+                            </Link>
+                        )}
                     </TitleContainer>
                     <Description>{exhibition.description}</Description>
                 </ExhibitionDescription>
@@ -51,6 +64,9 @@ const ExhibitionDescription = styled.div`
     margin-bottom: 100px;
 `;
 const TitleContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
     border-left: 1px solid ${(props) => props.theme.color.blackLight};
     padding: 30px;
     margin-bottom: 50px;

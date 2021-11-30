@@ -1,3 +1,5 @@
+import { FontFamily } from 'interfaces';
+
 export const initialRectStyle = {
     width: 100,
     height: 100,
@@ -5,6 +7,7 @@ export const initialRectStyle = {
     left: 0,
     backgroundColor: 'black',
     zIndex: 100,
+    position: 'absolute' as 'absolute',
 };
 
 export const initialTextStyle = {
@@ -14,6 +17,10 @@ export const initialTextStyle = {
     left: 0,
     backgroundColor: 'none',
     zIndex: 100,
+    position: 'absolute' as 'absolute',
+    align: 'LEFT' as 'LEFT',
+    fontSize: 14,
+    fontFamily: 'Montserrat' as FontFamily,
 };
 
 export const initialImageStyle = {
@@ -23,4 +30,5 @@ export const initialImageStyle = {
     left: 0,
     backgroundColor: 'none',
     zIndex: 100,
+    position: 'absolute' as 'absolute',
 };
