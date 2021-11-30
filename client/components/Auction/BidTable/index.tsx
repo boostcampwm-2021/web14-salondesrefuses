@@ -24,7 +24,7 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
     const { id, artwork } = auction;
     let { endAt } = auction;
     const [socket] = useAuctionSocketState();
-    const [price, setPrice] = useState<number>(currentPrice ? Number((currentPrice * 1.05).toFixed(2)) : artwork.price);
+    const [price, setPrice] = useState<number>(currentPrice ? nextPrice(currentPrice) : artwork.price);
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
     const [contract, setContract] = useState<Contract>();
     const [_, setModalState] = useModalState();
@@ -47,7 +47,7 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
         onFailed: ToastMsg.NOT_BID_LOWER_PRICE,
     });
 
-    const web3 = new Web3(new Web3.providers.HttpProvider(process.env.ETHEREUM_HOST!));
+    const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
 
     const checkBiddable = async (price: number) => {
         if (!window.ethereum) {
@@ -98,7 +98,7 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
             if (message.code === '100') {
                 showNotBidOwner('failed');
             } else if (message.code === '200') {
-                setPrice((price) => Number((price * 1.05).toFixed(2)));
+                setPrice((price) => nextPrice(price));
                 showNotBidLowerPrice('failed');
             } else {
                 console.log(message);
@@ -180,6 +180,10 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
             </Container>
         </>
     );
+};
+
+const nextPrice = (currentPrice: number) => {
+    return Math.max(currentPrice + 0.01, Number((currentPrice * 1.05).toFixed(2)));
 };
 
 const ETHEREUM_HOST = process.env.ETHEREUM_HOST;

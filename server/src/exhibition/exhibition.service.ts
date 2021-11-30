@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { ExhibitionRepository } from './exhibition.repository';
-import { ExhibitionDetailDTO, ExhibitionDto, HoldExhibitionDTO, UpdateExhibitionDTO } from './dto/exhibition.dto';
+import { ExhibitionDetailDTO, ExhibitionDto, HoldExhibitionDTO } from './dto/exhibition.dto';
 import { User } from 'src/user/user.entity';
 import { ImageService } from 'src/image/image.service';
 import { ArtworkRepository } from 'src/artwork/artwork.repository';
@@ -104,10 +104,22 @@ export class ExhibitionService {
         }
     }
 
-    async updateExhibition({ id, contents }: UpdateExhibitionDTO): Promise<UpdateResult> {
-        const result = await this.exhibitionRepository.update(id, { contents });
+    async updateExhibition(image: Express.Multer.File, updatedExhibition: HoldExhibitionDTO): Promise<UpdateResult> {
+        let result;
+        if (!image) {
+            const croppedThumbnail = await this.imageService.cropImage(image);
+            const thumbnailPath = await this.imageService.fileUpload({ ...image, buffer: croppedThumbnail });
+
+            result = await this.exhibitionRepository.update(updatedExhibition.id, {
+                ...updatedExhibition,
+                thumbnailImage: thumbnailPath.Location,
+            });
+        } else {
+            result = await this.exhibitionRepository.update(updatedExhibition.id, { ...updatedExhibition });
+        }
+
         if (!result.affected) {
-            throw new NotFoundException(`Can't find exhibition with id: ${id}`);
+            throw new NotFoundException(`Can't find exhibition with id: ${updatedExhibition.id}`);
         }
 
         return result;

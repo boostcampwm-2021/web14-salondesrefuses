@@ -1,4 +1,5 @@
 import {
+    BadRequestException,
     Body,
     Controller,
     Get,
@@ -6,8 +7,8 @@ import {
     HttpStatus,
     Param,
     ParseIntPipe,
-    Patch,
     Post,
+    Put,
     Query,
     Req,
     UploadedFile,
@@ -17,7 +18,7 @@ import {
     ValidationPipe,
 } from '@nestjs/common';
 import { ExhibitionService } from './exhibition.service';
-import { ExhibitionDetailDTO, ExhibitionDto, HoldExhibitionDTO, UpdateExhibitionDTO } from './dto/exhibition.dto';
+import { ExhibitionDetailDTO, ExhibitionDto, HoldExhibitionDTO } from './dto/exhibition.dto';
 import {
     ApiBody,
     ApiConsumes,
@@ -118,11 +119,18 @@ export class ExhibitionController {
         return this.exhibitionService.holdExhibition(image, holdExhibitionDTO, user);
     }
 
-    @Patch('/update')
+    @Put('/update')
     @UseGuards(CustomAuthGuard)
     @UsePipes(ValidationPipe)
+    @UseInterceptors(FileInterceptor('thumbnail'))
     @ApiOperation(updateExhibitionApiOperation)
-    updateExhibition(@Body() updateExhibitionDTO: UpdateExhibitionDTO): Promise<UpdateResult> {
-        return this.exhibitionService.updateExhibition(updateExhibitionDTO);
+    updateExhibition(
+        @UploadedFile() image: Express.Multer.File,
+        @Body() updateExhibitionDTO: HoldExhibitionDTO,
+    ): Promise<UpdateResult> {
+        if (!updateExhibitionDTO.id) {
+            throw new BadRequestException('exhibition id is not empty');
+        }
+        return this.exhibitionService.updateExhibition(image, updateExhibitionDTO);
     }
 }
