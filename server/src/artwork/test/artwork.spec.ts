@@ -36,13 +36,13 @@ describe('Artwork Test', () => {
     });
 
     describe('작품 ID로 작품 조회', () => {
-        test('성공 시', async () => {
+        test('성공 시 200 반환', async () => {
             const res = await request(app.getHttpServer())
                 .get('/artworks/1');
 
             expect(res.statusCode).toBe(200);
             expect(res.body).toBeInstanceOf(Object);
-            expect(res.body.originalImage).toMatch('https://salon-bucket.kr.object.ncloudstorage.com');
+            expect(res.body.originalImage).toMatch(process.env.NCP_OBJECT_STORAGE);
         });
 
         test('작품 ID가 숫자가 아닐 경우 400 에러 반환', async () => {

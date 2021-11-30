@@ -58,7 +58,7 @@ describe('Exhibition Test', () => {
 
             expect(res.statusCode).toBe(200);
             expect(res.body).toBeInstanceOf(Array);
-            expect(res.body).toBeLessThanOrEqual(15);
+            expect(res.body.length).toBeLessThanOrEqual(15);
             res.body.forEach(el => {
                 expect(el.artCount).toBeGreaterThanOrEqual(1);
             });
@@ -76,7 +76,7 @@ describe('Exhibition Test', () => {
     describe('전시회 ID로 특정 전시회 조회', () => {
         test('성공 시 200 반환', async () => {
             const res = await request(app.getHttpServer())
-                .get('/exhibition/1');
+                .get('/exhibitions/1');
 
             expect(res.statusCode).toBe(200);
             expect(res.body).toBeInstanceOf(Object);
@@ -88,7 +88,7 @@ describe('Exhibition Test', () => {
 
         test('잘못된 전시회 ID로 조회 시 404 에러 반환', async () => {
             const res = await request(app.getHttpServer())
-                .get('/exhibition/-1');
+                .get('/exhibitions/-1');
 
             expect(res.statusCode).toBe(404);
         });

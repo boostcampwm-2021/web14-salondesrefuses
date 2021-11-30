@@ -33,6 +33,9 @@ describe('Auction Test', () => {
             expect(res.statusCode).toBe(200);
             expect(res.body).toBeInstanceOf(Array);
             expect(res.body.length).toBeLessThanOrEqual(15);
+            res.body.forEach(el => {
+                expect(el.price).not.toBeNull();
+            });
         });
 
         test('잘못된 page 요청 시 400 반환', async () => {
