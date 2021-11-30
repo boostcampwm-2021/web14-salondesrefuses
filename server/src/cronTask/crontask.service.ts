@@ -41,8 +41,8 @@ export class CronTaskService {
 
     async completeAuction(auctionId: number) {
         const auction = await this.auctionService.getAuctionInfo(auctionId);
-        await this.transact(Number(auction.artwork.nftToken));
-
         await this.completedAuctionService.closeAuction(auction.id);
+
+        await this.transact(Number(auction.artwork.nftToken));
     }
 }

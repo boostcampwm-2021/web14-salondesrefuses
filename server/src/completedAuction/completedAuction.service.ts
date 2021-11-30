@@ -3,7 +3,6 @@ import { CompletedAuctionRepository } from './completedAuction.repository';
 import AuctionService from '../auction/auction.service';
 import { AuctionHistoryService } from '../auctionHistory/auctionHistory.service';
 import { CompletedAuction } from './completedAuction.entity';
-import { Transaction } from 'typeorm';
 
 @Injectable()
 export class CompletedAuctionService {
@@ -13,7 +12,6 @@ export class CompletedAuctionService {
         private readonly completedAuctionRepository: CompletedAuctionRepository,
     ) {}
 
-    @Transaction()
     async closeAuction(auctionId: number): Promise<CompletedAuction> {
         try {
             const { bidder, price, biddedAt } = await this.auctionHistoryService.deleteAuctionHistories(auctionId);
