@@ -11,6 +11,9 @@ import useInputExhibition from '@hooks/useInputExhibition';
 import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/types';
 import { useEditorImageState, useSelectedImageState } from '@store/editorImageState';
 import useToast from '@hooks/useToast';
+import CSuspense from '@components/common/Suspense';
+import Fallback from '@components/common/Fallback';
+import ErrorBoundary from '@components/common/ErrorBoundary';
 
 const ExhibitionPostPage = () => {
     const [currentPage, setCurrentPage] = useState<'FORM' | 'EDITOR'>('FORM');
@@ -31,7 +34,7 @@ const ExhibitionPostPage = () => {
 
     const onClickNextButton = () => {
         const { title, startAt, endAt, thumbnail } = formInput;
-        if(!title || !startAt || !endAt || !thumbnail || !selectedImages.length) {
+        if (!title || !startAt || !endAt || !thumbnail || !selectedImages.length) {
             showToast('failed');
             return;
         }
@@ -44,10 +47,10 @@ const ExhibitionPostPage = () => {
     };
 
     useEffect(() => {
-        return (() => {
+        return () => {
             setSelectedImages([]);
             setEditorImageState([]);
-        });
+        };
     }, []);
 
     return (
@@ -64,7 +67,11 @@ const ExhibitionPostPage = () => {
                         </Title>
                         <Container>
                             <Form formInput={formInput} />
-                            <ArtworkSelector />
+                            <ErrorBoundary fallback={<div>...failed</div>}>
+                                <CSuspense fallback={<Fallback />}>
+                                    <ArtworkSelector />
+                                </CSuspense>
+                            </ErrorBoundary>
                             <NextButton onClick={onClickNextButton}>Next</NextButton>
                         </Container>
                     </>
