@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Auction } from '../auction/auction.entity';
-import { User } from '../user/user.entity';
+import { Auction } from '@auction/auction.entity';
+import { User } from '@user/user.entity';
 
 @Entity()
 export class AuctionHistory {

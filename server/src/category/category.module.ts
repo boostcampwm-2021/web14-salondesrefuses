@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserRepository } from 'src/user/user.repository';
+import { UserRepository } from '@user/user.repository';
 import { CategoryController } from './category.controller';
 import { CategoryRepository } from './category.repository';
 import { CategoryService } from './category.service';

@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InterestArtworkRepository } from './interestArtwork.repository';
-import { User } from '../user/user.entity';
-import { InterestRequestDTO } from '../artwork/dto/artwork.dto';
-import { ArtworkRepository } from '../artwork/artwork.repository';
+import { User } from '@user/user.entity';
+import { InterestRequestDTO } from '@artwork/dto/artwork.dto';
+import { ArtworkRepository } from '@artwork/artwork.repository';
 
 @Injectable()
 export class InterestArtworkService {

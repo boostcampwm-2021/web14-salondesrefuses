@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
-import { BaseDecorator, BaseDecoratorWithQuery, ControllerDecorator } from '../../utils/decorator';
+import { BaseDecorator, BaseDecoratorWithQuery, ControllerDecorator } from '@utils/decorator';
 import { AuctionDetailDTO, AuctionListItemDTO } from '../dto/auction.dto';
 import {
     getAuctionDetailApiOperation,

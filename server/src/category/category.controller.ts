@@ -2,7 +2,7 @@ import { Get, Post, Body, UseGuards } from '@nestjs/common';
 import { _CategoryController, GetCategoriesApi, PostCategoriesApi } from './decorator';
 import { Category } from './category.entity';
 import { CategoryService } from './category.service';
-import { CustomAuthGuard } from 'src/auth/guard/CustomAuthGuard';
+import { CustomAuthGuard } from '@auth/guard/customAuthGuard';
 
 @_CategoryController()
 export class CategoryController {

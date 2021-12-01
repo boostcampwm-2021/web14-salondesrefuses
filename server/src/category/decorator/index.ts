@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
-import { BaseDecorator, BaseDecoratorWithBody, ControllerDecorator } from '../../utils/decorator';
+import { BaseDecorator, BaseDecoratorWithBody, ControllerDecorator } from '@utils/decorator';
 import { Category } from '../category.entity';
 import { postCategoriesApiBody } from '../swagger';
 

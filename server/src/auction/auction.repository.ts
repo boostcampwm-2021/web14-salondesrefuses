@@ -1,10 +1,10 @@
-import { Artwork } from 'src/artwork/artwork.entity';
-import { CreateArtworkDTO } from 'src/artwork/dto/artwork.dto';
-import { InterestArtwork } from 'src/interestArtwork/interestArtwork.entity';
 import { EntityRepository, Raw, Repository } from 'typeorm';
+import { InterestArtwork } from '@interestArtwork/interestArtwork.entity';
+import { CreateArtworkDTO } from '@artwork/dto/artwork.dto';
+import { ArtworkStatus } from '@artwork/enum/artwork.enum';
+import { Artwork } from '@artwork/artwork.entity';
 import { Auction } from './auction.entity';
-import { User } from '../user/user.entity';
-import { ArtworkStatus } from '../artwork/enum/artwork.enum';
+import { User } from '@user/user.entity';
 
 @EntityRepository(Auction)
 export class AuctionRepository extends Repository<Auction> {

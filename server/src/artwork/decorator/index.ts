@@ -1,9 +1,9 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
-import { BaseDecoratorWithBody, BaseDecoratorWithParam, ControllerDecorator } from '../../utils/decorator';
+import { BaseDecoratorWithBody, BaseDecoratorWithParam, ControllerDecorator } from '@utils/decorator';
 import { Artwork } from '../artwork.entity';
 import { NewArtworkDTO } from '../dto/artwork.dto';
-import { InterestArtwork } from '../../interestArtwork/interestArtwork.entity';
+import { InterestArtwork } from '@interestArtwork/interestArtwork.entity';
 import { UpdateResult } from 'typeorm';
 import {
     createArtworkApiBody,

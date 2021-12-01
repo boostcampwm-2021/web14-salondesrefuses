@@ -1,10 +1,13 @@
 import { applyDecorators } from '@nestjs/common';
+import { ExhibitionDetailDTO, ExhibitionDto } from '../dto/exhibition.dto';
+import { ApiConsumes } from '@nestjs/swagger';
+import { UpdateResult } from 'typeorm';
 import {
     BaseDecorator, BaseDecoratorWithBody,
     BaseDecoratorWithParam,
     BaseDecoratorWithQuery,
     ControllerDecorator,
-} from '../../utils/decorator';
+} from '@utils/decorator';
 import {
     getExhibitionsSortedByDeadlineApiOperation,
     getExhibitionsSortedByInterestApiOperation,
@@ -15,9 +18,6 @@ import {
     holdExhibitionApiBody,
     updateExhibitionApiOperation,
 } from '../swagger';
-import { ExhibitionDetailDTO, ExhibitionDto, HoldExhibitionDTO } from '../dto/exhibition.dto';
-import { ApiConsumes } from '@nestjs/swagger';
-import { UpdateResult } from 'typeorm';
 
 export const _ExhibitionController = () => {
     return applyDecorators(

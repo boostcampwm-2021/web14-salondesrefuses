@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Artwork } from 'src/artwork/artwork.entity';
-import { AuctionHistory } from 'src/auctionHistory/auctionHistory.entity';
+import { Artwork } from '@artwork/artwork.entity';
+import { AuctionHistory } from '@auctionHistory/auctionHistory.entity';
 import { Auction } from '../auction.entity';
-import { User } from '../../user/user.entity';
+import { User } from '@user/user.entity';
 
 export class AuctionListItemDTO {
     @ApiProperty()

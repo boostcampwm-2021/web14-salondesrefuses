@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiBody, ApiOperation } from '@nestjs/swagger';
-import { ControllerDecorator } from '../../utils/decorator';
+import { ControllerDecorator } from '@utils/decorator';
 import { signInApiOperation, signOutApiBody, signOutApiOperation } from '../swagger';
 import { AuthDto } from '../dto/auth.dto';
 

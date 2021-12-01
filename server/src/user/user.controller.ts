@@ -2,8 +2,8 @@ import { Get, Put, Req, Body, Query, UploadedFile, UseInterceptors } from '@nest
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserService } from './user.service';
 import { User } from './user.entity';
-import { Artwork } from '../artwork/artwork.entity';
-import { Exhibition } from '../exhibition/exhibition.entity';
+import { Artwork } from '@artwork/artwork.entity';
+import { Exhibition } from '@exhibition/exhibition.entity';
 import { RequestUserDTO } from './dto/user.dto';
 import { UpdateResult } from 'typeorm';
 import {

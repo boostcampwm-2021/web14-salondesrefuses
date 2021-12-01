@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ArtworkModule } from 'src/artwork/artwork.module';
-import { AuctionModule } from 'src/auction/auction.module';
-import { CompletedAuctionModule } from 'src/completedAuction/completedAuction.module';
+import { ArtworkModule } from '@artwork/artwork.module';
+import { AuctionModule } from '@auction/auction.module';
+import { CompletedAuctionModule } from '@completedAuction/completedAuction.module';
 import { CronTaskController } from './crontask.controller';
 import { CronTaskService } from './crontask.service';
 

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { AuctionHistory } from './auctionHistory.entity';
 import { AuctionHistoryRepository } from './auctionHistory.repository';
-import { AuctionRepository } from '../auction/auction.repository';
-import { UserRepository } from '../user/user.repository';
+import { AuctionRepository } from '@auction/auction.repository';
+import { UserRepository } from '@user/user.repository';
+import { AuctionHistory } from './auctionHistory.entity';
 
 @Injectable()
 export class AuctionHistoryService {

@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from '../user/user.entity';
-import { Auction } from '../auction/auction.entity';
+import { User } from '@user/user.entity';
+import { Auction } from '@auction/auction.entity';
 import { ArtworkStatus } from './enum/artwork.enum';
 
 @Entity()

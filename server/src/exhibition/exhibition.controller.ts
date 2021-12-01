@@ -1,9 +1,9 @@
 import { Get, Post, Put, Req, Body, Param, Query, ParseIntPipe, ValidationPipe, BadRequestException, UploadedFile, UsePipes, UseGuards, UseInterceptors } from '@nestjs/common';
-import { CustomAuthGuard } from 'src/auth/guard/CustomAuthGuard';
+import { CustomAuthGuard } from '@auth/guard/customAuthGuard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ExhibitionService } from './exhibition.service';
 import { ExhibitionDetailDTO, ExhibitionDto, HoldExhibitionDTO } from './dto/exhibition.dto';
-import { User } from 'src/user/user.entity';
+import { User } from '@user/user.entity';
 import { UpdateResult } from 'typeorm';
 import {
     _ExhibitionController,

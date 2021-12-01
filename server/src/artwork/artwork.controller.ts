@@ -1,10 +1,10 @@
 import { Get, Post, Patch, Req, Param, Body, ParseIntPipe, ValidationPipe, UploadedFile, UsePipes, UseGuards, UseInterceptors } from '@nestjs/common';
-import { CustomAuthGuard } from '../auth/guard/CustomAuthGuard';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CustomAuthGuard } from '@auth/guard/customAuthGuard';
 import { CreateArtworkDTO, NewArtworkDTO, InterestRequestDTO } from './dto/artwork.dto';
-import { InterestArtworkService } from 'src/interestArtwork/interestArtwork.service';
+import { InterestArtworkService } from '@interestArtwork/interestArtwork.service';
 import { ArtworkService } from './artwork.service';
-import { User } from 'src/user/user.entity';
+import { User } from '@user/user.entity';
 import { Artwork } from './artwork.entity';
 import { UpdateResult } from 'typeorm';
 import {

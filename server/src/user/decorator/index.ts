@@ -1,7 +1,10 @@
 import { applyDecorators, UseGuards } from '@nestjs/common';
-import { BaseDecorator, BaseDecoratorWithBody, ControllerDecorator } from '../../utils/decorator';
-import { CustomAuthGuard } from '../../auth/guard/CustomAuthGuard';
+import { BaseDecorator, BaseDecoratorWithBody, ControllerDecorator } from '@utils/decorator';
+import { CustomAuthGuard } from '@auth/guard/customAuthGuard';
 import { User } from '../user.entity';
+import { UpdateResult } from 'typeorm';
+import { Artwork } from '@artwork/artwork.entity';
+import { Exhibition } from '@exhibition/exhibition.entity';
 import {
     getBiddedArtworksApiOperation,
     getBiddingArtworksApiOperation,
@@ -11,9 +14,6 @@ import {
     updateUserProfileApiBody,
     updateUserProfileApiOperation,
 } from '../swagger';
-import { UpdateResult } from 'typeorm';
-import { Artwork } from '../../artwork/artwork.entity';
-import { Exhibition } from '../../exhibition/exhibition.entity';
 
 export const _UserController = () => {
     return applyDecorators(

@@ -3,7 +3,7 @@ import * as cookieParser from 'cookie-parser';
 import { CanActivate, ExecutionContext, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../../app.module';
-import { CustomAuthGuard } from '../../auth/guard/CustomAuthGuard';
+import { CustomAuthGuard } from '@auth/guard/customAuthGuard';
 
 describe('Exhibition Test', () => {
     let app: INestApplication;
