@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from 'src/user/user.repository';
-import { CategoryContoller } from './category.controller';
+import { CategoryController } from './category.controller';
 import { CategoryRepository } from './category.repository';
 import { CategoryService } from './category.service';
 
@@ -13,7 +13,7 @@ import { CategoryService } from './category.service';
             secret: process.env.JWT_SECRET_KEY,
         }),
     ],
-    controllers: [CategoryContoller],
+    controllers: [CategoryController],
     providers: [CategoryService],
     exports: [CategoryService],
 })
