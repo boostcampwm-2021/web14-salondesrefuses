@@ -101,7 +101,6 @@ const EditorElement = ({
     }, [currentElements]);
 
     useEffect(() => {
-        console.log(text);
         if (tagName === 'IMAGE') {
             const asyncGetImgStyle = async () => {
                 const imgStyle = await getImgStyle();
