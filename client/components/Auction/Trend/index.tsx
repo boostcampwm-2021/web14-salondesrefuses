@@ -1,19 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import useAuctionSocketState from '@store/auctionSocketState';
 import { trendHistory } from '@components/Auction/ItemDetail';
 import TrendHistory from '@components/Auction/TrendHistory';
 
-const Trend = ({
-    trendHistoryList,
-}: {
-    trendHistoryList: Array<trendHistory>;
-}) => {
+const Trend = ({ trendHistoryList }: { trendHistoryList: Array<trendHistory> }) => {
     const [socket] = useAuctionSocketState();
 
-    const [trendHistory, setTrendHistory] =
-        useState<Array<trendHistory>>(trendHistoryList);
+    const [trendHistory, setTrendHistory] = useState<Array<trendHistory>>(trendHistoryList);
 
     useEffect(() => {
         socket.on('@auction/bid', (data: trendHistory) => {
@@ -33,9 +28,7 @@ const Trend = ({
                         <th>to</th>
                         <th>date</th>
                     </tr>
-                    {trendHistory.map((history, idx) =>
-                        TrendHistory(history, idx),
-                    )}
+                    {trendHistory.map((history, idx) => TrendHistory(history, idx))}
                 </tbody>
             </Table>
         </Container>

@@ -32,19 +32,15 @@ body {
 }
 @font-face {
     font-family: 'Noto Sans KR';
-    src: local('Noto Sans'), local('NotoSans'), url('/fonts/NotoSansKR/NotoSansKR.woff2') format('woff2'),
-        url('/fonts/NotoSansKR/NotoSansKR.woff') format('woff'), url('/fonts/NotoSansKR/NotoSansKR.eot'),
-        url('/fonts/NotoSansKR/NotoSansKR.eot?#iefix') format('embedded-opentype'),
-        url('/fonts/NotoSansKR/NotoSansKR.otf') format('opentype');
+    src: local('Nanum'), local('Nanum Bold'), url('/fonts/NanumGothic/NanumGothic.woff2') format('woff2');
     font-style: normal;
     font-weight: 400;
     font-display: swap;
 }
 @font-face {
-    font-family: 'Noto Sans KR';
-    src: local('Noto Sans KR Bold'), local('Noto Sans Bold'), local('NotoSansBold'),
-        url('/fonts/NotoSansKR/NotoSansKR-Bold.woff2') format('woff2'),
-        url('/fonts/NotoSansKR/NotoSansKR-Bold.woff') format('woff'), url('/fonts/NotoSansKR/NotoSansKR-Bold.otf');
+    font-family: 'Nanum Gothic Bold';
+    src: local('Nanum Bold'), local('Nanum Gothic Bold'), local('NanumBold'),
+        url('/fonts/NanumGothic/NanumGothic-Bold.woff2') format('woff2');
     font-style: bold;
     font-weight: 700;
     font-display: swap;
@@ -61,10 +57,7 @@ body {
 
 @font-face {
     font-family: 'Mixed Regular';
-    src: local('Noto Sans'), local('NotoSans'), url('/fonts/NotoSansKR/NotoSansKR.woff2') format('woff2'),
-        url('/fonts/NotoSansKR/NotoSansKR.woff') format('woff'), url('/fonts/NotoSansKR/NotoSansKR.eot'),
-        url('/fonts/NotoSansKR/NotoSansKR.eot?#iefix') format('embedded-opentype'),
-        url('/fonts/NotoSansKR/NotoSansKR.otf') format('opentype');
+    src: local('Nanum Gothic'), local('Nanum Gothic'), url('/fonts/NanumGothic/NanumGothic.woff2') format('woff2');
     unicode-range: U+AC00-D7A3;
     font-style: normal;
     font-weight: 400;

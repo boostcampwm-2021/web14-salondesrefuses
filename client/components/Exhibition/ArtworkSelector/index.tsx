@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Artwork } from 'interfaces';
 import { useSelectedImageState, useEditorImageState } from '@store/editorImageState';

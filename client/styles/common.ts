@@ -25,6 +25,7 @@ export const Button = styled.button`
     padding: 0px 5px;
     border: none;
     border-bottom: 1px solid ${(props) => props.theme.color.white};
+    font: ${({ theme }) => theme.font.textEnMd};
     background: none;
     font-size: 20px;
     font-weight: 200;

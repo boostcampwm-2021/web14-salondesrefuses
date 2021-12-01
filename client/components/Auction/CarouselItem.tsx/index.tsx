@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 
-import { BlackButton, SpaceAround } from '@styles/common';
+import { SpaceAround } from '@styles/common';
 
 interface Curation {
     id: number;

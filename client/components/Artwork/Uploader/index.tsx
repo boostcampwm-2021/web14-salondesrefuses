@@ -2,7 +2,6 @@ import React, { RefObject, useRef } from 'react';
 import styled from '@emotion/styled';
 import dynamic from 'next/dynamic';
 
-// import Tiles from '../Tiles';
 import CSuspense from '@components/common/Suspense';
 import Fallback from '@components/common/Fallback';
 import useToast from '@hooks/useToast';

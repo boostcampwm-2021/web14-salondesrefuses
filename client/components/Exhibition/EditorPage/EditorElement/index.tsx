@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 import { Artwork } from 'interfaces';
 import { EditorElementStyle, EditorElementType } from '../Editor/types';
-import { onDraggable, getPositions, getDotStyle, onResize } from './utils';
+import { onDraggable, getDotStyle, onResize } from './utils';
 
 interface Prop {
     style: EditorElementStyle;
@@ -23,12 +23,10 @@ interface Prop {
 
 const EditorElement = ({
     style,
-    editable = true,
     tagName,
     image,
     imageSrc,
     text,
-    align,
     idx,
     artworkId,
     currentElements = [],
@@ -37,11 +35,9 @@ const EditorElement = ({
     setIsDoubleClickedFunc,
 }: Prop) => {
     const elementRef = useRef<HTMLElement | null>(null);
-    const positionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-    const [currentStyle, setCurrentStyle] = useState(style);
+    const [currentStyle] = useState(style);
     let isSelected = currentElements.some((element) => element === elementRef.current);
     const element = elementRef?.current;
-    const [LT, LB, RT, RB] = getPositions(element);
     const imgWidthThreshold = 800;
     const [elementStyle, setElementStyle] = useState(style);
 
