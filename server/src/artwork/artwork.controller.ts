@@ -1,37 +1,21 @@
-import {
-    Body,
-    Controller,
-    Get,
-    Param,
-    ParseIntPipe, Patch,
-    Post,
-    Req,
-    UploadedFile,
-    UseGuards,
-    UseInterceptors,
-    UsePipes,
-    ValidationPipe,
-} from '@nestjs/common';
+import { Get, Post, Patch, Req, Param, Body, ParseIntPipe, ValidationPipe, UploadedFile, UsePipes, UseGuards, UseInterceptors } from '@nestjs/common';
+import { CustomAuthGuard } from '../auth/guard/CustomAuthGuard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateArtworkDTO, NewArtworkDTO, InterestRequestDTO } from './dto/artwork.dto';
-import { ArtworkService } from './artwork.service';
-import { CustomAuthGuard } from '../auth/guard/CustomAuthGuard';
-import { User } from 'src/user/user.entity';
-import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import {
-    createArtWorkApiOperation,
-    createArtworkApiBody,
-    interestApiOperation,
-    getArtworkApiOperation,
-    updateNFTTokenApiOperation,
-} from './swagger';
-import { InterestArtwork } from 'src/interestArtwork/interestArtwork.entity';
 import { InterestArtworkService } from 'src/interestArtwork/interestArtwork.service';
+import { ArtworkService } from './artwork.service';
+import { User } from 'src/user/user.entity';
 import { Artwork } from './artwork.entity';
 import { UpdateResult } from 'typeorm';
+import {
+    _ArtworkController,
+    GetArtworkApi,
+    PostArtworkApi,
+    InterestArtworkApi,
+    UpdateNFTTokenApi,
+} from './decorator';
 
-@Controller('artworks')
-@ApiTags('작품 컨트롤러')
+@_ArtworkController()
 export class ArtworkController {
     constructor(
         private readonly artworkService: ArtworkService,
@@ -39,9 +23,7 @@ export class ArtworkController {
     ) {}
 
     @Get('/:artworkId')
-    @ApiOperation(getArtworkApiOperation)
-    @ApiParam({ name: 'artworkId', type: Number })
-    @ApiResponse({ type: Artwork })
+    @GetArtworkApi()
     getArtwork(@Param('artworkId', ParseIntPipe) artworkId: number): Promise<Artwork> {
         return this.artworkService.getArtwork(artworkId);
     }
@@ -50,10 +32,7 @@ export class ArtworkController {
     @UseGuards(CustomAuthGuard)
     @UsePipes(ValidationPipe)
     @UseInterceptors(FileInterceptor('image'))
-    @ApiConsumes('multipart/form-data')
-    @ApiOperation(createArtWorkApiOperation)
-    @ApiBody(createArtworkApiBody)
-    @ApiResponse({ type: NewArtworkDTO })
+    @PostArtworkApi()
     postArtWork(
         @UploadedFile() file: Express.Multer.File,
         @Body() body: CreateArtworkDTO,
@@ -65,9 +44,7 @@ export class ArtworkController {
     @Post('/interest')
     @UseGuards(CustomAuthGuard)
     @UsePipes(ValidationPipe)
-    @ApiOperation(interestApiOperation)
-    @ApiBody({ type: InterestArtwork })
-    @ApiResponse({ type: Boolean })
+    @InterestArtworkApi()
     interestArtwork(
         @Body() interestRequestDTO: InterestRequestDTO,
         @Req() { user }: Express.Request & { user: User },
@@ -77,10 +54,7 @@ export class ArtworkController {
 
     @Patch('/:artworkId/nft')
     @UseGuards(CustomAuthGuard)
-    @ApiOperation(updateNFTTokenApiOperation)
-    @ApiParam({ name: 'artworkId', type: Number })
-    @ApiBody({ type: String })
-    @ApiResponse({ type: UpdateResult })
+    @UpdateNFTTokenApi()
     updateNFTToken(
         @Param('artworkId', ParseIntPipe) artworkId: number,
         @Body('nftToken') nftToken: string
