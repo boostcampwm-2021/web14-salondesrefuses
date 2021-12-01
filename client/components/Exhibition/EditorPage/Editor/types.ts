@@ -25,7 +25,7 @@ export interface EditorElementProp {
     tagName: EditorElementType;
     style: EditorElementStyle;
     image?: Artwork;
-    innerText?: string;
+    innerHTML?: string;
     imageSrc?: string;
     artworkId?: string;
 }

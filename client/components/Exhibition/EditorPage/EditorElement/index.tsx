@@ -101,7 +101,7 @@ const EditorElement = ({
     }, [currentElements]);
 
     useEffect(() => {
-        console.log(elementStyle);
+        console.log(text);
         if (tagName === 'IMAGE') {
             const asyncGetImgStyle = async () => {
                 const imgStyle = await getImgStyle();
@@ -158,9 +158,8 @@ const EditorElement = ({
                         spellCheck={false}
                         onBlur={() => setIsDoubleClickedFunc(false)}
                         suppressContentEditableWarning={true}
-                    >
-                        {text}
-                    </InputDiv>
+                        dangerouslySetInnerHTML={{ __html: text || '' }}
+                    ></InputDiv>
                     {isSelected && getBorderController(tagName)}
                 </div>
             ) : (

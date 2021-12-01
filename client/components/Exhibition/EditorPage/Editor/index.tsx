@@ -170,7 +170,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
                         tagName={element.tagName}
                         image={element.image}
                         imageSrc={element.imageSrc}
-                        text={element.innerText}
+                        text={element.innerHTML}
                         artworkId={element.artworkId}
                         isDoubleClicked={isDoubleClicked}
                         setIsDoubleClickedFunc={setIsDoubleClickedFunc}
