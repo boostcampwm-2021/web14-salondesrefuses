@@ -29,7 +29,7 @@ export default class AuctionController {
     @GetAuctionsOrderByNewestApi()
     getAuctionsOrderByNewest(@Query('page', ParseIntPipe) page: number): Promise<AuctionListItemDTO[]> {
         if (page < 0) {
-            throw new BadRequestException('Page must be 0 or greater.');
+            throw new BadRequestException('Page must be greater than or equal to 0');
         }
         return this.auctionService.getAuctionsSortedByNewest(page);
     }
@@ -38,7 +38,7 @@ export default class AuctionController {
     @GetAuctionsOrderByPopularApi()
     getAuctionsOrderByPopular(@Query('page', ParseIntPipe) page: number): Promise<AuctionListItemDTO[]> {
         if (page < 0) {
-            throw new BadRequestException('Page must be 0 or greater.');
+            throw new BadRequestException('Page must be greater than or equal to 0');
         }
         return this.auctionService.getAuctionsSortedByPopular(page);
     }
