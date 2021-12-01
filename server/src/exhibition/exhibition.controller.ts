@@ -1,105 +1,67 @@
-import {
-    BadRequestException,
-    Body,
-    Controller,
-    Get,
-    HttpException,
-    HttpStatus,
-    Param,
-    ParseIntPipe,
-    Post,
-    Put,
-    Query,
-    Req,
-    UploadedFile,
-    UseGuards,
-    UseInterceptors,
-    UsePipes,
-    ValidationPipe,
-} from '@nestjs/common';
+import { Get, Post, Put, Req, Body, Param, Query, ParseIntPipe, ValidationPipe, BadRequestException, UploadedFile, UsePipes, UseGuards, UseInterceptors } from '@nestjs/common';
+import { CustomAuthGuard } from '@auth/guard/customAuthGuard';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ExhibitionService } from './exhibition.service';
 import { ExhibitionDetailDTO, ExhibitionDto, HoldExhibitionDTO } from './dto/exhibition.dto';
-import {
-    ApiBody,
-    ApiConsumes,
-    ApiOperation,
-    ApiParam,
-    ApiProperty,
-    ApiQuery,
-    ApiResponse,
-    ApiTags,
-} from '@nestjs/swagger';
-import {
-    getExhibitionsSortedByDeadlineApiOperation,
-    getExhibitionsSortedByInterestApiOperation,
-    getExhibtionIdsApiOperation,
-    getNewestExhibitionApiOperation,
-    getRandomExhibitionsAPiOperation,
-    getSpecificExhibitionApiOperation,
-    holdExhibitionApiBody,
-    updateExhibitionApiOperation,
-} from './swagger';
-import { User } from 'src/user/user.entity';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { CustomAuthGuard } from 'src/auth/guard/CustomAuthGuard';
+import { User } from '@user/user.entity';
 import { UpdateResult } from 'typeorm';
+import {
+    _ExhibitionController,
+    GetExhibitionsIdsApi,
+    GetExhibitionsSortedByDeadlineApi,
+    GetExhibitionsSortedByInterestApi,
+    GetNewestExhibitionsApi,
+    GetRandomExhibitionsApi,
+    GetSpecificExhibitionApi,
+    HoldExhibitionApi,
+    UpdateExhibitionApi,
+} from './decorator';
 
-@Controller('/exhibitions')
-@ApiTags('전시회 컨트롤러')
+@_ExhibitionController()
 export class ExhibitionController {
     constructor(private readonly exhibitionService: ExhibitionService) {}
 
     @Get()
-    @ApiOperation(getExhibtionIdsApiOperation)
+    @GetExhibitionsIdsApi()
     getExhibitionsIds(): Promise<number[]> {
         return this.exhibitionService.getExhibitionIds();
     }
 
     @Get('/random')
-    @ApiOperation(getRandomExhibitionsAPiOperation)
-    @ApiResponse({ type: ExhibitionDto })
-    @ApiProperty({})
+    @GetRandomExhibitionsApi()
     getRandomExhibitions(): Promise<ExhibitionDto[]> {
         return this.exhibitionService.getRandomExhibitions();
     }
 
     @Get('/newest')
-    @ApiOperation(getNewestExhibitionApiOperation)
-    @ApiResponse({ type: ExhibitionDto })
-    @ApiQuery({ name: 'page', type: Number })
+    @GetNewestExhibitionsApi()
     getNewestExhibitions(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDto[]> {
         if (page < 0) {
-            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+            throw new BadRequestException('Page must be greater than or equal to 0');
         }
         return this.exhibitionService.getNewestExhibitions(page);
     }
 
     @Get('/deadline')
-    @ApiOperation(getExhibitionsSortedByDeadlineApiOperation)
-    @ApiResponse({ type: ExhibitionDto })
-    @ApiQuery({ name: 'page', type: Number })
+    @GetExhibitionsSortedByDeadlineApi()
     getExhibitionsSortedByDeadline(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDto[]> {
         if (page < 0) {
-            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+            throw new BadRequestException('Page must be greater than or equal to 0');
         }
         return this.exhibitionService.getExhibitionsSortedByDeadline(page);
     }
 
     @Get('/popular')
-    @ApiOperation(getExhibitionsSortedByInterestApiOperation)
-    @ApiResponse({ type: ExhibitionDto })
-    @ApiQuery({ name: 'page', type: Number })
+    @GetExhibitionsSortedByInterestApi()
     getExhibitionsSortedByInterest(@Query('page', ParseIntPipe) page: number): Promise<ExhibitionDto[]> {
         if (page < 0) {
-            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+            throw new BadRequestException('Page must be greater than or equal to 0');
         }
         return this.exhibitionService.getExhibitionsSortedByInterest(page);
     }
 
     @Get('/:exhibitionId')
-    @ApiOperation(getSpecificExhibitionApiOperation)
-    @ApiParam({ name: 'exhibitionId', type: Number })
-    @ApiResponse({ type: ExhibitionDetailDTO })
+    @GetSpecificExhibitionApi()
     getSpecificExhibition(@Param('exhibitionId', ParseIntPipe) id: number): Promise<ExhibitionDetailDTO> {
         return this.exhibitionService.getSpecificExhibition(id);
     }
@@ -108,9 +70,7 @@ export class ExhibitionController {
     @UseGuards(CustomAuthGuard)
     @UsePipes(ValidationPipe)
     @UseInterceptors(FileInterceptor('thumbnail'))
-    @ApiConsumes('multipart/form-data')
-    @ApiOperation({ summary: '전시회 등록 api' })
-    @ApiBody(holdExhibitionApiBody)
+    @HoldExhibitionApi()
     holdExhibition(
         @UploadedFile() image: Express.Multer.File,
         @Body() holdExhibitionDTO: HoldExhibitionDTO,
@@ -123,13 +83,13 @@ export class ExhibitionController {
     @UseGuards(CustomAuthGuard)
     @UsePipes(ValidationPipe)
     @UseInterceptors(FileInterceptor('thumbnail'))
-    @ApiOperation(updateExhibitionApiOperation)
+    @UpdateExhibitionApi()
     updateExhibition(
         @UploadedFile() image: Express.Multer.File,
         @Body() updateExhibitionDTO: HoldExhibitionDTO,
     ): Promise<UpdateResult> {
-        if (!updateExhibitionDTO.id) {
-            throw new BadRequestException('exhibition id is not empty');
+        if(!updateExhibitionDTO.id) {
+            throw new BadRequestException('Exhibition id is empty')
         }
         return this.exhibitionService.updateExhibition(image, updateExhibitionDTO);
     }

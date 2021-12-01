@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { ArtworkService } from 'src/artwork/artwork.service';
-import AuctionService from 'src/auction/auction.service';
 import { ethers } from 'ethers';
-import * as contractAddress from './ethereum/address.json';
 import * as abi from './ethereum/abi.json';
-import { CompletedAuctionService } from 'src/completedAuction/completedAuction.service';
+import * as contractAddress from './ethereum/address.json';
+import { ArtworkService } from '@artwork/artwork.service';
+import AuctionService from '@auction/auction.service';
+import { CompletedAuctionService } from '@completedAuction/completedAuction.service';
 
 @Injectable()
 export class CronTaskService {

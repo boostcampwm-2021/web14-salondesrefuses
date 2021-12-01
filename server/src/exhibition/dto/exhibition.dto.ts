@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
-import { Artwork } from 'src/artwork/artwork.entity';
-import { ArtworkDto } from 'src/artwork/dto/artwork.dto';
+import { Artwork } from '@artwork/artwork.entity';
+import { ArtworkDto } from '@artwork/dto/artwork.dto';
 import { Exhibition } from '../exhibition.entity';
 
 export class ExhibitionDto {

@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Artwork } from '../artwork/artwork.entity';
-import { AuctionHistory } from '../auctionHistory/auctionHistory.entity';
-import { User } from '../user/user.entity';
+import { Artwork } from '@artwork/artwork.entity';
+import { AuctionHistory } from '@auctionHistory/auctionHistory.entity';
+import { User } from '@user/user.entity';
 
 @Entity()
 export class Auction {

@@ -8,7 +8,7 @@ import {
     WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { AuctionHistoryService } from '../../auctionHistory/auctionHistory.service';
+import { AuctionHistoryService } from '@auctionHistory/auctionHistory.service';
 import AuctionService from '../auction.service';
 
 @WebSocketGateway({

@@ -6,7 +6,7 @@ import * as cookieParser from 'cookie-parser';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CanActivate, ExecutionContext, INestApplication } from '@nestjs/common';
 import { AppModule } from '../../app.module';
-import { CustomAuthGuard } from '../../auth/guard/CustomAuthGuard';
+import { CustomAuthGuard } from '@auth/guard/customAuthGuard';
 
 describe('Artwork Test', () => {
     let app: INestApplication;
@@ -59,36 +59,6 @@ describe('Artwork Test', () => {
             expect(res.statusCode).toBe(404);
         });
     });
-
-    // test('작품 생성 시 NewArtworkDTO 반환', async () => {
-    //     const image = path.join(__dirname, './logo.png');
-    //     const createArtworkDTO = {
-    //         title: 'artwork title',
-    //         type: 'photography',
-    //         year: '2021',
-    //         price: '5ETH',
-    //         description: 'this is artwork',
-    //         isRegisterAuction: 'true',
-    //         endAt: '2021-12-01',
-    //         image: JSON.stringify(fs.readFileSync(image)),
-    //     };
-    //     // const formData = new FormData();
-    //     // formData.append('title', 'artwork title');
-    //     // formData.append('type', 'photography');
-    //     // formData.append('year', '2021');
-    //     // formData.append('price', '5ETH');
-    //     // formData.append('description', 'this is artwork');
-    //     // formData.append('isRegisterAuction', 'true');
-    //     // formData.append('endAt', '2021-12-01');
-    //     // formData.append('image', fs.readFileSync(image).toString());
-    //
-    //     const res = await request(app.getHttpServer())
-    //         .post('/artworks')
-    //         .set('Cookie', ['isValid=true'])
-    //         .send(createArtworkDTO);
-    //
-    //     expect(res.statusCode).toBe(200);
-    // });
 
     test('로그인되어 있지 않은 상태에서 작품 생성 시 401 에러 반환', async () => {
         const image = path.join(__dirname, './logo.png');

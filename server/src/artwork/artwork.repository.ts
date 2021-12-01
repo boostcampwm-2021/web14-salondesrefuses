@@ -1,11 +1,11 @@
-import { ObjectStorageData } from 'src/image/dto/Image.dto';
 import { EntityRepository, In, Repository, UpdateResult } from 'typeorm';
-import { Artwork } from './artwork.entity';
-import { ArtworkStatus } from './enum/artwork.enum';
+import { InterestArtwork } from '@interestArtwork/interestArtwork.entity';
+import { AuctionHistory } from '@auctionHistory/auctionHistory.entity';
+import { ObjectStorageData } from '@image/dto/Image.dto';
 import { CreateArtworkDTO } from './dto/artwork.dto';
-import { InterestArtwork } from '../interestArtwork/interestArtwork.entity';
-import { AuctionHistory } from 'src/auctionHistory/auctionHistory.entity';
-import { Auction } from 'src/auction/auction.entity';
+import { ArtworkStatus } from './enum/artwork.enum';
+import { Auction } from '@auction/auction.entity';
+import { Artwork } from './artwork.entity';
 
 @EntityRepository(Artwork)
 export class ArtworkRepository extends Repository<Artwork> {

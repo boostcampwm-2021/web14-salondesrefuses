@@ -1,12 +1,12 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
-import { ExhibitionRepository } from './exhibition.repository';
 import { ExhibitionDetailDTO, ExhibitionDto, HoldExhibitionDTO } from './dto/exhibition.dto';
-import { User } from 'src/user/user.entity';
-import { ImageService } from 'src/image/image.service';
-import { ArtworkRepository } from 'src/artwork/artwork.repository';
-import { UpdateResult } from 'typeorm';
-import { ArtworkStatus } from '../artwork/enum/artwork.enum';
+import { ExhibitionRepository } from './exhibition.repository';
+import { ArtworkRepository } from '@artwork/artwork.repository';
+import { ArtworkStatus } from '@artwork/enum/artwork.enum';
+import { ImageService } from '@image/image.service';
 import { Exhibition } from './exhibition.entity';
+import { User } from '@user/user.entity';
+import { UpdateResult } from 'typeorm';
 
 @Injectable()
 export class ExhibitionService {

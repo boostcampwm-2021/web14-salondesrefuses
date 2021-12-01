@@ -1,13 +1,13 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { ExhibitionRepository } from '@exhibition/exhibition.repository';
+import { ArtworkRepository } from '@artwork/artwork.repository';
 import { UserRepository } from './user.repository';
-import { ArtworkRepository } from '../artwork/artwork.repository';
-import { ImageService } from '../image/image.service';
-import { Artwork } from '../artwork/artwork.entity';
-import { User } from './user.entity';
-import { UpdateResult } from 'typeorm';
+import { ImageService } from '@image/image.service';
+import { Exhibition } from '@exhibition/exhibition.entity';
+import { Artwork } from '@artwork/artwork.entity';
 import { RequestUserDTO } from './dto/user.dto';
-import { ExhibitionRepository } from '../exhibition/exhibition.repository';
-import { Exhibition } from '../exhibition/exhibition.entity';
+import { UpdateResult } from 'typeorm';
+import { User } from './user.entity';
 
 @Injectable()
 export class UserService {

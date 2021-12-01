@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Artwork } from '../artwork/artwork.entity';
+import { Artwork } from '@artwork/artwork.entity';
 
 @Entity()
 export class InterestArtwork {
