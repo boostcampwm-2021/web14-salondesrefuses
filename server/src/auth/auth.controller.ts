@@ -1,19 +1,16 @@
-import { Body, Controller, ParseIntPipe, Post, Res, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Post, Res, Body, UsePipes, ParseIntPipe, ValidationPipe } from '@nestjs/common';
+import { _AuthController, SignInApi, SignOutApi } from './decorator';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { signInApiOperation, signOutApiBody, signOutApiOperation } from './swagger';
 import { AuthDto } from './dto/auth.dto';
 
-@Controller('/auth')
-@ApiTags('인증 컨트롤러')
+@_AuthController()
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Post('/signIn')
     @UsePipes(ValidationPipe)
-    @ApiOperation(signInApiOperation)
-    @ApiBody({ type: AuthDto })
+    @SignInApi()
     async signIn(
         @Body() authCredentialDto: AuthDto,
         @Res() res: Response,
@@ -37,8 +34,7 @@ export class AuthController {
     }
 
     @Post('/signOut')
-    @ApiOperation(signOutApiOperation)
-    @ApiBody(signOutApiBody)
+    @SignOutApi()
     async signOut(
         @Body('userId', ParseIntPipe) userId: number,
         @Res() res: Response
