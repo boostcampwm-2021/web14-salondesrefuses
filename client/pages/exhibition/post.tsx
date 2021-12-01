@@ -78,7 +78,7 @@ const ExhibitionPostPage = () => {
                     <Editor
                         elements={elements}
                         setElementList={setElementList}
-                        backButtonHandler={handleBackButton}
+                        handleBackButton={handleBackButton}
                         holdExhibition={onClickHold}
                         isEdit={false}
                     />

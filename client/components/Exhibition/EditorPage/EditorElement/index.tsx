@@ -60,6 +60,7 @@ const EditorElement = ({
             transform: currentStyle.transform,
             width: `${currentStyle.width}px`,
             height: `${currentStyle.height}px`,
+            color: currentStyle.color,
             backgroundColor: currentStyle.backgroundColor,
             position: 'absolute' as 'absolute',
             border: isSelected ? '1px solid #3A8FD6' : '0px',
