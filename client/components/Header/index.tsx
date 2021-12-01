@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import Logo from '@assets/images/logo.png';
+import Logo from '@assets/images/logo.webp';
 import { HeaderContainer, LeftContainer, Hr, ImageContainer } from './style';
 import useSessionState from '@store/sessionState';
 import dynamic from 'next/dynamic';

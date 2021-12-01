@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import logo from '@assets/images/logo.png';
+import logo from '@assets/images/logo.webp';
 import { Center } from '@styles/common';
 
 const Fallback = () => {

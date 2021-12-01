@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, LogoContainer, Text, Hr, Copyright } from './styles';
 import Image from 'next/image';
-import Logo from '@assets/images/logo.png';
+import Logo from '@assets/images/logo.webp';
 
 const Mobile = () => {
     return (

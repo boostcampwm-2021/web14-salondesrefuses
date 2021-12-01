@@ -98,6 +98,8 @@ export const PriceContainer = styled.div`
     justify-content: end;
 
     & img {
+        width: 28px;
+        height: 29px;
         opacity: 0.7;
     }
 `;

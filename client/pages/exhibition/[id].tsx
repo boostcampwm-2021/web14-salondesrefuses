@@ -13,7 +13,7 @@ const ExhibitionDetailPage = ({ exhibition }: { exhibition: Exhibition }) => {
     return (
         <div>
             <Head>
-                <title>벽전 - 전시회 탐색</title>
+                <title>벽전 - {exhibition.title}</title>
             </Head>
             <Layout>
                 <ErrorBoundary fallback={<Fallback />}>

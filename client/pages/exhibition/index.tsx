@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
+import Head from 'next/head';
 
 import Layout from '@components/common/Layout';
 import { TopContainer, Buttons, BlackButton } from '../../components/Exhibition/style';
@@ -45,13 +46,19 @@ const ExhibitionPage: NextPage = () => {
     };
 
     return (
-        <Layout>
-            <TopContainer>
-                <ListFilter handleFilter={handleFilter} select={onSelect} />
-                <Buttons>{buildButtons()}</Buttons>
-            </TopContainer>
-            <ExhibitionList onSelect={onSelect} />
-        </Layout>
+        <>
+            <Head>
+                <title>벽전 - 전시회 목록</title>
+                <meta content="벽전 - 전시회 목록" />
+            </Head>
+            <Layout>
+                <TopContainer>
+                    <ListFilter handleFilter={handleFilter} select={onSelect} />
+                    <Buttons>{buildButtons()}</Buttons>
+                </TopContainer>
+                <ExhibitionList onSelect={onSelect} />
+            </Layout>
+        </>
     );
 };
 
