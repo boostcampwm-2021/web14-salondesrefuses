@@ -144,6 +144,7 @@ export const FlexWrapper = styled.div`
         margin: 150px;
         width: 250px;
         height: 250px;
+        filter: grayscale(1);
     }
 `;
 

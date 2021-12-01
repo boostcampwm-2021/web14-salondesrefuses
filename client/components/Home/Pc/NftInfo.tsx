@@ -5,7 +5,7 @@ const NftInfo = () => {
     return (
         <NFTContainer>
             <FlexWrapper>
-                <img src="/icons/nft.png" />
+                <img src="/icons/nft.webp" draggable={false} />
                 <Contents>
                     <h1>NFT를 사용한 이유</h1>
                     <p>
