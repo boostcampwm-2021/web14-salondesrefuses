@@ -6,7 +6,6 @@ import Editor from './Editor';
 import ImageSlider from './ImageSlider';
 import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/types';
 import { useRouter } from 'next/router';
-import { Exhibition } from 'interfaces';
 
 interface EditorProp {
     backButtonHandler: () => void;
@@ -17,7 +16,7 @@ interface EditorProp {
 }
 interface ExhibitionElement {
     tagName: string;
-    innerText: string;
+    innerHTML?: string | null;
     imageSrc?: string | null;
     artworkId?: string;
     style: {
@@ -37,7 +36,6 @@ const index = ({ backButtonHandler, holdExhibition, elements, setElementList, is
 
         [...editorRef.current.childNodes].forEach((el: ChildNode) => {
             const element = el as HTMLElement;
-            const { innerText } = element;
             const tagName = element.classList[1];
             const { width, height, color, transform, backgroundColor } = element.style;
             const { top, left, zIndex, backgroundImage, fontFamily, fontSize, textAlign } =
@@ -48,10 +46,10 @@ const index = ({ backButtonHandler, holdExhibition, elements, setElementList, is
             }
             const artworkId = element.dataset.artwork;
             artworkId && artworkIds.push(artworkId);
-
+            const innerHTML = (tagName === 'TEXT' && element.children[0].innerHTML) || null;
             exhibitionElements.push({
                 tagName,
-                innerText,
+                innerHTML,
                 imageSrc,
                 artworkId,
                 style: {
