@@ -6,7 +6,7 @@ import chevronRightIcon from '@assets/images/chevron-right.png';
 import { useEditorImageState, useSelectedImageState } from '@store/editorImageState';
 
 const ImageSlider = () => {
-    const [selectedImages, _] = useSelectedImageState();
+    const [selectedImages] = useSelectedImageState();
     const [editorImageState, setEditorImageState] = useEditorImageState();
     const imageSliderRef = useRef<HTMLDivElement | null>(null);
 

@@ -30,10 +30,11 @@ export default class MyDocument extends Document {
         return (
             <Html>
                 <Head>
-                    <link rel="preload" href="/fonts/Montserrat/Montserrat-Regular.ttf" as="font" crossOrigin="" />
-                    <link rel="preload" href="/fonts/Montserrat/Montserrat-Bold.ttf" as="font" crossOrigin="" />
-                    <link rel="preload" href="/fonts/NotoSansKR/NotoSansKR-Regular.otf" as="font" crossOrigin="" />
-                    <link rel="preload" href="/fonts/NotoSansKR/NotoSansKR-Bold.otf" as="font" crossOrigin="" />
+                    <link rel="preload" href="/fonts/Montserrat/Montserrat-Regular.woff2" as="font" crossOrigin="" />
+                    <link rel="preload" href="/fonts/Montserrat/Montserrat-Bold.woff2" as="font" crossOrigin="" />
+                    <link rel="preload" href="/fonts/NanumGothic/NanumGothic.woff2" as="font" crossOrigin="" />
+                    <link rel="preload" href="/fonts/NanumGothic/NanumGothic-Bold.woff2" as="font" crossOrigin="" />
+                    <meta name="google-site-verification" content="hPN6vGlLrA0i0TzxugZ1RyJxliPijv7cac3tvNBrRFw" />
                     <meta charSet="utf-8"></meta>
                 </Head>
                 <body>

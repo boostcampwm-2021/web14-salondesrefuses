@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, forwardRef } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 
 import ColorPicker from '../ColorPicker';
 import EditorElement from '../EditorElement';
@@ -71,7 +71,6 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     }, [JSON.stringify(fontStyles)]);
 
     useEffect(() => {
-        console.log(elements);
         if (!editorRef.current) return;
         editorRef.current.addEventListener('click', (e: any) => {
             if (!(e.target as HTMLDivElement).classList.contains('editorElement')) {

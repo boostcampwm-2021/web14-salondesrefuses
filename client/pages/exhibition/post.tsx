@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 
 import Form from '@components/Exhibition/FormPage';
 import ArtworkSelector from '@components/Exhibition/ArtworkSelectorWrapper';
@@ -22,7 +21,7 @@ const ExhibitionPostPage = () => {
     const { formInput, onClickHold } = useInputExhibition();
 
     const [selectedImages, setSelectedImages] = useSelectedImageState();
-    const [editorImageState, setEditorImageState] = useEditorImageState();
+    const [_, setEditorImageState] = useEditorImageState();
     const showToast = useToast({
         onSuccess: '',
         onFailed: '제목 / 기간 / 썸네일 / 작품을 선택해주세요.',

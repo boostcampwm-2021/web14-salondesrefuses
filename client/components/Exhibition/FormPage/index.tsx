@@ -46,8 +46,6 @@ const index = ({ formInput, oldInputData, setExhibitionInput }: FormProps) => {
 
     useEffect(() => {
         if (!oldInputData) return;
-        // const thumbnail = new Image();
-        // thumbnail.src = oldInputData.thumbnailImage || '';
         setExhibitionInput &&
             setExhibitionInput({
                 title: oldInputData.title,

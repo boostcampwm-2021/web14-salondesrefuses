@@ -50,7 +50,7 @@ export const NavButton = styled.div`
     margin: 0 20px;
     img {
         width: 40px;
-        height: auto;
+        height: 40px;
         border-radius: 20px;
     }
     cursor: pointer;

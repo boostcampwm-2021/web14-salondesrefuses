@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import Slider, { Settings } from 'react-slick';
 import 'slick-carousel/slick/slick.css';

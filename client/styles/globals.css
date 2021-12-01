@@ -13,35 +13,39 @@ body {
 
 @font-face {
     font-family: 'Montserrat';
-    src: url('/fonts/Montserrat/Montserrat-Regular.ttf');
+    src: local('Monserrat'), url('/fonts/Montserrat/Montserrat-Regular.woff2') format('woff2');
     font-style: normal;
     font-weight: 400;
     font-display: swap;
 }
 @font-face {
     font-family: 'Montserrat';
-    src: url('/fonts/Montserrat/Montserrat-Bold.ttf');
+    src: local('Monserrat-Bold'), local('Monserrat Bold'), local('MonserratBold'),
+        url('/fonts/Montserrat/Montserrat-Bold.woff2') format('woff2');
     font-style: bold;
     font-weight: 700;
     font-display: swap;
 }
 @font-face {
     font-family: 'Noto Sans KR';
-    src: url('/fonts/NotoSansKR/NotoSansKR-Regular.otf');
+    src: local('Nanum'), local('Nanum Bold'), url('/fonts/NanumGothic/NanumGothic.woff2') format('woff2');
     font-style: normal;
     font-weight: 400;
     font-display: swap;
 }
 @font-face {
-    font-family: 'Noto Sans KR';
-    src: url('/fonts/NotoSansKR/NotoSansKR-Bold.otf');
+    font-family: 'Nanum Gothic Bold';
+    src: local('Nanum Bold'), local('Nanum Gothic Bold'), local('NanumBold'),
+        url('/fonts/NanumGothic/NanumGothic-Bold.woff2') format('woff2');
     font-style: bold;
     font-weight: 700;
     font-display: swap;
 }
 @font-face {
     font-family: 'Mixed Regular';
-    src: url('/fonts/Montserrat/Montserrat-Regular.ttf');
+    src: local('Monserrat'), url('/fonts/Montserrat/Montserrat-Regular.woff2') format('woff2'),
+        url('/fonts/Montserrat/Montserrat-Regular.woff') format('woff'), url('/fonts/Montserrat/Montserrat-Regular.eot'),
+        url('/fonts/Montserrat/Montserrat-Regular.ttf');
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -49,7 +53,7 @@ body {
 
 @font-face {
     font-family: 'Mixed Regular';
-    src: url('/fonts/NotoSansKR/NotoSansKR-Regular.otf');
+    src: local('Nanum Gothic'), local('Nanum Gothic'), url('/fonts/NanumGothic/NanumGothic.woff2') format('woff2');
     unicode-range: U+AC00-D7A3;
     font-style: normal;
     font-weight: 400;

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 
-import logo from '@assets/images/logo.png';
+import logo from '@assets/images/logo.webp';
 import AboutUs from './AboutUs';
 
 const Footer = () => {
