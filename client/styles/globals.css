@@ -13,35 +13,47 @@ body {
 
 @font-face {
     font-family: 'Montserrat';
-    src: url('/fonts/Montserrat/Montserrat-Regular.ttf');
+    src: local('Monserrat'), url('/fonts/Montserrat/Montserrat-Regular.woff2') format('woff2'),
+        url('/fonts/Montserrat/Montserrat-Regular.woff') format('woff'), url('/fonts/Montserrat/Montserrat-Regular.eot'),
+        url('/fonts/Montserrat/Montserrat-Regular.ttf');
     font-style: normal;
     font-weight: 400;
     font-display: swap;
 }
 @font-face {
     font-family: 'Montserrat';
-    src: url('/fonts/Montserrat/Montserrat-Bold.ttf');
+    src: local('Monserrat-Bold'), local('Monserrat Bold'), local('MonserratBold'),
+        url('/fonts/Montserrat/Montserrat-Bold.woff2') format('woff2'),
+        url('/fonts/Montserrat/Montserrat-Bold.woff') format('woff'), url('/fonts/Montserrat/Montserrat-Bold.eot'),
+        url('/fonts/Montserrat/Montserrat-Bold.ttf');
     font-style: bold;
     font-weight: 700;
     font-display: swap;
 }
 @font-face {
     font-family: 'Noto Sans KR';
-    src: url('/fonts/NotoSansKR/NotoSansKR-Regular.otf');
+    src: local('Noto Sans'), local('NotoSans'), url('/fonts/NotoSansKR/NotoSansKR.woff2') format('woff2'),
+        url('/fonts/NotoSansKR/NotoSansKR.woff') format('woff'), url('/fonts/NotoSansKR/NotoSansKR.eot'),
+        url('/fonts/NotoSansKR/NotoSansKR.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/NotoSansKR/NotoSansKR.otf') format('opentype');
     font-style: normal;
     font-weight: 400;
     font-display: swap;
 }
 @font-face {
     font-family: 'Noto Sans KR';
-    src: url('/fonts/NotoSansKR/NotoSansKR-Bold.otf');
+    src: local('Noto Sans KR Bold'), local('Noto Sans Bold'), local('NotoSansBold'),
+        url('/fonts/NotoSansKR/NotoSansKR-Bold.woff2') format('woff2'),
+        url('/fonts/NotoSansKR/NotoSansKR-Bold.woff') format('woff'), url('/fonts/NotoSansKR/NotoSansKR-Bold.otf');
     font-style: bold;
     font-weight: 700;
     font-display: swap;
 }
 @font-face {
     font-family: 'Mixed Regular';
-    src: url('/fonts/Montserrat/Montserrat-Regular.ttf');
+    src: local('Monserrat'), url('/fonts/Montserrat/Montserrat-Regular.woff2') format('woff2'),
+        url('/fonts/Montserrat/Montserrat-Regular.woff') format('woff'), url('/fonts/Montserrat/Montserrat-Regular.eot'),
+        url('/fonts/Montserrat/Montserrat-Regular.ttf');
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -49,7 +61,10 @@ body {
 
 @font-face {
     font-family: 'Mixed Regular';
-    src: url('/fonts/NotoSansKR/NotoSansKR-Regular.otf');
+    src: local('Noto Sans'), local('NotoSans'), url('/fonts/NotoSansKR/NotoSansKR.woff2') format('woff2'),
+        url('/fonts/NotoSansKR/NotoSansKR.woff') format('woff'), url('/fonts/NotoSansKR/NotoSansKR.eot'),
+        url('/fonts/NotoSansKR/NotoSansKR.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/NotoSansKR/NotoSansKR.otf') format('opentype');
     unicode-range: U+AC00-D7A3;
     font-style: normal;
     font-weight: 400;

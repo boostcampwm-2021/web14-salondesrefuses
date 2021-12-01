@@ -4,12 +4,13 @@ import { ThemeProvider } from '@emotion/react';
 import theme from '@styles/theme';
 import { RecoilRoot } from 'recoil';
 
+import Mobile from '@components/Home/Mobile';
+import { isMobile } from '@utils/isMobile';
+
 function MyApp({ Component, pageProps }: AppProps) {
     return (
         <RecoilRoot>
-            <ThemeProvider theme={theme}>
-                <Component {...pageProps} />
-            </ThemeProvider>
+            <ThemeProvider theme={theme}>{isMobile() ? <Mobile /> : <Component {...pageProps} />}</ThemeProvider>
         </RecoilRoot>
     );
 }
