@@ -15,7 +15,7 @@ const theme = {
         textEnMd: `20px "Mixed Regular"`,
         textEnBase: `16px "Mixed Regular"`,
         textEnSm: `12px "Mixed Regular"`,
-        textEnTitle: `bold 40px "Mixed Regular"`,
+        textEnTitle: `bold 40px "Montserrat"`,
         text2Xl: `34px "Nanum Gothic"`,
         textXl: `28px "Nanum Gothic"`,
         textLg: `24px "Nanum Gothic"`,

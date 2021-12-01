@@ -69,10 +69,6 @@ const ResultPage = () => {
         setContract(new web3.eth.Contract(ABI.abi as AbiItem[], contractAddress.address));
     }, [id]);
 
-    useEffect(() => {
-        //TODO : api 만들어주면 토큰 쏘기
-    }, [token]);
-
     return (
         <>
             <Head>

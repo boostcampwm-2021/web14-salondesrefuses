@@ -8,7 +8,6 @@ import { Auction } from 'interfaces';
 import useAuctionSocketState from '@store/auctionSocketState';
 import { trendHistory } from '@components/Auction/ItemDetail';
 import { getRemainingTime } from '@utils/time';
-import { WEI } from '@constants/eth';
 import useToast from '@hooks/useToast';
 import ABI from '@public/ethereum/abi.json';
 import contractAddress from '@public/ethereum/address.json';
@@ -19,6 +18,8 @@ import { ToastMsg } from '@const/toast-message';
 
 let eventSource: EventSource | null;
 let account: string | null;
+
+const WEI = 1000000000000000000;
 
 const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: number }) => {
     const { id, artwork } = auction;

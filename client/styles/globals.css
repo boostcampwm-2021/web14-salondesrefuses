@@ -13,9 +13,7 @@ body {
 
 @font-face {
     font-family: 'Montserrat';
-    src: local('Monserrat'), url('/fonts/Montserrat/Montserrat-Regular.woff2') format('woff2'),
-        url('/fonts/Montserrat/Montserrat-Regular.woff') format('woff'), url('/fonts/Montserrat/Montserrat-Regular.eot'),
-        url('/fonts/Montserrat/Montserrat-Regular.ttf');
+    src: local('Monserrat'), url('/fonts/Montserrat/Montserrat-Regular.woff2') format('woff2');
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -23,9 +21,7 @@ body {
 @font-face {
     font-family: 'Montserrat';
     src: local('Monserrat-Bold'), local('Monserrat Bold'), local('MonserratBold'),
-        url('/fonts/Montserrat/Montserrat-Bold.woff2') format('woff2'),
-        url('/fonts/Montserrat/Montserrat-Bold.woff') format('woff'), url('/fonts/Montserrat/Montserrat-Bold.eot'),
-        url('/fonts/Montserrat/Montserrat-Bold.ttf');
+        url('/fonts/Montserrat/Montserrat-Bold.woff2') format('woff2');
     font-style: bold;
     font-weight: 700;
     font-display: swap;

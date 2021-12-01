@@ -11,7 +11,7 @@ import useModalState from '@store/modalState';
 
 const ExhibitionPage: NextPage = () => {
     const [onSelect, setOnSelect] = useState<string>('Newest');
-    const [modalState, setModalState] = useModalState();
+    const [_, setModalState] = useModalState();
     const session = useSessionState().contents;
 
     const handleFilter = ({ currentTarget }: React.MouseEvent) => {
