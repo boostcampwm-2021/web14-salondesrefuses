@@ -1,42 +1,35 @@
-import { Body, Controller, Get, Put, Query, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Get, Put, Req, Body, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { Artwork } from '../artwork/artwork.entity';
 import { Exhibition } from '../exhibition/exhibition.entity';
-import { CustomAuthGuard } from '../auth/guard/CustomAuthGuard';
 import { RequestUserDTO } from './dto/user.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 import {
-    getUsersArtworksApiOperation,
-    updateUserProfileApiOperation,
-    getUserProfile,
-    getInterestArtworksApiOperation,
-    getBiddingArtworksApiOperation,
-    getBiddedArtworksApiOperation,
-    getUsersExhibitionsApiOperation,
-    updateUserProfileApiBody,
-} from './swagger';
+    _UserController,
+    GetBiddedArtworksApi,
+    GetBiddingArtworksApi,
+    GetInterestArtworksApi,
+    GetUserProfileApi,
+    GetUsersArtworksApi,
+    GetUsersExhibitionsApi,
+    UpdateUserProfileApi,
+} from './decorator';
 
-@UseGuards(CustomAuthGuard)
-@Controller('/users')
-@ApiTags('유저 컨트롤러')
+@_UserController()
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
     @Get('/')
-    @ApiOperation(getUserProfile)
-    @ApiResponse({ type: User })
+    @GetUserProfileApi()
     getUserProfile(@Req() { user }: Express.Request & { user: User }): Promise<User> {
         return this.userService.getUserProfile(user);
     }
 
     @Put('/')
     @UseInterceptors(FileInterceptor('image'))
-    @ApiOperation(updateUserProfileApiOperation)
-    @ApiBody(updateUserProfileApiBody)
-    @ApiResponse({ type: UpdateResult })
+    @UpdateUserProfileApi()
     updateUserProfile(
         @Req() { user }: Express.Request & { user: User },
         @UploadedFile() file: Express.Multer.File,
@@ -46,38 +39,31 @@ export class UserController {
     }
 
     @Get('/artworks')
-    @ApiOperation(getUsersArtworksApiOperation)
-    @ApiResponse({ type: Artwork })
+    @GetUsersArtworksApi()
     getUsersArtworks(@Req() { user }: Express.Request & { user: User }): Promise<Artwork[]> {
         return this.userService.getUsersArtworks(user);
     }
 
     @Get('/artworks/interest')
-    @ApiOperation(getInterestArtworksApiOperation)
-    @ApiResponse({ type: Artwork })
+    @GetInterestArtworksApi()
     getInterestArtworks(@Req() { user }: Express.Request & { user: User }): Promise<Artwork[]> {
         return this.userService.getInterestArtworks(user);
     }
 
     @Get('/artworks/transaction')
-    @ApiOperation(getBiddingArtworksApiOperation)
-    @ApiResponse({ type: Artwork })
+    @GetBiddingArtworksApi()
     getBiddingArtworks(@Req() { user }: Express.Request & { user: User }): Promise<Artwork[]> {
         return this.userService.getBiddingArtworks(user);
     }
 
     @Get('/artworks/bid')
-    @ApiOperation(getBiddedArtworksApiOperation)
-    @ApiResponse({ type: Artwork })
-    getBiddedArtworks(
-        @Query('nftTokens') nftTokens: string
-    ): Promise<Artwork[]> {
+    @GetBiddedArtworksApi()
+    getBiddedArtworks(@Query('nftTokens') nftTokens: string): Promise<Artwork[]> {
         return this.userService.getBiddedArtworks(nftTokens);
     }
 
     @Get('/exhibitions')
-    @ApiOperation(getUsersExhibitionsApiOperation)
-    @ApiResponse({ type: Exhibition })
+    @GetUsersExhibitionsApi()
     getUsersExhibitions(@Req() { user }: Express.Request & { user: User }): Promise<Exhibition[]> {
         return this.userService.getUsersExhibitions(user);
     }
