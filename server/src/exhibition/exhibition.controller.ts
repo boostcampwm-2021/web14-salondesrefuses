@@ -88,6 +88,9 @@ export class ExhibitionController {
         @UploadedFile() image: Express.Multer.File,
         @Body() updateExhibitionDTO: HoldExhibitionDTO,
     ): Promise<UpdateResult> {
+        if(!updateExhibitionDTO.id) {
+            throw new BadRequestException('Exhibition id is empty')
+        }
         return this.exhibitionService.updateExhibition(image, updateExhibitionDTO);
     }
 }

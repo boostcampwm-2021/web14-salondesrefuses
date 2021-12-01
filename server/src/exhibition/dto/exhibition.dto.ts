@@ -54,7 +54,6 @@ export class ExhibitionDto {
 }
 
 export class HoldExhibitionDTO {
-    @IsNotEmpty()
     id: number;
 
     @IsNotEmpty()
