@@ -42,7 +42,6 @@ const useInputExhibition = () => {
         formData.append('thumbnail', thumbnailImage!);
         formData.append('artworkIds', artworkIds);
         isEdit && formData.append('id', exhibitionId);
-        formData.forEach((v) => console.log(v));
         const result = isEdit ? await editExhibition(formData) : await holdExhibition(formData);
         if (onResponseSuccess(result.status)) {
             showToast('success');

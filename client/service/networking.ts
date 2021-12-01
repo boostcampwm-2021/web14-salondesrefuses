@@ -67,7 +67,7 @@ export const holdExhibition = (data: FormData) => {
     });
 };
 export const editExhibition = (data: FormData) => {
-    return axios.patch(`${API_SERVER_URL}/exhibitions/update`, data, {
+    return axios.put(`${API_SERVER_URL}/exhibitions/update`, data, {
         withCredentials: true,
         headers: { 'Content-Type': 'multipart/form-data' },
     });

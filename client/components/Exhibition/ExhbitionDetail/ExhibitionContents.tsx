@@ -17,7 +17,7 @@ const MakeElement = ({
         />
     ) : (
         <AbsoluteDiv style={content.style as CSSProperties}>
-            {content.tagName === 'TEXT' && content.innerText}
+            {content.tagName === 'TEXT' && <div dangerouslySetInnerHTML={{ __html: content.innerHTML || '' }}></div>}
         </AbsoluteDiv>
     );
 };
@@ -30,7 +30,7 @@ interface Props {
 
 interface contentStyles {
     tagName: EditorElementType;
-    innerText?: string;
+    innerHTML?: string;
     imageSrc?: string;
     artworkId?: string;
     style: EditorElementStyle;
@@ -55,6 +55,7 @@ const ElementContainer = styled.div<{ size: string }>`
 `;
 const AbsoluteDiv = styled.div`
     position: absolute;
+    overflow: hidden;
 `;
 const AbsoluteImage = styled.div<{ imgUrl: string }>`
     position: absolute;
