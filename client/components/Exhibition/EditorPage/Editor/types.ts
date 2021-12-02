@@ -10,6 +10,7 @@ export type EditorElementStyle = {
     top: number;
     left: number;
     transform?: string;
+    color?: string;
     backgroundColor?: string;
     width: number | string;
     height: number | string;
@@ -25,7 +26,7 @@ export interface EditorElementProp {
     tagName: EditorElementType;
     style: EditorElementStyle;
     image?: Artwork;
-    innerText?: string;
+    innerHTML?: string;
     imageSrc?: string;
     artworkId?: string;
 }

@@ -60,6 +60,7 @@ const EditorElement = ({
             transform: currentStyle.transform,
             width: `${currentStyle.width}px`,
             height: `${currentStyle.height}px`,
+            color: currentStyle.color,
             backgroundColor: currentStyle.backgroundColor,
             position: 'absolute' as 'absolute',
             border: isSelected ? '1px solid #3A8FD6' : '0px',
@@ -101,7 +102,6 @@ const EditorElement = ({
     }, [currentElements]);
 
     useEffect(() => {
-        console.log(elementStyle);
         if (tagName === 'IMAGE') {
             const asyncGetImgStyle = async () => {
                 const imgStyle = await getImgStyle();
@@ -158,9 +158,8 @@ const EditorElement = ({
                         spellCheck={false}
                         onBlur={() => setIsDoubleClickedFunc(false)}
                         suppressContentEditableWarning={true}
-                    >
-                        {text}
-                    </InputDiv>
+                        dangerouslySetInnerHTML={{ __html: text || '' }}
+                    ></InputDiv>
                     {isSelected && getBorderController(tagName)}
                 </div>
             ) : (
