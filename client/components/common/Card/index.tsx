@@ -24,9 +24,8 @@ const ExhibitionForm = ({ content, isHovered }: ExhibitionFormProps) => {
         <BlurFull>
             <Title>{content.title}</Title>
             <P>Artist: {content.artist}</P>
-            <P>Category: {content.category}</P>
             <P>Theme: {content.theme}</P>
-            <P>Number of works: {content.artist}</P>
+            <P>Number of works: {content.artCount}</P>
             {content.description && <P>Description: {content.description}</P>}
         </BlurFull>
     ) : (

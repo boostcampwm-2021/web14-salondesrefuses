@@ -81,9 +81,6 @@ const index = ({ formInput, oldInputData, setExhibitionInput }: FormProps) => {
             <LabelInput label="테마">
                 <Input type="type" placeholder="전시회의 느낌을 작성해보세요!" value={theme} onChange={onChangeTheme} />
             </LabelInput>
-            <LabelInput label="카테고리">
-                <Input type="type" placeholder="카테고리를 작성해주세요." />
-            </LabelInput>
             <LabelInput label="협업">
                 <Input
                     type="type"
