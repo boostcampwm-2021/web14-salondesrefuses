@@ -23,6 +23,12 @@ const ExhibitionEditPage = () => {
     const [elements, setElements] = useState<EditorElementProp[]>([]);
     const params = useRouter().query.exhibitionId;
     const session = useSessionState();
+    const [editorSize, setEditorSize] = useState<number>(1000);
+    const diffSizeOfGap = 100;
+
+    const saveEditorSize = (flag: boolean) => {
+        setEditorSize((prev) => (flag ? prev + diffSizeOfGap : prev - diffSizeOfGap));
+    };
 
     const { formInput, onClickHold, setExhibitionInput } = useInputExhibition();
 
@@ -45,7 +51,6 @@ const ExhibitionEditPage = () => {
     }, []);
     useEffect(() => {
         if (!exhibitionData) return;
-        console.log(exhibitionData);
         const isExhibitor = session.contents?.id === exhibitionData!.artistId;
 
         if (!isExhibitor) {
@@ -98,6 +103,8 @@ const ExhibitionEditPage = () => {
                         elements={elements}
                         setElementList={setElementList}
                         isEdit={true}
+                        saveEditorSize={saveEditorSize}
+                        editorSize={editorSize}
                     />
                 )}
             </Layout>

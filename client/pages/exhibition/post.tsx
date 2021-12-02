@@ -26,6 +26,12 @@ const ExhibitionPostPage = () => {
         onSuccess: '',
         onFailed: '제목 / 기간 / 썸네일 / 작품을 선택해주세요.',
     });
+    const [editorSize, setEditorSize] = useState<number>(1000);
+    const diffSizeOfGap = 300;
+
+    const saveEditorSize = (flag: boolean) => {
+        setEditorSize((prev) => (flag ? prev + diffSizeOfGap : prev - diffSizeOfGap));
+    };
 
     const setElementList = (elementList: EditorElementProp[]) => {
         setElements(elementList);
@@ -81,6 +87,8 @@ const ExhibitionPostPage = () => {
                         handleBackButton={handleBackButton}
                         holdExhibition={onClickHold}
                         isEdit={false}
+                        saveEditorSize={saveEditorSize}
+                        editorSize={editorSize}
                     />
                 )}
             </Layout>

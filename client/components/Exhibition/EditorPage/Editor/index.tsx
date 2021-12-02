@@ -22,19 +22,19 @@ import useToast from '@hooks/useToast';
 type Props = {
     elements: EditorElementProp[];
     setElements: Function;
+    editorRef: React.MutableRefObject<HTMLDivElement | null>;
+    editorSize: number;
+    saveEditorSize: (flag: boolean) => void;
 };
 
-const Editor = ({ elements, setElements }: Props, editorRef: any) => {
+const Editor = ({ elements, setElements, editorRef, editorSize, saveEditorSize }: Props) => {
     const [currentElements, setCurrentElements] = useState<Array<HTMLElement | null>>([]);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [showFontStyler, setShowFontStyler] = useState(false);
     const [isDoubleClicked, setIsDoubleClicked] = useState(false);
     const [color, setColor] = useState('#000');
     const [fontStyles, setFontStyles] = useState<FontStyle>({ align: 'LEFT', fontSize: 14, fontFamily: 'Montserrat' });
-
     const [editorImageState, setEditorImageState] = useEditorImageState();
-    const [height, setHeight] = useState<number>(1000);
-    const initialHeightValue = 1000;
     const showMouseRightClickToast = useToast({
         onSuccess: '에디터 사용 중에 마우스 오른쪽을 누를 수 없습니다.',
         onFailed: '',
@@ -77,7 +77,6 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
                 keyToCurrentElements([]);
             }
         });
-
         return () => {
             setEditorImageState([]);
         };
@@ -146,17 +145,6 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
         };
     };
 
-    const onClickIncreaseEditorButton = () => {
-        setHeight((prev) => prev + 300);
-    };
-
-    const onClickDecreaseEditorButton = () => {
-        if (height <= initialHeightValue) {
-            return;
-        }
-        setHeight((prev) => prev - 300);
-    };
-
     const renderElements = () => {
         return elements.map((element, idx) => {
             if (element.tagName)
@@ -193,15 +181,15 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
     };
 
     return (
-        <EditorContainer height={height}>
+        <EditorContainer height={editorSize}>
             <ToolBar>
                 <Button onClick={createRectangular} bg={rectButtonIcon.src} />
                 <Button onClick={onClickColorButton} bg={colorButtonIcon.src} />
                 <Button onClick={createText} bg={textButtonIcon.src} />
                 <Button onClick={onClickZIndexButton('FORWARD')} bg={forwardButtonIcon.src} />
                 <Button onClick={onClickZIndexButton('BACKWARD')} bg={backwardButtonIcon.src} />
-                <Button onClick={() => onClickIncreaseEditorButton()} bg={increaseEditorIcon.src} />
-                <Button onClick={() => onClickDecreaseEditorButton()} bg={decreaseEditorIcon.src} />
+                <Button onClick={() => saveEditorSize(true)} bg={increaseEditorIcon.src} />
+                <Button onClick={() => saveEditorSize(false)} bg={decreaseEditorIcon.src} />
                 <Button onClick={onFontStylerButton} bg={fontStylingIcon.src} />
                 <Button onClick={deleteElement} bg={deleteIcon.src} />
                 {showColorPicker && (
@@ -215,7 +203,7 @@ const Editor = ({ elements, setElements }: Props, editorRef: any) => {
                 {showFontStyler && <FontStyler fontStyle={fontStyles} changeFontStyle={changeFontStyles} />}
             </ToolBar>
             <EditArea
-                height={height}
+                height={editorSize}
                 onContextMenu={onContextMenuHandle}
                 ref={editorRef}
                 onKeyDown={onKeyDown}

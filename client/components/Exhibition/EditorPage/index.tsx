@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { BlackButton, Description, Title } from '../style';
@@ -14,6 +14,8 @@ interface EditorProp {
     elements: EditorElementProp[];
     setElementList: (elementList: EditorElementProp[]) => void;
     isEdit: boolean;
+    saveEditorSize: (flag: boolean) => void;
+    editorSize: number;
 }
 interface ExhibitionElement {
     tagName: string;
@@ -57,14 +59,21 @@ const getExhibitionElementsDetail = (el: ChildNode) => {
     };
 };
 
-const index = ({ handleBackButton, holdExhibition, elements, setElementList, isEdit }: EditorProp) => {
+const index = ({
+    handleBackButton,
+    holdExhibition,
+    elements,
+    setElementList,
+    isEdit,
+    saveEditorSize,
+    editorSize,
+}: EditorProp) => {
     const editorRef = useRef<HTMLDivElement | null>(null);
     const exhibitionId = (useRouter().query.exhibitionId as string) || undefined;
 
     const saveButtonHandler = async () => {
         const exhibitionElements: Array<ExhibitionElement> = [];
         if (!editorRef.current) return;
-        const editorSize = window.getComputedStyle(editorRef.current!).height;
         const artworkIds: Array<string | undefined> = [];
 
         [...editorRef.current.childNodes].forEach((el: ChildNode) => {
@@ -107,11 +116,11 @@ const index = ({ handleBackButton, holdExhibition, elements, setElementList, isE
             });
         });
 
-        holdExhibition(JSON.stringify(exhibitionElements), editorSize, JSON.stringify(artworkIds), exhibitionId);
+        holdExhibition(JSON.stringify(exhibitionElements), `${editorSize}px`, JSON.stringify(artworkIds), exhibitionId);
     };
     const backButtonHandler = () => {
         if (!editorRef.current) return;
-        const editorSize = window.getComputedStyle(editorRef.current!).height;
+        // setEditorSize(parseInt(window.getComputedStyle(editorRef.current!).height));
         const artworkIds: Array<string | undefined> = [];
         const tmpElementStates: Array<EditorElementProp> = [];
 
@@ -168,7 +177,13 @@ const index = ({ handleBackButton, holdExhibition, elements, setElementList, isE
             </Title>
             <Container>
                 <ImageSlider />
-                <Editor elements={elements} setElements={setElementList} ref={editorRef} />
+                <Editor
+                    elements={elements}
+                    setElements={setElementList}
+                    editorRef={editorRef}
+                    editorSize={editorSize}
+                    saveEditorSize={saveEditorSize}
+                />
                 <ButtonContainer>
                     <EditorButton onClick={backButtonHandler}>Back</EditorButton>
                     <EditorButton onClick={saveButtonHandler}>Save</EditorButton>
