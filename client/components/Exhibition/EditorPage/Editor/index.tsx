@@ -18,6 +18,7 @@ import { useEditorImageState } from '@store/editorImageState';
 import { EditorContainer, ToolBar, Button, EditArea } from './style';
 import { FontStyle, FontFamily } from 'interfaces';
 import useToast from '@hooks/useToast';
+import { ToastMsg } from '@const/toast-message';
 
 type Props = {
     elements: EditorElementProp[];
@@ -39,6 +40,15 @@ const Editor = ({ elements, setElements, editorRef, editorSize, saveEditorSize }
         onSuccess: '에디터 사용 중에 마우스 오른쪽을 누를 수 없습니다.',
         onFailed: '',
     });
+    const [elementCount, setElementCount] = useState({
+        any: elements.length,
+        img: elements.filter((element) => element.tagName === 'IMAGE').length,
+    });
+    const maxAnyElementCount = 35;
+    const maxImgElementCount = 10;
+
+    const fullAnyElements = useToast({ onSuccess: '', onFailed: ToastMsg.FULL_ANY_ELEMENT });
+    const fullImgElements = useToast({ onSuccess: '', onFailed: ToastMsg.FULL_IMG_ELEMENT });
 
     useEffect(() => {
         currentElements.forEach((elem) => {
@@ -50,6 +60,11 @@ const Editor = ({ elements, setElements, editorRef, editorSize, saveEditorSize }
 
     useEffect(() => {
         if (editorImageState.length === 0) return;
+        if (elementCount.any + 1 > maxAnyElementCount || elementCount.img + 1 > maxImgElementCount) {
+            fullImgElements('failed');
+            return;
+        }
+        setElementCount({ any: ++elementCount.any, img: ++elementCount.img });
         const element: EditorElementProp = {
             id: elements.length,
             tagName: EditorElementName.image,
@@ -83,6 +98,8 @@ const Editor = ({ elements, setElements, editorRef, editorSize, saveEditorSize }
     }, []);
 
     const createRectangular = () => {
+        if (elementCount.any + 1 > maxAnyElementCount) return fullAnyElements('failed');
+        setElementCount({ ...elementCount, any: ++elementCount.any });
         const element: EditorElementProp = {
             id: elements.length,
             tagName: EditorElementName.rectangular,
@@ -110,12 +127,18 @@ const Editor = ({ elements, setElements, editorRef, editorSize, saveEditorSize }
         if (!currentElements) return;
         setElements(() => elements.filter((el) => el.id !== Number(currentElements[0]?.id)));
         setCurrentElements([]);
+        currentElements[0]?.classList.contains('IMAGE')
+            ? setElementCount({ any: --elementCount.any, img: --elementCount.img })
+            : setElementCount({ any: --elementCount.any, img: elementCount.img });
     };
     const onFontStylerButton = () => {
         mirrorCurrentFontStyle();
         setShowFontStyler((prev) => !prev);
     };
     const createText = () => {
+        if (elementCount.any + 1 > maxAnyElementCount) return fullAnyElements('failed');
+
+        setElementCount({ ...elementCount, any: ++elementCount.any });
         const element: EditorElementProp = {
             id: elements.length,
             tagName: EditorElementName.text,
