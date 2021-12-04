@@ -12,7 +12,7 @@ interface Props {
 
 interface ContentStyles {
     tagName: EditorElementType;
-    innerHTML?: string;
+    innerText?: string;
     imageSrc?: string;
     artworkId?: string;
     style: EditorElementStyle;
@@ -34,7 +34,7 @@ const MakeElement = ({
         />
     ) : (
         <AbsoluteDiv style={content.style as CSSProperties}>
-            {content.tagName === 'TEXT' && <div dangerouslySetInnerHTML={{ __html: content.innerHTML || '' }}></div>}
+            {content.tagName === 'TEXT' && <div dangerouslySetInnerHTML={{ __html: content.innerText || '' }}></div>}
         </AbsoluteDiv>
     );
 };
