@@ -31,7 +31,7 @@ const ArtworkModal = ({ handleModalInput, position, handleModalPosition, onClick
 
     const onClickConfirm = (e: React.MouseEvent) => {
         e.stopPropagation();
-        if (!validInput.bidEnd || !validInput.price || !validInput.year) {
+        if (artworkInput.checked === 'auction' && (!validInput.bidEnd || !validInput.price || !validInput.year)) {
             showToast('failed');
             return;
         }
