@@ -20,7 +20,7 @@ export class ArtworkService {
     ) {}
 
     async createCID(image): Promise<string> {
-        if(!this.ipfs) {
+        if (!this.ipfs) {
             this.ipfs = create({ url: process.env.IPFS_URL });
         }
 
@@ -35,8 +35,10 @@ export class ArtworkService {
     ): Promise<NewArtworkDTO> {
         try {
             const croppedImageBuffer = await this.imageService.cropImage(image);
+            const webpImage = await this.imageService.convertWebp(image);
+
             const [originalImage, croppedImage, cid] = await Promise.all([
-                this.imageService.fileUpload(image),
+                this.imageService.fileUpload({ ...image, buffer: webpImage }),
                 this.imageService.fileUpload({
                     ...image,
                     buffer: croppedImageBuffer,
@@ -59,17 +61,20 @@ export class ArtworkService {
 
             return NewArtworkDTO.from(newArtwork);
         } catch (error) {
-            throw new HttpException({
-                status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error: 'create artwork failed'
-            }, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpException(
+                {
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    error: 'create artwork failed',
+                },
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
         }
     }
 
     async getArtwork(artworkId: number): Promise<Artwork> {
         const artwork = await this.artworkRepository.findArtwork(artworkId);
 
-        if(!artwork) {
+        if (!artwork) {
             throw new NotFoundException(`Can't find artwork with id: ${artworkId}`);
         }
         return artwork;
@@ -82,5 +87,4 @@ export class ArtworkService {
     updateNFTToken(artworkId: number, nftToken: string): Promise<UpdateResult> {
         return this.artworkRepository.updateNFTToken(artworkId, nftToken);
     }
-
 }

@@ -75,7 +75,9 @@ export class ExhibitionService {
         user: User,
     ): Promise<ExhibitionDetailDTO> {
         try {
-            const croppedThumbnail = await this.imageService.cropImage(image);
+            const webpImage = await this.imageService.convertWebp(image);
+
+            const croppedThumbnail = await this.imageService.cropImage({ ...image, buffer: webpImage });
             const thumbnailPath = await this.imageService.fileUpload({ ...image, buffer: croppedThumbnail });
 
             const newExhibition = this.exhibitionRepository.createExhibition(

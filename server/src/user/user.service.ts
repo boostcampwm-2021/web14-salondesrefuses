@@ -30,7 +30,7 @@ export class UserService {
 
     async updateUserToken(id: number, refreshToken: string): Promise<UpdateResult> {
         const result = await this.userRepository.update(id, { refreshToken });
-        if(!result.affected) {
+        if (!result.affected) {
             throw new NotFoundException(`Can't find user with id : ${id}`);
         }
 
@@ -39,7 +39,7 @@ export class UserService {
 
     async getUserProfile({ id }: User): Promise<User> {
         const user = await this.userRepository.findOne({ id });
-        if(!user) {
+        if (!user) {
             throw new NotFoundException(`Can't find user with id : ${id}`);
         }
         return user;
@@ -53,20 +53,20 @@ export class UserService {
         if (!file) {
             return this.userRepository.update({ id }, { ...requestUserDTO });
         }
-        const image = await this.imageService.fileUpload(file);
-        if(!image) {
+        const webpImage = await this.imageService.convertWebp(file);
+        const image = await this.imageService.fileUpload({ ...file, buffer: webpImage });
+        if (!image) {
             throw new InternalServerErrorException('Failed to upload image');
         }
 
         const avatar = image.Location;
 
         const result = await this.userRepository.update({ id }, { ...requestUserDTO, avatar });
-        if(!result.affected) {
+        if (!result.affected) {
             throw new NotFoundException(`Can't find user with id : ${id}`);
         }
 
         return result;
-
     }
 
     getUsersArtworks({ id }: User): Promise<Artwork[]> {

@@ -25,7 +25,7 @@ export class ImageService {
         const params = {
             Bucket: process.env.AWS_S3_BUCKET_NAME,
             ACL: 'public-read',
-            Key: `objects/${Date.now()}-${image.originalname}`,
+            Key: `objects/${Date.now()}-${image.filename}.webp`,
             Body: image.buffer,
         };
         const options = {
@@ -49,5 +49,11 @@ export class ImageService {
 
         const newWidth = Math.floor((height * 2) / 3);
         return await sharpImage.resize({ width: newWidth, height: height }).toBuffer();
+    }
+
+    async convertWebp(originalImage: Express.Multer.File) {
+        const sharpImage = sharp(originalImage.buffer);
+
+        return await sharpImage.webp({ lossless: true }).toBuffer();
     }
 }
