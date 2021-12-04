@@ -1,6 +1,7 @@
 import React, { CSSProperties } from 'react';
 import styled from '@emotion/styled';
 import { EditorElementType, EditorElementStyle } from '@components/Exhibition/EditorPage/Editor/types';
+import ExhibitionLazyImage from './ExhibitionLazyImage';
 
 const MakeElement = ({
     content,
@@ -10,10 +11,11 @@ const MakeElement = ({
     setModalNum: (n: string | undefined) => void;
 }) => {
     return content.tagName === 'IMAGE' && content.imageSrc ? (
-        <AbsoluteImage
+        <ExhibitionLazyImage
             style={content.style as CSSProperties}
             imgUrl={content.imageSrc}
-            onClick={() => setModalNum(content.artworkId)}
+            setModalNum={setModalNum}
+            artworkId={content.artworkId}
         />
     ) : (
         <AbsoluteDiv style={content.style as CSSProperties}>
@@ -56,13 +58,6 @@ const ElementContainer = styled.div<{ size: string }>`
 const AbsoluteDiv = styled.div`
     position: absolute;
     overflow: hidden;
-`;
-const AbsoluteImage = styled.div<{ imgUrl: string }>`
-    position: absolute;
-    cursor: zoom-in;
-    background-image: url(${(props) => props.imgUrl});
-    background-size: contain;
-    background-repeat: no-repeat;
 `;
 
 export default ExhibitionContents;
