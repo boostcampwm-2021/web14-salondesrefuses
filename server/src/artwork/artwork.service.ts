@@ -34,8 +34,8 @@ export class ArtworkService {
         user: User,
     ): Promise<NewArtworkDTO> {
         try {
-            const croppedImageBuffer = await this.imageService.cropImage(image);
             const webpImage = await this.imageService.convertWebp(image);
+            const croppedImageBuffer = await this.imageService.cropImage({ ...image, buffer: webpImage });
 
             const [originalImage, croppedImage, cid] = await Promise.all([
                 this.imageService.fileUpload({ ...image, buffer: webpImage }),

@@ -59,7 +59,7 @@ const validFileInput = (ref: RefObject<HTMLInputElement | null>) => {
 
 const byteToMB = (byte: number) => Math.ceil(byte / 1024 / 1024);
 
-const MAX_UPLOADABLE_MB = 1;
+const MAX_UPLOADABLE_MB = 5;
 
 const Container = styled.div`
     width: 80%;

@@ -109,7 +109,8 @@ export class ExhibitionService {
     async updateExhibition(image: Express.Multer.File, updatedExhibition: HoldExhibitionDTO): Promise<UpdateResult> {
         let result;
         if (!image) {
-            const croppedThumbnail = await this.imageService.cropImage(image);
+            const webpImage = await this.imageService.convertWebp(image);
+            const croppedThumbnail = await this.imageService.cropImage({ ...image, buffer: webpImage });
             const thumbnailPath = await this.imageService.fileUpload({ ...image, buffer: croppedThumbnail });
 
             result = await this.exhibitionRepository.update(updatedExhibition.id, {

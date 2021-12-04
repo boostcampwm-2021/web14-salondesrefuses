@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ethers } from 'ethers';
-import * as abi from './ethereum/abi.json';
-import * as contractAddress from './ethereum/address.json';
+// import * as abi from './ethereum/abi.json';
+// import * as contractAddress from './ethereum/address.json';
 import { ArtworkService } from '@artwork/artwork.service';
 import AuctionService from '@auction/auction.service';
 import { CompletedAuctionService } from '@completedAuction/completedAuction.service';
@@ -12,7 +12,7 @@ export class CronTaskService {
     private readonly logger = new Logger(CronTaskService.name);
     private provider = new ethers.providers.JsonRpcProvider(process.env.ETHEREUM_HOST);
     private wallet = new ethers.Wallet(process.env.CONTRACT_OWNER_PRIVATE_KEY, this.provider);
-    private contract = new ethers.Contract(contractAddress.address, abi.abi, this.wallet);
+    // private contract = new ethers.Contract(contractAddress.address, abi.abi, this.wallet);
 
     constructor(
         private readonly auctionService: AuctionService,
@@ -35,8 +35,8 @@ export class CronTaskService {
     }
 
     async transact(tokenId: number) {
-        const tx = await this.contract.complete(tokenId);
-        return await tx.wait();
+        // const tx = await this.contract.complete(tokenId);
+        // return await tx.wait();
     }
 
     async completeAuction(auctionId: number) {

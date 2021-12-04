@@ -54,6 +54,6 @@ export class ImageService {
     async convertWebp(originalImage: Express.Multer.File) {
         const sharpImage = sharp(originalImage.buffer);
 
-        return await sharpImage.webp({ lossless: true }).toBuffer();
+        return await sharpImage.webp({ lossless: false }).toBuffer();
     }
 }
