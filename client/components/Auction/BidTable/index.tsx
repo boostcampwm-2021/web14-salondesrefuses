@@ -50,21 +50,33 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
 
     const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
 
-    const checkBiddable = async (price: number) => {
-        if (!window.ethereum) {
-            showNeedMetamaskToast('failed');
+    const checkMetamaskInstalled = async () => {
+        try {
+            if (!window.ethereum) {
+                showNeedMetamaskToast('failed');
+                return false;
+            }
+            return true;
+        } catch {
             return false;
         }
-        [account] = await window.ethereum.request({
-            method: 'eth_requestAccounts',
-        });
-        if (!account) {
-            showNeedMetamaskToast('failed');
+    };
+
+    const checkBiddableAccount = async (price: number) => {
+        try {
+            [account] = await window.ethereum.request({
+                method: 'eth_requestAccounts',
+            });
+            if (!account) {
+                showNeedMetamaskToast('failed');
+                return false;
+            }
+            const balance = await web3.eth.getBalance(account);
+            if (price > +balance / WEI) return false;
+            return true;
+        } catch {
             return false;
         }
-        const balance = await web3.eth.getBalance(account);
-        if (price > +balance / WEI) return false;
-        return true;
     };
 
     const bidNFT = async (price: number) => {
@@ -103,7 +115,12 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
     };
 
     const bidArtwork = async () => {
-        const biddable = await checkBiddable(price);
+        const metamaskAvailable = await checkMetamaskInstalled();
+        if (!metamaskAvailable) {
+            showNeedMetamaskToast('failed');
+        }
+
+        const biddable = await checkBiddableAccount(price);
         if (!biddable) {
             showNotEnoughEthToast('failed');
             return;

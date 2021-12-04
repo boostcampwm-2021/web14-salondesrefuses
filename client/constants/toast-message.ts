@@ -9,7 +9,7 @@ export const ToastMsg = {
     FULL_IMG_ELEMENT: '이미지는 10개만 추가하실 수 있습니다.',
     NOT_FILLED_EVERY_FORMS: '제목 / 기간 / 썸네일 / 작품을 선택해주세요.',
     NOT_FILLED_EVERY_MODAL_FORMS: '정확한 형식으로 입력해주세요.',
-    FILE_SIZE_EXCEED: '파일 용량은 3MB를 초과할 수 없습니다.',
+    FILE_SIZE_EXCEED: '파일 용량은 1MB를 초과할 수 없습니다.',
     NOT_LOGGINED: '먼저 로그인을 해주세요.',
     FAILED_TO_ACCESS_CONTRACT: '이더리움 네트워크에 접근할 수 없습니다.',
 };
