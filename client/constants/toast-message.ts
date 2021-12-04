@@ -6,5 +6,5 @@ export const ToastMsg = {
     NOT_REGISTERRED_TOKEN: '등록되지 않은 토큰입니다.',
     NOT_AUTHORIZED: '권한이 없는 접속입니다.',
     FULL_ANY_ELEMENT: '더 이상 추가하실 수 없습니다.',
-    FULL_IMG_ELEMENT: '이미지는 15개만 추가하실 수 있습니다.',
+    FULL_IMG_ELEMENT: '이미지는 10개만 추가하실 수 있습니다.',
 };

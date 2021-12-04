@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from 'react';
+import React, { useState, useEffect, forwardRef, useCallback } from 'react';
 
 import ColorPicker from '../ColorPicker';
 import EditorElement from '../EditorElement';
@@ -66,7 +66,7 @@ const Editor = ({ elements, setElements, editorRef, editorSize, saveEditorSize }
         }
         setElementCount({ any: ++elementCount.any, img: ++elementCount.img });
         const element: EditorElementProp = {
-            id: elements.length,
+            id: makeNewId() || 0,
             tagName: EditorElementName.image,
             style: initialImageStyle,
             image: editorImageState[editorImageState.length - 1],
@@ -97,11 +97,12 @@ const Editor = ({ elements, setElements, editorRef, editorSize, saveEditorSize }
         };
     }, []);
 
+    const makeNewId = () => elements.reduce((acc, elem) => (elem.id > acc ? elem.id : acc), -1) + 1;
     const createRectangular = () => {
         if (elementCount.any + 1 > maxAnyElementCount) return fullAnyElements('failed');
         setElementCount({ ...elementCount, any: ++elementCount.any });
         const element: EditorElementProp = {
-            id: elements.length,
+            id: makeNewId() || 0,
             tagName: EditorElementName.rectangular,
             style: initialRectStyle,
         };
@@ -140,7 +141,7 @@ const Editor = ({ elements, setElements, editorRef, editorSize, saveEditorSize }
 
         setElementCount({ ...elementCount, any: ++elementCount.any });
         const element: EditorElementProp = {
-            id: elements.length,
+            id: makeNewId() || 0,
             tagName: EditorElementName.text,
             style: initialTextStyle,
         };
@@ -169,12 +170,12 @@ const Editor = ({ elements, setElements, editorRef, editorSize, saveEditorSize }
     };
 
     const renderElements = () => {
-        return elements.map((element, idx) => {
+        return elements.map((element) => {
             if (element.tagName)
                 return (
                     <EditorElement
-                        key={idx}
-                        idx={idx}
+                        key={element.id}
+                        idx={element.id}
                         style={element.style}
                         currentElements={currentElements}
                         keyToCurrentElements={keyToCurrentElements}
