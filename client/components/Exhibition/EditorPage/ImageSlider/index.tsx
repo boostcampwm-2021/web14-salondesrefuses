@@ -20,12 +20,12 @@ const ImageSlider = () => {
 
     const onClickLeftButton = (e: React.MouseEvent) => {
         if (!imageSliderRef.current) return;
-        imageSliderRef.current.scroll({ left: imageSliderRef.current.scrollLeft - 300, behavior: 'smooth' });
+        imageSliderRef.current.scroll({ left: imageSliderRef.current.scrollLeft - SLIDE_OFFSET, behavior: 'smooth' });
     };
 
     const onClickRightButton = (e: React.MouseEvent) => {
         if (!imageSliderRef.current) return;
-        imageSliderRef.current.scroll({ left: imageSliderRef.current.scrollLeft + 300, behavior: 'smooth' });
+        imageSliderRef.current.scroll({ left: imageSliderRef.current.scrollLeft + SLIDE_OFFSET, behavior: 'smooth' });
     };
 
     return (
@@ -48,6 +48,8 @@ const ImageSlider = () => {
         </Container>
     );
 };
+
+const SLIDE_OFFSET = 300;
 
 const Container = styled.div`
     width: 100%;

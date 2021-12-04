@@ -2,21 +2,24 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Head from 'next/head';
 
-import Form from '@components/Exhibition/FormPage';
 import ArtworkSelector from '@components/Exhibition/ArtworkSelectorWrapper';
-import Layout from '@components/common/Layout';
-import { Description, NextButton, Title } from '@components/Exhibition/style';
+import CSuspense from '@components/common/Suspense';
 import Editor from '@components/Exhibition/EditorPage';
-import useInputExhibition from '@hooks/useInputExhibition';
+import ErrorBoundary from '@components/common/ErrorBoundary';
+import Fallback from '@components/common/Fallback';
+import Form from '@components/Exhibition/FormPage';
+import Layout from '@components/common/Layout';
+import { Artwork } from 'interfaces';
+import { Description, NextButton, Title } from '@components/Exhibition/style';
 import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/types';
+import { EDITOR_PAGE_STATE } from './edit';
+import { ToastMsg } from '@const/toast-message';
 import { useEditorImageState, useSelectedImageState } from '@store/editorImageState';
 import useToast from '@hooks/useToast';
-import CSuspense from '@components/common/Suspense';
-import Fallback from '@components/common/Fallback';
-import ErrorBoundary from '@components/common/ErrorBoundary';
+import useInputExhibition from '@hooks/useInputExhibition';
 
 const ExhibitionPostPage = () => {
-    const [currentPage, setCurrentPage] = useState<'FORM' | 'EDITOR'>('FORM');
+    const [currentPage, setCurrentPage] = useState<string>('FORM');
     const [elements, setElements] = useState<EditorElementProp[]>([]);
     const { formInput, onClickHold } = useInputExhibition();
 
@@ -24,13 +27,12 @@ const ExhibitionPostPage = () => {
     const [_, setEditorImageState] = useEditorImageState();
     const showToast = useToast({
         onSuccess: '',
-        onFailed: '제목 / 기간 / 썸네일 / 작품을 선택해주세요.',
+        onFailed: ToastMsg.NOT_FILLED_EVERY_FORMS,
     });
-    const [editorSize, setEditorSize] = useState<number>(1000);
-    const diffSizeOfGap = 300;
+    const [editorSize, setEditorSize] = useState<number>(INITIAL_EDITOR_SIZE);
 
     const saveEditorSize = (flag: boolean) => {
-        setEditorSize((prev) => (flag ? prev + diffSizeOfGap : prev - diffSizeOfGap));
+        setEditorSize((prev) => (flag ? prev + DIFF_SIZE_OF_GAP : prev - DIFF_SIZE_OF_GAP));
     };
 
     const setElementList = (elementList: EditorElementProp[]) => {
@@ -38,17 +40,15 @@ const ExhibitionPostPage = () => {
     };
 
     const onClickNextButton = () => {
-        const { title, startAt, endAt, thumbnailImage } = formInput;
-        if (!title || !startAt || !endAt || !thumbnailImage || !selectedImages.length) {
+        if (isEditorFormFilled(formInput, selectedImages)) {
             showToast('failed');
             return;
         }
-
-        setCurrentPage('EDITOR');
+        setCurrentPage(EDITOR_PAGE_STATE.EDITOR);
     };
 
     const handleBackButton = () => {
-        setCurrentPage('FORM');
+        setCurrentPage(EDITOR_PAGE_STATE.FORM);
     };
 
     useEffect(() => {
@@ -64,7 +64,7 @@ const ExhibitionPostPage = () => {
                 <title>벽전 - 전시회 등록</title>
             </Head>
             <Layout>
-                {currentPage === 'FORM' ? (
+                {currentPage === EDITOR_PAGE_STATE.FORM ? (
                     <>
                         <Title>
                             <h1>Hold Exhibition</h1>
@@ -94,6 +94,14 @@ const ExhibitionPostPage = () => {
             </Layout>
         </div>
     );
+};
+
+const DIFF_SIZE_OF_GAP = 300;
+const INITIAL_EDITOR_SIZE = 1000;
+
+const isEditorFormFilled = ({ title, endAt, startAt, thumbnailImage }: any, selectedImages: Artwork[]) => {
+    if (!title || !startAt || !endAt || !thumbnailImage || !selectedImages.length) return true;
+    return false;
 };
 
 const Container = styled.div`

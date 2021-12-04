@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useCallback } from 'react';
 import styled from '@emotion/styled';
 
 import { BlackButton, Description, Title } from '../style';
@@ -33,6 +33,7 @@ const getExhibitionElementsDetail = (el: ChildNode) => {
     const { width, height, color, transform, backgroundColor } = element.style;
     const { top, left, zIndex, backgroundImage, fontFamily, fontSize, textAlign } = window.getComputedStyle(element);
     let imageSrc = null;
+
     if (element.classList.contains('IMAGE')) {
         imageSrc = backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
     }
@@ -118,9 +119,8 @@ const index = ({
 
         holdExhibition(JSON.stringify(exhibitionElements), `${editorSize}px`, JSON.stringify(artworkIds), exhibitionId);
     };
-    const backButtonHandler = () => {
+    const backButtonHandler = useCallback(() => {
         if (!editorRef.current) return;
-        // setEditorSize(parseInt(window.getComputedStyle(editorRef.current!).height));
         const artworkIds: Array<string | undefined> = [];
         const tmpElementStates: Array<EditorElementProp> = [];
 
@@ -167,7 +167,7 @@ const index = ({
         });
         setElementList(tmpElementStates);
         handleBackButton();
-    };
+    }, []);
 
     return (
         <>

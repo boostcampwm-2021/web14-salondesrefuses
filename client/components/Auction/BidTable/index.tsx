@@ -91,18 +91,13 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
             return true;
         } catch (error: any) {
             const parseStr = error.message.match(/{.*}/);
-            if (!parseStr) {
-                console.log(error);
-                return false;
-            }
+            if (!parseStr) return false;
             const message = JSON.parse(parseStr[0].replaceAll("'", '"'));
-            if (message.code === '100') {
+            if (message.code === MESSAGE_FAILED) {
                 showNotBidOwner('failed');
-            } else if (message.code === '200') {
+            } else if (message.code === MESSAGE_SUCCEED) {
                 setPrice((price) => nextPrice(price));
                 showNotBidLowerPrice('failed');
-            } else {
-                console.log(message);
             }
         }
     };
@@ -186,6 +181,9 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
 const nextPrice = (currentPrice: number) => {
     return Math.max(currentPrice + 0.01, Number((currentPrice * 1.05).toFixed(2)));
 };
+
+const MESSAGE_FAILED = '100';
+const MESSAGE_SUCCEED = '200';
 
 const ETHEREUM_HOST = process.env.ETHEREUM_HOST;
 const GAS_LIMIT = 3000000;

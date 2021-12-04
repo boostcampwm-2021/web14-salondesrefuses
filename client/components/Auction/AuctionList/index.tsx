@@ -2,19 +2,20 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 
-import { Button, Center } from '@styles/common';
-import { AuctionCardProps } from '@const/card-type';
 import Card from '@components/common/Card';
+import { AuctionCardProps } from '@const/card-type';
+import { Button, Center } from '@styles/common';
 import { Filter } from '@components/Exhibition/style';
+import { Grid } from '@components/common/Card/style';
+import { ToastMsg } from '@const/toast-message';
 import { getAuctions } from 'service/networking';
 import useInfiniteScroll from '@hooks/useInfiniteScroll';
 import useSessionState from '@store/sessionState';
-import { Grid } from '@components/common/Card/style';
 import useModalState from '@store/modalState';
 
 const AuctionList = () => {
     const session = useSessionState().contents;
-    const [modalState, setModalState] = useModalState();
+    const [_, setModalState] = useModalState();
     const [onSelect, setOnSelect] = useState('Popular');
     const [auctionItems, setAuctionItems] = useState<AuctionCardProps[]>([]);
     const [page, setPage] = useState(0);
@@ -39,7 +40,7 @@ const AuctionList = () => {
         setModalState({
             show: true,
             onConfirm: () => {},
-            content: '먼저 로그인을 해주세요.',
+            content: ToastMsg.NOT_LOGGINED,
         });
     };
 

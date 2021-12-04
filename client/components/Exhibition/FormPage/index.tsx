@@ -24,7 +24,7 @@ export interface OldExhibition {
     thumbnailImage: string | null;
 }
 
-const index = ({ formInput, oldInputData, setExhibitionInput }: FormProps) => {
+const FormPage = ({ formInput, oldInputData, setExhibitionInput }: FormProps) => {
     const thumbnailRef = useRef<HTMLInputElement>(null);
 
     const {
@@ -49,14 +49,15 @@ const index = ({ formInput, oldInputData, setExhibitionInput }: FormProps) => {
         setExhibitionInput &&
             setExhibitionInput({
                 title: oldInputData.title,
-                startAt: oldInputData.startAt.toString().slice(0, 10),
-                endAt: oldInputData.endAt.toString().slice(0, 10),
+                startAt: oldInputData!.startAt.toString().slice(0, 10),
+                endAt: oldInputData!.endAt.toString().slice(0, 10),
                 theme: oldInputData.theme,
                 collaborator: oldInputData.collaborator,
                 description: oldInputData.description,
                 thumbnailImage: thumbnailImage,
             });
     }, []);
+
     return (
         <Container>
             <LabelInput label="전시회 제목" require>
@@ -129,4 +130,4 @@ const Placeholder = styled.img`
     cursor: pointer;
 `;
 
-export default index;
+export default FormPage;

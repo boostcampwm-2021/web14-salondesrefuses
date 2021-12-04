@@ -13,7 +13,7 @@ interface LayoutProps {
 
 const Layout = ({ children, horizontal }: LayoutProps) => {
     return (
-        <div>
+        <Container>
             <Header />
             <Body horizontal={horizontal}>
                 {children}
@@ -21,9 +21,13 @@ const Layout = ({ children, horizontal }: LayoutProps) => {
             </Body>
             <Footer />
             <Modal />
-        </div>
+        </Container>
     );
 };
+
+const Container = styled.div`
+    position: relative;
+`;
 
 const Body = styled.div<{ horizontal?: boolean }>`
     display: flex;

@@ -1,17 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-const ArtworkFilter = ({
-    checked,
-    setChecked,
-}: {
-    checked: string;
-    setChecked: React.Dispatch<string>;
-}) => {
+const ArtworkFilter = ({ checked, setChecked }: { checked: string; setChecked: React.Dispatch<string> }) => {
     const getColor = (checked: string, current: string) =>
-        checked === current
-            ? '/icons/check_green.png'
-            : '/icons/check_grey.png';
+        checked === current ? FILTER_ICON.CHECKED : FILTER_ICON.NOT_CHECKED;
 
     return (
         <Container>
@@ -25,6 +17,11 @@ const ArtworkFilter = ({
             </div>
         </Container>
     );
+};
+
+const FILTER_ICON = {
+    CHECKED: '/icons/check_green.png',
+    NOT_CHECKED: '/icons/check_grey.png',
 };
 
 const Container = styled.div`

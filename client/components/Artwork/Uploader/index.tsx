@@ -3,9 +3,10 @@ import styled from '@emotion/styled';
 import dynamic from 'next/dynamic';
 
 import CSuspense from '@components/common/Suspense';
+import ErrorBoundary from '@components/common/ErrorBoundary';
 import Fallback from '@components/common/Fallback';
 import useToast from '@hooks/useToast';
-import ErrorBoundary from '@components/common/ErrorBoundary';
+import { ToastMsg } from '@const/toast-message';
 
 const Tiles = dynamic(() => import('@components/Artwork/Tiles'), { ssr: false });
 
@@ -17,7 +18,7 @@ const Uploader = ({ handleNewImage }: UploaderProps) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
     const showToast = useToast({
         onSuccess: '',
-        onFailed: '파일 용량은 3MB를 초과할 수 없습니다.',
+        onFailed: ToastMsg.FILE_SIZE_EXCEED,
     });
 
     const onClickFileInput = (e: React.MouseEvent) => {
@@ -25,15 +26,15 @@ const Uploader = ({ handleNewImage }: UploaderProps) => {
         inputRef.current!.click();
     };
 
-    const onChangeFile = (e: React.FormEvent) => {
+    const onChangeFile = () => {
         if (!validFileInput(inputRef)) return;
-        const newFile = inputRef.current!.files![0];
-        if (byteToMB(newFile.size) > 3) {
+        const image = inputRef.current!.files![0];
+        if (byteToMB(image.size) > MAX_UPLOADABLE_MB) {
             showToast('failed');
             inputRef.current!.value = '';
             return;
         }
-        handleNewImage(newFile);
+        handleNewImage(image);
     };
 
     return (
@@ -57,6 +58,8 @@ const validFileInput = (ref: RefObject<HTMLInputElement | null>) => {
 };
 
 const byteToMB = (byte: number) => Math.ceil(byte / 1024 / 1024);
+
+const MAX_UPLOADABLE_MB = 3;
 
 const Container = styled.div`
     width: 80%;

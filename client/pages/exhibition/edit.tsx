@@ -18,16 +18,15 @@ import { EditorElementProp } from '@components/Exhibition/EditorPage/Editor/type
 import { ToastMsg } from '@const/toast-message';
 
 const ExhibitionEditPage = () => {
-    const [currentPage, setCurrentPage] = useState<'FORM' | 'EDITOR'>('FORM');
+    const [currentPage, setCurrentPage] = useState<string>(EDITOR_PAGE_STATE.FORM);
     const [exhibitionData, setExhibitionData] = useState<Exhibition | null>(null);
     const [elements, setElements] = useState<EditorElementProp[]>([]);
     const params = useRouter().query.exhibitionId;
     const session = useSessionState();
     const [editorSize, setEditorSize] = useState<number>(1000);
-    const diffSizeOfGap = 100;
 
     const saveEditorSize = (flag: boolean) => {
-        setEditorSize((prev) => (flag ? prev + diffSizeOfGap : prev - diffSizeOfGap));
+        setEditorSize((prev) => (flag ? prev + DIFF_SIZE_OF_GAP : prev - DIFF_SIZE_OF_GAP));
     };
 
     const { formInput, onClickHold, setExhibitionInput } = useInputExhibition();
@@ -37,18 +36,20 @@ const ExhibitionEditPage = () => {
     };
 
     const onClickNextButton = () => {
-        setCurrentPage('EDITOR');
+        setCurrentPage(EDITOR_PAGE_STATE.EDITOR);
     };
 
     const handleBackButton = () => {
-        setCurrentPage('FORM');
+        setCurrentPage(EDITOR_PAGE_STATE.FORM);
     };
+
     useEffect(() => {
         getExhibition(params as string).then((res) => {
             setElementList(JSON.parse(res.data.contents));
             return setExhibitionData(res.data);
         });
     }, []);
+
     useEffect(() => {
         if (!exhibitionData) return;
         const isExhibitor = session.contents?.id === exhibitionData!.artistId;
@@ -61,6 +62,7 @@ const ExhibitionEditPage = () => {
             Router.push('/hello-nextjs');
         }
     }, [exhibitionData]);
+
     const getExhibitionFormData = () => {
         if (!exhibitionData) return;
         return {
@@ -111,6 +113,13 @@ const ExhibitionEditPage = () => {
         </div>
     );
 };
+
+export const EDITOR_PAGE_STATE = {
+    FORM: 'FORM',
+    EDITOR: 'EDITOR',
+};
+
+const DIFF_SIZE_OF_GAP = 100;
 
 const Container = styled.div`
     display: flex;

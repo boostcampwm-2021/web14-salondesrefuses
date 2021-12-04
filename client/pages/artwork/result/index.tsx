@@ -11,6 +11,8 @@ import Layout from '@components/common/Layout';
 import { getSingleArtwork, setNFTToken } from 'service/networking';
 import { Center } from '@styles/common';
 import ResultDetail from '@components/Artwork/ResultDetail';
+import useToast from '@hooks/useToast';
+import { ToastMsg } from '@const/toast-message';
 
 import ABI from '@public/ethereum/abi.json';
 import contractAddress from '@public/ethereum/address.json';
@@ -24,6 +26,10 @@ const ResultPage = () => {
     const [token, setToken] = useState<string>();
     const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
     const [contract, setContract] = useState<Contract>();
+    const showToast = useToast({
+        onSuccess: '',
+        onFailed: ToastMsg.FAILED_TO_ACCESS_CONTRACT,
+    });
 
     const mint = async () => {
         if (!window.ethereum || !contract) return;
@@ -41,8 +47,12 @@ const ResultPage = () => {
     };
 
     const onClickConfirm = async () => {
-        const tokenId = await mint();
-        if (tokenId) setToken(tokenId);
+        try {
+            const tokenId = await mint();
+            if (tokenId) setToken(tokenId);
+        } catch {
+            showToast('failed');
+        }
     };
 
     const onClickDone = async () => {

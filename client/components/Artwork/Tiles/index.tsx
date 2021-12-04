@@ -14,8 +14,8 @@ const Tiles = ({ align = 'center' }: { align: string }) => {
     return (
         <Container align={align}>
             <Grid>
-                {artworks.map((item, idx: number) => (
-                    <ImageTile key={idx} src={item.originalImage} />
+                {artworks.map((item) => (
+                    <ImageTile key={item.id} src={item.originalImage} />
                 ))}
             </Grid>
         </Container>
