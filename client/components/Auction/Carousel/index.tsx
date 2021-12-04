@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from '@emotion/styled';
 import Slider, { Settings } from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -8,13 +8,17 @@ import curations from '@const/curations';
 import CarouselItem from '../CarouselItem.tsx';
 
 const AuctionCarousel = () => {
+    const carousels = useMemo(
+        () =>
+            curations.map((curation) => {
+                return <CarouselItem curation={curation} key={curation.id} />;
+            }),
+        [],
+    );
+
     return (
         <SlideWrapper>
-            <CarouselSlider {...settings}>
-                {curations.map((curation) => {
-                    return <CarouselItem curation={curation} key={curation.id} />;
-                })}
-            </CarouselSlider>
+            <CarouselSlider {...settings}>{carousels}</CarouselSlider>
         </SlideWrapper>
     );
 };
