@@ -28,8 +28,8 @@ const useControlModalPosition = () => {
     return { modalPositionTop, handleModalPosition, onClickHiddenModal };
 };
 
-const SHOW_MODAL_POSITION = 'calc(50% - 265px)';
-const HIDE_MODAL_POSITION = 'calc(100% - 45px)';
+const SHOW_MODAL_POSITION = 'calc(50% - 300px)';
+const HIDE_MODAL_POSITION = 'calc(100% - 130px)';
 const WHEEL_EVENT_THRESHOLD = 30;
 
 export default useControlModalPosition;

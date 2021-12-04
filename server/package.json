@@ -31,7 +31,7 @@
     "@nestjs/swagger": "^5.1.4",
     "@nestjs/typeorm": "^8.0.2",
     "@nestjs/websockets": "^8.1.2",
-    "aws-sdk": "^2.1018.0",
+    "aws-sdk": "^2.1043.0",
     "axios": "^0.24.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",

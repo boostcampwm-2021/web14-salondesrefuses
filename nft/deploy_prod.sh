@@ -5,7 +5,7 @@ NFT_PATH=${CURRENT_PATH%/*}
 
 echo '> nft 빌드'
 
-truffle migrate --network product
+truffle deploy --network product
 
 if [ ! -d $NFT_PATH/server/src/cronTask/ethereum ]; then
     mkdir $NFT_PATH/server/src/cronTask/ethereum

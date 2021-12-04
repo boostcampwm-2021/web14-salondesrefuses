@@ -6,11 +6,12 @@ import { ObjectStorageData } from './dto/Image.dto';
 
 @Injectable()
 export class ImageService {
-    private s3: AWS.S3;
+    private readonly s3: AWS.S3;
 
     constructor() {
         const endpoint = new AWS.Endpoint(process.env.NCP_OBJECT_STORAGE_END_POINT);
         const region = process.env.NCP_REGION;
+
         this.s3 = new AWS.S3({
             endpoint,
             region,
@@ -25,7 +26,7 @@ export class ImageService {
         const params = {
             Bucket: process.env.AWS_S3_BUCKET_NAME,
             ACL: 'public-read',
-            Key: `objects/${Date.now()}-${image.filename}.webp`,
+            Key: `objects/${Date.now()}-${image.originalname.split('.')[0]}.webp`,
             Body: image.buffer,
         };
         const options = {
@@ -37,8 +38,9 @@ export class ImageService {
                 if (err) {
                     Logger.error(err);
                     reject(err.message);
+                } else if (data) {
+                    resolve(data);
                 }
-                resolve(data);
             });
         });
     }
@@ -54,6 +56,6 @@ export class ImageService {
     async convertWebp(originalImage: Express.Multer.File) {
         const sharpImage = sharp(originalImage.buffer);
 
-        return await sharpImage.webp({ lossless: false }).toBuffer();
+        return await sharpImage.webp({ lossless: true }).toBuffer();
     }
 }
