@@ -172,6 +172,7 @@ const EditorElement = ({
                     draggable={false}
                     imageSrc={image ? image.originalImage : imageSrc!}
                     data-artwork={image ? image.id : artworkId!}
+                    id={`${idx}`}
                 >
                     {isSelected && getBorderController(tagName)}
                 </ImgDiv>

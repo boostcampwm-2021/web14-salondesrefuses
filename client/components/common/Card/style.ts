@@ -79,7 +79,7 @@ export const Title = styled.p<textAlign>`
     text-align: ${(props) => props.align || 'left'};
 `;
 export const P = styled.p<textAlign>`
-    font: ${(props) => props.theme.font.textEnSm};
+    font: ${(props) => props.theme.font.textEnBase};
     margin: 10px auto;
     text-align: ${(props) => props.align || 'left'};
 `;
