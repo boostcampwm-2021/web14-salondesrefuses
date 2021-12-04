@@ -4,22 +4,22 @@ import * as sharp from 'sharp';
 import { Logger } from '@nestjs/common';
 import { ObjectStorageData } from './dto/Image.dto';
 
+const endpoint = new AWS.Endpoint(process.env.NCP_OBJECT_STORAGE_END_POINT);
+const region = process.env.NCP_REGION;
+
+const s3 = new AWS.S3({
+    endpoint,
+    region,
+    sslEnabled: true,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    },
+});
+
 @Injectable()
 export class ImageService {
-    private s3: AWS.S3;
-
-    constructor() {
-        const endpoint = new AWS.Endpoint(process.env.NCP_OBJECT_STORAGE_END_POINT);
-        const region = process.env.NCP_REGION;
-        this.s3 = new AWS.S3({
-            endpoint,
-            region,
-            credentials: {
-                accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-                secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-            },
-        });
-    }
+    constructor() {}
 
     async fileUpload(image: Express.Multer.File): Promise<ObjectStorageData> {
         const params = {
@@ -33,12 +33,13 @@ export class ImageService {
         };
 
         return new Promise((resolve, reject) => {
-            this.s3.upload(params, options, (err, data) => {
+            s3.upload(params, options, (err, data) => {
                 if (err) {
                     Logger.error(err);
                     reject(err.message);
+                } else if (data) {
+                    resolve(data);
                 }
-                resolve(data);
             });
         });
     }

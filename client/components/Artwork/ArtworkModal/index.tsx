@@ -85,6 +85,6 @@ const ArtworkModal = ({ handleModalInput, position, handleModalPosition, onClick
     );
 };
 
-const HIDE_MODAL_TOP = 'calc(100% - 45px)';
+const HIDE_MODAL_TOP = 'calc(100% - 130px)';
 
 export default ArtworkModal;
