@@ -25,7 +25,7 @@ export class ImageService {
         const params = {
             Bucket: process.env.AWS_S3_BUCKET_NAME,
             ACL: 'public-read',
-            Key: `objects/${Date.now()}-${image.filename}.webp`,
+            Key: `objects/${Date.now()}-${image.originalname.split('.')[0]}.webp`,
             Body: image.buffer,
         };
         const options = {
