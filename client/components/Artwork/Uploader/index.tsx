@@ -29,11 +29,11 @@ const Uploader = ({ handleNewImage }: UploaderProps) => {
     const onChangeFile = () => {
         if (!validFileInput(inputRef)) return;
         const image = inputRef.current!.files![0];
-        // if (byteToMB(image.size) > MAX_UPLOADABLE_MB) {
-        // showToast('failed');
-        // inputRef.current!.value = '';
-        // return;
-        // }
+        if (byteToMB(image.size) > MAX_UPLOADABLE_MB) {
+            showToast('failed');
+            inputRef.current!.value = '';
+            return;
+        }
         handleNewImage(image);
     };
 
@@ -59,7 +59,7 @@ const validFileInput = (ref: RefObject<HTMLInputElement | null>) => {
 
 const byteToMB = (byte: number) => Math.ceil(byte / 1024 / 1024);
 
-const MAX_UPLOADABLE_MB = 5;
+const MAX_UPLOADABLE_MB = 10;
 
 const Container = styled.div`
     width: 80%;
