@@ -5,6 +5,9 @@ import { useSelectedImageState, useEditorImageState } from '@store/editorImageSt
 import { getAllArtworks } from 'service/networking';
 import { Container, Tiles, Check } from './style';
 import createResource from '@utils/createResource';
+import ErrorBoundary from '@components/common/ErrorBoundary';
+import CSuspense from '@components/common/Suspense';
+import Fallback from '@components/common/Fallback';
 
 const resource = createResource(getAllArtworks());
 
@@ -28,17 +31,21 @@ const Selector = () => {
 
     return (
         <Container>
-            <Tiles>
-                {images.map((image) => {
-                    const selected = selectedImages.findIndex((img) => img.id === image.id);
-                    return (
-                        <div key={image.id} onClick={onClickImage(image.id)}>
-                            <img src={image.originalImage} alt={image.title} />
-                            {selected >= 0 && <Check>Selected</Check>}
-                        </div>
-                    );
-                })}
-            </Tiles>
+            <ErrorBoundary fallback={<div>...failed</div>}>
+                <CSuspense fallback={<Fallback />}>
+                    <Tiles>
+                        {images.map((image) => {
+                            const selected = selectedImages.findIndex((img) => img.id === image.id);
+                            return (
+                                <div key={image.id} onClick={onClickImage(image.id)}>
+                                    <img src={image.originalImage} alt={image.title} />
+                                    {selected >= 0 && <Check>Selected</Check>}
+                                </div>
+                            );
+                        })}
+                    </Tiles>
+                </CSuspense>
+            </ErrorBoundary>
         </Container>
     );
 };

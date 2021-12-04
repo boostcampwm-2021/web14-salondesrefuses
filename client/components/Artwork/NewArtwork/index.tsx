@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { Button } from '@styles/common';
 import ArtworkModal from '../ArtworkModal';
@@ -17,9 +17,17 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
     const { backgroundImageRef, imageRef } = usePreviewImage(image);
     const { modalPositionTop, handleModalPosition, onClickHiddenModal } = useControlModalPosition();
 
-    const onKeyDownTab = (e: React.KeyboardEvent) => {
+    const onKeyDownTab = useCallback((e: React.KeyboardEvent) => {
         if (e.key === 'Tab') e.preventDefault();
-    };
+    }, []);
+
+    useEffect(() => {
+        document.documentElement.style.overflow = 'hidden';
+
+        return () => {
+            document.documentElement.style.overflow = 'auto';
+        };
+    });
 
     return (
         <>

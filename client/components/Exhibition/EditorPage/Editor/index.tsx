@@ -88,9 +88,7 @@ const Editor = ({ elements, setElements, editorRef, editorSize, saveEditorSize }
     useEffect(() => {
         if (!editorRef.current) return;
         editorRef.current.addEventListener('click', (e: any) => {
-            if (!(e.target as HTMLDivElement).classList.contains('editorElement')) {
-                keyToCurrentElements([]);
-            }
+            if (!(e.target as HTMLDivElement).classList.contains('editorElement')) keyToCurrentElements([]);
         });
         return () => {
             setEditorImageState([]);
@@ -112,6 +110,7 @@ const Editor = ({ elements, setElements, editorRef, editorSize, saveEditorSize }
     const onClickColorButton = () => {
         setShowColorPicker((prev) => !prev);
     };
+
     const mirrorCurrentFontStyle = () => {
         currentElements.forEach((elem) => {
             if (!elem) return;
@@ -124,6 +123,7 @@ const Editor = ({ elements, setElements, editorRef, editorSize, saveEditorSize }
             }
         });
     };
+
     const deleteElement = () => {
         if (!currentElements) return;
         setElements(() => elements.filter((el) => el.id !== Number(currentElements[0]?.id)));
@@ -132,10 +132,12 @@ const Editor = ({ elements, setElements, editorRef, editorSize, saveEditorSize }
             ? setElementCount({ any: --elementCount.any, img: --elementCount.img })
             : setElementCount({ any: --elementCount.any, img: elementCount.img });
     };
+
     const onFontStylerButton = () => {
         mirrorCurrentFontStyle();
         setShowFontStyler((prev) => !prev);
     };
+
     const createText = () => {
         if (elementCount.any + 1 > maxAnyElementCount) return fullAnyElements('failed');
 
@@ -147,13 +149,15 @@ const Editor = ({ elements, setElements, editorRef, editorSize, saveEditorSize }
         };
         setElements([...elements, element]);
     };
-    const changeFontStyles = (newFontStyle: FontStyle) => {
+    const changeFontStyles = useCallback((newFontStyle: FontStyle) => {
         setFontStyles(newFontStyle);
-    };
+    }, []);
+
     const keyToCurrentElements = (keyArr: Array<HTMLElement | null>) => {
         setCurrentElements(keyArr);
         setIsDoubleClicked(false);
     };
+
     const setIsDoubleClickedFunc = (check: boolean) => {
         setIsDoubleClicked(check);
     };
@@ -191,18 +195,18 @@ const Editor = ({ elements, setElements, editorRef, editorSize, saveEditorSize }
         });
     };
 
-    const onContextMenuHandle = (e: React.MouseEvent) => {
+    const onContextMenuHandle = useCallback((e: React.MouseEvent) => {
         if (e.type === 'contextmenu') {
             e.preventDefault();
             showMouseRightClickToast('success');
         }
-    };
+    }, []);
 
-    const onKeyDown = (e: React.KeyboardEvent) => {
+    const onKeyDown = useCallback((e: React.KeyboardEvent) => {
         if (e.key === 'Backspace') {
             deleteElement();
         }
-    };
+    }, []);
 
     return (
         <EditorContainer height={editorSize}>

@@ -12,10 +12,12 @@ const useToast = (msg: Message) => {
         setToast({ show: true, content: state === 'success' ? msg.onSuccess : msg.onFailed });
         setTimeout(() => {
             setToast({ ...toast, show: false });
-        }, 3000);
+        }, TOAST_DURATION);
     };
 
     return showToast;
 };
+
+const TOAST_DURATION = 3000;
 
 export default useToast;

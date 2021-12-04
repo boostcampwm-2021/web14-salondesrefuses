@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { postArtwork, onResponseSuccess } from 'service/networking';
 import { useRouter } from 'next/router';
 
@@ -40,17 +40,17 @@ const useInputArtwork = (image: File) => {
         }
     };
 
-    const onChangeTitleInput = (e: React.FormEvent) => {
+    const onChangeTitleInput = useCallback((e: React.FormEvent) => {
         setTitleInput((e.target as HTMLInputElement).value);
-    };
+    }, []);
 
-    const onChangeTypeInput = (e: React.FormEvent) => {
+    const onChangeTypeInput = useCallback((e: React.FormEvent) => {
         setTypeInput((e.target as HTMLInputElement).value);
-    };
+    }, []);
 
-    const handleModalInput = (data: { [key: string]: string }) => {
+    const handleModalInput = useCallback((data: { [key: string]: string }) => {
         setModalInputData(data);
-    };
+    }, []);
 
     return {
         handleModalInput,

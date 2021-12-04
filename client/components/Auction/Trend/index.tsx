@@ -14,6 +14,10 @@ const Trend = ({ trendHistoryList }: { trendHistoryList: Array<trendHistory> }) 
         socket.on('@auction/bid', (data: trendHistory) => {
             setTrendHistory((prev) => [data, ...prev].slice(0, 6));
         });
+
+        return () => {
+            socket.offAny();
+        };
     }, []);
 
     return (

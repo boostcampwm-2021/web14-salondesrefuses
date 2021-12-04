@@ -1,7 +1,10 @@
-import useArtworkInput from '@hooks/useArtworkInput';
 import React, { useRef } from 'react';
+
 import ArtworkFilter from '../ArtworkFilter';
 import { Modal, Form, LightForm, ConfirmButton } from './style';
+import { ToastMsg } from '@const/toast-message';
+import useArtworkInput from '@hooks/useArtworkInput';
+import useToast from '@hooks/useToast';
 
 interface ArtworkModalProps {
     handleModalInput: React.Dispatch<{ [key: string]: string }>;
@@ -21,11 +24,19 @@ const ArtworkModal = ({ handleModalInput, position, handleModalPosition, onClick
         artworkInput,
         validInput,
     } = useArtworkInput();
+    const showToast = useToast({
+        onSuccess: '',
+        onFailed: ToastMsg.NOT_FILLED_EVERY_MODAL_FORMS,
+    });
 
     const onClickConfirm = (e: React.MouseEvent) => {
         e.stopPropagation();
+        if (!validInput.bidEnd || !validInput.price || !validInput.year) {
+            showToast('failed');
+            return;
+        }
         handleModalInput({ ...artworkInput });
-        handleModalPosition('calc(100% - 45px)');
+        handleModalPosition(HIDE_MODAL_TOP);
     };
 
     return (
@@ -73,5 +84,7 @@ const ArtworkModal = ({ handleModalInput, position, handleModalPosition, onClick
         </Modal>
     );
 };
+
+const HIDE_MODAL_TOP = 'calc(100% - 45px)';
 
 export default ArtworkModal;

@@ -26,7 +26,7 @@ const ItemDetail = ({ auction, image }: { auction: Auction; image: string }) => 
     const { title, type } = artwork;
     const trendHistoryList = JSON.parse(JSON.stringify(auctionHistories))
         .sort((a: trendHistory, b: trendHistory) => Number(b?.price) - Number(a?.price))
-        .slice(0, 6);
+        .slice(0, LATEST_SIX);
 
     useEffect(() => {
         socket.emit('@auction/enter', id);
@@ -34,6 +34,7 @@ const ItemDetail = ({ auction, image }: { auction: Auction; image: string }) => 
 
         return () => {
             socket.emit('@auction/leave', id);
+            socket.offAny();
         };
     }, []);
 
@@ -50,6 +51,8 @@ const ItemDetail = ({ auction, image }: { auction: Auction; image: string }) => 
         </Container>
     );
 };
+
+const LATEST_SIX = 6;
 
 const Container = styled.section`
     width: 100%;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -15,9 +15,9 @@ const ExhibitionPage: NextPage = () => {
     const [_, setModalState] = useModalState();
     const session = useSessionState().contents;
 
-    const handleFilter = ({ currentTarget }: React.MouseEvent) => {
+    const handleFilter = useCallback(({ currentTarget }: React.MouseEvent) => {
         setOnSelect(currentTarget.textContent || 'Newest');
-    };
+    }, []);
 
     const onClickButtonWithoutSession = () => {
         setModalState({

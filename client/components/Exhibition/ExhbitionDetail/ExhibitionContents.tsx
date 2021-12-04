@@ -1,13 +1,28 @@
 import React, { CSSProperties } from 'react';
 import styled from '@emotion/styled';
+
 import { EditorElementType, EditorElementStyle } from '@components/Exhibition/EditorPage/Editor/types';
 import ExhibitionLazyImage from './ExhibitionLazyImage';
+
+interface Props {
+    contents: string;
+    size: string;
+    setModalNum: (n: string | undefined) => void;
+}
+
+interface ContentStyles {
+    tagName: EditorElementType;
+    innerHTML?: string;
+    imageSrc?: string;
+    artworkId?: string;
+    style: EditorElementStyle;
+}
 
 const MakeElement = ({
     content,
     setModalNum,
 }: {
-    content: contentStyles;
+    content: ContentStyles;
     setModalNum: (n: string | undefined) => void;
 }) => {
     return content.tagName === 'IMAGE' && content.imageSrc ? (
@@ -24,25 +39,11 @@ const MakeElement = ({
     );
 };
 
-interface Props {
-    contents: string;
-    size: string;
-    setModalNum: (n: string | undefined) => void;
-}
-
-interface contentStyles {
-    tagName: EditorElementType;
-    innerHTML?: string;
-    imageSrc?: string;
-    artworkId?: string;
-    style: EditorElementStyle;
-}
-
 const ExhibitionContents = ({ contents, size, setModalNum }: Props) => {
     return (
         <div>
             <ElementContainer size={size}>
-                {JSON.parse(contents).map((content: contentStyles, i: number) => (
+                {JSON.parse(contents).map((content: ContentStyles, i: number) => (
                     <MakeElement key={i} content={content} setModalNum={setModalNum} />
                 ))}
             </ElementContainer>

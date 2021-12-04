@@ -16,10 +16,10 @@ const LazyImage = ({ src, alt }: ILazyImage) => {
             setIsLoad(true);
         }
 
-        imageRef.current && imageRef.current.addEventListener('loadImage', loadImage);
+        imageRef.current && imageRef.current.addEventListener(LOAD_IMAGE_EVENT, loadImage);
 
         return () => {
-            imageRef.current && imageRef.current.removeEventListener('loadImage', loadImage);
+            imageRef.current && imageRef.current.removeEventListener(LOAD_IMAGE_EVENT, loadImage);
         };
     }, []);
 
@@ -45,9 +45,11 @@ const onIntersection = (entries: IntersectionObserverEntry[], io: IntersectionOb
     entries.forEach((entry) => {
         if (entry.isIntersecting) {
             io.unobserve(entry.target);
-            entry.target.dispatchEvent(new CustomEvent('loadImage'));
+            entry.target.dispatchEvent(new CustomEvent(LOAD_IMAGE_EVENT));
         }
     });
 };
+
+const LOAD_IMAGE_EVENT = 'loadImage';
 
 export default LazyImage;

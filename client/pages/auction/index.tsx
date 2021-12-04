@@ -7,7 +7,7 @@ import Layout from '@components/common/Layout';
 import AuctionCarousel from '@components/Auction/Carousel';
 import AuctionList from '@components/Auction/AuctionList';
 
-const AuctionPage = ({ data }: any) => {
+const AuctionPage = () => {
     return (
         <Container>
             <Head>
@@ -20,13 +20,6 @@ const AuctionPage = ({ data }: any) => {
             </Layout>
         </Container>
     );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    // TODO: fetch 경매 작품 리스트
-    return {
-        props: {},
-    };
 };
 
 const Container = styled.div``;

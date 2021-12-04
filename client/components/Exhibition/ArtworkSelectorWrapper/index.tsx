@@ -6,11 +6,12 @@ import { SpaceBetween } from '@styles/common';
 import CSuspense from '@components/common/Suspense';
 import ErrorBoundary from '@components/common/ErrorBoundary';
 import Fallback from '@components/common/Fallback';
+
 const ArtworkSelector = dynamic(() => import('@components/Exhibition/ArtworkSelector'), { ssr: false });
 
-const index = () => {
+const ArtworkSelectorWrapper = () => {
     return (
-        <ArtworkSelectorWrapper>
+        <Container>
             <ArtworkSelectorHeader>
                 <Label>작품 선택하기</Label>
             </ArtworkSelectorHeader>
@@ -19,11 +20,11 @@ const index = () => {
                     <ArtworkSelector />
                 </CSuspense>
             </ErrorBoundary>
-        </ArtworkSelectorWrapper>
+        </Container>
     );
 };
 
-const ArtworkSelectorWrapper = styled.div`
+const Container = styled.div`
     width: 470px;
     margin-left: auto;
 `;
@@ -37,4 +38,4 @@ const Label = styled.label`
     font: ${(props) => props.theme.font.textBase};
 `;
 
-export default index;
+export default ArtworkSelectorWrapper;

@@ -7,15 +7,9 @@ import Logo from '@assets/images/logo.webp';
 import { HeaderContainer, LeftContainer, Hr, ImageContainer } from './style';
 import useSessionState from '@store/sessionState';
 import dynamic from 'next/dynamic';
+
 const DefaultHeader = dynamic(() => import('./headerStyles'), { ssr: false });
 
-const pathToObj = {
-    '': { title: 'Main', root: '/' },
-    artwork: { title: 'New Artwork', root: '/' },
-    exhibition: { title: 'Exhibitions', root: '/exhibition' },
-    auction: { title: 'Auction', root: '/auction' },
-    mypage: { title: 'My Page', root: '/mypage' },
-};
 type mainPathInterface = '' | 'artwork' | 'exhibition' | 'auction' | 'mypage';
 
 const Header = () => {
@@ -36,6 +30,14 @@ const Header = () => {
             {<DefaultHeader session={session} />}
         </HeaderContainer>
     );
+};
+
+const pathToObj = {
+    '': { title: 'Main', root: '/' },
+    artwork: { title: 'New Artwork', root: '/' },
+    exhibition: { title: 'Exhibitions', root: '/exhibition' },
+    auction: { title: 'Auction', root: '/auction' },
+    mypage: { title: 'My Page', root: '/mypage' },
 };
 
 export default Header;

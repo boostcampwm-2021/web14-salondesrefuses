@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { ClipLoader } from 'react-spinners';
+
 import { signIn } from '../../service/networking';
 
 const LoginCallbackPage = () => {

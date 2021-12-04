@@ -9,12 +9,22 @@ import contractAddress from '@public/ethereum/address.json';
 import { getAllBoughtArtworks } from 'service/networking';
 import { AuctionCardProps } from '@const/card-type';
 import Card from '@components/common/Card';
+import useToast from '@hooks/useToast';
+import { ToastMsg } from '@const/toast-message';
 
 let account: string | null;
 
+interface IMyAuctionCard extends AuctionCardProps {
+    croppedImage: string;
+}
+
 const BoughtArtworkPage = () => {
     const [contract, setContract] = useState<Contract>();
-    const [boughtArtworks, setBoughtArtworks] = useState<AuctionCardProps[]>([]);
+    const [boughtArtworks, setBoughtArtworks] = useState<IMyAuctionCard[]>([]);
+    const showToast = useToast({
+        onSuccess: '',
+        onFailed: ToastMsg.FAILED_TO_ACCESS_CONTRACT,
+    });
     const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
 
     const getArtworks = async () => {
@@ -39,14 +49,22 @@ const BoughtArtworkPage = () => {
         window.ethereum.on('accountsChanged', (accounts: string[]) => {
             account = accounts[0];
         });
-        setContract(new web3.eth.Contract(ABI.abi as AbiItem[], contractAddress.address));
+        try {
+            setContract(new web3.eth.Contract(ABI.abi as AbiItem[], contractAddress.address));
+        } catch {
+            showToast('failed');
+        }
     }, []);
 
     useEffect(() => {
         if (!contract) return;
         (async () => {
-            const result = await getArtworks();
-            setBoughtArtworks(result);
+            try {
+                const result = await getArtworks();
+                setBoughtArtworks(result);
+            } catch {
+                showToast('failed');
+            }
         })();
     }, [contract]);
 
@@ -54,7 +72,7 @@ const BoughtArtworkPage = () => {
         <Container>
             {boughtArtworks &&
                 boughtArtworks.map((item) => {
-                    item.thumbnailImage = (item as any).croppedImage;
+                    item.thumbnailImage = item.croppedImage;
                     return <Card width="md" content={item} key={item.id} />;
                 })}
         </Container>
