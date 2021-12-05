@@ -1,9 +1,10 @@
-import { Artwork } from 'src/artwork/artwork.entity';
-import { CreateArtworkDTO } from 'src/artwork/dto/artworkDTOs';
-import { InterestArtwork } from 'src/interestArtwork/interestArtwork.entity';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Raw, Repository } from 'typeorm';
+import { InterestArtwork } from '@interestArtwork/interestArtwork.entity';
+import { CreateArtworkDTO } from '@artwork/dto/artwork.dto';
+import { ArtworkStatus } from '@artwork/enum/artwork.enum';
+import { Artwork } from '@artwork/artwork.entity';
 import { Auction } from './auction.entity';
-import { User } from '../user/user.entity';
+import { User } from '@user/user.entity';
 
 @EntityRepository(Auction)
 export class AuctionRepository extends Repository<Auction> {
@@ -11,12 +12,13 @@ export class AuctionRepository extends Repository<Auction> {
         if (createArtWorkDTO.isRegisterAuction === 'true') {
             return this.create({
                 seller: user,
+                price: createArtWorkDTO.price,
                 endAt: createArtWorkDTO.endAt,
             });
         }
     }
 
-    getRandomAuctions(): Promise<Auction[]> {
+    findRandomAuctions(): Promise<Auction[]> {
         return this.createQueryBuilder('auction')
             .innerJoinAndSelect('auction.artwork', 'artwork')
             .innerJoinAndSelect('artwork.artist', 'artist')
@@ -60,6 +62,7 @@ export class AuctionRepository extends Repository<Auction> {
         return this.createQueryBuilder('auction')
             .where(`auction.id = ${auctionId}`)
             .leftJoinAndSelect('auction.auctionHistories', 'history')
+            .leftJoinAndSelect('history.bidder', 'bidder')
             .innerJoinAndSelect('auction.artwork', 'artwork')
             .innerJoinAndSelect('artwork.artist', 'artist')
             .getOne();
@@ -75,4 +78,22 @@ export class AuctionRepository extends Repository<Auction> {
         this.delete({ id });
         return auction;
     }
+
+    findAuctionInfo(auctionId: number): Promise<Auction> {
+        return this.findOne({
+            relations: ['artwork'],
+            where: { id: auctionId },
+        });
+    }
+
+    findEndedAuctions(): Promise<Auction[]> {
+        return this.find({
+            relations: ['artwork'],
+            where: [
+                { endAt: Raw(endAt => `${endAt} <= CURRENT_DATE`) },
+                { artwork: { status: ArtworkStatus.InBid } },
+            ],
+        });
+    }
+
 }

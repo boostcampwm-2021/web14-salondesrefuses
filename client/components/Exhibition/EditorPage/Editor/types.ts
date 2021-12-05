@@ -1,4 +1,4 @@
-import { Artwork } from 'interfaces';
+import { Artwork, FontFamily } from 'interfaces';
 
 export enum EditorElementName {
     rectangular = 'RECTANGULAR',
@@ -10,14 +10,23 @@ export type EditorElementStyle = {
     top: number;
     left: number;
     transform?: string;
-    backgroundColor: string;
-    size: { width: number | string; height: number | string };
+    color?: string;
+    backgroundColor?: string;
+    width: number | string;
+    height: number | string;
     zIndex: number;
+    position: 'absolute' | 'flex';
+    fontFamily?: FontFamily;
+    textAlign?: 'LEFT' | 'CENTER' | 'RIGHT';
+    fontSize?: number;
 };
 
 export interface EditorElementProp {
-    type: EditorElementType;
+    id: number;
+    tagName: EditorElementType;
     style: EditorElementStyle;
     image?: Artwork;
-    innerText?: string;
+    innerHTML?: string;
+    imageSrc?: string;
+    artworkId?: string;
 }

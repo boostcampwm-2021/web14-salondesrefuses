@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const useControlModalPosition = () => {
-    const [modalPositionBottom, setModalPositionBottom] = useState('-560px');
+    const [modalPositionTop, setModalPositionTop] = useState(HIDE_MODAL_POSITION);
 
-    // 왜인지 모르겠는데 안먹음...
-    const onClickHiddenModal = () => {
-        setModalPositionBottom('-53vh');
-    };
+    const onClickHiddenModal = useCallback(() => {
+        setModalPositionTop(SHOW_MODAL_POSITION);
+    }, []);
 
-    const onWheelModal = (e: WheelEvent) => {
-        if (e.deltaY > 30) setModalPositionBottom('10vh');
-    };
+    const onWheelModal = useCallback((e: WheelEvent) => {
+        if (e.deltaY > WHEEL_EVENT_THRESHOLD) setModalPositionTop(SHOW_MODAL_POSITION);
+        else if (e.deltaY < -WHEEL_EVENT_THRESHOLD) setModalPositionTop(HIDE_MODAL_POSITION);
+    }, []);
 
     const handleModalPosition = (bottom: string) => {
-        setModalPositionBottom(bottom);
+        setModalPositionTop(bottom);
     };
 
     useEffect(() => {
@@ -25,7 +25,11 @@ const useControlModalPosition = () => {
         };
     }, []);
 
-    return { modalPositionBottom, handleModalPosition };
+    return { modalPositionTop, handleModalPosition, onClickHiddenModal };
 };
+
+const SHOW_MODAL_POSITION = 'calc(50% - 300px)';
+const HIDE_MODAL_POSITION = 'calc(100% - 130px)';
+const WHEEL_EVENT_THRESHOLD = 30;
 
 export default useControlModalPosition;

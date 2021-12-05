@@ -1,14 +1,16 @@
 import { selector, useRecoilValueLoadable } from 'recoil';
-import parseCookie from '@utils/parseCookie';
-import { getUser } from '@utils/networking';
+import { getUser, onResponseSuccess } from 'service/networking';
 
 const sessionSelector = selector({
     key: '@session/get',
     get: async ({ get }) => {
-        console.log(parseCookie()('refreshToken'));
-        if (!parseCookie()('refreshToken')) return undefined;
-        const result = await getUser();
-        return result;
+        try {
+            const response = await getUser();
+            if (!onResponseSuccess(response.status)) return undefined;
+            return response.data;
+        } catch (err) {
+            console.log(err);
+        }
     },
 });
 

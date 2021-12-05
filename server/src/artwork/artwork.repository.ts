@@ -1,10 +1,11 @@
-import { ObjectStorageData } from 'src/image/dto/ImageDTOs';
 import { EntityRepository, In, Repository, UpdateResult } from 'typeorm';
+import { InterestArtwork } from '@interestArtwork/interestArtwork.entity';
+import { AuctionHistory } from '@auctionHistory/auctionHistory.entity';
+import { ObjectStorageData } from '@image/dto/Image.dto';
+import { CreateArtworkDTO } from './dto/artwork.dto';
+import { ArtworkStatus } from './enum/artwork.enum';
+import { Auction } from '@auction/auction.entity';
 import { Artwork } from './artwork.entity';
-import { ArtworkStatus } from './artwork.status.enum';
-import { CreateArtworkDTO } from './dto/artworkDTOs';
-import { InterestArtwork } from '../interestArtwork/interestArtwork.entity';
-import { ArtworkInBid } from '../artworkInBid/artworkInBid.entity';
 
 @EntityRepository(Artwork)
 export class ArtworkRepository extends Repository<Artwork> {
@@ -18,7 +19,6 @@ export class ArtworkRepository extends Repository<Artwork> {
             title: createArtWorkDTO.title,
             type: createArtWorkDTO.type,
             year: createArtWorkDTO.year,
-            price: createArtWorkDTO.price,
             description: createArtWorkDTO.description,
             originalImage: originalImagePath,
             croppedImage: croppedImagePath,
@@ -26,26 +26,18 @@ export class ArtworkRepository extends Repository<Artwork> {
         });
     }
 
-    async getArtwork(id: number): Promise<Artwork> {
-        return await this.findOne({ id });
+    findArtwork(id: number): Promise<Artwork> {
+        return this.findOne({ id });
     }
 
-    async getRandomAuctionArtworks(): Promise<Artwork[]> {
-        return await this.createQueryBuilder('artwork')
-            .where('artwork.status = :status', { status: ArtworkStatus.InBid })
-            .orderBy('RAND()')
-            .limit(3)
-            .getMany();
-    }
-
-    async getUsersArtworks(userId: number): Promise<Artwork[]> {
-        return await this.find({
+    findUsersArtworks(userId: number): Promise<Artwork[]> {
+        return this.find({
             where: { artist: userId },
         });
     }
 
-    async getInterestArtworks(userId: number): Promise<Artwork[]> {
-        return await this.createQueryBuilder('artwork')
+    findInterestArtworks(userId: number): Promise<Artwork[]> {
+        return this.createQueryBuilder('artwork')
             .innerJoin(
                 subQuery => {
                     return subQuery
@@ -59,33 +51,15 @@ export class ArtworkRepository extends Repository<Artwork> {
             .getMany();
     }
 
-    async getBiddingArtworks(userId: number): Promise<Artwork[]> {
-        return await this.createQueryBuilder('artwork')
-            .innerJoin(
-                subQuery => {
-                    return subQuery
-                        .select('artwork_in_bid.artwork_id')
-                        .from(ArtworkInBid, 'artwork_in_bid')
-                        .where('artwork_in_bid.user_id = :userId', { userId });
-                },
-                'bidding',
-                'bidding.artwork_id = artwork.id',
-            )
-            .getMany();
+    findBiddedArtworks(nftTokens: string[]): Promise<Artwork[]> {
+        return this.find({ where: [{ nftToken: In(nftTokens) }] });
     }
 
-    async getBiddedArtworks(nftTokens: string[]): Promise<Artwork[]> {
-        return await this.find({ where: [ { nftToken: In(nftTokens) } ] });
+    findAllByArtworkIds(artworkIds: number[], relations?: string[]): Promise<Artwork[]> {
+        return this.find({ where: { id: In(artworkIds) }, relations: relations });
     }
 
-    async findAllByExhibitionId(exhibitonId: number, relations?: string[]): Promise<Artwork[]> {
-        return await this.find({
-            where: { exhibitionId: exhibitonId },
-            relations: relations,
-        });
-    }
-
-    async bulkUpdateArtworkState(artworkIds: number[]): Promise<void> {
+    bulkUpdateArtworkState(artworkIds: number[]): void {
         this.createQueryBuilder('artworks')
             .update()
             .set({ status: ArtworkStatus.BidCompleted })
@@ -93,7 +67,23 @@ export class ArtworkRepository extends Repository<Artwork> {
             .execute();
     }
 
-    async updateNFTToken(id: number, nftToken: string): Promise<UpdateResult> {
-        return await this.update(id, { nftToken });
+    updateNFTToken(id: number, nftToken: string): Promise<UpdateResult> {
+        return this.update(id, { nftToken });
+    }
+
+    findAllByBidding(bidderId): Promise<Artwork[]> {
+        return this.createQueryBuilder('artwork')
+            .innerJoinAndSelect(
+                subquery => {
+                    return subquery
+                        .select('distinct(a.id), a.artwork_id')
+                        .from(AuctionHistory, 'auction_history')
+                        .innerJoin(Auction, 'a', 'auction_history.auction_id = a.id')
+                        .where(`auction_history.bidder_id = ${bidderId}`);
+                },
+                'auction',
+                'artwork.id = auction.artwork_id',
+            )
+            .getMany();
     }
 }

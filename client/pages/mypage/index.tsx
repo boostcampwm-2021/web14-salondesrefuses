@@ -5,31 +5,25 @@ import styled from '@emotion/styled';
 
 import useSessionState from '@store/sessionState';
 import Layout from '@components/common/Layout';
+import Fallback from '@components/common/Fallback';
 import SideBar from '@components/MyPage/Sidebar';
 import { Session } from 'interfaces';
 
-const ProfilePage = dynamic(() => import('@components/MyPage/ProfilePage'), {
+const dynamicImportOption = {
+    loading: () => <Fallback />,
     ssr: false,
-});
-const AuctionPage = dynamic(() => import('@components/MyPage/AuctionPage'), {
-    ssr: false,
-});
-const ExhibitionPage = dynamic(() => import('@components/MyPage/Exhibition'), {
-    ssr: false,
-});
-const ArtworkPage = dynamic(() => import('@components/MyPage/ArtworkPage'), {
-    ssr: false,
-});
-const FavoritePage = dynamic(() => import('@components/MyPage/FavoritePage'), {
-    ssr: false,
-});
+};
+
+const ProfilePage = dynamic(() => import('@components/MyPage/ProfilePage'), dynamicImportOption);
+const AuctionPage = dynamic(() => import('@components/MyPage/AuctionPage'), dynamicImportOption);
+const ExhibitionPage = dynamic(() => import('@components/MyPage/Exhibition'), dynamicImportOption);
+const ArtworkPage = dynamic(() => import('@components/MyPage/ArtworkPage'), dynamicImportOption);
 
 export const DETAIL_PAGES = {
     profile: '내 프로필',
-    auction: '거래/입찰 내역',
+    auction: '거래 내역',
     exhibition: '내 전시',
     artwork: '내 작품',
-    favorite: '관심 작품',
 };
 
 export type PAGES = typeof DETAIL_PAGES[keyof typeof DETAIL_PAGES];
@@ -38,14 +32,12 @@ const routerPath = (path: PAGES, user: Session) => {
     if (path === 'profile') return <ProfilePage user={user} />;
     else if (path === 'auction') return <AuctionPage />;
     else if (path === 'exhibition') return <ExhibitionPage />;
-    else if (path === 'artwork') return <ArtworkPage />;
-    else return <FavoritePage />;
+    else return <ArtworkPage />;
 };
 
 const MyPage = () => {
     const user = useSessionState().contents;
     const [currentPage, setCurrentPage] = useState<PAGES>('profile');
-    console.log(user);
     return (
         <div>
             <Head>

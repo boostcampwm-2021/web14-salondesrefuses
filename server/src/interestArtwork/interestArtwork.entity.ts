@@ -1,15 +1,14 @@
-import { Entity,   ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import { User } from '../user/user.entity';
-import { Artwork } from '../artwork/artwork.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Artwork } from '@artwork/artwork.entity';
 
 @Entity()
 export class InterestArtwork {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(type => User, user => user.interestArtworks)
-    user: User;
+    @Column()
+    userId: number;
 
-    @ManyToOne(type => Artwork, artwork => artwork.interestedUsers)
+    @ManyToOne(type => Artwork)
     artwork: Artwork;
 }

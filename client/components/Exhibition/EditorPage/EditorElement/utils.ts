@@ -13,45 +13,18 @@ const setMouseEventListener = (
     document.body.onmouseup = removeEvent;
 };
 
-export const onDraggable = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    element: HTMLElement | null,
-) => {
+export const onDraggable = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, element: HTMLElement | null) => {
     const dom = element?.getBoundingClientRect();
     if (!dom || !element) return;
     const onMouseMove = (ev: MouseEvent) => {
-        const { left, top } = (
-            e.target as HTMLElement
-        ).parentElement?.getBoundingClientRect()!;
-        let newX =
-            ev.clientX - left - (e.target as HTMLElement).offsetWidth / 2;
-        let newY =
-            ev.clientY - top - (e.target as HTMLElement).offsetHeight / 2;
+        const { left, top } = (e.target as HTMLElement).parentElement?.getBoundingClientRect()!;
+        let newX = ev.clientX - left - (e.target as HTMLElement).offsetWidth / 2;
+        let newY = ev.clientY - top - (e.target as HTMLElement).offsetHeight / 2;
 
-        element.style.setProperty(
-            'transform',
-            `translate(${newX}px, ${newY}px)`,
-        );
+        element.style.setProperty('transform', `translate(${newX}px, ${newY}px)`);
     };
 
     setMouseEventListener('mousemove', onMouseMove, element);
-};
-
-export const getPositions = (element: HTMLElement | null) => {
-    if (!element)
-        return [
-            [0, 0],
-            [0, 0],
-            [0, 0],
-            [0, 0],
-        ];
-    const { left, top, right, bottom } = element.getBoundingClientRect();
-    return [
-        [left, top],
-        [left, bottom],
-        [right, top],
-        [right, bottom],
-    ];
 };
 
 const getMouseCursor = (name: directionNames) => {
@@ -97,10 +70,7 @@ export const onResize = (
         .replace(/[^0-9.]+/g, ' ')
         .split(' ')
         .filter(Boolean);
-    const [currentHeight, currentWidth] = [
-        parseInt(element.style.height),
-        parseInt(element.style.width),
-    ];
+    const [currentHeight, currentWidth] = [parseInt(element.style.height), parseInt(element.style.width)];
     const onResizePoint = (ev: MouseEvent) => {
         dirctionToResize(
             direction,

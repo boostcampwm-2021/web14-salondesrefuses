@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ImageModule } from '../image/image.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
+import { ImageModule } from '@image/image.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
-import { ArtworkRepository } from '../artwork/artwork.repository';
-import { ExhibitionRepository } from '../exhibition/exhibition.repository';
-import { UserController } from './controller/user.controller';
-import { UserService } from './service/user.service';
-import { AuctionHistoryRepository } from '../auctionHistory/auctionHistory.repository';
+import { ArtworkRepository } from '@artwork/artwork.repository';
+import { AuctionHistoryRepository } from '@auctionHistory/auctionHistory.repository';
+import { ExhibitionRepository } from '@exhibition/exhibition.repository';
+import { UserController } from './user.controller';
+import { UserService } from './user.service';
 
 @Module({
     imports: [

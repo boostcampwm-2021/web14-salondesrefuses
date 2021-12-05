@@ -1,37 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 
-import { getAllArtworks } from 'utils/networking';
+import { getAllArtworks } from 'service/networking';
 import ImageTile from '../ImageTile';
 import { Artwork } from 'interfaces';
+import createResource from '@utils/createResource';
 
-const Tiles = () => {
-    const [artworks, setArtworks] = useState<Artwork[]>([]);
+const resource = createResource(getAllArtworks());
 
-    useEffect(() => {
-        getAllArtworks().then((result) => {
-            setArtworks(result.data);
-        });
-    }, []);
+const Tiles = ({ align = 'center' }: { align: string }) => {
+    const artworks: Artwork[] = resource.read().data;
 
     return (
-        <Container>
+        <Container align={align}>
             <Grid>
-                {artworks.map((item, idx: number) => (
-                    <ImageTile key={idx} src={item.originalImage} />
+                {artworks.map((item) => (
+                    <ImageTile key={item.id} src={item.originalImage} />
                 ))}
             </Grid>
         </Container>
     );
 };
 
-const Container = styled.div`
+const Container = styled.div<{ align: string }>`
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: ${(props) => props.align};
     overflow: visible;
     margin-bottom: 50px;
+    min-width: 1000px;
 `;
 
 const Grid = styled.div`
@@ -39,6 +37,7 @@ const Grid = styled.div`
     width: 100%;
     max-width: 1000px;
     margin-top: 30px;
+    text-align: center;
 
     & > div {
         display: inline-block;

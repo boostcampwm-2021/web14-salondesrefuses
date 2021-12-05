@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
 import Toast from './Toast';
+import Modal from '@components/common/Modal';
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -12,16 +13,21 @@ interface LayoutProps {
 
 const Layout = ({ children, horizontal }: LayoutProps) => {
     return (
-        <div>
+        <Container>
             <Header />
             <Body horizontal={horizontal}>
                 {children}
                 <Toast />
             </Body>
             <Footer />
-        </div>
+            <Modal />
+        </Container>
     );
 };
+
+const Container = styled.div`
+    position: relative;
+`;
 
 const Body = styled.div<{ horizontal?: boolean }>`
     display: flex;
@@ -31,6 +37,10 @@ const Body = styled.div<{ horizontal?: boolean }>`
     ${(props) => (props.horizontal ? 'flex-direction: row;' : 'flex-direction: column;')}
     min-height: calc(100vh - 270px);
     overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+        display: hidden;
+    }
 `;
 
 export default Layout;

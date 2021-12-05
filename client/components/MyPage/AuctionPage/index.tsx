@@ -1,32 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import Filter from '../Filter';
-import { getUserArtworkTrades } from '@utils/networking';
+import { getUserArtworkTrades } from 'service/networking';
 import { AuctionCardProps } from '@const/card-type';
 
-const filtering = ['거래', '입찰'];
-
 const AuctionPage = () => {
-    const [auctions, setAuctions] = useState<AuctionCardProps[]>([]);
-    const [filter, setFilter] = useState<string>('거래');
+    const [_, setAuctions] = useState<AuctionCardProps[]>([]);
 
     useEffect(() => {
-        getUserArtworkTrades(filter).then((res) => {
+        getUserArtworkTrades('transaction').then((res) => {
             setAuctions(res.data);
         });
-    }, [filter]);
+    }, []);
 
-    return (
-        <Container>
-            <Filter
-                filtering={filtering}
-                current={filter}
-                filterHandler={(s: string) => {
-                    setFilter(s);
-                }}
-            />
-        </Container>
-    );
+    return <Container></Container>;
 };
 
 const Container = styled.div``;

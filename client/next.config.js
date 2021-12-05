@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const path = require('path');
-const webpack = require('webpack');
 
 module.exports = {
     reactStrictMode: true,
@@ -16,5 +14,8 @@ module.exports = {
         GOOGLE_AUTH_URL: process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL,
         KAKAO_AUTH_URL: process.env.NEXT_PUBLIC_KAKAO_AUTH_URL,
         ETHEREUM_HOST: process.env.NEXT_PUBLIC_ETHEREUM_HOST,
+    },
+    images: {
+        domains: ['salon-bucket.kr.object.ncloudstorage.com'],
     },
 };

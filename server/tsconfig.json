@@ -12,6 +12,21 @@
         "incremental": true,
         "skipLibCheck": true,
         "moduleResolution": "node",
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "paths": {
+            "@artwork/*": ["./src/artwork/*"],
+            "@auction/*": ["./src/auction/*"],
+            "@auctionHistory/*": ["./src/auctionHistory/*"],
+            "@auth/*": ["./src/auth/*"],
+            "@category/*": ["./src/category/*"],
+            "@completedAuction/*": ["./src/completedAuction/*"],
+            "@config/*": ["./src/config/*"],
+            "@cronTask/*": ["./src/cronTask/*"],
+            "@exhibition/*": ["./src/exhibition/*"],
+            "@image/*": ["./src/image/*"],
+            "@interestArtwork/*": ["./src/interestArtwork/*"],
+            "@user/*": ["./src/user/*"],
+            "@utils/*": ["./src/utils/*"],
+        },
     }
 }

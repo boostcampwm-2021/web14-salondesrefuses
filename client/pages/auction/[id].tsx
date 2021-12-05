@@ -1,37 +1,28 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
-import { Auction, Session } from 'interfaces';
+import { Auction } from 'interfaces';
 import Layout from '@components/common/Layout';
 import ItemDetail from '@components/Auction/ItemDetail';
-import { getAuction } from '@utils/networking';
+import { getAuction } from 'service/networking';
 import useMagnifier from '@hooks/useMagnifier';
-import useSessionState from '@store/sessionState';
 
 const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
-    const { imageRef, magnifierRef, showMagnify } = useMagnifier();
-    const user = useSessionState(); // 유저 객체
+    const { imageRef, magnifierRef, showMagnify, imgOnLoadHandle } = useMagnifier();
 
     const { artwork, artist } = auction;
     const { title, originalImage, year } = artwork;
     const { name } = artist;
 
-    useEffect(() => {
-        document.body.style.overflow = 'hidden';
-        return () => {
-            document.body.style.overflow = 'visible';
-        };
-    }, []);
-
     return (
-        <>
+        <NonScrollable>
             <Head>
                 <title>
                     Auction - {title} ({name}, {year})
                 </title>
-                <meta name="경매" content="경매경매" />
+                <meta name={title} content={`(${name}, ${year})`} />
             </Head>
             <Layout>
                 <Container>
@@ -40,27 +31,37 @@ const AuctionDetailPage = ({ auction }: { auction: Auction }) => {
                         <section>
                             <ImageWrapper>
                                 <Magnifier imagePath={originalImage} onClick={() => showMagnify()} ref={magnifierRef} />
-                                <Image src={originalImage} onClick={() => showMagnify()} ref={imageRef} />
+                                <Image
+                                    src={originalImage}
+                                    onClick={() => showMagnify()}
+                                    ref={imageRef}
+                                    onLoad={imgOnLoadHandle}
+                                />
+                                <span>click image to zoom</span>
                             </ImageWrapper>
                         </section>
-                        <ItemDetail auction={auction} />
+                        <ItemDetail auction={auction} image={originalImage} />
                     </Grid>
                 </Container>
             </Layout>
-        </>
+        </NonScrollable>
     );
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const artworkId = (params as { id: string }).id;
     const auction = await getAuction(Number(artworkId));
-
     return {
         props: {
             auction: auction.data,
         },
     };
 };
+
+const NonScrollable = styled.div`
+    height: 100vh;
+    overflow: hidden;
+`;
 
 const Container = styled.div`
     height: 100vh;
@@ -84,7 +85,6 @@ const Grid = styled.div`
 
     & > section {
         height: 80%;
-        position: relative;
     }
 
     & section {
@@ -102,6 +102,26 @@ const Grid = styled.div`
 const ImageWrapper = styled.div`
     display: flex;
     position: relative;
+    flex-direction: column;
+    align-items: center;
+
+    & > span {
+        margin-top: 20px;
+        font: ${(props) => props.theme.font.textEnBase};
+        animation: text-color 4s ease infinite;
+
+        @keyframes text-color {
+            0% {
+                color: rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                color: rgba(255, 255, 255, 0.3);
+            }
+            100% {
+                color: rgba(0, 0, 0, 0.3);
+            }
+        }
+    }
 `;
 
 const Image = styled.img`
@@ -115,10 +135,10 @@ interface MagnifierProps {
 }
 
 const Magnifier = styled.div<MagnifierProps>`
-    width: 100px;
-    height: 100px;
     position: absolute;
     z-index: 200;
+    width: 150px;
+    height: 150px;
     border: 2px solid rgba(255, 255, 255, 0.9);
     background-image: url('${(props) => props.imagePath}');
     background-repeat: no-repeat;

@@ -6,7 +6,7 @@ import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { SwaggerModule } from '@nestjs/swagger';
-import { swaggerUIConfig } from './config/swagger.config';
+import { swaggerUIConfig } from '@config/swagger.config';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -14,17 +14,14 @@ async function bootstrap() {
     app.setGlobalPrefix('/api');
     app.use(cookieParser());
 
-    const document = SwaggerModule.createDocument(
-        app,
-        swaggerUIConfig.openAPIObject,
-        swaggerUIConfig.options,
-    );
+    const document = SwaggerModule.createDocument(app, swaggerUIConfig.openAPIObject, swaggerUIConfig.options);
 
     SwaggerModule.setup('swagger', app, document);
-    process.env.NODE_ENV === 'development' &&
-        app.enableCors({ origin: process.env.FRONT_HOST, credentials: true });
+    process.env.NODE_ENV === 'development' && app.enableCors({ origin: process.env.FRONT_HOST, credentials: true });
 
-    await app.listen(PORT);
+    const server = await app.listen(PORT);
+    server.keepAliveTimeout = 61 * 1000;
+    server.headersTimeout = 65 * 1000;
 }
 
 bootstrap();

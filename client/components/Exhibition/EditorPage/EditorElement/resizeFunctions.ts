@@ -10,15 +10,7 @@ export const dirctionToResize = (
     left: number,
     originPoint: number[],
 ) => {
-    resizeFuncObj[direction](
-        element,
-        ev,
-        currentHeight,
-        currentWidth,
-        top,
-        left,
-        originPoint,
-    );
+    resizeFuncObj[direction](element, ev, currentHeight, currentWidth, top, left, originPoint);
 };
 
 const NWResize = (
@@ -33,19 +25,11 @@ const NWResize = (
     if (!element) return;
     element.style.setProperty(
         'transform',
-        `translate(${ev.clientX - originPoint[0] + left}px, ${
-            ev.clientY - originPoint[1] + top
-        }px)`,
+        `translate(${ev.clientX - originPoint[0] + left}px, ${ev.clientY - originPoint[1] + top}px)`,
     );
 
-    element.style.setProperty(
-        'height',
-        `${currentHeight - (ev.clientY - originPoint[1])}px`,
-    );
-    element.style.setProperty(
-        'width',
-        `${currentWidth - (ev.clientX - originPoint[0])}px`,
-    );
+    element.style.setProperty('height', `${currentHeight - (ev.clientY - originPoint[1])}px`);
+    element.style.setProperty('width', `${currentWidth - (ev.clientX - originPoint[0])}px`);
 };
 const NResize = (
     element: HTMLElement | null,
@@ -57,14 +41,8 @@ const NResize = (
     originPoint: number[],
 ) => {
     if (!element) return;
-    element.style.setProperty(
-        'transform',
-        `translate(${left}px, ${ev.clientY - originPoint[1] + top}px)`,
-    );
-    element.style.setProperty(
-        'height',
-        `${currentHeight - (ev.clientY - originPoint[1])}px`,
-    );
+    element.style.setProperty('transform', `translate(${left}px, ${ev.clientY - originPoint[1] + top}px)`);
+    element.style.setProperty('height', `${currentHeight - (ev.clientY - originPoint[1])}px`);
 };
 const NEResize = (
     element: HTMLElement | null,
@@ -76,18 +54,9 @@ const NEResize = (
     originPoint: number[],
 ) => {
     if (!element) return;
-    element.style.setProperty(
-        'transform',
-        `translate(${left}px, ${ev.clientY - originPoint[1] + top}px)`,
-    );
-    element.style.setProperty(
-        'height',
-        `${currentHeight - (ev.clientY - originPoint[1])}px`,
-    );
-    element.style.setProperty(
-        'width',
-        `${currentWidth + (ev.clientX - originPoint[0])}px`,
-    );
+    element.style.setProperty('transform', `translate(${left}px, ${ev.clientY - originPoint[1] + top}px)`);
+    element.style.setProperty('height', `${currentHeight - (ev.clientY - originPoint[1])}px`);
+    element.style.setProperty('width', `${currentWidth + (ev.clientX - originPoint[0])}px`);
 };
 const EResize = (
     element: HTMLElement | null,
@@ -99,10 +68,7 @@ const EResize = (
     originPoint: number[],
 ) => {
     if (!element) return;
-    element.style.setProperty(
-        'width',
-        `${currentWidth + (ev.clientX - originPoint[0])}px`,
-    );
+    element.style.setProperty('width', `${currentWidth + (ev.clientX - originPoint[0])}px`);
 };
 const SEResize = (
     element: HTMLElement | null,
@@ -114,14 +80,8 @@ const SEResize = (
     originPoint: number[],
 ) => {
     if (!element) return;
-    element.style.setProperty(
-        'height',
-        `${currentHeight + (ev.clientY - originPoint[1])}px`,
-    );
-    element.style.setProperty(
-        'width',
-        `${currentWidth + (ev.clientX - originPoint[0])}px`,
-    );
+    element.style.setProperty('height', `${currentHeight + (ev.clientY - originPoint[1])}px`);
+    element.style.setProperty('width', `${currentWidth + (ev.clientX - originPoint[0])}px`);
 };
 const SResize = (
     element: HTMLElement | null,
@@ -133,10 +93,7 @@ const SResize = (
     originPoint: number[],
 ) => {
     if (!element) return;
-    element.style.setProperty(
-        'height',
-        `${currentHeight + (ev.clientY - originPoint[1])}px`,
-    );
+    element.style.setProperty('height', `${currentHeight + (ev.clientY - originPoint[1])}px`);
 };
 const SWResize = (
     element: HTMLElement | null,
@@ -148,18 +105,9 @@ const SWResize = (
     originPoint: number[],
 ) => {
     if (!element) return;
-    element.style.setProperty(
-        'transform',
-        `translate(${ev.clientX - originPoint[0] + left}px, ${top}px)`,
-    );
-    element.style.setProperty(
-        'height',
-        `${currentHeight + (ev.clientY - originPoint[1])}px`,
-    );
-    element.style.setProperty(
-        'width',
-        `${currentWidth - (ev.clientX - originPoint[0])}px`,
-    );
+    element.style.setProperty('transform', `translate(${ev.clientX - originPoint[0] + left}px, ${top}px)`);
+    element.style.setProperty('height', `${currentHeight + (ev.clientY - originPoint[1])}px`);
+    element.style.setProperty('width', `${currentWidth - (ev.clientX - originPoint[0])}px`);
 };
 const WResize = (
     element: HTMLElement | null,
@@ -171,14 +119,8 @@ const WResize = (
     originPoint: number[],
 ) => {
     if (!element) return;
-    element.style.setProperty(
-        'transform',
-        `translate(${ev.clientX - originPoint[0] + left}px, ${top}px)`,
-    );
-    element.style.setProperty(
-        'width',
-        `${currentWidth - (ev.clientX - originPoint[0])}px`,
-    );
+    element.style.setProperty('transform', `translate(${ev.clientX - originPoint[0] + left}px, ${top}px)`);
+    element.style.setProperty('width', `${currentWidth - (ev.clientX - originPoint[0])}px`);
 };
 const resizeFuncObj = {
     NW: NWResize,

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { Button } from '@styles/common';
 import ArtworkModal from '../ArtworkModal';
@@ -12,17 +12,22 @@ interface NewArtworkProp {
 }
 
 const NewArtwork = ({ image }: NewArtworkProp) => {
-    const {
-        onClickDone,
-        onChangeTitleInput,
-        onChangeTypeInput,
-        titleInput,
-        typeInput,
-        handleModalInput,
-    } = useInputArtwork(image);
+    const { onClickDone, onChangeTitleInput, onChangeTypeInput, titleInput, typeInput, handleModalInput } =
+        useInputArtwork(image);
     const { backgroundImageRef, imageRef } = usePreviewImage(image);
-    const { modalPositionBottom, handleModalPosition } =
-        useControlModalPosition();
+    const { modalPositionTop, handleModalPosition, onClickHiddenModal } = useControlModalPosition();
+
+    const onKeyDownTab = useCallback((e: React.KeyboardEvent) => {
+        if (e.key === 'Tab') e.preventDefault();
+    }, []);
+
+    useEffect(() => {
+        document.documentElement.style.overflow = 'hidden';
+
+        return () => {
+            document.documentElement.style.overflow = 'auto';
+        };
+    });
 
     return (
         <>
@@ -51,13 +56,15 @@ const NewArtwork = ({ image }: NewArtworkProp) => {
                             placeholder="ex) Photography ..."
                             value={typeInput}
                             onChange={onChangeTypeInput}
+                            onKeyDown={onKeyDownTab}
                         />
                     </Input>
                 </Form>
                 <ArtworkModal
                     handleModalInput={handleModalInput}
-                    position={modalPositionBottom}
+                    position={modalPositionTop}
                     handleModalPosition={handleModalPosition}
+                    onClick={onClickHiddenModal}
                 />
             </Container>
             <img ref={backgroundImageRef} src="" alt="background" />

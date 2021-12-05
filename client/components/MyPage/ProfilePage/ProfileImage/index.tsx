@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import styled from '@emotion/styled';
 
-import emptyProfile from '@assets/images/mypage-profile.png';
+import emptyProfile from '@assets/images/mypage-profile.webp';
 import { Center } from '@styles/common';
 
 interface IProfileImage {

@@ -1,42 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
+import Web3 from 'web3';
 
 import { Session } from 'interfaces';
 import ProfileImage from './ProfileImage';
 import { BlackButton } from '@styles/common';
-import useToastState from '@store/toastState';
-import { onResponseSuccess, signOut } from '@utils/networking';
-import useSessionState from '@store/sessionState';
+import { onResponseSuccess, signOut, updateUserData } from 'service/networking';
+import useProfileInput from '@hooks/useInputProfile';
+import useToast from '@hooks/useToast';
 
 interface IPRofilePage {
     user: Session;
 }
 
 const ProfilePage = ({ user }: IPRofilePage) => {
-    const [profile, setProfile] = useState<File | null>();
-    const [nickname, setNickname] = useState<string>('');
-    const [socialId, setSocialId] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
-    const [toast, setToast] = useToastState();
-    const session = useSessionState();
-    const { push } = useRouter();
-
-    const profileHandler = (file: File) => {
-        setProfile(file);
-    };
-
-    const onChangeNickname = (e: React.FormEvent) => {
-        setNickname((e.target as HTMLInputElement).value);
-    };
-
-    const onChangeSocialId = (e: React.FormEvent) => {
-        setSocialId((e.target as HTMLInputElement).value);
-    };
-
-    const onChangeDescription = (e: React.FormEvent) => {
-        setDescription((e.target as HTMLTextAreaElement).value);
-    };
+    const { profileInput, profileHandler, onChangeDescription, onChangeNickname, onChangeSocialId } = useProfileInput();
+    const showLogoutToast = useToast({
+        onSuccess: '로그아웃 되었습니다.',
+        onFailed: '',
+    });
+    const showProfileUpdateToast = useToast({
+        onSuccess: '프로필이 업데이트되었습니다.',
+        onFailed: '프로필 업데이트에 실패했습니다.',
+    });
+    const { profile, nickname, socialId, description } = profileInput;
 
     const onClickLogout = async () => {
         const res = await signOut(`${user.id}`);
@@ -44,38 +31,24 @@ const ProfilePage = ({ user }: IPRofilePage) => {
             const expire = new Date(0);
             document.cookie = 'accessToken=; expires=' + expire.toString();
             document.cookie = 'refreshToken=; expires=' + expire.toString();
-            console.log(document.cookie);
-            setToast({
-                show: true,
-                content: '로그아웃 되었습니다.',
-            });
-            setTimeout(() => {
-                setToast({
-                    show: false,
-                    content: '로그아웃 되었습니다.',
-                });
-            }, 3000);
+            showLogoutToast('success');
             window.location.href = '/';
         }
     };
 
-    const onClickSave = (e: React.MouseEvent) => {
-        // TODO: api 명세 확인해서 formdata 쏘기
-        //! 폼데이터 키값 임의로 작성한 것. 정확하지 않음.
+    const onClickSave = async (e: React.MouseEvent) => {
         const formData = new FormData();
-        formData.append('nickname', nickname);
-        formData.append('socialId', socialId);
+        formData.append('name', nickname);
+        formData.append('snsId', socialId);
         formData.append('description', description);
-        profile && formData.append('profile', profile);
+        profile && formData.append('image', profile);
 
-        setToast({
-            show: true,
-            content: '프로필이 업데이트되었습니다.',
-        });
-
-        setTimeout(() => {
-            setToast({ show: false, content: '프로필이 업데이트되었습니다.' });
-        }, 3000);
+        const res = await updateUserData(formData);
+        if (onResponseSuccess(res.status)) {
+            showProfileUpdateToast('success');
+        } else {
+            showProfileUpdateToast('failed');
+        }
     };
 
     return (
@@ -103,6 +76,8 @@ const ProfilePage = ({ user }: IPRofilePage) => {
     );
 };
 
+const ETHEREUM_HOST = process.env.ETHEREUM_HOST;
+
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -113,6 +88,8 @@ const Container = styled.div`
     width: 70%;
     font: ${(props) => props.theme.font.textMd};
     font-size: 1em;
+    width: calc(100vw-400px);
+    overflow: hidden;
 `;
 
 const Form = styled.div`
@@ -138,6 +115,7 @@ const Form = styled.div`
     }
 
     & textarea {
+        width: 80%;
         border: 1px solid ${(props) => props.theme.color.placeholder};
         resize: none;
         padding: 10px 10px;
@@ -158,3 +136,5 @@ const ButtonContainer = styled.div`
 `;
 
 export default ProfilePage;
+
+// ganache-cli --account "0x70f1384b24df3d2cdaca7974552ec28f055812ca5e4da7a0ccd0ac0f8a4a9b00,9000000000000000000000"

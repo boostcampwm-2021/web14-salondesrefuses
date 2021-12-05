@@ -16,9 +16,9 @@ const Filter = ({ filtering, current, filterHandler }: IFilter) => {
 
     return (
         <Container>
-            {filtering.map((item) => {
+            {filtering.map((item, idx) => {
                 return (
-                    <Item onClick={onClickItem(item)} active={current === item}>
+                    <Item onClick={onClickItem(item)} active={current === item} key={idx}>
                         {item}
                     </Item>
                 );
@@ -30,6 +30,7 @@ const Filter = ({ filtering, current, filterHandler }: IFilter) => {
 const Container = styled.div`
     height: 30px;
     display: flex;
+    margin-bottom: 40px;
 
     & > div:nth-of-type(2) {
         border: none;

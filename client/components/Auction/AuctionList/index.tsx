@@ -2,49 +2,59 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 
-import { Button, Center } from '@styles/common';
-import { AuctionCardProps } from '@const/card-type';
 import Card from '@components/common/Card';
+import { AuctionCardProps } from '@const/card-type';
+import { Button, Center } from '@styles/common';
 import { Filter } from '@components/Exhibition/style';
-import { getAuctions } from '@utils/networking';
-import RequireLoginModal from '@components/common/RequireLoginModal';
-import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
+import { Grid } from '@components/common/Card/style';
+import { ToastMsg } from '@const/toast-message';
+import { getAuctions } from 'service/networking';
 import useInfiniteScroll from '@hooks/useInfiniteScroll';
 import useSessionState from '@store/sessionState';
+import useModalState from '@store/modalState';
 
 const AuctionList = () => {
     const session = useSessionState().contents;
+    const [_, setModalState] = useModalState();
     const [onSelect, setOnSelect] = useState('Popular');
     const [auctionItems, setAuctionItems] = useState<AuctionCardProps[]>([]);
     const [page, setPage] = useState(0);
-    const { requireLoginModal, onClickPostArtworkWithoutLogin, closeModal } = useHandleRequireLoginModal();
     const gridRef = useInfiniteScroll(() => {
         setPage((page) => page + 1);
     }, auctionItems);
 
     useEffect(() => {
-        getAuctions(onSelect.toLowerCase(), page).then((res) => setAuctionItems([...auctionItems, ...res.data]));
-    }, [page]);
+        setAuctionItems([]);
+        setPage(0);
+    }, [onSelect]);
 
     useEffect(() => {
-        getAuctions(onSelect.toLowerCase(), page).then((res) => setAuctionItems(res.data));
-    }, [onSelect]);
+        getAuctions(onSelect.toLowerCase(), page).then((res) => setAuctionItems([...auctionItems, ...res.data]));
+    }, [page, onSelect]);
 
     const onClickFilter = ({ currentTarget }: React.MouseEvent) => {
         setOnSelect(currentTarget.textContent || 'Newest');
+    };
+
+    const onClickButtonWithoutSession = () => {
+        setModalState({
+            show: true,
+            onConfirm: () => {},
+            content: ToastMsg.NOT_LOGGINED,
+        });
     };
 
     const buildFilterWrapper = () => {
         return (
             <FilterWrapper>
                 <div>
-                    <Filter onClick={onClickFilter} select={onSelect === 'Popular'}>
-                        Popular
+                    <Filter onClick={onClickFilter} select={onSelect === 'Newest'}>
+                        Newest
                     </Filter>
                 </div>
                 <div>
-                    <Filter onClick={onClickFilter} select={onSelect === 'Newest'}>
-                        Newest
+                    <Filter onClick={onClickFilter} select={onSelect === 'Popular'}>
+                        Popular
                     </Filter>
                 </div>
             </FilterWrapper>
@@ -61,7 +71,7 @@ const AuctionList = () => {
                             <BlackButton>Post Artwork</BlackButton>
                         </Link>
                     ) : (
-                        <BlackButton onClick={onClickPostArtworkWithoutLogin}>Post Artwork</BlackButton>
+                        <BlackButton onClick={onClickButtonWithoutSession}>Post Artwork</BlackButton>
                     )}
                 </Title>
                 <Grid ref={gridRef}>
@@ -70,7 +80,6 @@ const AuctionList = () => {
                     })}
                 </Grid>
             </Container>
-            {requireLoginModal && <RequireLoginModal close={closeModal} />}
         </>
     );
 };
@@ -102,13 +111,6 @@ const Title = styled.div`
 const BlackButton = styled(Button)`
     color: ${(props) => props.theme.color.title};
     border-color: ${(props) => props.theme.color.title};
-`;
-
-const Grid = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 50px;
-    margin-bottom: 45px;
 `;
 
 const FilterWrapper = styled.div`

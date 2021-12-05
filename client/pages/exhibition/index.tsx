@@ -1,28 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
+import Head from 'next/head';
 
 import Layout from '@components/common/Layout';
-import {
-    TopContainer,
-    Buttons,
-    BlackButton,
-} from '../../components/Exhibition/style';
-import useHandleRequireLoginModal from '@hooks/useHandleRequireLoginModal';
-import RequireLoginModal from '@components/common/RequireLoginModal';
+import { TopContainer, Buttons, BlackButton } from '../../components/Exhibition/style';
 import ListFilter from '@components/Exhibition/ListFilter';
 import ExhibitionList from '@components/Exhibition/ExhibitionList';
 import useSessionState from '@store/sessionState';
+import useModalState from '@store/modalState';
 
 const ExhibitionPage: NextPage = () => {
     const [onSelect, setOnSelect] = useState<string>('Newest');
+    const [_, setModalState] = useModalState();
     const session = useSessionState().contents;
 
-    const { requireLoginModal, onClickPostArtworkWithoutLogin, closeModal } =
-        useHandleRequireLoginModal();
-
-    const handleFilter = ({ currentTarget }: React.MouseEvent) => {
+    const handleFilter = useCallback(({ currentTarget }: React.MouseEvent) => {
         setOnSelect(currentTarget.textContent || 'Newest');
+    }, []);
+
+    const onClickButtonWithoutSession = () => {
+        setModalState({
+            show: true,
+            onConfirm: () => {},
+            content: '먼저 로그인을 해주세요.',
+        });
     };
 
     const buildButtons = () => {
@@ -37,25 +39,26 @@ const ExhibitionPage: NextPage = () => {
             </>
         ) : (
             <>
-                <BlackButton onClick={onClickPostArtworkWithoutLogin}>
-                    Hold Exhibition
-                </BlackButton>
-                <BlackButton onClick={onClickPostArtworkWithoutLogin}>
-                    Post Artwork
-                </BlackButton>
+                <BlackButton onClick={onClickButtonWithoutSession}>Hold Exhibition</BlackButton>
+                <BlackButton onClick={onClickButtonWithoutSession}>Post Artwork</BlackButton>
             </>
         );
     };
 
     return (
-        <Layout>
-            <TopContainer>
-                <ListFilter handleFilter={handleFilter} select={onSelect} />
-                <Buttons>{buildButtons()}</Buttons>
-            </TopContainer>
-            <ExhibitionList filter={onSelect} />
-            {requireLoginModal && <RequireLoginModal close={closeModal} />}
-        </Layout>
+        <>
+            <Head>
+                <title>벽전 - 전시회 목록</title>
+                <meta content="벽전 - 전시회 목록" />
+            </Head>
+            <Layout>
+                <TopContainer>
+                    <ListFilter handleFilter={handleFilter} select={onSelect} />
+                    <Buttons>{buildButtons()}</Buttons>
+                </TopContainer>
+                <ExhibitionList onSelect={onSelect} />
+            </Layout>
+        </>
     );
 };
 

@@ -1,7 +1,14 @@
-import React, { useRef } from 'react';
+import React, { RefObject, useRef } from 'react';
 import styled from '@emotion/styled';
+import dynamic from 'next/dynamic';
 
-import Tiles from '../Tiles';
+import CSuspense from '@components/common/Suspense';
+import ErrorBoundary from '@components/common/ErrorBoundary';
+import Fallback from '@components/common/Fallback';
+import useToast from '@hooks/useToast';
+import { ToastMsg } from '@const/toast-message';
+
+const Tiles = dynamic(() => import('@components/Artwork/Tiles'), { ssr: false });
 
 interface UploaderProps {
     handleNewImage: (image: File) => void;
@@ -9,31 +16,50 @@ interface UploaderProps {
 
 const Uploader = ({ handleNewImage }: UploaderProps) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const showToast = useToast({
+        onSuccess: '',
+        onFailed: ToastMsg.FILE_SIZE_EXCEED,
+    });
 
     const onClickFileInput = (e: React.MouseEvent) => {
         e.stopPropagation();
         inputRef.current!.click();
     };
 
-    const onChangeFile = (e: React.FormEvent) => {
-        inputRef.current?.files && handleNewImage(inputRef.current?.files[0]);
+    const onChangeFile = () => {
+        if (!validFileInput(inputRef)) return;
+        const image = inputRef.current!.files![0];
+        if (byteToMB(image.size) > MAX_UPLOADABLE_MB) {
+            showToast('failed');
+            inputRef.current!.value = '';
+            return;
+        }
+        handleNewImage(image);
     };
 
     return (
         <Container>
             <FileInput onClick={onClickFileInput}>
-                <input
-                    type="file"
-                    name="newArtwork"
-                    ref={inputRef}
-                    onChange={onChangeFile}
-                />
+                <input type="file" name="newArtwork" ref={inputRef} onChange={onChangeFile} />
                 <img src="/icons/add.png" alt="add" />
             </FileInput>
-            <Tiles />
+            <ErrorBoundary fallback={<div>...failed</div>}>
+                <CSuspense fallback={<Fallback />}>
+                    <Tiles align="center" />
+                </CSuspense>
+            </ErrorBoundary>
         </Container>
     );
 };
+
+const validFileInput = (ref: RefObject<HTMLInputElement | null>) => {
+    if (!ref.current || !ref.current.files || ref.current.files.length === 0) return false;
+    return true;
+};
+
+const byteToMB = (byte: number) => Math.ceil(byte / 1024 / 1024);
+
+const MAX_UPLOADABLE_MB = 10;
 
 const Container = styled.div`
     width: 80%;

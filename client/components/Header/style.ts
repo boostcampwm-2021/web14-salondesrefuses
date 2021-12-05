@@ -9,11 +9,11 @@ export const HeaderContainer = styled.header`
     height: 70px;
     padding: 0 100px;
     ${SpaceBetween}
-    border-bottom: 1px solid ${(props) => props.theme.color.gray1};
+    border-bottom: 1px solid rgba(100, 100, 100, 0.3);
     font: ${(props) => props.theme.font.textEnBase};
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(20px);
-    z-index: 900;
+    z-index: 9000;
 `;
 
 export const LeftContainer = styled.div`
@@ -24,7 +24,7 @@ export const LeftContainer = styled.div`
         width: auto;
         cursor: pointer;
     }
-    p {
+    a {
         margin: 0 30px;
         color: ${(props) => props.theme.color.primary};
     }
@@ -50,20 +50,8 @@ export const NavButton = styled.div`
     margin: 0 20px;
     img {
         width: 40px;
-        height: auto;
+        height: 40px;
         border-radius: 20px;
     }
     cursor: pointer;
-`;
-export const SearchBarContainer = styled.div`
-    flex-grow: 2;
-    input {
-        ${Center}
-        border: 1px solid ${(props) => props.theme.color.gray1};
-        box-sizing: border-box;
-        border-radius: 4px;
-        width: 100%;
-        padding: 10px 20px;
-        font: ${(props) => props.theme.font.textEnSm};
-    }
 `;

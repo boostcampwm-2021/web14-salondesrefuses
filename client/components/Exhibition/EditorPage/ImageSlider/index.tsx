@@ -1,16 +1,14 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from '@emotion/styled';
 
 import chevronLeftIcon from '@assets/images/chevron-left.png';
 import chevronRightIcon from '@assets/images/chevron-right.png';
-import {
-    useEditorImageState,
-    useSelectedImageState,
-} from '@store/editorImageState';
+import { useEditorImageState, useSelectedImageState } from '@store/editorImageState';
 
 const ImageSlider = () => {
-    const [selectedImages, setSelectedImages] = useSelectedImageState();
+    const [selectedImages] = useSelectedImageState();
     const [editorImageState, setEditorImageState] = useEditorImageState();
+    const imageSliderRef = useRef<HTMLDivElement | null>(null);
 
     const onClickImage = (id: number) => {
         return () => {
@@ -20,26 +18,38 @@ const ImageSlider = () => {
         };
     };
 
+    const onClickLeftButton = (e: React.MouseEvent) => {
+        if (!imageSliderRef.current) return;
+        imageSliderRef.current.scroll({ left: imageSliderRef.current.scrollLeft - SLIDE_OFFSET, behavior: 'smooth' });
+    };
+
+    const onClickRightButton = (e: React.MouseEvent) => {
+        if (!imageSliderRef.current) return;
+        imageSliderRef.current.scroll({ left: imageSliderRef.current.scrollLeft + SLIDE_OFFSET, behavior: 'smooth' });
+    };
+
     return (
         <Container>
-            <LeftButton>
+            <LeftButton onClick={onClickLeftButton}>
                 <img src={chevronLeftIcon.src} alt="left button" />
             </LeftButton>
-            <ImageWrapper>
+            <ImageWrapper ref={imageSliderRef}>
                 {selectedImages.map((image) => {
                     return (
                         <Image key={image.id} onClick={onClickImage(image.id)}>
-                            <img src={image.originalImage} alt={image.title} />
+                            <img src={image.originalImage} alt={image.title} draggable={false} />
                         </Image>
                     );
                 })}
             </ImageWrapper>
-            <RightButton>
+            <RightButton onClick={onClickRightButton}>
                 <img src={chevronRightIcon.src} alt="right button" />
             </RightButton>
         </Container>
     );
 };
+
+const SLIDE_OFFSET = 300;
 
 const Container = styled.div`
     width: 100%;
@@ -61,10 +71,12 @@ const Button = styled.div`
 `;
 
 const LeftButton = styled(Button)`
+    cursor: pointer;
     left: 0px;
 `;
 
 const RightButton = styled(Button)`
+    cursor: pointer;
     right: 0px;
 `;
 
@@ -76,6 +88,10 @@ const ImageWrapper = styled.div`
     gap: 20px;
     align-items: center;
     overflow-x: scroll;
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
 `;
 
 const Image = styled.div`

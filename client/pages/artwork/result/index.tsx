@@ -8,9 +8,11 @@ import { Contract } from 'web3-eth-contract';
 
 import { Artwork } from 'interfaces';
 import Layout from '@components/common/Layout';
-import { getSingleArtwork, setNFTToken } from '@utils/networking';
+import { getSingleArtwork, setNFTToken } from 'service/networking';
 import { Center } from '@styles/common';
 import ResultDetail from '@components/Artwork/ResultDetail';
+import useToast from '@hooks/useToast';
+import { ToastMsg } from '@const/toast-message';
 
 import ABI from '@public/ethereum/abi.json';
 import contractAddress from '@public/ethereum/address.json';
@@ -24,31 +26,33 @@ const ResultPage = () => {
     const [token, setToken] = useState<string>();
     const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
     const [contract, setContract] = useState<Contract>();
+    const showToast = useToast({
+        onSuccess: '',
+        onFailed: ToastMsg.FAILED_TO_ACCESS_CONTRACT,
+    });
 
     const mint = async () => {
         if (!window.ethereum || !contract) return;
+        if (token) return;
         await window.ethereum.enable();
         [account] = await window.ethereum.request({
             method: 'eth_requestAccounts',
         });
 
-        const result = await contract.methods
-            .createNFT(account, artwork!.cid)
-            .send({ from: account, gas: GAS_LIMIT });
+        const result = await contract.methods.createNFT(account, artwork!.cid).send({ from: account, gas: GAS_LIMIT });
         const tokenId = result.events.Transfer.returnValues.tokenId;
 
-        await contract.methods
-            .registerAuction(tokenId)
-            .send({ from: account, gas: GAS_LIMIT });
-
-        // const balanceOf = await contract.methods.balanceOf(account!).call();
-        // console.log('balance : ', balanceOf);
+        await contract.methods.registerAuction(tokenId).send({ from: account, gas: GAS_LIMIT });
         return tokenId;
     };
 
     const onClickConfirm = async () => {
-        const tokenId = await mint();
-        if (tokenId) setToken(tokenId);
+        try {
+            const tokenId = await mint();
+            if (tokenId) setToken(tokenId);
+        } catch {
+            showToast('failed');
+        }
     };
 
     const onClickDone = async () => {
@@ -72,17 +76,8 @@ const ResultPage = () => {
         window.ethereum.on('accountsChanged', (accounts: string[]) => {
             account = accounts[0];
         });
-        setContract(
-            new web3.eth.Contract(
-                ABI.abi as AbiItem[],
-                contractAddress.address,
-            ),
-        );
+        setContract(new web3.eth.Contract(ABI.abi as AbiItem[], contractAddress.address));
     }, [id]);
-
-    useEffect(() => {
-        //TODO : api 만들어주면 토큰 쏘기
-    }, [token]);
 
     return (
         <>
@@ -91,27 +86,16 @@ const ResultPage = () => {
             </Head>
             <Layout>
                 <Container>
-                    <Background
-                        src={artwork?.originalImage}
-                        alt={artwork?.title}
-                    />
+                    <Background src={artwork?.originalImage} alt={artwork?.title} />
                     <Body>
                         <img src={artwork?.originalImage} alt="" />
-                        {artwork && (
-                            <ResultDetail artwork={artwork} token={token} />
-                        )}
+                        {artwork && <ResultDetail artwork={artwork} token={token} />}
                     </Body>
                     <Buttons>
-                        <Button
-                            onClick={onClickConfirm}
-                            active={token ? false : true}
-                        >
-                            Mint
+                        <Button onClick={onClickConfirm} active={token ? false : true}>
+                            Create NFT
                         </Button>
-                        <Button
-                            active={token ? true : false}
-                            onClick={onClickDone}
-                        >
+                        <Button active={token ? true : false} onClick={onClickDone}>
                             Done
                         </Button>
                     </Buttons>
@@ -172,13 +156,13 @@ const Button = styled.button<{ active: boolean }>`
     height: 50px;
     width: 40%;
     border: none;
-    background: ${(props) =>
-        props.active ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.1)'};
+    background: ${(props) => (props.active ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.1)')};
     color: white;
     box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     transition: all 0.3s ease;
     font: ${(props) => props.theme.font.textEnMd};
+    cursor: pointer;
 
     ${(props) =>
         props.active

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from '@emotion/styled';
 import { PAGES, DETAIL_PAGES } from 'pages/mypage';
 
@@ -15,7 +15,7 @@ const SideBar = ({ router, current }: { router: (route: PAGES) => void; current:
             <div>
                 {Object.entries(DETAIL_PAGES).map(([key, value], idx) => {
                     return (
-                        <Route key={idx} active={key === current} onClick={onClickRoute(key)}>
+                        <Route key={idx} active={key === current} onClick={useCallback(onClickRoute(key), [])}>
                             {value}
                         </Route>
                     );
@@ -25,7 +25,7 @@ const SideBar = ({ router, current }: { router: (route: PAGES) => void; current:
     );
 };
 
-const Container = styled.section`
+const Container = styled.aside`
     position: fixed;
     top: 70px;
     left: 0px;

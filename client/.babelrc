@@ -25,7 +25,8 @@
                     "@assets": "./assets",
                     "@utils": "./utils",
                     "@constants": "./constants",
-                    "@store": "./store"
+                    "@store": "./store",
+                    "@service": "./service"
                 },
                 "extensions": [".ts", ".tsx"]
             }

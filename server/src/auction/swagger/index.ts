@@ -1,5 +1,10 @@
 import { ApiOperationOptions } from '@nestjs/swagger';
 
+export const getAuctionIdsApiOperation = {
+    summary: '옥션 3개 랜덤 조회 API - 메인페이지용',
+    description: '현재 경매중인 옥션 작품을 3개를 무작위로 골라 리턴하는 api',
+};
+
 export const getRandomAuctionsApiOperation: ApiOperationOptions = {
     summary: '옥션 3개 랜덤 조회 API - 메인페이지용',
     description: '현재 경매중인 옥션 작품을 3개를 무작위로 골라 리턴하는 api',

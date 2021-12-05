@@ -2,16 +2,15 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { ClipLoader } from 'react-spinners';
-import { signIn } from '../../utils/networking';
+
+import { signIn } from '../../service/networking';
 
 const LoginCallbackPage = () => {
     const router = useRouter();
 
     useEffect(() => {
         let user = null;
-        const code: string | null = new URL(
-            window.location.href,
-        ).searchParams.get('code');
+        const code: string | null = new URL(window.location.href).searchParams.get('code');
 
         (async () => {
             if (!code) return;

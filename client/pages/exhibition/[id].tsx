@@ -1,40 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 
 import Layout from '@components/common/Layout';
-import { Exhibition } from 'interfaces';
-import { getExhibition } from '@utils/networking';
 import ExhibitionDetail from '@components/Exhibition/ExhbitionDetail';
-const ExhibitionDetailPage = () => {
-    const { id } = useRouter().query;
-    const [exhibition, setExhibition] = useState<Exhibition | null>(null);
+import { getExhibition } from '@service/networking';
+import { Exhibition } from 'interfaces';
+import ErrorBoundary from '@components/common/ErrorBoundary';
+import Fallback from '@components/common/Fallback';
 
-    useEffect(() => {
-        getExhibition(id as string).then((res) => {
-            return setExhibition(res.data);
-        });
-    }, []);
-
+const ExhibitionDetailPage = ({ exhibition }: { exhibition: Exhibition }) => {
     return (
         <div>
             <Head>
-                <title>벽전 - 전시회 탐색</title>
+                <title>벽전 - {exhibition.title}</title>
             </Head>
-            <Layout>{exhibition && <ExhibitionDetail exhibition={exhibition} />}</Layout>
+            <Layout>
+                <ErrorBoundary fallback={<Fallback />}>
+                    <ExhibitionDetail exhibition={exhibition} />
+                </ErrorBoundary>
+            </Layout>
         </div>
     );
 };
 
-// export const getStaticProps: GetStaticProps = async () => {
-//     const ExhibitionData = (await getRandomExhibitions()).data;
-
-//     return {
-//         props: {
-//             ExhibitionsData: JSON.parse(JSON.stringify(ExhibitionsData)),
-//             AuctionsData: JSON.parse(JSON.stringify(AuctionsData)),
-//         } as Props,
-//     };
-// };
+export const getServerSideProps: GetServerSideProps = async ({ params }: GetServerSidePropsContext) => {
+    const id = params!.id as string;
+    const exhibition = (await getExhibition(id)).data;
+    return { props: { exhibition: exhibition } };
+};
 
 export default ExhibitionDetailPage;

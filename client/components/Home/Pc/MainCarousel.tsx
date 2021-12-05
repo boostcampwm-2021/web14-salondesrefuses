@@ -17,15 +17,14 @@ import {
 import { setColorFromImage } from '@utils/setColorFromImage';
 import { BlackButton } from '@styles/common';
 import { ExhibitionCardProps } from '@const/card-type';
+import { Settings } from 'react-slick';
 
 interface Props {
     ExhibitionsData: ExhibitionCardProps[];
 }
 
 const MainCarousel = ({ ExhibitionsData }: Props) => {
-    let [colorList, setColorList] = useState<boolean[]>(
-        new Array(5).fill(false),
-    );
+    let [colorList, setColorList] = useState<boolean[]>(new Array(5).fill(false));
 
     const getColorLost = () => {
         ExhibitionsData.map(async (exhibition, i) => {
@@ -41,49 +40,25 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
         getColorLost();
     }, []);
 
-    // useEffect(() => {
-    //     console.log(el);
-    //     console.log(window.getComputedStyle(el as Element).transition);
-    // }, [el && window.getComputedStyle(el!).transition]);
-    //https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
-    //https://stackoverflow.com/questions/2157963/is-it-possible-to-listen-to-a-style-change-event
     return (
         <>
             <SlideWrapper>
                 <CarouselSlider {...settings}>
                     {ExhibitionsData.map((exhibition, i) => {
                         return (
-                            <CarouselContent
-                                thumbnailImage={exhibition.thumbnailImage}
-                                key={i}
-                            >
-                                <Title isBlack={colorList[i]}>
-                                    Exhibition.
-                                </Title>
+                            <CarouselContent thumbnailImage={exhibition.thumbnailImage} key={i}>
+                                <Title isBlack={colorList[i]}>Exhibition.</Title>
                                 <div>
                                     <ExhibitionContainer>
                                         <StyledImage>
-                                            <img
-                                                src={exhibition.thumbnailImage}
-                                                alt="exhibition_id"
-                                            />
+                                            <img src={exhibition.thumbnailImage} alt="exhibition_id" />
                                         </StyledImage>
                                         <InfoContainer>
-                                            <InfoTitle>
-                                                {exhibition.title}
-                                            </InfoTitle>
-                                            <InfoDescription>
-                                                {exhibition.artist}
-                                            </InfoDescription>
-                                            <InfoDescription>
-                                                {exhibition.description}
-                                            </InfoDescription>
-                                            <Link
-                                                href={`/exhibition/${exhibition.id}`}
-                                            >
-                                                <BlackButton>
-                                                    전시 보러 가기
-                                                </BlackButton>
+                                            <InfoTitle>{exhibition.title}</InfoTitle>
+                                            <InfoDescription>{exhibition.artist}</InfoDescription>
+                                            <InfoDescription>{exhibition.description}</InfoDescription>
+                                            <Link href={`/exhibition/${exhibition.id}`}>
+                                                <BlackButton>전시 보러 가기</BlackButton>
                                             </Link>
                                         </InfoContainer>
                                     </ExhibitionContainer>
@@ -97,7 +72,7 @@ const MainCarousel = ({ ExhibitionsData }: Props) => {
     );
 };
 
-const settings = {
+const settings: Settings = {
     dots: true,
     infinite: true,
     speed: 500,
@@ -107,6 +82,7 @@ const settings = {
     adaptiveHeight: true,
     autoplay: true,
     autoplaySpeed: 3000,
+    lazyLoad: 'progressive',
 };
 
 export default MainCarousel;

@@ -1,70 +1,133 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
+import Web3 from 'web3';
+import { AbiItem } from 'web3-utils';
+import { Contract } from 'web3-eth-contract';
 
 import { Auction } from 'interfaces';
 import useAuctionSocketState from '@store/auctionSocketState';
 import { trendHistory } from '@components/Auction/ItemDetail';
 import { getRemainingTime } from '@utils/time';
-import Web3 from 'web3';
-import { WEI } from '@constants/eth';
-import useToastState from '@store/toastState';
-import { AbiItem } from 'web3-utils';
-import { Contract } from 'web3-eth-contract';
+import useToast from '@hooks/useToast';
 import ABI from '@public/ethereum/abi.json';
 import contractAddress from '@public/ethereum/address.json';
 import useSessionState from '@store/sessionState';
+import useModalState from '@store/modalState';
+import { useRouter } from 'next/router';
+import { ToastMsg } from '@const/toast-message';
 
 let eventSource: EventSource | null;
 let account: string | null;
+
+const WEI = 1000000000000000000;
 
 const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: number }) => {
     const { id, artwork } = auction;
     let { endAt } = auction;
     const [socket] = useAuctionSocketState();
-    const [toast, setToast] = useToastState();
-    const [price, setPrice] = useState<number>(currentPrice ? Number((currentPrice + 0.01).toFixed(2)) : artwork.price);
+    const [price, setPrice] = useState<number>(currentPrice ? nextPrice(currentPrice) : artwork.price);
     const [auctionDeadline, setAuctionDeadline] = useState<string | null>(null);
     const [contract, setContract] = useState<Contract>();
-    const user = useSessionState().getValue(); // 유저 객체
+    const [_, setModalState] = useModalState();
+    const router = useRouter();
+    const user = useSessionState().getValue();
+    const showNotEnoughEthToast = useToast({
+        onSuccess: '',
+        onFailed: ToastMsg.NOT_ENOUGH_ETH,
+    });
+    const showNeedMetamaskToast = useToast({
+        onSuccess: '',
+        onFailed: ToastMsg.NEED_METAMASK_ACCOUNT,
+    });
+    const showNotBidOwner = useToast({
+        onSuccess: '',
+        onFailed: ToastMsg.NOT_BID_OWNER,
+    });
+    const showNotBidLowerPrice = useToast({
+        onSuccess: '',
+        onFailed: ToastMsg.NOT_BID_LOWER_PRICE,
+    });
 
-    const web3 = new Web3(new Web3.providers.HttpProvider(process.env.ETHEREUM_HOST!));
+    const web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_HOST!));
 
-    const checkBiddable = async (price: number) => {
-        if (!window.ethereum) return false;
-        [account] = await window.ethereum.request({
-            method: 'eth_requestAccounts',
-        });
-        if (!account) return false;
-        const balance = await web3.eth.getBalance(account);
-        if (price > +balance / WEI) return false;
-        return true;
+    const checkMetamaskInstalled = async () => {
+        try {
+            if (!window.ethereum) {
+                showNeedMetamaskToast('failed');
+                return false;
+            }
+            return true;
+        } catch {
+            return false;
+        }
     };
 
-    const bidBlockChain = async (price: number) => {
-        if (!window.ethereum || !contract) return;
+    const checkBiddableAccount = async (price: number) => {
+        try {
+            [account] = await window.ethereum.request({
+                method: 'eth_requestAccounts',
+            });
+            if (!account) {
+                showNeedMetamaskToast('failed');
+                return false;
+            }
+            const balance = await web3.eth.getBalance(account);
+            if (price > +balance / WEI) return false;
+            return true;
+        } catch {
+            return false;
+        }
+    };
+
+    const bidNFT = async (price: number) => {
+        if (!window.ethereum || !contract) {
+            showNeedMetamaskToast('failed');
+            return false;
+        }
 
         [account] = await window.ethereum.request({
             method: 'eth_requestAccounts',
         });
 
-        if (!account) return false;
+        if (!account) {
+            showNeedMetamaskToast('failed');
+            return false;
+        }
+
         try {
-            const result = await contract.methods.bid(artwork.nftToken).send({
+            await contract.methods.bid(artwork.nftToken).send({
                 from: account,
                 value: Web3.utils.toWei(price.toString(), 'ether'),
                 gas: GAS_LIMIT,
             });
-            console.log(result);
-        } catch (e) {
-            console.log(e);
+            return true;
+        } catch (error: any) {
+            const parseStr = error.message.match(/{.*}/);
+            if (!parseStr) return false;
+            const message = JSON.parse(parseStr[0].replaceAll("'", '"'));
+            if (message.code === MESSAGE_FAILED) {
+                showNotBidOwner('failed');
+            } else if (message.code === MESSAGE_SUCCEED) {
+                setPrice((price) => nextPrice(price));
+                showNotBidLowerPrice('failed');
+            }
         }
     };
 
     const bidArtwork = async () => {
-        const biddable = await checkBiddable(price);
-        await bidBlockChain(price);
+        const metamaskAvailable = await checkMetamaskInstalled();
+        if (!metamaskAvailable) {
+            showNeedMetamaskToast('failed');
+        }
+
+        const biddable = await checkBiddableAccount(price);
         if (!biddable) {
-            showToast();
+            showNotEnoughEthToast('failed');
+            return;
+        }
+
+        const isBidSuccess = await bidNFT(price);
+        if (!isBidSuccess) {
             return;
         }
 
@@ -80,8 +143,7 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
     useEffect(() => {
         socket.on('@auction/bid', (data: trendHistory) => {
             const currentBidPrice = Number(data.price);
-            console.log(Number((currentBidPrice + 0.01).toFixed(2)));
-            setPrice(Number((currentBidPrice + 0.01).toFixed(2)));
+            setPrice(Number((currentBidPrice * 1.05).toFixed(2)));
         });
 
         socket.on('@auction/time_update', (data: { id: number; endAt: Date }) => {
@@ -94,44 +156,51 @@ const BidTable = ({ auction, currentPrice }: { auction: Auction; currentPrice: n
             setAuctionDeadline(getRemainingTime(Number(data), new Date(endAt).getTime()));
         };
 
-        setContract(
-            new web3.eth.Contract(
-                ABI.abi as AbiItem[],
-                contractAddress.address,
-            ),
-        );
+        setContract(new web3.eth.Contract(ABI.abi as AbiItem[], contractAddress.address));
+
+        return () => {
+            socket?.offAny();
+            eventSource?.close();
+        };
     }, []);
 
-    const showToast = () => {
-        setToast({
-            ...toast,
-            show: true,
-            content: '지갑에 ETH가 부족합니다.',
-        });
-        setTimeout(() => {
-            setToast({
-                show: false,
-                content: '지갑에 ETH가 부족합니다.',
+    useEffect(() => {
+        if (auctionDeadline === '00:00:00') {
+            setModalState({
+                show: true,
+                onConfirm: () => {
+                    router.push('/auction');
+                },
+                content: '이미 종료된 경매입니다.',
             });
-        }, 3000);
-    };
+        }
+    }, [auctionDeadline]);
 
     return (
-        <Container>
-            <Timer>
-                <span>경매 마감 기한</span>
-                <b>{auctionDeadline}</b>
-            </Timer>
-            <Bid>
-                <div>
-                    <span>현재가격</span>
-                    <b>{price} ETH</b>
-                </div>
-                <Button onClick={bidArtwork}>입찰 {price} ETH</Button>
-            </Bid>
-        </Container>
+        <>
+            <Container>
+                <Timer>
+                    <span>경매 마감 기한</span>
+                    <b>{auctionDeadline}</b>
+                </Timer>
+                <Bid>
+                    <div>
+                        <span>현재가격</span>
+                        <b>{price} ETH</b>
+                    </div>
+                    <Button onClick={bidArtwork}>입찰 {price} ETH</Button>
+                </Bid>
+            </Container>
+        </>
     );
 };
+
+const nextPrice = (currentPrice: number) => {
+    return Math.max(currentPrice + 0.01, Number((currentPrice * 1.05).toFixed(2)));
+};
+
+const MESSAGE_FAILED = '100';
+const MESSAGE_SUCCEED = '200';
 
 const ETHEREUM_HOST = process.env.ETHEREUM_HOST;
 const GAS_LIMIT = 3000000;

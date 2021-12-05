@@ -1,21 +1,30 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import styled from '@emotion/styled';
 
 import { SpaceBetween } from '@styles/common';
-import ArtworkSelector from '../ArtworkSelector';
+import CSuspense from '@components/common/Suspense';
+import ErrorBoundary from '@components/common/ErrorBoundary';
+import Fallback from '@components/common/Fallback';
 
-const index = () => {
+const ArtworkSelector = dynamic(() => import('@components/Exhibition/ArtworkSelector'), { ssr: false });
+
+const ArtworkSelectorWrapper = () => {
     return (
-        <ArtworkSelectorWrapper>
+        <Container>
             <ArtworkSelectorHeader>
                 <Label>작품 선택하기</Label>
             </ArtworkSelectorHeader>
-            <ArtworkSelector />
-        </ArtworkSelectorWrapper>
+            <ErrorBoundary fallback={<div>...failed</div>}>
+                <CSuspense fallback={<Fallback />}>
+                    <ArtworkSelector />
+                </CSuspense>
+            </ErrorBoundary>
+        </Container>
     );
 };
 
-const ArtworkSelectorWrapper = styled.div`
+const Container = styled.div`
     width: 470px;
     margin-left: auto;
 `;
@@ -29,4 +38,4 @@ const Label = styled.label`
     font: ${(props) => props.theme.font.textBase};
 `;
 
-export default index;
+export default ArtworkSelectorWrapper;

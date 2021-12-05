@@ -18,7 +18,7 @@ export class CompletedAuction {
     endAt: Date;
 
     @Column()
-    bidderId: string;
+    bidderId: number;
 
     @Column()
     price: string;
