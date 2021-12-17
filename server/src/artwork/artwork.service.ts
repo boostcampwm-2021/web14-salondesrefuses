@@ -20,12 +20,13 @@ export class ArtworkService {
     ) {}
 
     async createCID(image): Promise<string> {
-        if (!this.ipfs) {
-            this.ipfs = create({ url: process.env.IPFS_URL });
-        }
+        // if (!this.ipfs) {
+        //     this.ipfs = create({ url: process.env.IPFS_URL });
+        // }
 
-        const { cid } = await this.ipfs.add(image.buffer);
-        return cid.toString();
+        // const { cid } = await this.ipfs.add(image.buffer);
+        // return cid.toString();
+        return 'cid';
     }
 
     async createArtWork(

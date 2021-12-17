@@ -20,7 +20,7 @@ export class CronTaskService {
         private readonly completedAuctionService: CompletedAuctionService,
     ) {}
 
-    @Cron(CronExpression.EVERY_DAY_AT_4AM)
+    // @Cron(CronExpression.EVERY_DAY_AT_4AM)
     async changeAuctionState() {
         this.logger.debug('Called when the every day 04:00');
         const auctions = await this.auctionService.getEndedAuctions();

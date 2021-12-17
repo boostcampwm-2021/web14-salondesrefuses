@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@openzeppelin/contracts": "^4.3.3",
+    "@openzeppelin/contracts": ">=4.4.1",
     "dotenv": "^10.0.0"
   }
 }
